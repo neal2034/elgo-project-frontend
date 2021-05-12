@@ -9,7 +9,6 @@ const webpackBaseConfig = require('./webpack.base.config');
 
 const entry = {
     index: path.join(__dirname, 'src/renderer/index/index.tsx'), // 页面入口
-    // userInfo: path.join(__dirname, 'src/renderer/userInfo/index.tsx')
 };
 // 对每一个入口生成一个.html文件
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({

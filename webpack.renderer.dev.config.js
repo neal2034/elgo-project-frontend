@@ -109,6 +109,30 @@ module.exports = merge.smart(webpackBaseConfig, {
                     {loader: 'sass-loader'}
                 ]
             },
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    // 'postcss-loader',
+                    {
+                        loader:'less-loader',
+                        options:{
+                            lessOptions: {
+                                javascriptEnabled: true
+                            }
+                        }
+                    },
+                    // 'less-loader',
+                    {
+                        loader: 'style-resources-loader',
+                        options: {
+                            patterns: [path.resolve(__dirname,'./resources/style/reset.global.less'),
+                                path.resolve(__dirname,'./resources/style/normal.global.less')]
+                        }
+                    }
+                ],
+            },
             // 处理图片
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
@@ -214,6 +238,21 @@ module.exports = merge.smart(webpackBaseConfig, {
                 stdio: 'inherit'
             }).on('close', code => process.exit(code))
                 .on('error', spawnError => console.error(spawnError));
-        }
+        },
+        proxy: {
+            '/effwork/api': {
+                // target: 'http://localhost:8070',
+                target: 'http://www.dev.effwork.net',
+                ws: false, //是否代理 websocket
+                changeOrigin: true
+            },
+            '/effwork/login': {
+                // target: 'http://localhost:8070',
+                target: 'http://www.dev.effwork.net',
+                ws: false, //是否代理 websocket
+                changeOrigin: true
+            }
+
+        },
     }
 });

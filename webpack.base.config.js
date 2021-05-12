@@ -21,8 +21,9 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.node'],
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.node', '.png' ],
         alias: {
+            '~assets': path.resolve(__dirname, './src/renderer/assets'),
             '~native': path.resolve(__dirname, 'native'),
             '~resources': path.resolve(__dirname, 'resources'),
             '~build': path.resolve(__dirname, 'build')

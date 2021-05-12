@@ -28,13 +28,17 @@ function createMainWindow() {
         backgroundColor: 'white',
         minWidth: 450,
         minHeight: 350,
-        height: 350,
-        width: 450
+        height: 900,
+        width: 1200,
+        titleBarStyle: 'hidden', //https://www.electronjs.org/docs/api/frameless-window
     });
+
 
     loadHtml(mainWindow, 'index');
     mainWindow.on('close', () => mainWindow = null);
     mainWindow.webContents.on('crashed', () => console.error('crash'));
+
+    // mainWindow.setMenuBarVisibility(false)
     // require('devtron').install();
 }
 
@@ -57,3 +61,4 @@ app.on('activate', () => {
 app.whenReady().then(() => {
     installExtension([REACT_PERF, REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS]).then(() => {});
 });
+
