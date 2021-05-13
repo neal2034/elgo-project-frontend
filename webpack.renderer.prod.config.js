@@ -8,7 +8,7 @@ const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config');
 
 const entry = {
-    index: path.join(__dirname, 'src/renderer/index/index.tsx'), // 页面入口
+    index: path.join(__dirname, 'src/renderer/index.tsx'), // 页面入口
 };
 // 对每一个入口生成一个.html文件
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
@@ -122,6 +122,30 @@ module.exports = merge.smart(webpackBaseConfig, {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    // 'postcss-loader',
+                    {
+                        loader:'less-loader',
+                        options:{
+                            lessOptions: {
+                                javascriptEnabled: true
+                            }
+                        }
+                    },
+                    // 'less-loader',
+                    {
+                        loader: 'style-resources-loader',
+                        options: {
+                            patterns: [path.resolve(__dirname,'./resources/style/reset.global.less'),
+                                path.resolve(__dirname,'./resources/style/normal.global.less')]
+                        }
+                    }
+                ],
             },
             // 处理字体文件 WOFF
             {
