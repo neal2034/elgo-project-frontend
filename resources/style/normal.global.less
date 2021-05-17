@@ -2,3 +2,53 @@
 .border-red{
     border: 1px solid red;
 }
+
+html{
+    /* sets the base font to 10px for rem easier math： 100% == 16px => 62.5% == 10px;
+     * https://webdesign.tutsplus.com/zh-hans/tutorials/comprehensive-guide-when-to-use-em-vs-rem--cms-23984
+     */
+    font-size: 62.5% !important;
+}
+
+body{
+    font-family: "Graphik", "Helvetica Neue", helvetica, "Apple Color Emoji", arial, sans-serif;
+    background-color: #F4F1EF;
+
+    /**
+     * global default font-size: 14px;
+     */
+    font-size: 1.4rem;
+}
+
+
+@color-board: #dcdfe6;
+@color-bg: #F7F6F3;
+
+
+
+.ml5{margin-left: 5px}
+.ml10{margin-left: 10px}
+.ml20{margin-left: 20px}
+.ml30{margin-left: 30px}
+.ml40{margin-left: 40px}
+
+.mr5{margin-right: 5px}
+.mr10{margin-right: 10px}
+.mr20{margin-right: 20px}
+.mr40{margin-right: 40px}
+
+.mt5{margin-top: 5px}
+.mt10{margin-top: 10px}
+.mt20{margin-top: 20px}
+.mt40{margin-top: 40px}
+
+.mb5{margin-bottom: 5px}
+.mb10{margin-bottom: 10px}
+.mb20{margin-bottom: 20px}
+.mb30{margin-bottom: 30px}
+.mb40{margin-bottom: 40px}
+
+
+.cursor-pointer{
+    cursor: pointer;
+}

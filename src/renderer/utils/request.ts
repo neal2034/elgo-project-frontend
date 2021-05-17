@@ -1,5 +1,6 @@
 import axios from "axios";
 import globalConfig from '../config/global.config'
+import umbrella from 'umbrella-storage';
 
 
 type METHODS = 'get' | 'post' | 'put' | 'delete';
@@ -19,7 +20,10 @@ interface IFRequestConfig extends IFRequestParam{
 
 /** 添加请求拦截器 **/
 axios.interceptors.request.use(config => {
-    config.headers['token'] = sessionStorage.getItem('token') || ''
+    const token = umbrella.getLocalStorage('token')
+    if(token){
+        config.headers[ 'Authorization' ] = "Bearer " + token;
+    }
 
     // if (config.url.includes('pur/contract/export')) {
     //     config.headers['responseType'] = 'blob'
@@ -34,8 +38,27 @@ axios.interceptors.request.use(config => {
     return Promise.reject(error)
 })
 
-const post = ({url, data, params, config}:IFRequestParam)=>{
-    return  request({method:'post', url, data, params, config})
+
+axios.interceptors.response.use(response =>{
+    if(response.data.status !== 0 ){
+        //TODO add message
+        console.log("error is ", response.data.message)
+    }
+    let result = response.data
+
+    result.isSuccess = result.status === 0
+    return result;
+})
+
+
+interface ApiResult {
+    status:number,
+    isSuccess:boolean,
+    data?:any
+}
+
+const post =   ({url, data, params, config}:IFRequestParam)=>{
+    return    request({method:'post', url, data, params, config})
 }
 
 const get = ({url, params, config}:IFRequestParam) => {
@@ -51,8 +74,9 @@ const put = ({url, data, params, config}: IFRequestParam) => {
 }
 
 
+
 const request = ({url, data, params, method,config}:IFRequestConfig)=>{
-    return new Promise((resolve, reject) => {
+    return new Promise<ApiResult>((resolve, reject)=> {
         let _option = {
             baseURL: globalConfig.baseUrl,
             timeout: 30000,
@@ -68,9 +92,9 @@ const request = ({url, data, params, method,config}:IFRequestConfig)=>{
         if(config){
             _option = {..._option, ...config}
         }
-        console.log("here is ", _option.baseURL)
-        axios.request(_option).then(res => {
-            resolve(typeof res.data === 'object' ? res.data : JSON.parse(res.data))
+
+        axios.request<ApiResult>(_option).then(res => {
+            resolve(typeof res === 'object' ? res : JSON.parse(res))
         },error => {
             reject(error)
         })

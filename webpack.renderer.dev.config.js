@@ -241,14 +241,14 @@ module.exports = merge.smart(webpackBaseConfig, {
         },
         proxy: {
             '/effwork/api': {
-                // target: 'http://localhost:8070',
-                target: 'http://www.dev.effwork.net',
+                target: 'http://localhost:8070',
+                // target: 'http://www.dev.effwork.net',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             },
             '/effwork/login': {
-                // target: 'http://localhost:8070',
-                target: 'http://www.dev.effwork.net',
+                target: 'http://localhost:8070',
+                // target: 'http://www.dev.effwork.net',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             }

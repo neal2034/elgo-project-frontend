@@ -1,14 +1,30 @@
 
 @import '~antd/dist/antd.css';
 
-.test{
-  color: red;
+.logo{
+  width: 150px;
 }
+
 
 .login{
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: @color-bg;
+
+  .content{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.login-form{
+  border: 1px solid @color-board;
+  width: 370px;
+  height: 250px;
+  background-color: white;
+  padding: 20px;
 }

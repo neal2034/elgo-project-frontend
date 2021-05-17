@@ -26,7 +26,8 @@ module.exports = {
             '~assets': path.resolve(__dirname, './src/renderer/assets'),
             '~native': path.resolve(__dirname, 'native'),
             '~resources': path.resolve(__dirname, 'resources'),
-            '~build': path.resolve(__dirname, 'build')
+            '~build': path.resolve(__dirname, 'build'),
+            '~imgs': path.resolve(__dirname, './src/renderer/assets/imgs/')
         }
     },
     devtool: 'source-map',

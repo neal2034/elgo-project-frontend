@@ -118,9 +118,12 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.13.0",
+    "@reduxjs/toolkit": "^1.5.1",
+    "@types/md5": "^2.3.0",
     "antd": "^4.15.5",
     "axios": "^0.21.1",
     "electron-devtools-installer": "^2.2.4",
+    "md5": "^2.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21",
@@ -128,6 +131,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "umbrella-storage": "^1.0.2"
   }
 }
