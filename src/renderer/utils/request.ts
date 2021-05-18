@@ -21,6 +21,10 @@ interface IFRequestConfig extends IFRequestParam{
 /** 添加请求拦截器 **/
 axios.interceptors.request.use(config => {
     const token = umbrella.getLocalStorage('token')
+    const orgSerial = umbrella.getLocalStorage('oserial')
+    const projectSerial = umbrella.getLocalStorage('pserial')
+    config.headers['oserial'] = orgSerial;
+    config.headers['pserial'] = projectSerial;
     if(token){
         config.headers[ 'Authorization' ] = "Bearer " + token;
     }

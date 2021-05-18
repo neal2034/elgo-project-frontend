@@ -28,7 +28,7 @@ function createMainWindow() {
         backgroundColor: 'white',
         minWidth: 450,
         minHeight: 350,
-        height: 900,
+        height: 600,
         width: 1200,
         titleBarStyle: 'hidden', //https://www.electronjs.org/docs/api/frameless-window
     });
