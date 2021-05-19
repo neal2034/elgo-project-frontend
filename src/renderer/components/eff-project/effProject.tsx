@@ -1,6 +1,7 @@
 import React from "react";
 import './effProject.less'
 import EffUser from "../eff-user/effUser";
+import {useHistory} from "react-router";
 
 interface ProjectProps{
     project:any,
@@ -19,9 +20,21 @@ export default function EffProject(props:ProjectProps){
         }
 
     })
+    const history = useHistory();
+
+    const goInProject = ()=>{
+          history.push({
+              pathname:"/app/api",
+              search: '?aaa',
+              state:{
+                  id:11
+              }
+          }  )
+        console.log("here is props ", project)
+    }
 
     return (
-        <div className="eff-project mr20 d-flex-column justify-between">
+        <div className="eff-project mr20 d-flex-column justify-between" onClick={goInProject}>
              <div className="font-title mt10 ml10">{project.name}</div>
              <div className="ml10 mb10">{members}</div>
         </div>
