@@ -6,20 +6,25 @@ import ProjectHome from "./pages/projectHome/projectHome";
 import {Switch} from "react-router-dom";
 import EffSideMenu from "./components/eff-side-menu/effSideMenu";
 import Api from "./pages/api/api";
+import {useSelector} from "react-redux";
+import {RootState} from "./store/store";
+import EffBreadCrumb from "./components/eff-breadcrumb/eff-breadcrumb";
 
 const {Content} = Layout
 
 
 const App = () => {
+    let breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
     return (
          <Layout className="app_layout">
              <EffSideMenu/>
              <Content className="app_content">
-                 <Switch>
-                     <PrivateRoute path="/app/organization" component={OrganizationHome}/>
-                     <PrivateRoute component={ProjectHome} path="/app/project"/>
-                     <PrivateRoute component={Api} path="/app/api" />
-                 </Switch>
+                 <EffBreadCrumb breads={breads}/>
+                     <Switch>
+                         <PrivateRoute path="/app/organization" component={OrganizationHome}/>
+                         <PrivateRoute component={ProjectHome} path="/app/project"/>
+                         <PrivateRoute component={Api} path="/app/api" />
+                     </Switch>
              </Content>
          </Layout>
     )

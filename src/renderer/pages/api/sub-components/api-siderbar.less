@@ -1,0 +1,85 @@
+.api-sidebar{
+  border: 1px solid @color-board;
+  width: 200px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+
+  .search-api{
+    width: auto;
+  }
+
+  .api-set{
+    border-bottom: 1px solid @color-board;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    color: #666666;
+  }
+
+  .api-folder{
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #666666;
+  }
+
+  .api-item{
+    color: #666666;
+  }
+  .api-method{
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .btn-add-set{
+    font-size: 12px;
+    color: @color-main-yellow;
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid @color-board;;
+  }
+
+  .get{
+    color: @color-main-green;
+  }
+
+  .post{
+    color: @color-yellow-2;
+  }
+
+  .put{
+    color: @color-main-blue;
+  }
+
+  .del{
+    color: @color-red-3;
+  }
+
+  .selected{
+    transform: rotate(90deg);
+
+  }
+
+ .ant-tree-switcher{
+    display: none;
+  }
+
+  .ant-tree-treenode{
+    padding: 0;
+  }
+  .ant-tree-node-content-wrapper{
+    padding: 0;
+  }
+
+  .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+    background-color: #ECECEC;
+    //background-color: black;
+  }
+}
