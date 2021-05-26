@@ -33,7 +33,6 @@ export const getOrganizationDetail = ()=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.get({url:apiUrl.organization.detail})
         if(result.isSuccess){
-            console.log("data is dtail", result.data)
             dispatch(orgSlice.actions.setOrganization(result.data))
         }
     }

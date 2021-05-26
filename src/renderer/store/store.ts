@@ -2,6 +2,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import accountReducer from '../pages/account/accountSlice'
 import orgReducer from '../pages/organizationHome/orgSlice'
 import breadcrumbReducer from './breadcrumbSlice'
+import apiReducer from '../pages/api/apiSlice'
+
 
 
 let store = configureStore({
@@ -9,6 +11,7 @@ let store = configureStore({
         account:accountReducer,
         organization:orgReducer,
         breadcrumb:breadcrumbReducer,
+        api:apiReducer,
     },
 })
 

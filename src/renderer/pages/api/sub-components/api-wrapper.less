@@ -1,0 +1,196 @@
+.api-content{
+  flex-grow: 1;
+}
+
+
+.api-sidebar{
+  border: 1px solid @color-board;
+  width: 200px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+
+  .search-api{
+    width: auto;
+  }
+
+  .api-set{
+    border-bottom: 1px solid @color-board;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    color: #666666;
+  }
+
+  .api-folder{
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #666666;
+  }
+
+  .api-item{
+    color: #666666;
+  }
+  .api-method{
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .btn-add-set{
+    font-size: 12px;
+    color: @color-main-yellow;
+    cursor: pointer;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border-bottom: 1px solid @color-board;;
+  }
+
+  .get{
+    color: @color-main-green;
+  }
+
+  .post{
+    color: @color-yellow-2;
+  }
+
+  .put{
+    color: @color-main-blue;
+  }
+
+  .del{
+    color: @color-red-3;
+  }
+
+  .selected{
+    transform: rotate(90deg);
+
+  }
+
+  .ant-tree-switcher{
+    display: none;
+  }
+
+  .ant-tree-treenode{
+    padding: 0;
+  }
+  .ant-tree-node-content-wrapper{
+    padding: 0;
+  }
+
+  .ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+    background-color: #ECECEC;
+    //background-color: black;
+  }
+}
+
+
+.content-wrapper{
+  border: 1px solid @color-board;
+  flex-grow: 1;
+
+  .name-example-area{
+    border-bottom: 1px solid @color-board;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: @color-font-normal;
+  }
+
+
+  .ant-tabs-tab{
+    &:hover{
+      color: @color-main-yellow;
+    }
+  }
+
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+    color: @color-main-yellow;
+  }
+
+  .ant-tabs-ink-bar{
+    background: @color-main-yellow;
+  }
+
+  .ant-tabs-nav-list{
+    margin-left: 20px;
+    margin-right: 20px;
+
+  }
+
+
+}
+
+
+.tabs{
+  height: 35px;
+
+  .btn-add{
+    width: 35px;
+    height: 35px;
+    border: 1px solid @color-board;
+  }
+}
+
+
+.api-tab{
+  padding: 5px;
+  width: 150px;
+  height: 35px;
+  border: 1px solid #d9d9d9;
+  border-bottom: none;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 3px;
+  font-size: 12px;
+  cursor: pointer;
+
+
+  .example{
+    //display: inline-block;
+    //text-align: center;
+    //vertical-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+    background-color: @color-yellow-3;
+  }
+
+  .method{
+    margin-right: 5px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+
+  .get-method{
+    color:@color-main-green;
+  }
+  .post-method{
+    color: @color-yellow-2;
+  }
+  .put-method{
+    color: @color-main-blue;
+  }
+  .del-method{
+    color: @color-red-3;
+  }
+
+
+}
+
+
+.config-area{
+  min-height: 300px;
+}

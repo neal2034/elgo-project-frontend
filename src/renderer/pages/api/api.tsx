@@ -3,6 +3,7 @@ import './api.less'
 import {useDispatch} from "react-redux";
 import {setBreadcrumbs} from '../../store/breadcrumbSlice'
 import ApiSideBar from "./sub-components/api-sidebar";
+import ApiContent from "./sub-components/api-content";
 
 
 export default function Api(){
@@ -14,9 +15,8 @@ export default function Api(){
 
     return (
         <div className="api d-flex">
-            <ApiSideBar></ApiSideBar>
-            {/*<div className="api-tree"></div>*/}
-            <div className="api-content ml10"></div>
+            <ApiSideBar/>
+            <ApiContent/>
         </div>
     )
 }

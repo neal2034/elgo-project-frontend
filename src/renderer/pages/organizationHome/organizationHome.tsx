@@ -20,7 +20,7 @@ export default function OrganizationHome (){
         dispatch(listProjects())
     },[dispatch])
 
-    console.log("render or")
+
     let departments = useSelector((state:RootState) => state.organization.departments)
     let projects = useSelector((state:RootState)=>state.organization.projects)
     const departmentList = departments.map((item:any)=>{
