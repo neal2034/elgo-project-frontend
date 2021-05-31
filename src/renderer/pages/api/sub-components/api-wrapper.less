@@ -192,7 +192,13 @@
 
 
 .config-area{
-  min-height: 300px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+
+  .config-tabs{
+    flex-grow: 1;
+  }
 }
 
 
@@ -200,4 +206,9 @@
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 40px;
+}
+
+.config-body{
+  padding-left: 40px;
+  padding-right: 40px;
 }

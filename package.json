@@ -119,10 +119,12 @@
   "dependencies": {
     "@hot-loader/react-dom": "^16.13.0",
     "@reduxjs/toolkit": "^1.5.1",
+    "@types/jsoneditor": "^8.6.0",
     "@types/md5": "^2.3.0",
     "antd": "^4.15.5",
     "axios": "^0.21.1",
     "electron-devtools-installer": "^2.2.4",
+    "jsoneditor": "^9.4.1",
     "md5": "^2.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
