@@ -10,12 +10,11 @@ import App from "./App";
 export default ()=> {
   return ( <Router>
         <div>
-            {window.location.pathname.includes('index.html') && <Redirect to="/"/>}
+            {/*{window.location.pathname.includes('index.html') && <Redirect to="/"/>}*/}
         </div>
         <Switch>
             <Route exact path="/" render={() => <Redirect to='/app/organization' push/>}/>
             <Route path="/app" component={App}></Route>
-            {/*<PrivateRoute path="/organization" component={OrganizationHome}/>*/}
             <Route exact path="/not" component={PageNotFound}/>
             <Route path="/login" component={Login}/>
         </Switch>

@@ -29,7 +29,7 @@ export default function ApiContent(){
                     <ApiUrlArea/>
                 </div>
                 <div className="config-area">
-                    <ApiConfigArea/>
+                    <ApiConfigArea api={currentApi}/>
                 </div>
                 <div>
                     <ApiResponse/>

@@ -32,7 +32,7 @@ export default function ApiTabs(){
 
     const handleAddActiveApi = ()=>{
         let serial = getUsableSerial(activeApis)
-        dispatch(addActiveApi({name:'未命名接口', serial:serial, method:'GET',  isExample:false}))
+        dispatch(addActiveApi({name:'未命名接口', serial:serial, method:'GET',  isExample:false, params:[{key:0}]}))
         dispatch(setCurrentApiSerial(serial))
     }
     return (

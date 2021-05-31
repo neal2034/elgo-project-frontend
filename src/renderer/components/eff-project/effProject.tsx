@@ -23,14 +23,7 @@ export default function EffProject(props:ProjectProps){
     const history = useHistory();
 
     const goInProject = ()=>{
-          history.push({
-              pathname:"/app/api",
-              search: '?aaa',
-              state:{
-                  id:11
-              }
-          }  )
-        console.log("here is props ", project)
+          history.push({pathname:"/app/api"})
     }
 
     return (
