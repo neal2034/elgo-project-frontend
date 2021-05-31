@@ -30,6 +30,7 @@ export default function ConfigParams(props:ApiProps){
             title:'描述',
             dataIndex: 'description',
             editable:true,
+            delAction:true,         //该列显示删除操作
         },
     ]
     const valueChanged = (record:any, dataIndex:string, value:string|boolean)=>{
@@ -41,12 +42,26 @@ export default function ConfigParams(props:ApiProps){
         }else{
             tmpParams.splice(index, 1, {...item, ...{[dataIndex]:value}})
         }
+        //如果编辑的是最后一行，则添加新的空白行
+        if(index === api.params.length-1){
+            let lastKey = api.params[api.params.length-1].key
+            tmpParams.push({key:lastKey+1})
+        }
+
+        dispatch(updateCurrentApi({params:tmpParams}))
+    }
+
+
+    const paramsDel = (record:any) =>{
+        const index = api.params.findIndex((item:ApiParams)=>item.key === record.key)
+        const tmpParams = Object.assign([], api.params)
+        tmpParams.splice(index, 1)
         dispatch(updateCurrentApi({params:tmpParams}))
     }
 
     return (
         <div>
-            <EditableTable valueChange={valueChanged}  columns={columns} dataSource={api.params}/>
+            <EditableTable valueChange={valueChanged} valueDel={paramsDel}  columns={columns} dataSource={api.params}/>
         </div>
     )
 }

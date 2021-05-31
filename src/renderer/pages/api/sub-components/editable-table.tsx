@@ -2,6 +2,8 @@ import React, {useContext, useState, useRef, useEffect} from "react";
 import {Table, Form, Input, Checkbox} from "antd";
 import {FormInstance} from "antd";
 import './editable-table.less'
+// @ts-ignore
+import ImgClose from "~assets/imgs/close.png"
 
 //
 // const EditableContext = React.createContext<FormInstance<any>|null>(null)
@@ -31,7 +33,7 @@ import './editable-table.less'
 const EditableCell = (props:any)=>{
     const [editing, setEditing] = useState(false);
     const inputRef = useRef<Input>(null)
-    const {children, editable, dataIndex, handleSave, selectable, ...restProps} = props
+    const {children, editable, dataIndex, handleSave, handleDel, selectable, delAction, hoverRowKey, ...restProps} = props
 
 
     useEffect(()=>{
@@ -52,6 +54,11 @@ const EditableCell = (props:any)=>{
         handleSave(props.record, props.dataIndex, e.target.checked)
     }
 
+    const delParams = (e:any) => {
+        e.stopPropagation()
+        handleDel(props.record)
+    }
+
     let childNode = children
     if(editable){
         childNode = editing?(
@@ -59,10 +66,14 @@ const EditableCell = (props:any)=>{
                 <Input onChange={valueChanged} value={props.record[dataIndex]} ref={inputRef} onPressEnter={toggleEdit} onBlur={toggleEdit} />
             </div>
         ):(
-            <div className="editable-cell-value-wrap" onClick={toggleEdit}>{children}</div>
+            <div className="editable-cell-value-wrap" onClick={toggleEdit}>
+                {children}
+                {delAction && hoverRowKey===props.record.key? <img className="del-action" onClick={delParams} alt={"删除"} width={14} src={ImgClose}/>:null}
+            </div>
+
         )
     }
-    if(selectable){
+    if(selectable && props.record.selected!==undefined){
         childNode = <div><Checkbox  onChange={selectChanged} checked={props.record[dataIndex]}/></div>
     }
 
@@ -73,7 +84,8 @@ const EditableCell = (props:any)=>{
 
 export default function EditableTable(props:any){
 
-    const {columns, dataSource, valueChange} = props
+    const {columns, dataSource, valueChange, valueDel} = props
+    const [hoverRowKey, setHoverRowKey] = useState(-1)
     const tableCols = columns.map((col:any) => {
         if (!col.editable && !col.selectable) {
             return col;
@@ -86,7 +98,10 @@ export default function EditableTable(props:any){
                 dataIndex: col.dataIndex,
                 title: col.title,
                 selectable:col.selectable,
-                handleSave:valueChange
+                delAction: col.delAction,
+                hoverRowKey,
+                handleSave:valueChange,
+                handleDel: valueDel,
 
             }),
         };
@@ -97,6 +112,11 @@ export default function EditableTable(props:any){
         }
     }
     return (
-        <Table bordered components={components} dataSource={dataSource} columns={tableCols} pagination={false}/>
+        <Table bordered onRow={record=>{
+            return {
+                onMouseEnter: event => {setHoverRowKey(record.key)},
+                onMouseLeave: event => {setHoverRowKey(-1)},
+            }
+        }} components={components} dataSource={dataSource} columns={tableCols} pagination={false}/>
     )
 }
