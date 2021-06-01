@@ -5,6 +5,7 @@ import {API} from "../apiSlice";
 import ConfigAuth from "./config-auth";
 import EffJsonEditor from "./eff-json-editor";
 import ConfigBody from "./config-body";
+import ConfigTest from "./config-test";
 
 const {TabPane} = Tabs
 interface ApiProps{
@@ -16,18 +17,23 @@ export default function ApiConfigArea(props:ApiProps){
 
     return (
         <Tabs className="config-tabs">
-            <TabPane className="tab-content"  tab="Body" key="4">
-                <ConfigBody api={props.api}/>
-            </TabPane>
             <TabPane tab="Params" key="1">
                 <ConfigParams api={props.api}/>
             </TabPane>
+
             <TabPane tab="Authorization" key="2">
                 <ConfigAuth api={props.api}/>
             </TabPane>
+
             <TabPane tab="Headers" key="3">here is Headers</TabPane>
 
-            <TabPane tab="Tests" key="5">here is Tests</TabPane>
+            <TabPane className="tab-content"  tab="Body" key="4">
+                <ConfigBody api={props.api}/>
+            </TabPane>
+
+            <TabPane tab="Tests" key="5">
+                <ConfigTest/>
+            </TabPane>
         </Tabs>
     )
 }
