@@ -1,5 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
+import request from "../../utils/request";
+import apiUrl from '../../config/apiUrl'
+import {Dispatch} from "react";
 
 export interface ApiParams{
     paramKey?:string,
@@ -17,6 +19,13 @@ export interface API{
     params:ApiParams[],
 }
 
+interface IPayloadAddApiSet {
+    name:string,
+    description?:string,
+    authToken?:string,
+    authType:'NONE'|'INHERIT'|'BEARER',
+}
+
 
 let activeApis: Array<API> = []
 
@@ -26,6 +35,7 @@ const apiSlice = createSlice({
     initialState:{
         activeApis:activeApis,
         currentApiSerial:null,
+        apiTreeItems:[],
 
     },
     reducers:{
@@ -43,9 +53,37 @@ const apiSlice = createSlice({
                 }
             })
         },
+        setApiTreeItems:(state, action)=>{
+            state.apiTreeItems = action.payload
+        }
     }
 })
 
-export const {addActiveApi, setCurrentApiSerial, updateCurrentApi} = apiSlice.actions
+
+
+
+const addApiSet = (data:IPayloadAddApiSet)=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.post({url: apiUrl.api.setRes, data})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+    }
+}
+
+const listApiTreeItems = ()=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.get({url:apiUrl.api.treeItemRes})
+        if(result.isSuccess){
+            dispatch(setApiTreeItems(result.data))
+            console.log("result data is ", result.data)
+        }
+        return result.isSuccess
+    }
+}
+
+export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems} = apiSlice.actions
+
+export {addApiSet, listApiTreeItems};
 
 export default apiSlice.reducer

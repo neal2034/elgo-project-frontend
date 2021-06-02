@@ -2,8 +2,7 @@ import React, {useContext, useState, useRef, useEffect} from "react";
 import {Table, Form, Input, Checkbox} from "antd";
 import {FormInstance} from "antd";
 import './editable-table.less'
-// @ts-ignore
-import ImgClose from "~assets/imgs/close.png"
+import ImgClose from "@imgs/close.png"
 
 //
 // const EditableContext = React.createContext<FormInstance<any>|null>(null)

@@ -8,8 +8,7 @@ import ApiConfigArea from "./api-config-area";
 import ApiResponse from "./api-response";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-// @ts-ignore
-import ImgApiCloud from "~assets/imgs/api-cloud.png"
+import ImgApiCloud from "@imgs/api-cloud.png"
 
 export default function ApiContent(){
 

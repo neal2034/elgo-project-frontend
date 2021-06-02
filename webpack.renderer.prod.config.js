@@ -143,6 +143,7 @@ module.exports = merge.smart(webpackBaseConfig, {
                         options: {
                             patterns: [path.resolve(__dirname,'./resources/style/reset.global.less'),
                                 path.resolve(__dirname,'./resources/style/flex.global.less'),
+                                path.resolve(__dirname,'./resources/style/ant.design.global.less'),
                                 path.resolve(__dirname,'./resources/style/normal.global.less')]
                         }
                     }

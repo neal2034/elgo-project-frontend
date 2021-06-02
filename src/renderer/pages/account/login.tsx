@@ -1,8 +1,7 @@
 import React from 'react'
 import  './login.less'
 import { Form, Input, Button, message } from 'antd';
-// @ts-ignore
-import EffLogo from "~imgs/effwork-logo.png"
+import EffLogo from "@imgs/effwork-logo.png"
 import {useDispatch} from "react-redux";
 import {login} from './accountSlice'
 import md5 from 'md5'

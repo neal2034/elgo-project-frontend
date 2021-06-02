@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "experimentalDecorators": true,
     "target": "ES2018",
     "module": "CommonJS",
-
+    "paths" : {
+      "@config/*" : ["./src/renderer/config/*"],
+      "@imgs/*" : ["./src/renderer/assets/imgs/*"]
+    },
     "lib": [
       "dom",
       "esnext"

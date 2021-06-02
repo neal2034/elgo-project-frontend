@@ -1,5 +1,6 @@
 const path = require('path');
 // 基础的webpack配置
+console.log("dir name is ", __dirname)
 module.exports = {
     module: {
         rules: [
@@ -23,11 +24,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.node', '.png' ],
         alias: {
-            '~assets': path.resolve(__dirname, './src/renderer/assets'),
-            '~native': path.resolve(__dirname, 'native'),
-            '~resources': path.resolve(__dirname, 'resources'),
-            '~build': path.resolve(__dirname, 'build'),
-            '~imgs': path.resolve(__dirname, './src/renderer/assets/imgs/')
+            '@imgs': path.resolve(__dirname, './src/renderer/assets/imgs/'),
+            '@config': path.resolve(__dirname,"./src/renderer/config/"),
         }
     },
     devtool: 'source-map',

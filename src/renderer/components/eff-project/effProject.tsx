@@ -2,6 +2,7 @@ import React from "react";
 import './effProject.less'
 import EffUser from "../eff-user/effUser";
 import {useHistory} from "react-router";
+import umbrella from "umbrella-storage";
 
 interface ProjectProps{
     project:any,
@@ -23,7 +24,8 @@ export default function EffProject(props:ProjectProps){
     const history = useHistory();
 
     const goInProject = ()=>{
-          history.push({pathname:"/app/api"})
+            umbrella.setLocalStorage('pserial', project.serial);
+           history.push({pathname:"/app/api"})
     }
 
     return (

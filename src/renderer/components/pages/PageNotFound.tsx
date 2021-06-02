@@ -1,6 +1,5 @@
 import React from "react";
-// @ts-ignore
-import Img404 from "~assets/imgs/404.png"
+import Img404 from "@imgs/404.png"
 
 
 
