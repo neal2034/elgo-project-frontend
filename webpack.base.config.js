@@ -1,6 +1,5 @@
 const path = require('path');
 // 基础的webpack配置
-console.log("dir name is ", __dirname)
 module.exports = {
     module: {
         rules: [
