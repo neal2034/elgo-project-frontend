@@ -34,6 +34,12 @@ interface IPayloadAddApiGroup {
     parentId:number,
 }
 
+interface IPayloadAddApiTreeItem {
+    name:string,
+    description?:string,
+    parentId:number
+}
+
 
 let activeApis: Array<API> = []
 
@@ -88,6 +94,15 @@ const addApiGroup = (data:IPayloadAddApiGroup)=>{
     }
 }
 
+const addApiTreeItem = (data:IPayloadAddApiTreeItem)=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result =await request.post({url:apiUrl.api.apiTreeItemRes, data})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+    }
+}
+
 const listApiTreeItems = ()=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.get({url:apiUrl.api.treeItemRes})
@@ -100,6 +115,6 @@ const listApiTreeItems = ()=>{
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems} = apiSlice.actions
 
-export {addApiSet, listApiTreeItems,addApiGroup};
+export {addApiSet, listApiTreeItems,addApiGroup, addApiTreeItem};
 
 export default apiSlice.reducer

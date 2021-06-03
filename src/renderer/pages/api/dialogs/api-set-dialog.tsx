@@ -74,29 +74,6 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
     }
 
 
-    const goAddApiSet = async ()=>{
-        if(!name){
-            setErrorNameEmpty(true)
-            return
-        }
-        let payload = {
-            name,
-            authType,
-            description,
-            authToken,
-        }
-        dispatch(  addApiSet(payload))
-        closeDlg();
-    }
-
-
-    const goAddApiGroup = ()=>{
-        if(!name){
-            setErrorNameEmpty(true)
-            return
-        }
-    }
-
     const updateApiSetName = (e:any)=>{
         setApiSetName(e.target.value)
     }

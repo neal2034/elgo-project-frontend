@@ -12,6 +12,7 @@ import ImgAddApiGroup from '@imgs/api/api-group-add.png'
 import ImgAddApi from '@imgs/api/add-api.png'
 import ImgEdit from '@imgs/api/pen-edit.png'
 import ImgRemove from '@imgs/api/remove.png'
+import ApiDialog from "../dialogs/api-dialog";
 
 /**
  * 侧边栏
@@ -22,10 +23,13 @@ export default function ApiSideBar(){
     const dispatch = useDispatch();
     const [visibleApiMenuSetId, setVisibleApiMenuSetId] = useState(-1); //api 集合菜单可见性
     const [expandedKeys, setExpandedKeys] = useState<number[]>( []);  // 展开树节点的key
-    const [visibleApiSetDlg, setApiSetDlgVisible] = useState(false); //对话框可见性
+    const [visibleApiSetDlg, setApiSetDlgVisible] = useState(false); //API 集合/分组对话框可见性
+    const [visibleApiDlg, setApiDlgVisible] = useState(false);      // API  对话框可见性
     const [dlgTitle, setDlgTitle] = useState("添加集合"); //对话框标题
     const [dlgType, setDlgType] = useState<'set'|'group'>('set');
-    const [parentId, setParentId] = useState()
+    const [apiDlgMode, setApiDlgMode] = useState<'add'|'edit'>('add');
+    const [parentId, setParentId] = useState<number>()
+    const [apiParentId, setApiParentId]=useState<number>()
 
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
@@ -82,6 +86,9 @@ export default function ApiSideBar(){
                     case 'add-group':
                         response.goAddApiGroup()
                         break;
+                    case 'add-api':
+                        response.goAddApi()
+                        break;
                 }
             },
             goAddApiGroup:()=>{
@@ -89,6 +96,11 @@ export default function ApiSideBar(){
                 setDlgType('group');
                 setParentId(data.id)
                 setApiSetDlgVisible(true);
+            },
+            goAddApi:()=>{
+                setApiDlgMode('add');
+                setApiParentId(data.id)
+                setApiDlgVisible(true)
             }
         }
         const ui = {
@@ -153,6 +165,7 @@ export default function ApiSideBar(){
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
             <Tree expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={titleRender} treeData={treeItems}/>
             <ApiSetDialog dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog} title={dlgTitle} />
+            <ApiDialog visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
         </div>
     )
 }
