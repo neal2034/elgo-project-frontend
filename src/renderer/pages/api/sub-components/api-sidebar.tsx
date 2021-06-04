@@ -30,7 +30,7 @@ export default function ApiSideBar(){
     const [expandedKeys, setExpandedKeys] = useState<number[]>( []);  // 展开树节点的key
     const [visibleApiSetDlg, setApiSetDlgVisible] = useState(false); //API 集合/分组对话框可见性
     const [visibleApiDlg, setApiDlgVisible] = useState(false);      // API  对话框可见性
-    const [dlgTitle, setDlgTitle] = useState("添加集合"); //对话框标题
+
     const [dlgType, setDlgType] = useState<'set'|'group'>('set');
     const [apiDlgMode, setApiDlgMode] = useState<'add'|'edit'>('add');
     const [parentId, setParentId] = useState<number>()
@@ -40,6 +40,7 @@ export default function ApiSideBar(){
     const [toastMessage, setToastMessage] = useState<string>();
     const [isToastWithdraw, setToastWithdraw] = useState(false);
     const [willDelApiSet, setWillDelApiSet] = useState<any>({});
+    const [editingApiSet, setEditingApiSet] = useState(); //当前在编辑的API 集合
 
 
     //对树形数据进行映射，主要用来添加key 字段
@@ -59,7 +60,6 @@ export default function ApiSideBar(){
             setVisibleApiMenuSetId(-1);
         },
         goAddApiSet : ()=>{
-            setDlgTitle("添加集合")
             setDlgType('set');
             setApiSetDlgVisible(true)
         },
@@ -105,7 +105,8 @@ export default function ApiSideBar(){
                 setVisibleApiMenuSetId(data.id)
             },
             //响应集合弹出菜单
-            menuSelected:({key}:{key:any})=>{
+            menuSelected:({key,domEvent}:{key:any,domEvent:any})=>{
+                domEvent.stopPropagation()
                 setVisibleApiMenuSetId(-1)
                 switch (key){
                     case 'add-group':
@@ -117,11 +118,14 @@ export default function ApiSideBar(){
                     case 'del-set':
                         response.goDelApiSet()
                         break;
+                    case 'edit-set':
+                        response.goEditApiSet()
+                        break;
                 }
             },
             goAddApiGroup:()=>{
-                setDlgTitle("添加分组")
                 setDlgType('group');
+                setApiDlgMode('add')
                 setParentId(data.id)
                 setApiSetDlgVisible(true);
             },
@@ -134,6 +138,13 @@ export default function ApiSideBar(){
                 setWillDelApiSet(data)
                 setConfirmDelSetDlgVisible(true)
             },
+            goEditApiSet: ()=>{
+                setEditingApiSet(data);
+                setApiDlgMode('edit');
+                setApiSetDlgVisible(true)
+
+                // setApiDlgVisible(true)
+            }
         }
         const ui = {
             apiSetMenu: (<Menu onClick={response.menuSelected}>
@@ -153,7 +164,7 @@ export default function ApiSideBar(){
                         <img alt={"del-api-set"} src={ImgRemove} width={14}/>
                         <span className={"ml5"}>删除</span>
                     </Menu.Item>
-                </Menu>)
+                </Menu>),
         }
         if(data.type === 'SET'){
             return  <div className={'api-set'} onMouseEnter={response.showMenu}>
@@ -207,7 +218,7 @@ export default function ApiSideBar(){
             <Input className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
             <Tree onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
-            <ApiSetDialog dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog} title={dlgTitle} />
+            <ApiSetDialog apiSet={editingApiSet} dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog}  mode={apiDlgMode} />
             <ApiDialog visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
             <EffConfirmDlg visible={visibleConfirmDelSetDlg}>
                 <div className="d-flex-column">

@@ -27,6 +27,10 @@ interface IPayloadAddApiSet {
     authType:'NONE'|'INHERIT'|'BEARER',
 }
 
+interface IPayloadEditApiSet extends IPayloadAddApiSet{
+    id:number
+}
+
 interface IPayloadAddApiGroup {
     name:string,
     description?:string,
@@ -90,6 +94,15 @@ const addApiSet = (data:IPayloadAddApiSet)=>{
     }
 }
 
+const editApiSet = (data:IPayloadEditApiSet)=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.put({url:apiUrl.api.setRes, data})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+    }
+}
+
 const deleteApiSet = (params:IPayloadDelApiSet)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url:apiUrl.api.setRes,params})
@@ -140,6 +153,6 @@ const listApiTreeItems = ()=>{
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems} = apiSlice.actions
 
-export {addApiSet, deleteApiSet,listApiTreeItems,addApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+export {addApiSet,editApiSet, deleteApiSet,listApiTreeItems,addApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

@@ -1,28 +1,30 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Modal, Input, Tabs, Select, Button} from "antd";
 import './api-set-dialog.less'
 import EffButton from "../../../components/eff-button/eff-button";
 import globalColor from "@config/globalColor";
-import {addApiSet, addApiGroup} from '@slice/apiSlice'
+import {addApiSet, addApiGroup, editApiSet} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 
 const {TabPane} = Tabs
 const {TextArea} = Input
 const {Option} = Select
 
-type TDlgType = 'set' | 'group'
+
 
 interface ApiSetDlgProps{
     visible:boolean,
     closeDlg:()=>void,
-    title:string,
-    dlgType:TDlgType,     //标识当前操作api集合 还是 api 分组
+    dlgType:'set' | 'group',     //标识当前操作api集合 还是 api 分组
+    mode:'add'|'edit',
     apiSet?:any,
     parentId?:number
 }
 
 export default function ApiSetDialog(props:ApiSetDlgProps){
-    const {title,visible, apiSet, closeDlg, dlgType} = props
+    const {visible, apiSet, closeDlg, dlgType, mode} = props
+    let title = mode === 'add'? '新建':'编辑'
+    title += dlgType === 'set'?"集合":'分组'
     const parentId = props.parentId!
     const dispatch = useDispatch();
     const [errorNameEmpty, setErrorNameEmpty] = useState(false)
@@ -32,13 +34,41 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
     const [authToken, setAuthToken] = useState(apiSet && apiSet.authToken)
 
 
+    useEffect(()=>{
+        if(mode==='edit' && dlgType=== 'set'){
+            setApiSetName(apiSet.name)
+            setDescription(apiSet.description)
+            setAuthToken(apiSet.authToken)
+            setAuthType(apiSet.authType)
+        }
+
+    },[apiSet])
+
     const response = {
         handleConfirm:()=>{
-            if(dlgType === 'set'){
+            if(dlgType === 'set' && mode=== 'add'){
                 response.goAddSet();
-            }else if(dlgType === 'group'){
+            }else if(dlgType === 'group' && mode === 'add'){
                 response.goAddGroup()
+            }else if (dlgType === 'set' && mode==='edit'){
+                response.goEditApiSet();
             }
+        },
+
+        goEditApiSet: ()=>{
+            if(!name){
+                setErrorNameEmpty(true)
+                return
+            }
+            let payload = {
+                name,
+                authType,
+                description,
+                authToken,
+                id:apiSet.id
+            }
+            dispatch(editApiSet(payload))
+            closeDlg()
         },
 
         goAddSet: ()=>{
