@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import './api-wrapper.less'
-import {Input, Tree, Popover, Menu, Dropdown,Button} from "antd";
+import {Input, Tree, Popover, Menu, Dropdown, Button, message, Modal} from "antd";
 import { SearchOutlined, RightOutlined } from '@ant-design/icons';
 import ImgApiSet from "@imgs/api-set.png"
 import ImgApiFolder from '@imgs/api-folder.png'
 import ApiSetDialog from "../dialogs/api-set-dialog";
-import {listApiTreeItems} from '../apiSlice'
+import {listApiTreeItems} from '@slice/apiSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import ImgAddApiGroup from '@imgs/api/api-group-add.png'
@@ -13,6 +13,11 @@ import ImgAddApi from '@imgs/api/add-api.png'
 import ImgEdit from '@imgs/api/pen-edit.png'
 import ImgRemove from '@imgs/api/remove.png'
 import ApiDialog from "../dialogs/api-dialog";
+import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
+import EffButton from "../../../components/eff-button/eff-button";
+import EffToast from "../../../components/eff-toast/eff-toast";
+import {deleteApiSet, withdrawDelApiTreeItem} from '@slice/apiSlice'
+
 
 /**
  * 侧边栏
@@ -29,7 +34,13 @@ export default function ApiSideBar(){
     const [dlgType, setDlgType] = useState<'set'|'group'>('set');
     const [apiDlgMode, setApiDlgMode] = useState<'add'|'edit'>('add');
     const [parentId, setParentId] = useState<number>()
-    const [apiParentId, setApiParentId]=useState<number>()
+    const [apiParentId, setApiParentId]=useState<number>();             //添加API 时， API的父级节点
+    const [visibleConfirmDelSetDlg, setConfirmDelSetDlgVisible] = useState(false); //确认删除集合对话框显示开关
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState<string>();
+    const [isToastWithdraw, setToastWithdraw] = useState(false);
+    const [willDelApiSet, setWillDelApiSet] = useState<any>({});
+
 
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
@@ -44,6 +55,9 @@ export default function ApiSideBar(){
     })
 
     const response = {
+        closeAllApiSettMenu:()=>{
+            setVisibleApiMenuSetId(-1);
+        },
         goAddApiSet : ()=>{
             setDlgTitle("添加集合")
             setDlgType('set');
@@ -63,31 +77,45 @@ export default function ApiSideBar(){
         },
         closeDialog: ()=>{
             setApiSetDlgVisible(false)
+        },
+
+        delApiSet:async ()=>{
+            setConfirmDelSetDlgVisible(false)
+            let result = await dispatch(deleteApiSet({id:willDelApiSet.id}))
+            // @ts-ignore
+            if(result){
+                setToastMessage(`集合${willDelApiSet.name}已放入回收站`)
+                setToastWithdraw(true)
+                setToastOpen(true)
+            }
         }
     }
 
+
     useEffect(()=>{
-        dispatch(listApiTreeItems())
+        dispatch(listApiTreeItems()) //初始化的时候加载数据
     }, [dispatch])
 
-
-    const titleRender = (data:any)=>{
+    //定义API tree node 的渲染
+    const renderTreeNodes = (data:any)=>{
 
         let isSelected = expandedKeys.indexOf(data.key)>-1
         const response = {
-            menuShow:(visible:boolean)=>{
-                let id = visible? data.id:-1;
-                setVisibleApiMenuSetId(id)
-
+            showMenu:()=>{
+                setVisibleApiMenuSetId(data.id)
             },
             //响应集合弹出菜单
             menuSelected:({key}:{key:any})=>{
+                setVisibleApiMenuSetId(-1)
                 switch (key){
                     case 'add-group':
                         response.goAddApiGroup()
                         break;
                     case 'add-api':
                         response.goAddApi()
+                        break;
+                    case 'del-set':
+                        response.goDelApiSet()
                         break;
                 }
             },
@@ -101,7 +129,11 @@ export default function ApiSideBar(){
                 setApiDlgMode('add');
                 setApiParentId(data.id)
                 setApiDlgVisible(true)
-            }
+            },
+            goDelApiSet:()=>{
+                setWillDelApiSet(data)
+                setConfirmDelSetDlgVisible(true)
+            },
         }
         const ui = {
             apiSetMenu: (<Menu onClick={response.menuSelected}>
@@ -123,14 +155,11 @@ export default function ApiSideBar(){
                     </Menu.Item>
                 </Menu>)
         }
-
-
         if(data.type === 'SET'){
-            return  <div className={'api-set'} onMouseEnter={()=>setVisibleApiMenuSetId(data.id)} onMouseLeave={()=>setTimeout(()=>setVisibleApiMenuSetId(-1), 300)}>
+            return  <div className={'api-set'} onMouseEnter={response.showMenu}>
                 <RightOutlined className={`ml10 ${isSelected ? "selected" : ""}`}  />
                 <img alt="api-set" src={ImgApiSet} width="16" className="ml10 mr10"/>{data.name}
-                {data.id===visibleApiMenuSetId? <Dropdown className="api-set-menu-container" onVisibleChange={response.menuShow} overlay={ui.apiSetMenu} placement="bottomCenter">
-
+                {data.id===visibleApiMenuSetId? <Dropdown className="api-set-menu-container"  overlay={ui.apiSetMenu} placement="bottomCenter">
                     <div className="api-set-menu">
                         <div className="menu-circle"/>
                         <div className="menu-circle"/>
@@ -159,13 +188,39 @@ export default function ApiSideBar(){
     }
 
 
+    //撤销删除集合
+    const withdrawDelApiSet = async ()=>{
+        let result = await dispatch(withdrawDelApiTreeItem({id:willDelApiSet.id}))
+        // @ts-ignore
+        if(result){
+            setToastMessage("撤销成功")
+            setToastWithdraw(false)
+            setToastOpen(true)
+        }
+
+    }
+
+
     return (
         <div className="api-sidebar d-flex-column">
+            <EffToast onWithDraw={withdrawDelApiSet} isWithDraw={isToastWithdraw} open={toastOpen} message={toastMessage!} onClose={()=>setToastOpen(false)}/>
             <Input className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
-            <Tree expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={titleRender} treeData={treeItems}/>
+            <Tree onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
             <ApiSetDialog dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog} title={dlgTitle} />
             <ApiDialog visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
+            <EffConfirmDlg visible={visibleConfirmDelSetDlg}>
+                <div className="d-flex-column">
+                    <div className="d-flex-column">
+                        <span>确定将集合“{willDelApiSet!.name}”放入回收站</span>
+                        <span className="mt10">该集合下的所有分组合API也将一并放入回收站</span>
+                    </div>
+                    <div className="mt10 d-flex justify-end">
+                        <EffButton onClick={()=>setConfirmDelSetDlgVisible(false)} round={true} key={"cancel"} text={"取消"}/>
+                        <EffButton onClick={response.delApiSet} className="mr20 ml10" type={"filled"} key={"confirm"} text={"确定"} round={true}/>
+                    </div>
+                </div>
+            </EffConfirmDlg>
         </div>
     )
 }

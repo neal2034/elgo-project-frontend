@@ -3,7 +3,7 @@ import {Modal, Input, Tabs, Select, Button} from "antd";
 import './api-set-dialog.less'
 import EffButton from "../../../components/eff-button/eff-button";
 import globalColor from "@config/globalColor";
-import {addApiSet, addApiGroup} from '../apiSlice'
+import {addApiSet, addApiGroup} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 
 const {TabPane} = Tabs

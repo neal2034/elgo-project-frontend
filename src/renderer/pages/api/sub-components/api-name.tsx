@@ -2,7 +2,7 @@
  * 组件： api 名称
  */
 import React from "react";
-import {API} from "../apiSlice";
+import {API} from "@slice/apiSlice";
 
 interface ApiProps{
     api: API

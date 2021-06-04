@@ -3,6 +3,7 @@ import globalConfig from '../config/global.config'
 import umbrella from 'umbrella-storage';
 
 
+
 type METHODS = 'get' | 'post' | 'put' | 'delete';
 
 interface IFRequestParam {
@@ -15,6 +16,15 @@ interface IFRequestParam {
 interface IFRequestConfig extends IFRequestParam{
     method?:METHODS;
 
+}
+
+
+const responseErrorHandler = (error:any)=>{
+
+    if(error.response.status === 401){
+        let loginPath = window.location.href.replace(window.location.hash, "#/login")
+        window.location.href = loginPath
+    }
 }
 
 
@@ -38,12 +48,14 @@ axios.interceptors.request.use(config => {
     // }
     return config
 }, error => {
+
     // 对请求错误做些什么
     return Promise.reject(error)
 })
 
 
 axios.interceptors.response.use(response =>{
+    console.log("response is ,", response)
     if(response.data.status !== 0 ){
         //TODO add message
         console.log("error is ", response.data.message)
@@ -52,7 +64,7 @@ axios.interceptors.response.use(response =>{
 
     result.isSuccess = result.status === 0
     return result;
-})
+}, responseErrorHandler)
 
 
 interface ApiResult {

@@ -2,7 +2,7 @@
  * 组件： 用于描述API Tab
  */
 import React from "react";
-import {API} from "../apiSlice";
+import {API} from "@slice/apiSlice";
 
 interface ApiProps{
     api:API

@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
+import api from "../../pages/api/api";
 
 export interface ApiParams{
     paramKey?:string,
@@ -38,6 +39,10 @@ interface IPayloadAddApiTreeItem {
     name:string,
     description?:string,
     parentId:number
+}
+
+interface IPayloadDelApiSet{
+    id:number
 }
 
 
@@ -85,6 +90,26 @@ const addApiSet = (data:IPayloadAddApiSet)=>{
     }
 }
 
+const deleteApiSet = (params:IPayloadDelApiSet)=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.delete({url:apiUrl.api.setRes,params})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+        return result.isSuccess
+    }
+}
+
+const withdrawDelApiTreeItem = (params:IPayloadDelApiSet)=>{
+    return async (dispatch:Dispatch<any>) =>{
+        let result = await request.get({url:apiUrl.api.withdraw, params})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+        return result.isSuccess
+    }
+}
+
 const addApiGroup = (data:IPayloadAddApiGroup)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.post({url:apiUrl.api.groupRes, data})
@@ -115,6 +140,6 @@ const listApiTreeItems = ()=>{
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems} = apiSlice.actions
 
-export {addApiSet, listApiTreeItems,addApiGroup, addApiTreeItem};
+export {addApiSet, deleteApiSet,listApiTreeItems,addApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

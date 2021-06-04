@@ -1,5 +1,5 @@
 import React from "react";
-import {API} from "../apiSlice";
+import {API} from "@slice/apiSlice";
 import {Select, Input} from "antd";
 import './api-wrapper.less'
 

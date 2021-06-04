@@ -7,7 +7,7 @@ import {PlusOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {useDispatch} from "react-redux";
-import {addActiveApi, API, setCurrentApiSerial} from '../apiSlice'
+import {addActiveApi, API, setCurrentApiSerial} from '@slice/apiSlice'
 import ApiTab from "./api-tab";
 
 export default function ApiTabs(){

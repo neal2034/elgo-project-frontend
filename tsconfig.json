@@ -6,7 +6,8 @@
     "module": "CommonJS",
     "paths" : {
       "@config/*" : ["./src/renderer/config/*"],
-      "@imgs/*" : ["./src/renderer/assets/imgs/*"]
+      "@imgs/*" : ["./src/renderer/assets/imgs/*"],
+      "@slice/*" : ["./src/renderer/store/slice/*"]
     },
     "lib": [
       "dom",

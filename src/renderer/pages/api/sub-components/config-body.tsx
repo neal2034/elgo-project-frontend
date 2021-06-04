@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {API} from "../apiSlice";
+import {API} from "@slice/apiSlice";
 import {Radio} from "antd";
 import './api-wrapper.less'
 import EffJsonEditor from "./eff-json-editor";

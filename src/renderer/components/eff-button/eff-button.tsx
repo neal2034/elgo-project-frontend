@@ -8,7 +8,8 @@ interface IEffButtonProps {
     round?: boolean,
     key: string,
     type?: "filled" | "normal",
-    onClick?: () => void
+    onClick?: () => void,
+    className?:string
 }
 
 interface IBtnStyle {

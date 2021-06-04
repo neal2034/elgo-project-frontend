@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Modal,Input} from "antd";
 import EffButton from "../../../components/eff-button/eff-button";
-import {addApiTreeItem} from '../apiSlice'
+import {addApiTreeItem} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 import globalColor from "@config/globalColor";
 

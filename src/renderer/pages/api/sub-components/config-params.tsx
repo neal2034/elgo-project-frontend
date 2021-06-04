@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import EditableTable from "./editable-table";
-import {API, ApiParams, updateCurrentApi} from "../apiSlice";
+import {API, ApiParams, updateCurrentApi} from "@slice//apiSlice";
 import {useDispatch} from "react-redux";
 
 interface ApiProps{

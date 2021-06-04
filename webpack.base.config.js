@@ -25,6 +25,7 @@ module.exports = {
         alias: {
             '@imgs': path.resolve(__dirname, './src/renderer/assets/imgs/'),
             '@config': path.resolve(__dirname,"./src/renderer/config/"),
+            '@slice' : path.resolve(__dirname, './src/renderer/store/slice')
         }
     },
     devtool: 'source-map',
