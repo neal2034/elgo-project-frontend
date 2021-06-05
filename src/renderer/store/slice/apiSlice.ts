@@ -57,7 +57,7 @@ interface IPayloadAddApiTreeItem {
 interface IPayloadEditApiTreeItem {
     name:string,
     id:number,
-    description:string
+    description?:string
 }
 
 interface IPayloadDelApiItem{

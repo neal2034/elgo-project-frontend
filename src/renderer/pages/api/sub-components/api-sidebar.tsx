@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import './api-wrapper.less'
-import {Input, Tree, Popover, Menu, Dropdown, Button, message, Modal} from "antd";
-import { SearchOutlined, RightOutlined } from '@ant-design/icons';
+import {Dropdown, Input, Menu, Tree} from "antd";
+import {RightOutlined, SearchOutlined} from '@ant-design/icons';
 import ImgApiSet from "@imgs/api-set.png"
 import ImgApiFolder from '@imgs/api-folder.png'
 import ApiSetDialog from "../dialogs/api-set-dialog";
-import {deleteApiGroup, listApiTreeItems} from '@slice/apiSlice'
+import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, setToastOpen, withdrawDelApiTreeItem} from '@slice/apiSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import ImgAddApiGroup from '@imgs/api/api-group-add.png'
@@ -17,7 +17,6 @@ import ApiDialog from "../dialogs/api-dialog";
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
 import EffButton from "../../../components/eff-button/eff-button";
 import EffToast from "../../../components/eff-toast/eff-toast";
-import {deleteApiSet, withdrawDelApiTreeItem, setToastOpen, delApiTreeItem} from '@slice/apiSlice'
 
 
 /**
@@ -42,21 +41,62 @@ export default function ApiSideBar(){
     const [isToastWithdraw, setToastWithdraw] = useState(false);
     const [willDelApiItem, setWillDelApiItem] = useState<any>({});
     const [editingApiItem, setEditingApiItem] = useState(); //当前在编辑的API 集合
+    const [searchKey, setSearchKey] = useState()
+
+
+
+
+    //判断当前item 是否应该在搜索的范围内
+    const isIn = (item:any, key:string)=>{
+        if(!key){
+            return true;
+        }
+        if (item.children == null || item.children.length <= 0){
+            return item.name.indexOf(key)>-1
+        }else{
+            return item.children.some((x:any)=>isIn(x, key))
+        }
+    }
 
 
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
-        return data.map((item:any)=>{
-            return {...item, key:item.id, title:null, children: item.children == null || item.children.length <= 0
-                    ? []
-                    : mapTreeData(item.children)}
+        let treeData = []
+        treeData = data.filter((item:any)=>isIn(item, searchKey!)).map((item:any)=>{
+            return {...item,   key:item.id, title:null, children: item.children == null || item.children.length <= 0 ? [] : mapTreeData(item.children)}
         })
+        return treeData
     }
-    const treeItems = useSelector((state:RootState)=>{
-         return mapTreeData(state.api.apiTreeItems)
+
+    //获取数据所有的key 用于展开
+    const getKeys = (data:any)=>{
+        let keys:any = []
+        data.map((item:any)=>{
+            keys.push(item.id)
+            if(item.children && item.children.length > 0 ){
+                keys = [...keys, ...getKeys(item.children)]
+            }
+        })
+        return keys;
+    }
+
+    let treeItems = useSelector((state:RootState)=>{
+        return mapTreeData(state.api.apiTreeItems);
     })
 
+
+
     const response = {
+        filterApi:(e:any)=>{
+            let {value} = e.target
+            setSearchKey(value)
+            if(value){
+                let allKeys = getKeys(treeItems);
+                setExpandedKeys(allKeys)
+            }else{
+                setExpandedKeys([])
+            }
+        },
         closeAllApiSettMenu:()=>{
             setVisibleApiMenuSetId(-1);
         },
@@ -202,6 +242,7 @@ export default function ApiSideBar(){
                 </Menu>
             )
         }
+        // if(!data.isShow) return null
         if(data.type === 'SET'){
             return  <div className={'api-set'} onMouseEnter={response.showMenu}>
                 <RightOutlined className={`ml10 ${isSelected ? "selected" : ""}`}  />
@@ -257,12 +298,14 @@ export default function ApiSideBar(){
     }
 
 
+
+
     return (
         <div className="api-sidebar d-flex-column">
             <EffToast onWithDraw={withdrawDelApiItem} isWithDraw={isToastWithdraw} open={isToastOpen} message={toastMessage!} onClose={()=>dispatch(setToastOpen(false))}/>
-            <Input className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
+            <Input onChange={response.filterApi} className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
-            <Tree onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
+            <Tree   onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
             <ApiSetDialog editItem={editingApiItem} dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog}  mode={apiDlgMode} />
             <ApiDialog editItem={editingApiItem} visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
             <EffConfirmDlg visible={visibleConfirmDelItemDlg}>
