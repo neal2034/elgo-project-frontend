@@ -50,8 +50,7 @@ export default function ApiSideBar(){
     const isIn = (item:any, key:string)=>{
         if(!key){
             return true;
-        }
-        if (item.children == null || item.children.length <= 0){
+        }else if (item.children == null || item.children.length <= 0){
             return item.name.indexOf(key)>-1
         }else{
             return item.children.some((x:any)=>isIn(x, key))
@@ -61,11 +60,9 @@ export default function ApiSideBar(){
 
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
-        let treeData = []
-        treeData = data.filter((item:any)=>isIn(item, searchKey!)).map((item:any)=>{
+       return  data.filter((item:any)=>isIn(item, searchKey!)).map((item:any)=>{
             return {...item,   key:item.id, title:null, children: item.children == null || item.children.length <= 0 ? [] : mapTreeData(item.children)}
         })
-        return treeData
     }
 
     //获取数据所有的key 用于展开
@@ -160,7 +157,6 @@ export default function ApiSideBar(){
             },
             //响应集合弹出菜单
             menuSelected:({key,domEvent}:{key:any,domEvent:any})=>{
-                console.log("selected")
                 domEvent.stopPropagation()
                 setVisibleApiMenuSetId(-1)
                 switch (key){
@@ -242,7 +238,6 @@ export default function ApiSideBar(){
                 </Menu>
             )
         }
-        // if(!data.isShow) return null
         if(data.type === 'SET'){
             return  <div className={'api-set'} onMouseEnter={response.showMenu}>
                 <RightOutlined className={`ml10 ${isSelected ? "selected" : ""}`}  />

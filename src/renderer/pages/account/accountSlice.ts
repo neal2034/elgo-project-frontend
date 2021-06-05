@@ -29,7 +29,6 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
              //获取组织列表
              let orgs = await request.get({url:apiUrl.organization.orgRes})
              umbrella.setLocalStorage('oserial', orgs.data[0].serial);
-             console.log(orgs.data[0], "is organization")
              dispatch(setName( orgs.data[0].name))
              let proResult = await request.get({url:apiUrl.project.projectRes})
          }
