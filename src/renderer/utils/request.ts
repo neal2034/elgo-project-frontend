@@ -55,7 +55,6 @@ axios.interceptors.request.use(config => {
 
 
 axios.interceptors.response.use(response =>{
-    console.log("response is ,", response)
     if(response.data.status !== 0 ){
         //TODO add message
         console.log("error is ", response.data.message)

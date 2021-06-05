@@ -31,6 +31,7 @@ interface IPayloadEditApiSet extends IPayloadAddApiSet{
     id:number
 }
 
+
 interface IPayloadAddApiGroup {
     name:string,
     description?:string,
@@ -39,13 +40,21 @@ interface IPayloadAddApiGroup {
     parentId:number,
 }
 
+interface IPayloadEditApiGroup{
+    name:string,
+    description?:string,
+    authToken?:string,
+    authType:'NONE'|'INHERIT'|'BEARER',
+    id:number
+}
+
 interface IPayloadAddApiTreeItem {
     name:string,
     description?:string,
     parentId:number
 }
 
-interface IPayloadDelApiSet{
+interface IPayloadDelApiItem{
     id:number
 }
 
@@ -59,9 +68,13 @@ const apiSlice = createSlice({
         activeApis:activeApis,
         currentApiSerial:null,
         apiTreeItems:[],
+        toastOpen:false,
 
     },
     reducers:{
+        setToastOpen:(state, action)=>{
+            state.toastOpen = action.payload
+        },
         addActiveApi:(state, action:PayloadAction<API>)=>{
             state.activeApis.push(action.payload)
         },
@@ -103,20 +116,22 @@ const editApiSet = (data:IPayloadEditApiSet)=>{
     }
 }
 
-const deleteApiSet = (params:IPayloadDelApiSet)=>{
+const deleteApiSet = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url:apiUrl.api.setRes,params})
         if(result.isSuccess){
+            dispatch(setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
     }
 }
 
-const withdrawDelApiTreeItem = (params:IPayloadDelApiSet)=>{
+const withdrawDelApiTreeItem = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>) =>{
         let result = await request.get({url:apiUrl.api.withdraw, params})
         if(result.isSuccess){
+            dispatch(setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
@@ -128,6 +143,26 @@ const addApiGroup = (data:IPayloadAddApiGroup)=>{
         let result = await request.post({url:apiUrl.api.groupRes, data})
         if(result.isSuccess){
             dispatch((listApiTreeItems()))
+        }
+    }
+}
+
+const editApiGroup = (data:IPayloadEditApiGroup) =>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.put({url:apiUrl.api.groupRes, data})
+        if(result.isSuccess){
+            dispatch(listApiTreeItems())
+        }
+    }
+}
+
+
+const deleteApiGroup = (params:IPayloadDelApiItem)=>{
+    return async (dispatch:Dispatch<any>)=>{
+        let result = await request.delete({url: apiUrl.api.groupRes, params})
+        if(result.isSuccess){
+            dispatch(setToastOpen(true))
+            dispatch(listApiTreeItems())
         }
     }
 }
@@ -151,8 +186,8 @@ const listApiTreeItems = ()=>{
     }
 }
 
-export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems} = apiSlice.actions
+export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
 
-export {addApiSet,editApiSet, deleteApiSet,listApiTreeItems,addApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+export {addApiSet,editApiSet, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

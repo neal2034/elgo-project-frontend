@@ -3,7 +3,7 @@ import {Modal, Input, Tabs, Select, Button} from "antd";
 import './api-set-dialog.less'
 import EffButton from "../../../components/eff-button/eff-button";
 import globalColor from "@config/globalColor";
-import {addApiSet, addApiGroup, editApiSet} from '@slice/apiSlice'
+import {addApiSet, addApiGroup, editApiSet, editApiGroup, deleteApiGroup} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 
 const {TabPane} = Tabs
@@ -17,32 +17,34 @@ interface ApiSetDlgProps{
     closeDlg:()=>void,
     dlgType:'set' | 'group',     //标识当前操作api集合 还是 api 分组
     mode:'add'|'edit',
-    apiSet?:any,
+    editItem?:any,
     parentId?:number
 }
 
 export default function ApiSetDialog(props:ApiSetDlgProps){
-    const {visible, apiSet, closeDlg, dlgType, mode} = props
+    const {visible, editItem, closeDlg, dlgType, mode} = props
     let title = mode === 'add'? '新建':'编辑'
     title += dlgType === 'set'?"集合":'分组'
     const parentId = props.parentId!
     const dispatch = useDispatch();
     const [errorNameEmpty, setErrorNameEmpty] = useState(false)
-    const [name,setApiSetName] = useState(apiSet && apiSet.name)
-    const [authType, setAuthType] = useState( (apiSet && apiSet.authType) || 'NONE')
-    const [description, setDescription] = useState(apiSet && apiSet.description)
-    const [authToken, setAuthToken] = useState(apiSet && apiSet.authToken)
+    const [name,setApiSetName] = useState(editItem && editItem.name)
+    const [authType, setAuthType] = useState( (editItem && editItem.authType) || 'NONE')
+    const [description, setDescription] = useState(editItem && editItem.description)
+    const [authToken, setAuthToken] = useState(editItem && editItem.authToken)
+
+    let namePlaceHolder = dlgType==='set'? "集合名称":"分组名称"
 
 
     useEffect(()=>{
-        if(mode==='edit' && dlgType=== 'set'){
-            setApiSetName(apiSet.name)
-            setDescription(apiSet.description)
-            setAuthToken(apiSet.authToken)
-            setAuthType(apiSet.authType)
+        if(mode==='edit'){
+            setApiSetName(editItem.name)
+            setDescription(editItem.description)
+            setAuthToken(editItem.authToken)
+            setAuthType(editItem.authType)
         }
 
-    },[apiSet])
+    },[editItem])
 
     const response = {
         handleConfirm:()=>{
@@ -52,6 +54,8 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 response.goAddGroup()
             }else if (dlgType === 'set' && mode==='edit'){
                 response.goEditApiSet();
+            }else if(dlgType == 'group' && mode==='edit'){
+                response.goEditApiGroup()
             }
         },
 
@@ -65,9 +69,24 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 authType,
                 description,
                 authToken,
-                id:apiSet.id
+                id:editItem.id
             }
             dispatch(editApiSet(payload))
+            closeDlg()
+        },
+        goEditApiGroup:()=>{
+            if(!name){
+                setErrorNameEmpty(true)
+                return
+            }
+            let payload = {
+                name,
+                authType,
+                description,
+                authToken,
+                id:editItem.id
+            }
+            dispatch(editApiGroup(payload))
             closeDlg()
         },
 
@@ -118,7 +137,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
 
     return (
         <Modal destroyOnClose={true} title={titleArea} closable = {false} footer={footArea}   visible={visible}>
-             <Input onFocus={()=>setErrorNameEmpty(false)} value={name} placeholder={"集合名称"} onChange={updateApiSetName}/>
+             <Input onFocus={()=>setErrorNameEmpty(false)} value={name} placeholder={namePlaceHolder} onChange={updateApiSetName}/>
             {errorNameEmpty?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请输入集合名称</span>:null}
              <Tabs>
                 <TabPane tab={"简介"} key={"description"} style={{ height: tabHeight }}>

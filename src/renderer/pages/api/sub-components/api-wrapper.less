@@ -2,7 +2,6 @@
   flex-grow: 1;
 }
 
-
 .api-sidebar{
   border: 1px solid @color-board;
   width: 200px;
@@ -11,6 +10,10 @@
   flex-direction: column;
   position: relative;
 
+
+  .hide-menu{
+    display: none !important;
+  }
 
 
 
@@ -51,12 +54,34 @@
     }
   }
 
-  .api-folder{
+  .api-group{
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     color: #666666;
+
+    .api-group-menu{
+      position: absolute;
+      right: 0;
+      //background-color: @color-main-yellow;
+      width: 30px;
+      height: 100%;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .menu-circle{
+      width: 3px;
+      height: 3px;
+      border-radius: 3px;
+      margin-right: 3px;
+      background-color: @color-main-yellow;
+    }
+
   }
 
   .api-item{
