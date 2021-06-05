@@ -54,6 +54,12 @@ interface IPayloadAddApiTreeItem {
     parentId:number
 }
 
+interface IPayloadEditApiTreeItem {
+    name:string,
+    id:number,
+    description:string
+}
+
 interface IPayloadDelApiItem{
     id:number
 }
@@ -190,6 +196,15 @@ const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
     }
 }
 
+const editApiTreeItem = (data:IPayloadEditApiTreeItem)=>{
+     return async (dispatch: Dispatch<any>)=>{
+         let result = await request.put({url:apiUrl.api.apiTreeItemRes, data})
+         if(result.isSuccess){
+             dispatch(listApiTreeItems());
+         }
+     }
+}
+
 const listApiTreeItems = ()=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.get({url:apiUrl.api.treeItemRes})
@@ -202,6 +217,6 @@ const listApiTreeItems = ()=>{
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
 
-export {addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+export {editApiTreeItem, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

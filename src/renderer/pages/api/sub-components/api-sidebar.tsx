@@ -158,7 +158,6 @@ export default function ApiSideBar(){
                 setDlgType(dlgType)
                 setEditingApiItem(data);
                 setApiDlgMode('edit');
-                console.log(dlgType, data)
                 if(dlgType==='api'){
                     setApiDlgVisible(true)
                 }else{
@@ -265,7 +264,7 @@ export default function ApiSideBar(){
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
             <Tree onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
             <ApiSetDialog editItem={editingApiItem} dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog}  mode={apiDlgMode} />
-            <ApiDialog visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
+            <ApiDialog editItem={editingApiItem} visible={visibleApiDlg} parentId={apiParentId!} mode={apiDlgMode} closeDlg={()=>setApiDlgVisible(false)}/>
             <EffConfirmDlg visible={visibleConfirmDelItemDlg}>
                 <div className="d-flex-column">
                     <div className="d-flex-column">

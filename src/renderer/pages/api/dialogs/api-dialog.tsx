@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Modal,Input} from "antd";
 import EffButton from "../../../components/eff-button/eff-button";
-import {addApiTreeItem} from '@slice/apiSlice'
+import {addApiTreeItem, editApiTreeItem} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 import globalColor from "@config/globalColor";
 
@@ -11,11 +11,12 @@ interface IApiDlgProps{
     visible:boolean,
     closeDlg: ()=>void,
     mode:'add'|'edit',
-    parentId:number
+    parentId:number,
+    editItem?:any,
 }
 
 export default function ApiDialog(props: IApiDlgProps){
-    const {visible, closeDlg, mode, parentId} = props;
+    const {visible, closeDlg, mode, parentId, editItem={}} = props;
     const dispatch = useDispatch();
     const [title,setTitle] = useState("新增API");
     const [errorNameEmpty, setErrorNameEmpty] = useState(false);    //显示名称为空错误
@@ -26,9 +27,12 @@ export default function ApiDialog(props: IApiDlgProps){
         if(mode == 'add'){
             setTitle('新增API')
         }else if(mode == 'edit'){
+            setName(editItem.name)
+            setDescription(editItem.description)
             setTitle("修改API")
         }
-    },[])
+
+    },[mode])
 
     const response = {
         //确认添加API
@@ -37,12 +41,22 @@ export default function ApiDialog(props: IApiDlgProps){
                 setErrorNameEmpty(true)
                 return
             }
-            let payload = {
-                name,
-                description,
-                parentId,
+            if(mode=='add'){
+                let payload = {
+                    name,
+                    description,
+                    parentId,
+                }
+                dispatch(addApiTreeItem(payload))
+            }else{
+                let payload = {
+                    name,
+                    description,
+                    id:editItem.id
+                }
+                dispatch(editApiTreeItem(payload))
             }
-            dispatch(addApiTreeItem(payload))
+
             closeDlg();
 
         },
