@@ -12,11 +12,12 @@ import ImgAddApiGroup from '@imgs/api/api-group-add.png'
 import ImgAddApi from '@imgs/api/add-api.png'
 import ImgEdit from '@imgs/api/pen-edit.png'
 import ImgRemove from '@imgs/api/remove.png'
+import ImgOpenInNew from '@imgs/api/open-in-new.png'
 import ApiDialog from "../dialogs/api-dialog";
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
 import EffButton from "../../../components/eff-button/eff-button";
 import EffToast from "../../../components/eff-toast/eff-toast";
-import {deleteApiSet, withdrawDelApiTreeItem, setToastOpen} from '@slice/apiSlice'
+import {deleteApiSet, withdrawDelApiTreeItem, setToastOpen, delApiTreeItem} from '@slice/apiSlice'
 
 
 /**
@@ -46,7 +47,7 @@ export default function ApiSideBar(){
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
         return data.map((item:any)=>{
-            return {...item, key:item.id, children: item.children == null || item.children.length <= 0
+            return {...item, key:item.id, title:null, children: item.children == null || item.children.length <= 0
                     ? []
                     : mapTreeData(item.children)}
         })
@@ -91,6 +92,11 @@ export default function ApiSideBar(){
                     setToastMessage(`分组${willDelApiItem.name}已放入回收站`)
                     dispatch(deleteApiGroup({id:willDelApiItem.id}))
                     break;
+                case 'api':
+                    setToastMessage(`API ${willDelApiItem.name}已放入回收站`)
+                    dispatch(delApiTreeItem({treeItemId:willDelApiItem.id}))
+                    break;
+
             }
 
 
@@ -114,6 +120,7 @@ export default function ApiSideBar(){
             },
             //响应集合弹出菜单
             menuSelected:({key,domEvent}:{key:any,domEvent:any})=>{
+                console.log("selected")
                 domEvent.stopPropagation()
                 setVisibleApiMenuSetId(-1)
                 switch (key){
@@ -147,10 +154,17 @@ export default function ApiSideBar(){
                 setConfirmDelItemDlgVisible(true)
             },
             goEditItem: ()=>{
-                setDlgType(data.type.toLowerCase())
+                let dlgType = data.type.toLowerCase()
+                setDlgType(dlgType)
                 setEditingApiItem(data);
                 setApiDlgMode('edit');
-                setApiSetDlgVisible(true)
+                console.log(dlgType, data)
+                if(dlgType==='api'){
+                    setApiDlgVisible(true)
+                }else{
+                    setApiSetDlgVisible(true)
+                }
+
             }
         }
         const ui = {
@@ -172,6 +186,22 @@ export default function ApiSideBar(){
                         <span className={"ml5"}>删除</span>
                     </Menu.Item>
                 </Menu>),
+            apiItemMenu: (
+                <Menu onClick={response.menuSelected}>
+                    <Menu.Item key={"open-item"} >
+                        <img alt={"open-item-in-new"} src={ImgOpenInNew} width={14}/>
+                        <span className={"ml5"}>在新标签页打开</span>
+                    </Menu.Item>
+                    <Menu.Item key={"edit-item"}>
+                        <img alt={"edit-api-item"} src={ImgEdit} width={14}/>
+                        <span className={"ml5"}>编辑</span>
+                    </Menu.Item>
+                    <Menu.Item key={"del-set"}>
+                        <img alt={"del-api-set"} src={ImgRemove} width={14}/>
+                        <span className={"ml5"}>删除</span>
+                    </Menu.Item>
+                </Menu>
+            )
         }
         if(data.type === 'SET'){
             return  <div className={'api-set'} onMouseEnter={response.showMenu}>
@@ -202,9 +232,16 @@ export default function ApiSideBar(){
             let method = data.method.toUpperCase();
             method = method==='DELETE'? 'DEL':method
             let methodClassName = method.toLowerCase()
-            return <div className="api-item">
+            return <div className="api-item" onMouseEnter={response.showMenu}>
                 <span className={'mr10 ml10 api-method '+methodClassName}>{method}</span>
                 {data.name}
+                <Dropdown className={visibleApiMenuSetId===data.id? 'd-flex':'hide-menu'} overlay={ui.apiItemMenu} placement={"bottomCenter"}>
+                    <div className="api-group-menu">
+                        <div className="menu-circle"/>
+                        <div className="menu-circle"/>
+                        <div className="menu-circle"/>
+                    </div>
+                </Dropdown>
             </div>
         }else{
             return null;
@@ -232,8 +269,8 @@ export default function ApiSideBar(){
             <EffConfirmDlg visible={visibleConfirmDelItemDlg}>
                 <div className="d-flex-column">
                     <div className="d-flex-column">
-                        <span>确定将{willDelApiItem.type==='set'?'集合':'分组'}“{willDelApiItem!.name}”放入回收站</span>
-                        <span className="mt10">该{willDelApiItem.type==='set'?'集合':'分组'}下的所有分组合API也将一并放入回收站</span>
+                        <span>确定将{willDelApiItem.type==='API'?'api':willDelApiItem.type==='SET'?'集合':'分组'}“{willDelApiItem!.name}”放入回收站</span>
+                        {willDelApiItem.type!=='API'?<span className="mt10">该{willDelApiItem.type==='SET'?'集合':'分组'}下的所有分组合API也将一并放入回收站</span>:null}
                     </div>
                     <div className="mt10 d-flex justify-end">
                         <EffButton onClick={()=>setConfirmDelItemDlgVisible(false)} round={true} key={"cancel"} text={"取消"}/>

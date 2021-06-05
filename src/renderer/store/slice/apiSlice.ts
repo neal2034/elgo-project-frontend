@@ -58,6 +58,9 @@ interface IPayloadDelApiItem{
     id:number
 }
 
+interface IPayloadDelApiTreeItem{
+    treeItemId:number
+}
 
 let activeApis: Array<API> = []
 
@@ -176,6 +179,17 @@ const addApiTreeItem = (data:IPayloadAddApiTreeItem)=>{
     }
 }
 
+///删除API
+const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
+    return async (dispatch: Dispatch<any>)=>{
+        let result = await  request.delete({url:apiUrl.api.apiTreeItemRes, params})
+        if(result.isSuccess){
+            dispatch(setToastOpen(true))
+            dispatch(listApiTreeItems());
+        }
+    }
+}
+
 const listApiTreeItems = ()=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.get({url:apiUrl.api.treeItemRes})
@@ -188,6 +202,6 @@ const listApiTreeItems = ()=>{
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
 
-export {addApiSet,editApiSet, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+export {addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer
