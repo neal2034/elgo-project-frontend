@@ -12,12 +12,21 @@ export interface ApiParams{
     key:number,
 }
 
+export interface ApiHeaderItem{
+    headerKey?:string,
+    headerValue?:string,
+    description?:string,
+    selected?:boolean,
+    key:number,
+}
+
 export interface API{
     name:string,
     serial:number,
     isExample?:boolean,     //是否为用例
     method:string,          //GET/POST/DELETE/PUT
     params:ApiParams[],
+    headers:ApiHeaderItem[],
     dirty:boolean,
     url?:string,
     authType?:string,
@@ -82,7 +91,7 @@ const apiSlice = createSlice({
     name: 'api',
     initialState:{
         activeApis:activeApis,
-        currentApiSerial:null,
+        currentApiSerial:-1,
         apiTreeItems:[],
         toastOpen:false,
 
@@ -91,8 +100,13 @@ const apiSlice = createSlice({
         setToastOpen:(state, action)=>{
             state.toastOpen = action.payload
         },
-        addActiveApi:(state, action:PayloadAction<API>)=>{
-            state.activeApis.push(action.payload)
+        addActiveApi:(state)=>{
+            let serial = getUsableSerial(activeApis)
+            let newApi = {name:'未命名接口', serial:serial, method:'GET',  isExample:false, dirty:false,
+                headers: [{key:10}],
+                params:[{key:0}]}
+            state.activeApis.push(newApi)
+            state.currentApiSerial=serial
         },
         //设置当前激活的API
         setCurrentApiSerial:(state, action)=>{
@@ -111,6 +125,17 @@ const apiSlice = createSlice({
     }
 })
 
+
+//获取可用的api 序列号
+const getUsableSerial = (activeApis:API[])=>{
+    let serial = new Date().getTime();
+    let isSerialExist =activeApis.filter(api=> api.serial === serial).length !== 0;
+    while(isSerialExist){
+        serial = new Date().getTime();
+        isSerialExist = activeApis.filter(api=> api.serial === serial).length !== 0;
+    }
+    return serial;
+}
 
 
 
@@ -221,6 +246,8 @@ const listApiTreeItems = ()=>{
         return result.isSuccess
     }
 }
+
+
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
 

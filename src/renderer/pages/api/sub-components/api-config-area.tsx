@@ -3,9 +3,9 @@ import {Tabs} from "antd";
 import ConfigParams from "./config-params";
 import {API} from "@slice/apiSlice";
 import ConfigAuth from "./config-auth";
-import EffJsonEditor from "./eff-json-editor";
 import ConfigBody from "./config-body";
 import ConfigTest from "./config-test";
+import ConfigHeader from "./config-header";
 
 const {TabPane} = Tabs
 interface ApiProps{
@@ -25,14 +25,16 @@ export default function ApiConfigArea(props:ApiProps){
                 <ConfigAuth api={props.api}/>
             </TabPane>
 
-            <TabPane tab="Headers" key="3">here is Headers</TabPane>
+            <TabPane tab="Headers" key="3">
+                <ConfigHeader api={props.api} />
+            </TabPane>
 
             <TabPane className="tab-content"  tab="Body" key="4">
                 <ConfigBody api={props.api}/>
             </TabPane>
 
             <TabPane tab="Tests" key="5">
-                <ConfigTest/>
+                <ConfigTest api={props.api}/>
             </TabPane>
         </Tabs>
     )
