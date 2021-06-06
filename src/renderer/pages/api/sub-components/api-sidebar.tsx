@@ -48,9 +48,11 @@ export default function ApiSideBar(){
 
     //判断当前item 是否应该在搜索的范围内
     const isIn = (item:any, key:string)=>{
-        if(!key){
+        let isLeafNode = item.children == null || item.children.length <= 0
+        let noSearchKey = !key
+        if(noSearchKey){
             return true;
-        }else if (item.children == null || item.children.length <= 0){
+        }else if (isLeafNode){
             return item.name.indexOf(key)>-1
         }else{
             return item.children.some((x:any)=>isIn(x, key))
@@ -61,7 +63,7 @@ export default function ApiSideBar(){
     //对树形数据进行映射，主要用来添加key 字段
     const mapTreeData = (data:any) =>{
        return  data.filter((item:any)=>isIn(item, searchKey!)).map((item:any)=>{
-            return {...item,   key:item.id, title:null, children: item.children == null || item.children.length <= 0 ? [] : mapTreeData(item.children)}
+            return {...item,   key:item.id, title:item.name, children: item.children == null || item.children.length <= 0 ? [] : mapTreeData(item.children)}
         })
     }
 

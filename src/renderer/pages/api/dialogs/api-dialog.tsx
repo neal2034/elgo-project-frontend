@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Modal,Input} from "antd";
+import {Modal, Input, Tree} from "antd";
 import EffButton from "../../../components/eff-button/eff-button";
 import {addApiTreeItem, editApiTreeItem} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
+import './api-dialog.less'
 import globalColor from "@config/globalColor";
 
 const {TextArea} = Input
@@ -10,18 +11,21 @@ const {TextArea} = Input
 interface IApiDlgProps{
     visible:boolean,
     closeDlg: ()=>void,
-    mode:'add'|'edit',
-    parentId:number,
+    mode:'add'|'edit'|'add-api',
+    parentId?:number,
     editItem?:any,
+    collections?:any,
 }
 
 export default function ApiDialog(props: IApiDlgProps){
-    const {visible, closeDlg, mode, parentId, editItem={}} = props;
+    const {visible, closeDlg, mode, parentId, editItem={}, collections} = props;
     const dispatch = useDispatch();
     const [title,setTitle] = useState("新增API");
     const [errorNameEmpty, setErrorNameEmpty] = useState(false);    //显示名称为空错误
+    const [errorChooseCollection, setErrorChooseCollection] = useState(false);  //显示未选中保存API 集合错误
     const [name, setName] = useState<string>();
     const [description, setDescription] = useState<string>();
+    const [selectedKeys , setSelectedKeys] = useState<any[]>();
 
     useEffect(()=>{
         if(mode == 'add'){
@@ -37,29 +41,46 @@ export default function ApiDialog(props: IApiDlgProps){
     const response = {
         //确认添加API
         handleConfirm:()=>{
+
+            let hasError = false;
             if(!name){
                 setErrorNameEmpty(true)
-                return
+                hasError = true
             }
+            if(mode==='add-api' && (!selectedKeys || selectedKeys!.length==0)){
+                setErrorChooseCollection(true);
+                hasError = true;
+            }
+            if(hasError) return;
             if(mode=='add'){
+
                 let payload = {
-                    name,
+                    name:name!,
                     description,
-                    parentId,
+                    parentId:parentId!,
                 }
                 dispatch(addApiTreeItem(payload))
-            }else{
+            }else if(mode==='edit'){
                 let payload = {
-                    name,
+                    name:name!,
                     description,
                     id:editItem.id
                 }
                 dispatch(editApiTreeItem(payload))
+            }else if(mode==='add-api'){
+
+
             }
 
             closeDlg();
 
         },
+
+        //选中需要保存的树节点
+        handleSelectApiCollection: (selectedKeys:any)=>{
+            setErrorChooseCollection(false)
+            setSelectedKeys(selectedKeys)
+        }
     }
 
     const ui = {
@@ -72,8 +93,15 @@ export default function ApiDialog(props: IApiDlgProps){
     return (
         <Modal destroyOnClose={true} title={title} closable={false} footer={ui.footArea} visible={visible}>
             <Input onFocus={()=>setErrorNameEmpty(false)} value={name} placeholder={"API  名称"} onChange={e=>setName(e.target.value)}/>
-            {errorNameEmpty?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请输入集合名称</span>:null}
+            {errorNameEmpty?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请输入API名称</span>:null}
             <TextArea onChange={e=>setDescription(e.target.value)} value={description} className="mt10" autoSize={{minRows: 15, maxRows: 20}}/>
+            { collections? <React.Fragment>
+                    <div className="mt10">选择API集合或分组</div>
+                    {errorChooseCollection?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请选择对应集合或分组</span>:null}
+                    <div className={"api-collections mt10"}>
+                        <Tree onSelect={response.handleSelectApiCollection} treeData={collections}/>
+                    </div>
+                </React.Fragment>:null}
         </Modal>
     )
 }
