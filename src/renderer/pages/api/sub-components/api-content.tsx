@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ApiTabs from "./api-tabs";
 import './api-wrapper.less'
 import ApiName from "./api-name";
@@ -12,20 +12,27 @@ import ImgApiCloud from "@imgs/api-cloud.png"
 
 export default function ApiContent(){
 
+    const [contentWidth, setContentWidth] = useState<number>(0); //内容区宽度
     const currentApi = useSelector( (state:RootState)=>state.api.activeApis.filter(item=>item.serial===state.api.currentApiSerial)[0])
     const hasApi = !!currentApi
+    const contentRef = useRef<HTMLDivElement>(null)
+
+    useEffect(()=>{
+        let theWidth = contentRef.current!.offsetWidth-200;
+        setContentWidth(theWidth);
+    },[])
 
 
     return (
-        <div className="api-content ml10 d-flex-column">
-            <ApiTabs/>
+        <div ref={contentRef} className="api-content ml10 d-flex-column">
+            <ApiTabs maxContentWidth={contentWidth}/>
           {hasApi? <div className="content-wrapper">
                 <div className="d-flex justify-between name-example-area">
                     <ApiName api={currentApi}/>
                     <ApiExample/>
                 </div>
                 <div className="ml10 mr10">
-                    <ApiUrlArea/>
+                    <ApiUrlArea api={currentApi}/>
                 </div>
                 <div className="config-area">
                     <ApiConfigArea api={currentApi}/>

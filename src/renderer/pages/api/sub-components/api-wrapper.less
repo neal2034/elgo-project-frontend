@@ -203,14 +203,33 @@
 
 .tabs{
   height: 35px;
+  position: relative;
+
+  .tab-wrapper{
+    display: flex;
+    overflow: scroll;
+
+  }
 
   .btn-add{
     width: 35px;
     height: 35px;
     border: 1px solid @color-board;
+    min-width: 35px;
+    min-height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: none;
+    font-size: 2rem;
+    color: @color-font-normal
   }
 }
 
+
+.active-tab{
+  border-top: 3px solid @color-main-yellow !important;
+}
 
 .api-tab{
   padding: 5px;
@@ -226,11 +245,31 @@
   font-size: 12px;
   cursor: pointer;
 
+  .dirty{
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: @color-main-yellow;
+  }
+
+  .btn-close{
+    display: none;
+  }
+
+  &:hover{
+
+    .dirty{
+      display: none;
+    }
+
+    .btn-close{
+      display: inline;
+    }
+
+
+  }
 
   .example{
-    //display: inline-block;
-    //text-align: center;
-    //vertical-align: center;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,7 @@
 /**
  * 组件： 用于描述内容区Tab 区域
  */
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./api-wrapper.less"
 import {PlusOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
@@ -10,7 +10,13 @@ import {useDispatch} from "react-redux";
 import {addActiveApi, API, setCurrentApiSerial} from '@slice/apiSlice'
 import ApiTab from "./api-tab";
 
-export default function ApiTabs(){
+
+interface IApiTabsProps{
+    maxContentWidth:number
+}
+
+export default function ApiTabs(props:IApiTabsProps){
+    const {maxContentWidth} = props;
     const dispatch = useDispatch()
     let activeApis = useSelector((state:RootState) => state.api.activeApis)
 
@@ -32,12 +38,15 @@ export default function ApiTabs(){
 
     const handleAddActiveApi = ()=>{
         let serial = getUsableSerial(activeApis)
-        dispatch(addActiveApi({name:'未命名接口', serial:serial, method:'GET',  isExample:false, params:[{key:0}]}))
+        dispatch(addActiveApi({name:'未命名接口', serial:serial, method:'GET',  isExample:false, dirty:false, params:[{key:0}]}))
         dispatch(setCurrentApiSerial(serial))
     }
     return (
-        <div className="tabs d-flex">
-            {activeTabs}
+        <div   className="tabs d-flex" style={{maxWidth:maxContentWidth+'px'}}>
+            <div className="tab-wrapper">
+                {activeTabs}
+            </div>
+
             <div onClick={handleAddActiveApi} className="btn-add d-flex justify-center align-center cursor-pointer">
                 <PlusOutlined />
             </div>

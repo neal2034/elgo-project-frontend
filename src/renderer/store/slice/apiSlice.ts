@@ -18,6 +18,13 @@ export interface API{
     isExample?:boolean,     //是否为用例
     method:string,          //GET/POST/DELETE/PUT
     params:ApiParams[],
+    dirty:boolean,
+    url?:string,
+    authType?:string,
+    authToken?:string,
+    bodyType?:string,
+    bodyJson?:string,
+    testsCode?:string,
 }
 
 interface IPayloadAddApiSet {
@@ -94,7 +101,7 @@ const apiSlice = createSlice({
         updateCurrentApi:(state, action) => {
             state.activeApis.forEach(item=>{
                 if(item.serial === state.currentApiSerial){
-                    Object.assign(item, action.payload)
+                    Object.assign(item, action.payload, {dirty:true})
                 }
             })
         },

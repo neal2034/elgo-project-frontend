@@ -1,18 +1,29 @@
 import React, {useState} from "react";
 import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
+import {API,updateCurrentApi} from "@slice/apiSlice";
+
 
 const {Option}  = Select
 
 
-export default function ApiUrlArea(){
+interface IApiProps{
+    api: API
+}
 
+export default function ApiUrlArea(props:IApiProps){
+    const dispatch = useDispatch();
+    const {api} = props
     const [apiDlgVisible, setApiDlgVisible] = useState(false)
     const [apiCollections, setApiCollections] = useState(); //当前可以用于保存API的collection
-
     const apiItems = useSelector((state:RootState)=>state.api.apiTreeItems)
+    const response = {
+        handleMethodChange:(value:any)=>{
+            dispatch(updateCurrentApi({method:value}))
+        }
+    }
 
     /**
      * 过滤API tree item, 排除API项，仅保留API 集合 和分组
@@ -47,20 +58,26 @@ export default function ApiUrlArea(){
             setApiDlgVisible(true)
             let collections = mapTreeData(getApiCollections(apiItems));
             setApiCollections(collections)
-
+        },
+        handleUrlChange:(e:any)=>{
+            let value = e.target.value
+            dispatch(updateCurrentApi({url:value}))
+        },
+        handleCallApi:()=>{
+            console.log("here is the api ", api)
         }
     }
 
     return (
         <div className="d-flex">
-            <Select style={{ width: 120 }} value={"get"}>
+            <Select style={{ width: 120 }} value={api.method} onChange={response.handleMethodChange}>
                 <Option value="get">Get</Option>
                 <Option value="post">Post</Option>
                 <Option value="put">Put</Option>
                 <Option value="delete">Delete</Option>
             </Select>
-            <Input/>
-            <Button>发送</Button>
+            <Input value={api.url} onChange={handler.handleUrlChange}/>
+            <Button onClick={handler.handleCallApi}>发送</Button>
             <Button onClick={handler.handleSaveClick}>保存</Button>
             <ApiDialog collections={apiCollections} visible={apiDlgVisible} closeDlg={()=>setApiDlgVisible(false)} mode={'add-api'} parentId={-1}/>
         </div>
