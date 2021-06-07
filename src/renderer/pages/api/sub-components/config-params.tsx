@@ -48,7 +48,11 @@ export default function ConfigParams(props:ApiProps){
             tmpParams.push({key:lastKey+1})
         }
 
-        dispatch(updateCurrentApi({params:tmpParams}))
+        let url = getQueryUrl(tmpParams)
+
+        dispatch(updateCurrentApi({params:tmpParams, url}))
+
+
     }
 
 
@@ -56,7 +60,29 @@ export default function ConfigParams(props:ApiProps){
         const index = api.params.findIndex((item:ApiParams)=>item.key === record.key)
         const tmpParams = Object.assign([], api.params)
         tmpParams.splice(index, 1)
-        dispatch(updateCurrentApi({params:tmpParams}))
+        let url = getQueryUrl(tmpParams)
+        dispatch(updateCurrentApi({params:tmpParams, url}))
+    }
+
+    //解析参数，获取实际调用URL
+    const  getQueryUrl = (params:any)=>{
+        let query = "";
+         params.forEach((param:any)=>{
+            if(param.selected){
+                query = query === ""? query: query+"&";
+                let key = param.paramKey? param.paramKey : "" ;
+                let value = param.paramValue? param.paramValue : "";
+                query += key + "="  + value;
+            }
+        });
+        let url = api.url? api.url:"";
+        let index = url.indexOf("?");
+        let queryUrl = index > -1 ? url.substring(0, index) : url;
+        if(query){
+            queryUrl +=   "?" + query;
+        }
+        return queryUrl
+
     }
 
     return (

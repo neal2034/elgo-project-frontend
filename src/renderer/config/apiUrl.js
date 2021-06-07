@@ -2,7 +2,7 @@
 
 const  apiUrl = {
     user:{
-        login: '/effwork/login',                //登录
+        login: '/login',                //登录
         lookup: "/user/public/lookup",  //查找用户
         signon: "/user/public/signon",  //用户登录
         retrievePwdEmail: "/user/public/retrieve-password-email",    //发送找回密码邮件

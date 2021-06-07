@@ -64,6 +64,22 @@ export default function ApiUrlArea(props:IApiProps){
             dispatch(updateCurrentApi({url:value}))
         },
         handleCallApi:()=>{
+            // let url =  api.url
+            // let method = api.method
+            // let sbody = {
+            //     "username":"admin@effwork.net",
+            //     "password":"pass1234"
+            // }
+            // let body = JSON.stringify(sbody)
+            // let prams = {method, body}
+            // // @ts-ignore
+            // fetch(url!, prams).then(result=>{
+            //     result.json().then(data=>{
+            //         let responseBody =  JSON.stringify(data);  //该变量可被测试使用
+            //         console.log("hte response body is ", responseBody)
+            //     })
+            //     console.log("here is result", result)
+            // })
             console.log("here is the api ", api)
         }
     }

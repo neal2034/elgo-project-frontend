@@ -7,6 +7,7 @@ import {AnyAction} from 'redux'
 import {RootState} from "../../store/store";
 import umbrella from 'umbrella-storage';
 import {setName} from '../organizationHome/orgSlice'
+import globalConfig from '../../config/global.config'
 
 
 interface PayloadLogin {
@@ -23,7 +24,9 @@ const accountSlice = createSlice({
 
 export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown, AnyAction>=> {
      return  async  (dispatch , getState)=>{
-         let result = await request.post({url: apiUrl.user.login, data, config:{baseURL:''}})
+         let baseURL = globalConfig.baseUrl.replace(globalConfig.apiPrefix, '')
+         let result = await request.post({url: apiUrl.user.login, data, config:{baseURL}})
+         console.log(baseURL, " is the baeUrl")
          if(result.isSuccess){
              umbrella.setLocalStorage('token', result.data.token)
              //获取组织列表
