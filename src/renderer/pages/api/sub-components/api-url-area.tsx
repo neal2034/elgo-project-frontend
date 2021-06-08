@@ -3,7 +3,7 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiEnv, ApiEnvItem, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
 
 
 const {Option}  = Select
@@ -19,6 +19,8 @@ export default function ApiUrlArea(props:IApiProps){
     const [apiDlgVisible, setApiDlgVisible] = useState(false)
     const [apiCollections, setApiCollections] = useState(); //当前可以用于保存API的collection
     const apiItems = useSelector((state:RootState)=>state.api.apiTreeItems)
+    const currentEnv:ApiEnv = useSelector((state:RootState)=>state.api.envs.filter((item:ApiEnv)=>item.id === state.api.currentEnvId)[0])
+
     const response = {
         handleMethodChange:(value:any)=>{
             dispatch(updateCurrentApi({method:value}))
@@ -133,6 +135,70 @@ export default function ApiUrlArea(props:IApiProps){
 
     }
 
+    /**
+     * 获取指定URL 的location 信息
+     * @param url
+     * @returns {ActiveX.IXMLDOMElement | HTMLAnchorElement | any | HTMLElement}
+     */
+    const getLocation = (url:string) =>{
+        let a = document.createElement("a");
+        a.href = url;
+        return a;
+    }
+
+    //检查candidate 是否为指定itemId 的父级对象
+    const isParent = (candidate:any, itemId:any)=>{
+        let result = false;
+
+        if(candidate.children && candidate.children.length>0){
+            let item = candidate.children.filter((treeItem:any) => treeItem.id === itemId);
+            if(item.length>0) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    //在指定的树形items中获得指定itemId 的父级元素
+   // @ts-ignore
+    const findParent = (treeItems:any, itemId:any) =>{
+        if(!itemId) return;
+
+        let parent = null;
+
+        for(let i=0; i<treeItems.length; i++){
+            let item = treeItems[i];
+            let itemIsParent = isParent(item, itemId);
+            let hasChildren = item.children && item.children.length>0;
+            if(itemIsParent){
+                parent = item;
+                break;
+            }else if(hasChildren){
+                parent =  findParent(item.children, itemId);
+                if(parent !== null) break;
+            }
+        }
+        return parent;
+
+    }
+
+   const getApiAuthInfo = ()=>{
+        let authType = api.authType;
+        let token = api.authToken;
+        //若鉴权类型为继承，则向上遍历至需继承的authType
+        if(authType==='INHERIT'){
+            let parent = findParent(apiItems, api.id);
+            while (parent && parent.authType === 'INHERIT'){
+                parent =  findParent(apiItems, parent.id);
+            }
+            authType = parent? parent.authType:'NONE';
+            token = parent? parent.authToken:null;
+        }
+        return [authType, token];
+    }
+
+
+
     const handler = {
         handleSaveClick:()=>{
             setApiDlgVisible(true)
@@ -146,6 +212,115 @@ export default function ApiUrlArea(props:IApiProps){
             dispatch(updateCurrentApi({url, params, pathVars:mergedPathVars}))
         },
         handleCallApi:()=>{
+
+            let url = api.url;
+            if(!url){
+                 alert('url 不能为空')
+                return;
+            }
+
+            let envItems = currentEnv && currentEnv.envItems ? currentEnv.envItems:[];
+
+            //替换URL 当中的变量
+            envItems!.forEach(envItem=>{
+                if(envItem.name){
+                    let target = `{{${envItem.name}}}`;
+                    let value = envItem.value? envItem.value:'';
+                    url = url?.replace(new RegExp(target,"g") ,value)
+                }
+
+            });
+
+            //替换URL的path vars
+            if(api.pathVars){
+                let pathVarValueSettled = true;
+                api.pathVars.forEach(item=>{
+                    if(!item.varValue){
+                        pathVarValueSettled = false;
+                    }else{
+                        let target = `:${item.varKey}`;
+                        let value = item.varValue;
+                        url = url!.replace(new RegExp(target, "g"), value!);
+                    }
+
+
+                })
+                if(!pathVarValueSettled){
+                    alert("有未设置的Path Variable")
+                    return
+                }
+
+            }
+
+            //不能与当前应用同源
+            let host = getLocation(url).host;
+            let oriHost  = location.host;
+            if(host === oriHost||!host){
+               alert("请填写正确的请求地址")
+                return;
+            }
+
+            //headers
+            let headers:any = null;
+            if(api.headers){
+                headers = {};
+                api.headers.forEach(item=>{
+                    if(item.selected && item.headerKey){
+                        headers[item.headerKey]=item.headerValue;
+                    }
+
+                })
+            }
+
+            let [authType, token] =  getApiAuthInfo();
+            if(authType==='BEARER' && !!token){
+                if(headers === null) headers = {};
+                envItems.forEach(envItem=>{
+                    if(envItem.name){
+                        let target = `{{${envItem.name}}}`;
+                        let value = envItem.value? envItem.value:'';
+                        token = token!.replace(new RegExp(target,"g") ,value)
+
+                    }
+                });
+                headers.Authorization =  "Bearer " + token;
+            }
+
+            //body
+            let body = null;
+            if(api.bodyType === 'JSON' ){
+                body = JSON.stringify(api.bodyJson)
+            }
+
+            //call fetch
+
+            let method = api.method;
+            let init:{method:string, headers?:any, body?:string} = {method};
+            if(headers) init.headers = headers;
+            if(body) init.body = body;
+            fetch(url, init).then(result=>{
+                result.json().then(data=>{
+                    //如果有test code, run it
+                    let responseBody =  JSON.stringify(data);  //该变量可被测试使用
+                    let testsCode = api.testsCode
+                    if(testsCode){
+                        try {
+                            eval(testsCode);    
+                        }catch (e) {
+                            //TODO 将结果放入测试
+                            console.log(e)
+                        }
+                    }
+                    dispatch(updateCurrentApi({responseBody}))
+
+                    return data;
+                })
+
+            }).catch(function(error) {
+                dispatch(updateCurrentApi({responseBody:"调用错误: "+error.message}))
+            })
+
+
             // let url =  api.url
             // let method = api.method
             // let sbody = {

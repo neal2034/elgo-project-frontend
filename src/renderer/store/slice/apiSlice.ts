@@ -4,6 +4,20 @@ import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
 import api from "../../pages/api/api";
 
+
+export interface ApiEnvItem{
+    name:string,
+    value:string,
+    used:boolean
+}
+
+export interface ApiEnv{
+    id:number,
+    name:string,
+    envItems?:ApiEnvItem[]
+}
+
+
 export interface ApiParams{
     paramKey?:string,
     paramValue?:string,
@@ -28,6 +42,7 @@ export interface ApiHeaderItem{
 }
 
 export interface API{
+    id?:number,
     name:string,
     serial:number,
     isExample?:boolean,     //是否为用例
@@ -42,6 +57,7 @@ export interface API{
     bodyType?:string,
     bodyJson?:string,
     testsCode?:string,
+    responseBody?:string,
 }
 
 interface IPayloadAddApiSet {
@@ -102,6 +118,8 @@ const apiSlice = createSlice({
         currentApiSerial:-1,
         apiTreeItems:[],
         toastOpen:false,
+        envs:[],        //环境变量
+        currentEnvId:-1,    //当前环境变量id
 
     },
     reducers:{
