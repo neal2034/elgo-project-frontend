@@ -3,7 +3,7 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API, ApiParams, updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
 
 
 const {Option}  = Select
@@ -97,6 +97,42 @@ export default function ApiUrlArea(props:IApiProps){
         return params
     }
 
+
+    //获取指定URL的path variables
+    const getPathVariables = (url:string)=>{
+        let vars:string[] = [];
+        let regex = new RegExp("/:[a-z0-9A-Z]+","g");
+        let result = url.match(regex);
+        if(result){
+            result.forEach(item=>{
+                let varName = item.substr(2);
+                if(vars.indexOf(varName) === -1){
+                    vars.push(varName);
+                }
+            })
+        }
+        return vars;
+    }
+
+    /**
+     * 将指定的path variables 进行合并
+     * @param pathVars  当前api的path variables
+     * @param url       当前URL
+     */
+    const getMergedPathVariables = (pathVars:ApiPathVar[], url:string) =>{
+        let vars = getPathVariables(url);
+        let resultPathVars:any = [];
+        let maxKey = -1
+        pathVars.map(item=>maxKey=maxKey>item.key?maxKey:item.key)
+        vars.forEach(item=>{
+            let foundVars = pathVars.filter((oneVar:any)=>oneVar.varKey === item)[0];
+            resultPathVars.push(foundVars? foundVars: {varKey:item, key:++maxKey});
+        })
+
+        return resultPathVars;
+
+    }
+
     const handler = {
         handleSaveClick:()=>{
             setApiDlgVisible(true)
@@ -104,9 +140,10 @@ export default function ApiUrlArea(props:IApiProps){
             setApiCollections(collections)
         },
         handleUrlChange:(e:any)=>{
-            let value = e.target.value
-            let params = parseParamsFromUrl(value)
-            dispatch(updateCurrentApi({url:value, params}))
+            let url = e.target.value
+            let params = parseParamsFromUrl(url)
+            let mergedPathVars = getMergedPathVariables(api.pathVars? api.pathVars:[], url);
+            dispatch(updateCurrentApi({url, params, pathVars:mergedPathVars}))
         },
         handleCallApi:()=>{
             // let url =  api.url

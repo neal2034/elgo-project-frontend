@@ -12,6 +12,13 @@ export interface ApiParams{
     key:number,
 }
 
+export interface ApiPathVar{
+    varKey?:string,
+    varValue?:string,
+    description?:string,
+    key:number,
+}
+
 export interface ApiHeaderItem{
     headerKey?:string,
     headerValue?:string,
@@ -26,6 +33,7 @@ export interface API{
     isExample?:boolean,     //是否为用例
     method:string,          //GET/POST/DELETE/PUT
     params:ApiParams[],
+    pathVars?:ApiPathVar[],
     headers:ApiHeaderItem[],
     dirty:boolean,
     url?:string,

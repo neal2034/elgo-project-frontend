@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import EditableTable from "./editable-table";
-import {API, ApiParams, updateCurrentApi} from "@slice//apiSlice";
+import {API, ApiParams, ApiPathVar, updateCurrentApi} from "@slice//apiSlice";
 import {useDispatch} from "react-redux";
 
 interface ApiProps{
@@ -40,12 +40,12 @@ export default function ConfigParams(props:ApiProps){
         },
         {
             title:'KEY',
-            dataIndex: 'paramKey',
+            dataIndex: 'varKey',
             editable:false,
         },
         {
             title:'VALUE',
-            dataIndex: 'paramValue',
+            dataIndex: 'varValue',
             editable:true,
         },
         {
@@ -74,6 +74,14 @@ export default function ConfigParams(props:ApiProps){
         dispatch(updateCurrentApi({params:tmpParams, url}))
 
 
+    }
+
+    const pathVarValueChanged = (record:any, dataIndex:string, value:string)=>{
+        const tmpPathVars = Object.assign([], api.pathVars)
+        const index = tmpPathVars.findIndex((item:ApiPathVar)=>item.key === record.key)
+        const item = api.pathVars![index]
+        tmpPathVars.splice(index, 1, {...item, ...{[dataIndex]:value}})
+        dispatch(updateCurrentApi({pathVars:tmpPathVars}))
     }
 
 
@@ -110,8 +118,9 @@ export default function ConfigParams(props:ApiProps){
         <div>
             <div className="params-title">Query Params</div>
             <EditableTable valueChange={valueChanged} valueDel={paramsDel}  columns={columns} dataSource={api.params}/>
-            <div>PathVariable</div>
-            <EditableTable   valueChange={valueChanged} valueDel={paramsDel}  columns={pathVarColumns} dataSource={api.params}/>
+            {api.pathVars && api.pathVars.length>0?<div>
+                <div>PathVariable</div> <EditableTable   valueChange={pathVarValueChanged}    columns={pathVarColumns} dataSource={api.pathVars}/>
+            </div>:null}
         </div>
     )
 }
