@@ -33,6 +33,27 @@ export default function ConfigParams(props:ApiProps){
             delAction:true,         //该列显示删除操作
         },
     ]
+    const pathVarColumns = [
+        {
+            title:'',
+            dataIndex: 'selected',
+        },
+        {
+            title:'KEY',
+            dataIndex: 'paramKey',
+            editable:false,
+        },
+        {
+            title:'VALUE',
+            dataIndex: 'paramValue',
+            editable:true,
+        },
+        {
+            title:'描述',
+            dataIndex: 'description',
+            editable:true,
+        },
+    ]
     const valueChanged = (record:any, dataIndex:string, value:string|boolean)=>{
         const index = api.params.findIndex((item:ApiParams)=>item.key === record.key)
         const tmpParams = Object.assign([], api.params)
@@ -87,7 +108,10 @@ export default function ConfigParams(props:ApiProps){
 
     return (
         <div>
+            <div className="params-title">Query Params</div>
             <EditableTable valueChange={valueChanged} valueDel={paramsDel}  columns={columns} dataSource={api.params}/>
+            <div>PathVariable</div>
+            <EditableTable   valueChange={valueChanged} valueDel={paramsDel}  columns={pathVarColumns} dataSource={api.params}/>
         </div>
     )
 }

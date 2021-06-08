@@ -1,32 +1,9 @@
-import React, {useContext, useState, useRef, useEffect} from "react";
-import {Table, Form, Input, Checkbox} from "antd";
-import {FormInstance} from "antd";
+import React, {useState, useRef, useEffect} from "react";
+import {Table, Input, Checkbox} from "antd";
+
 import './editable-table.less'
 import ImgClose from "@imgs/close.png"
 
-//
-// const EditableContext = React.createContext<FormInstance<any>|null>(null)
-//
-// interface EditableRowProps{
-//     index:number
-// }
-//
-// const EditableRow = (props:any)=>{
-//     const [form] = Form.useForm();
-//     return(
-//         <Form form={form} component={false}>
-//             <EditableContext.Provider value={form}>
-//                 <tr {...props}/>
-//             </EditableContext.Provider>
-//         </Form>
-//     )
-//
-// }
-//
-// interface EditableCellProps{
-//     editable:boolean,
-//     children:React.ReactNode,
-// }
 
 
 const EditableCell = (props:any)=>{
@@ -84,6 +61,7 @@ const EditableCell = (props:any)=>{
 export default function EditableTable(props:any){
 
     const {columns, dataSource, valueChange, valueDel} = props
+
     const [hoverRowKey, setHoverRowKey] = useState(-1)
     const tableCols = columns.map((col:any) => {
         if (!col.editable && !col.selectable) {
