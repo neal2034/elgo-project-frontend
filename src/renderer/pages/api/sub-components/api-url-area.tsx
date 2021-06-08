@@ -3,7 +3,7 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API,updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiParams, updateCurrentApi} from "@slice/apiSlice";
 
 
 const {Option}  = Select
@@ -52,6 +52,21 @@ export default function ApiUrlArea(props:IApiProps){
         })
     }
 
+    //解析出指定URL里的query  parameters
+    const getParams = (url:string)=>{
+        let params:ApiParams[] = [];
+        let index = url? url.indexOf("?"):-1;
+        if(index>=0){
+            let paramStr = url.substring(index+1);
+            let paramPairs = paramStr.split("&");
+            paramPairs.forEach((pair,index)=>{
+                let tempParam = pair.split("=")
+                params.push({selected:true, paramKey:tempParam[0],paramValue:tempParam[1], key:-1});
+            })
+        }
+        return params;
+    }
+
 
     const handler = {
         handleSaveClick:()=>{
@@ -61,7 +76,33 @@ export default function ApiUrlArea(props:IApiProps){
         },
         handleUrlChange:(e:any)=>{
             let value = e.target.value
-            dispatch(updateCurrentApi({url:value}))
+            let tmpParams:ApiParams[] = Object.assign([], api.params)
+            //从URL 当中解析参数
+            let activeParams  = getParams(value)
+            //给解析出的参数赋key， description
+            let maxKey = -1
+            tmpParams.map(item=>{
+                if(item.key>maxKey) maxKey=item.key
+            })
+            let usedKeys:number[] = []
+            activeParams.forEach(param=>{
+                let existParam = tmpParams.filter(item=>item.selected && item.paramKey===param.paramKey && usedKeys.indexOf(item.key)>-1)[0]
+                if(existParam) {
+                    param.description = existParam.description
+                    param.key = existParam.key
+                    usedKeys.push(existParam.key) //对已使用过的key 进行记录
+                }else{
+                    param.key = ++maxKey
+                }
+            })
+            //过滤出当前params 当中处于未选中的参数并与url计算所得参数进行整合
+            let filterParams = tmpParams.filter(item=>item.selected===false)
+            let params = [...filterParams, ...activeParams]
+            //按照key进行排序
+            params.sort((a,b)=>a.key - b.key)
+            //添加空白参数
+            params.push({key:++maxKey})
+            dispatch(updateCurrentApi({url:value, params}))
         },
         handleCallApi:()=>{
             // let url =  api.url
