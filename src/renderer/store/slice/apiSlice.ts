@@ -4,6 +4,9 @@ import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
 import api from "../../pages/api/api";
 
+type ApiMethod = "GET"|"POST"|"DELETE"|"PUT"
+type BodyType = "NONE" | "JSON"
+type AuthType = "NONE" | "INHERIT" | "BEARER"
 
 export interface ApiEnvItem{
     name:string,
@@ -46,19 +49,20 @@ export interface API{
     name:string,
     serial:number,
     isExample?:boolean,     //是否为用例
-    method:string,          //GET/POST/DELETE/PUT
+    method:ApiMethod,          //GET/POST/DELETE/PUT
     params:ApiParams[],
     pathVars?:ApiPathVar[],
     headers:ApiHeaderItem[],
     dirty:boolean,
     url?:string,
-    authType?:string,
+    authType?:AuthType,
     authToken?:string,
-    bodyType?:string,
+    bodyType?:BodyType,
     bodyJson?:string,
     testsCode?:string,
     responseBody?:string,
 }
+
 
 interface IPayloadAddApiSet {
     name:string,
@@ -108,13 +112,13 @@ interface IPayloadDelApiTreeItem{
     treeItemId:number
 }
 
-let activeApis: Array<API> = []
+let theActiveApis: Array<API> = []
 
 
 const apiSlice = createSlice({
     name: 'api',
     initialState:{
-        activeApis:activeApis,
+        activeApis:theActiveApis,
         currentApiSerial:-1,
         apiTreeItems:[],
         toastOpen:false,
@@ -127,8 +131,8 @@ const apiSlice = createSlice({
             state.toastOpen = action.payload
         },
         addActiveApi:(state)=>{
-            let serial = getUsableSerial(activeApis)
-            let newApi = {name:'未命名接口', serial:serial, method:'GET',  isExample:false, dirty:false,
+            let serial = getUsableSerial(state.activeApis)
+            let newApi = {name:'未命名接口', serial:serial, method:'GET' as ApiMethod,  isExample:false, dirty:false,
                 headers: [{key:10}],
                 params:[{key:0}]}
             state.activeApis.push(newApi)
@@ -273,10 +277,48 @@ const listApiTreeItems = ()=>{
     }
 }
 
+const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void = (apiItem)=>{
+    return async (dispatch:Dispatch<any>,getState:any)=>{
+        let currentApiSerial = getState().api.currentApiSerial
+        let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+        let params = currentApi.params? JSON.stringify(currentApi.params):undefined
+        let payload = {
+            parentId:apiItem.parentId,
+            name:apiItem.name,
+            method:currentApi.method,
+            url:currentApi.url,
+            description: apiItem.description,
+            params,
+        }
+        let result = await _addApi(payload)
+        if(result){
+            dispatch(listApiTreeItems())
+        }
+    }
+}
+
+const _addApi:(apiItem:{parentId:number,
+    name:string,
+    method:ApiMethod,
+    url?:string,
+    params?:string,
+    headers?:string,
+    bodyJson?:string,
+    bodyType?:BodyType,
+    testsCode?:string,
+    authType?:AuthType,
+    authToken?:string,
+    pathVars?:string,
+    description?:string,
+})=>Promise<boolean> = async (apiItem)=>{
+    let result = await request.post({url:apiUrl.api.apiRes, data:apiItem})
+    return result.isSuccess
+}
+
 
 
 export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
 
-export {editApiTreeItem, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+export {editApiTreeItem, addApi, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

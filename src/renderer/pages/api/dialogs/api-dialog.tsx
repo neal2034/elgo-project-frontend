@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Modal, Input, Tree} from "antd";
 import EffButton from "../../../components/eff-button/eff-button";
-import {addApiTreeItem, editApiTreeItem} from '@slice/apiSlice'
+import {addApi, addApiTreeItem, editApiTreeItem} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 import './api-dialog.less'
 import globalColor from "@config/globalColor";
@@ -68,7 +68,13 @@ export default function ApiDialog(props: IApiDlgProps){
                 }
                 dispatch(editApiTreeItem(payload))
             }else if(mode==='add-api'){
-
+                let parentId = selectedKeys![0]
+                let payload = {
+                    parentId,
+                    name:name!,
+                    description,
+                }
+                dispatch(addApi(payload))
 
             }
 

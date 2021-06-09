@@ -305,7 +305,7 @@ export default function ApiUrlArea(props:IApiProps){
                     let testsCode = api.testsCode
                     if(testsCode){
                         try {
-                            eval(testsCode);    
+                            eval(testsCode);
                         }catch (e) {
                             //TODO 将结果放入测试
                             console.log(e)
