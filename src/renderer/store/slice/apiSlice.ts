@@ -197,6 +197,14 @@ const apiSlice = createSlice({
             })
         },
 
+        setCurrentApiName:(state,action)=>{
+            state.activeApis.forEach(item=>{
+                if(item.serial === state.currentApiSerial){
+                    Object.assign(item,  {name:action.payload})
+                }
+            })
+        },
+
         addApiExample:(state)=>{
             let serial = getUsableSerial(state.activeApis)
             let currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
@@ -471,7 +479,25 @@ export const apiThunks = {
             }
 
         }
-    }
+    },
+
+    editApiName: (name:string)=>{
+       return async (dispatch:Dispatch<any>, getState:any) => {
+           let currentApiSerial = getState().api.currentApiSerial
+           let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+           let payload = {
+               id:currentApi.id,
+               name,
+           }
+           let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
+           if(result.isSuccess){
+               dispatch(listApiTreeItems())
+               dispatch(apiSlice.actions.setCurrentApiName(name))
+           }
+       }
+    },
+
+
 }
 
 
