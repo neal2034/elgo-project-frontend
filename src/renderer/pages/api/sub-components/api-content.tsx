@@ -13,11 +13,14 @@ import EffButton from "../../../components/eff-button/eff-button";
 import {CaretLeftOutlined} from '@ant-design/icons'
 import {Input} from "antd";
 import {apiThunks, apiActions} from '@slice/apiSlice'
+import ApiDescription from "./api-description";
+
 
 export default function ApiContent(){
     const dispatch = useDispatch();
     const [contentWidth, setContentWidth] = useState<number>(0); //内容区宽度
     const currentApi = useSelector( (state:RootState)=>state.api.activeApis.filter(item=>item.serial===state.api.currentApiSerial)[0])
+    const isShowDescription = useSelector((state:RootState)=>state.api.showDescription)
     const hasApi = !!currentApi
     const isExample = currentApi &&  currentApi.isExample
     const contentRef = useRef<HTMLDivElement>(null)
@@ -55,9 +58,13 @@ export default function ApiContent(){
                     </div>
                       :
                   <div className="d-flex justify-between name-example-area">
-                    <ApiName api={currentApi}/>
+                      <div className="flex-grow-1">
+                          <ApiName api={currentApi}/>
+                          {hasApi && isShowDescription && !!currentApi.id ? <ApiDescription api={currentApi}/>:null}
+                      </div>
                     <ApiExample/>
                   </div>}
+
 
                   {isExample?<div className="d-flex-column">
                     <div className="ml20 mb10">名称</div>

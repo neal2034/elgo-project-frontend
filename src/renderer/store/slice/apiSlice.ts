@@ -63,6 +63,7 @@ export interface API{
     responseBody?:string,
     treeItemId?:number,
     exampleName?:string,
+    description?:string,
 }
 
 
@@ -126,9 +127,13 @@ const apiSlice = createSlice({
         toastOpen:false,
         envs:[],        //环境变量
         currentEnvId:-1,    //当前环境变量id
+        showDescription:false,  //是否显示api 描述
 
     },
     reducers:{
+        setShowDescription:(state, action)=>{
+            state.showDescription = action.payload
+        },
         setToastOpen:(state, action)=>{
             state.toastOpen = action.payload
         },
