@@ -38,6 +38,7 @@ const  apiUrl = {
         withdraw: '/api-tree-item/withdraw',      //撤销删除,
         apiRes: '/api',                        //api 资源
         apiViaTreeItem: '/api/tree-item',       //根据tree item 获取API
+        apiDescription: '/api/description',     //改变api 描述
 
     },
     apiEnv:{
