@@ -4,7 +4,7 @@ import ImgRocket from '@imgs/rocket.png'
 import ImgSave from '@imgs/save.png'
 const {TabPane} = Tabs
 import './api-response.less'
-import {API, addApiExample} from "@slice/apiSlice";
+import {API, apiActions} from "@slice/apiSlice";
 import EffCodeEditor from "../../../components/eff-code-editor/effCodeEditor";
 import {useDispatch} from "react-redux";
 
@@ -25,7 +25,7 @@ export default function ApiResponse(props:IApiProps){
 
     const handler = {
         goAddApiExample:()=>{
-            dispatch(addApiExample())
+            dispatch(apiActions.addApiExample())
         }
     }
 

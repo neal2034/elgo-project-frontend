@@ -7,7 +7,7 @@ import {CloseOutlined} from '@ant-design/icons'
 import './api-wrapper.less'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {setCurrentApiSerial,removeActiveApi} from '@slice/apiSlice'
+import {apiActions} from '@slice/apiSlice'
 
 interface ApiProps{
     api:API
@@ -31,10 +31,10 @@ export default function ApiTab(props:ApiProps){
 
     const handler = {
         handleTabClick:()=>{
-            dispatch(setCurrentApiSerial(serial))
+            dispatch(apiActions.setCurrentApiSerial(serial))
         },
         handleClose:()=>{
-            dispatch(removeActiveApi(serial))
+            dispatch(apiActions.removeActiveApi(serial))
         }
     }
 

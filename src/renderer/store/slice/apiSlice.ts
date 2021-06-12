@@ -253,7 +253,7 @@ const deleteApiSet = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url:apiUrl.api.setRes,params})
         if(result.isSuccess){
-            dispatch(setToastOpen(true))
+            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
@@ -264,7 +264,7 @@ const withdrawDelApiTreeItem = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>) =>{
         let result = await request.get({url:apiUrl.api.withdraw, params})
         if(result.isSuccess){
-            dispatch(setToastOpen(true))
+            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
@@ -294,7 +294,7 @@ const deleteApiGroup = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url: apiUrl.api.groupRes, params})
         if(result.isSuccess){
-            dispatch(setToastOpen(true))
+            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
     }
@@ -314,7 +314,7 @@ const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
     return async (dispatch: Dispatch<any>)=>{
         let result = await  request.delete({url:apiUrl.api.apiTreeItemRes, params})
         if(result.isSuccess){
-            dispatch(setToastOpen(true))
+            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems());
         }
     }
@@ -333,7 +333,7 @@ const listApiTreeItems = ()=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.get({url:apiUrl.api.treeItemRes})
         if(result.isSuccess){
-            dispatch(setApiTreeItems(result.data))
+            dispatch(apiActions.setApiTreeItems(result.data))
         }
         return result.isSuccess
     }
@@ -364,8 +364,8 @@ const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void
         let result = await _addApi(payload)
         if(result.isSuccess){
             dispatch(listApiTreeItems())
-            dispatch(updateCurrentApi({name:apiItem.name, id:result.data.id, treeItemId:result.data.treeItemId}))
-            dispatch(setCurrentApiSaved())
+            dispatch(apiActions.updateCurrentApi({name:apiItem.name, id:result.data.id, treeItemId:result.data.treeItemId}))
+            dispatch(apiActions.setCurrentApiSaved())
 
         }
     }
@@ -394,7 +394,7 @@ const editApi:()=>void  = ()=>{
         delete payload.isExample
         let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
         if(result.isSuccess){
-            dispatch(setCurrentApiSaved())
+            dispatch(apiActions.setCurrentApiSaved())
         }
         return result
 
@@ -427,7 +427,7 @@ const apiSelected = (id:number)=>{
         let activeApi = activeApis.filter((item:API)=>item.treeItemId===id)[0]
         if(activeApi){
             //如果当前tree item id在激活API内，则直接激活
-            dispatch(setCurrentApiSerial(activeApi.serial))
+            dispatch(apiActions.setCurrentApiSerial(activeApi.serial))
         }else{
             //如果指定 tree item id不在激活API内， 则获取API详情，并激活
 
@@ -442,7 +442,7 @@ const apiSelected = (id:number)=>{
                     theApi.pathVars = JSON.parse(theApi.pathVars)
                 }
                 console.log("here is the api ", theApi)
-                dispatch(pushActiveApi(theApi))
+                dispatch(apiActions.pushActiveApi(theApi))
             }
 
         }
@@ -475,12 +475,11 @@ export const apiThunks = {
                 result = await request.post({url:apiUrl.apiExample.apiExampleRes, data:apiExample})
             }
             if(result.isSuccess){
-                dispatch(setCurrentApiSaved());
+                dispatch(apiActions.setCurrentApiSaved());
             }
 
         }
     },
-
     editApiName: (name:string)=>{
        return async (dispatch:Dispatch<any>, getState:any) => {
            let currentApiSerial = getState().api.currentApiSerial
@@ -496,15 +495,11 @@ export const apiThunks = {
            }
        }
     },
-
-
 }
 
 
 const apiActions = apiSlice.actions
 export {apiActions};
-
-export const {addActiveApi, addApiExample, setCurrentApiSaved, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen, pushActiveApi, removeActiveApi} = apiSlice.actions
 
 export {editApiTreeItem,editApi, apiSelected, addApi, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 

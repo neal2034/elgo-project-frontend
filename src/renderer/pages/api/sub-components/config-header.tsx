@@ -1,5 +1,5 @@
 import React from "react";
-import {API, ApiHeaderItem, ApiParams, updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiHeaderItem, ApiParams, apiActions} from "@slice/apiSlice";
 import EditableTable from "./editable-table";
 import {useDispatch} from "react-redux";
 
@@ -56,13 +56,13 @@ export default function ConfigHeader(props:IApiProps){
                 tmpHeaders.push({key:lastKey+1})
             }
 
-            dispatch(updateCurrentApi({headers:tmpHeaders}))
+            dispatch(apiActions.updateCurrentApi({headers:tmpHeaders}))
         },
         headerDel:(record:any) =>{
             const index = api.headers.findIndex((item:ApiHeaderItem)=>item.key === record.key)
             const tmpHeaders = Object.assign([], api.headers)
             tmpHeaders.splice(index, 1)
-            dispatch(updateCurrentApi({headers:tmpHeaders}))
+            dispatch(apiActions.updateCurrentApi({headers:tmpHeaders}))
         }
     }
 

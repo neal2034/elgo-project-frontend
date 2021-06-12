@@ -2,7 +2,7 @@ import React from "react";
 import EffCodeEditor from "../../../components/eff-code-editor/effCodeEditor";
 import {API} from "@slice/apiSlice";
 import {useDispatch} from "react-redux";
-import {updateCurrentApi} from '@slice/apiSlice'
+import {apiActions} from '@slice/apiSlice'
 
 
 interface IApiProps{
@@ -15,7 +15,7 @@ export default function ConfigTest(props:IApiProps){
     const dispatch = useDispatch()
     const handler = {
         onValueChange:(value:string)=>{
-            dispatch(updateCurrentApi({testsCode:value}))
+            dispatch(apiActions.updateCurrentApi({testsCode:value}))
         }
     }
     return (

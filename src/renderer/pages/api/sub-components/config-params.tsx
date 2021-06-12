@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import EditableTable from "./editable-table";
-import {API, ApiParams, ApiPathVar, updateCurrentApi} from "@slice//apiSlice";
+import {API, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
 import {useDispatch} from "react-redux";
 
 interface ApiProps{
@@ -71,7 +71,7 @@ export default function ConfigParams(props:ApiProps){
 
         let url = getQueryUrl(tmpParams)
 
-        dispatch(updateCurrentApi({params:tmpParams, url}))
+        dispatch(apiActions.updateCurrentApi({params:tmpParams, url}))
 
 
     }
@@ -81,7 +81,7 @@ export default function ConfigParams(props:ApiProps){
         const index = tmpPathVars.findIndex((item:ApiPathVar)=>item.key === record.key)
         const item = api.pathVars![index]
         tmpPathVars.splice(index, 1, {...item, ...{[dataIndex]:value}})
-        dispatch(updateCurrentApi({pathVars:tmpPathVars}))
+        dispatch(apiActions.updateCurrentApi({pathVars:tmpPathVars}))
     }
 
 
@@ -90,7 +90,7 @@ export default function ConfigParams(props:ApiProps){
         const tmpParams = Object.assign([], api.params)
         tmpParams.splice(index, 1)
         let url = getQueryUrl(tmpParams)
-        dispatch(updateCurrentApi({params:tmpParams, url}))
+        dispatch(apiActions.updateCurrentApi({params:tmpParams, url}))
     }
 
     //解析参数，获取实际调用URL

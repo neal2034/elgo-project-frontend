@@ -3,7 +3,7 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API, ApiEnv, ApiEnvItem,editApi, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiEnv, ApiEnvItem,editApi, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
 
 import {ipcRenderer} from 'electron'
 
@@ -25,7 +25,7 @@ export default function ApiUrlArea(props:IApiProps){
 
     const response = {
         handleMethodChange:(value:any)=>{
-            dispatch(updateCurrentApi({method:value}))
+            dispatch(apiActions.updateCurrentApi({method:value}))
         }
     }
 
@@ -217,7 +217,7 @@ export default function ApiUrlArea(props:IApiProps){
             let url = e.target.value
             let params = parseParamsFromUrl(url)
             let mergedPathVars = getMergedPathVariables(api.pathVars? api.pathVars:[], url);
-            dispatch(updateCurrentApi({url, params, pathVars:mergedPathVars}))
+            dispatch(apiActions.updateCurrentApi({url, params, pathVars:mergedPathVars}))
         },
 
 
@@ -302,9 +302,9 @@ export default function ApiUrlArea(props:IApiProps){
 
 
             ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then(data=>{
-                dispatch(updateCurrentApi({responseBody:data}))
+                dispatch(apiActions.updateCurrentApi({responseBody:data}))
             }).catch(function(error) {
-                dispatch(updateCurrentApi({responseBody:"调用错误: "+error.message}))
+                dispatch(apiActions.updateCurrentApi({responseBody:"调用错误: "+error.message}))
             })
 
         }

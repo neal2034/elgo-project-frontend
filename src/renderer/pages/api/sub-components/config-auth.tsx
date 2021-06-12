@@ -2,7 +2,7 @@ import React from "react";
 import {API} from "@slice/apiSlice";
 import {Select, Input} from "antd";
 import './api-wrapper.less'
-import {updateCurrentApi} from '@slice/apiSlice'
+import {apiActions} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 
 const {Option} = Select
@@ -18,11 +18,11 @@ export default function ConfigAuth(props:ApiProps){
 
     const handler = {
         handleAuthTypeChange:(value:any)=>{
-            dispatch(updateCurrentApi({authType:value}))
+            dispatch(apiActions.updateCurrentApi({authType:value}))
         },
 
         handleAuthTokenChange:(e:any)=>{
-            dispatch(updateCurrentApi({authToken:e.target.value}))
+            dispatch(apiActions.updateCurrentApi({authToken:e.target.value}))
         }
     }
 

@@ -5,7 +5,7 @@ import {RightOutlined, SearchOutlined} from '@ant-design/icons';
 import ImgApiSet from "@imgs/api-set.png"
 import ImgApiFolder from '@imgs/api-folder.png'
 import ApiSetDialog from "../dialogs/api-set-dialog";
-import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, setToastOpen, withdrawDelApiTreeItem, apiSelected} from '@slice/apiSlice'
+import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, apiActions, withdrawDelApiTreeItem, apiSelected} from '@slice/apiSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import ImgAddApiGroup from '@imgs/api/api-group-add.png'
@@ -302,7 +302,7 @@ export default function ApiSideBar(){
 
     return (
         <div className="api-sidebar d-flex-column">
-            <EffToast onWithDraw={withdrawDelApiItem} isWithDraw={isToastWithdraw} open={isToastOpen} message={toastMessage!} onClose={()=>dispatch(setToastOpen(false))}/>
+            <EffToast onWithDraw={withdrawDelApiItem} isWithDraw={isToastWithdraw} open={isToastOpen} message={toastMessage!} onClose={()=>dispatch(apiActions.setToastOpen(false))}/>
             <Input onChange={response.filterApi} className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
             <Tree   onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>

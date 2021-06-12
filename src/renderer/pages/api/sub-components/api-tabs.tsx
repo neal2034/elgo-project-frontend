@@ -7,7 +7,7 @@ import {PlusOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {useDispatch} from "react-redux";
-import {addActiveApi, API, setCurrentApiSerial} from '@slice/apiSlice'
+import { API, apiActions} from '@slice/apiSlice'
 import ApiTab from "./api-tab";
 
 
@@ -24,7 +24,7 @@ export default function ApiTabs(props:IApiTabsProps){
     })
 
     const handleAddActiveApi = ()=>{
-        dispatch(addActiveApi())
+        dispatch(apiActions.addActiveApi())
     }
     return (
         <div   className="tabs d-flex" style={{maxWidth:maxContentWidth+'px'}}>

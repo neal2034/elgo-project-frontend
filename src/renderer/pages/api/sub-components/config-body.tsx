@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {API,updateCurrentApi} from "@slice/apiSlice";
+import {API,apiActions} from "@slice/apiSlice";
 import {Radio} from "antd";
 import './api-wrapper.less'
 import EffCodeEditor from "../../../components/eff-code-editor/effCodeEditor";
@@ -14,11 +14,11 @@ export default function ConfigBody(props:ApiProps){
     const dispatch = useDispatch()
     const handler = {
         onValueChange:(value:string)=>{
-            dispatch(updateCurrentApi({bodyJson:value}))
+            dispatch(apiActions.updateCurrentApi({bodyJson:value}))
         },
 
         onBodyTypeChanged: (e:any)=>{
-            dispatch(updateCurrentApi({bodyType:e.target.value}))
+            dispatch(apiActions.updateCurrentApi({bodyType:e.target.value}))
         }
     }
 
