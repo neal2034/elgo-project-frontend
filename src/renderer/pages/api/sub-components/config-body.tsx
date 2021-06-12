@@ -10,7 +10,7 @@ interface ApiProps{
 }
 
 export default function ConfigBody(props:ApiProps){
-    const {bodyType, bodyJson=''} = props.api
+    const {bodyType="NONE", bodyJson=''} = props.api
     const dispatch = useDispatch()
     const handler = {
         onValueChange:(value:string)=>{
@@ -24,7 +24,7 @@ export default function ConfigBody(props:ApiProps){
 
     return (
         <div className="config-body">
-            <Radio.Group  onChange={handler.onBodyTypeChanged} value={bodyType}>
+            <Radio.Group    onChange={handler.onBodyTypeChanged} value={bodyType}>
                 <Radio value={"NONE"}>无</Radio>
                 <Radio value={"JSON"}>JSON</Radio>
             </Radio.Group>

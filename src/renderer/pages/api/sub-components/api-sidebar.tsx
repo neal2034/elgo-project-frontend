@@ -5,7 +5,7 @@ import {RightOutlined, SearchOutlined} from '@ant-design/icons';
 import ImgApiSet from "@imgs/api-set.png"
 import ImgApiFolder from '@imgs/api-folder.png'
 import ApiSetDialog from "../dialogs/api-set-dialog";
-import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, setToastOpen, withdrawDelApiTreeItem} from '@slice/apiSlice'
+import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, setToastOpen, withdrawDelApiTreeItem, apiSelected} from '@slice/apiSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import ImgAddApiGroup from '@imgs/api/api-group-add.png'
@@ -154,6 +154,9 @@ export default function ApiSideBar(){
 
         let isSelected = expandedKeys.indexOf(data.key)>-1
         const response = {
+            apiSelected:()=>{
+                dispatch(apiSelected(data.id))
+            },
             showMenu:()=>{
                 setVisibleApiMenuSetId(data.id)
             },
@@ -269,7 +272,7 @@ export default function ApiSideBar(){
             let method = data.method.toUpperCase();
             method = method==='DELETE'? 'DEL':method
             let methodClassName = method.toLowerCase()
-            return <div className="api-item" onMouseEnter={response.showMenu}>
+            return <div className="api-item" onClick={response.apiSelected}  onMouseEnter={response.showMenu}>
                 <span className={'mr10 ml10 api-method '+methodClassName}>{method}</span>
                 {data.name}
                 <Dropdown className={visibleApiMenuSetId===data.id? 'd-flex':'hide-menu'} overlay={ui.apiItemMenu} placement={"bottomCenter"}>

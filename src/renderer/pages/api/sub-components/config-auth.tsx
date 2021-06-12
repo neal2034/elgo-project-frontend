@@ -13,7 +13,7 @@ interface ApiProps{
 
 
 export default function ConfigAuth(props:ApiProps){
-    const {authType='INHERIT'} = props.api
+    const {authType='INHERIT', authToken} = props.api
     const dispatch = useDispatch();
 
     const handler = {
@@ -39,7 +39,7 @@ export default function ConfigAuth(props:ApiProps){
 
             {'BEARER' === authType? <div className="d-flex align-center">
                 <span className="mr10">Token</span>
-                <Input onChange={handler.handleAuthTokenChange}/>
+                <Input value={authToken} onChange={handler.handleAuthTokenChange}/>
             </div>:null}
     </div>
     )

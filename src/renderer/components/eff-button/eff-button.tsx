@@ -9,16 +9,18 @@ interface IEffButtonProps {
     key: string,
     type?: "filled" | "normal",
     onClick?: () => void,
-    className?:string
+    className?:string,
+    disabled?:boolean,
 }
 
 interface IBtnStyle {
     color?:string,
     backgroundColor?:string,
+    opacity?:number
 }
 
 export default function EffButton(props:IEffButtonProps){
-    const {text, round, type="normal", ...restProps} = props
+    const {text, round, type="normal", disabled=false, ...restProps} = props
     let btnShape: 'round'|'circle'| undefined = round? 'round': undefined
 
     let btnStyle:IBtnStyle  = {}
@@ -32,7 +34,11 @@ export default function EffButton(props:IEffButtonProps){
             break
     }
 
+    if(disabled){
+        btnStyle.opacity = .6
+    }
 
 
-    return <Button shape={btnShape}  style={btnStyle} {...restProps} >{text}</Button>
+
+    return <Button disabled={disabled} shape={btnShape}  style={btnStyle} {...restProps} >{text}</Button>
 }

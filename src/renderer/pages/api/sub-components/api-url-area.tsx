@@ -3,7 +3,9 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API, ApiEnv, ApiEnvItem, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
+import {API, ApiEnv, ApiEnvItem,editApi, ApiParams, ApiPathVar, updateCurrentApi} from "@slice/apiSlice";
+
+import {ipcRenderer} from 'electron'
 
 
 const {Option}  = Select
@@ -201,9 +203,15 @@ export default function ApiUrlArea(props:IApiProps){
 
     const handler = {
         handleSaveClick:()=>{
-            setApiDlgVisible(true)
-            let collections = mapTreeData(getApiCollections(apiItems));
-            setApiCollections(collections)
+            if(api.id){
+                dispatch(editApi());
+                console.log("will edit api")
+            }else{
+                setApiDlgVisible(true)
+                let collections = mapTreeData(getApiCollections(apiItems));
+                setApiCollections(collections)
+            }
+
         },
         handleUrlChange:(e:any)=>{
             let url = e.target.value
@@ -211,6 +219,8 @@ export default function ApiUrlArea(props:IApiProps){
             let mergedPathVars = getMergedPathVariables(api.pathVars? api.pathVars:[], url);
             dispatch(updateCurrentApi({url, params, pathVars:mergedPathVars}))
         },
+
+
         handleCallApi:()=>{
 
             let url = api.url;
@@ -287,57 +297,16 @@ export default function ApiUrlArea(props:IApiProps){
             }
 
             //body
-            let body = null;
-            if(api.bodyType === 'JSON' ){
-                body = JSON.stringify(api.bodyJson)
-            }
+            let body = api.bodyType === 'JSON'? api.bodyJson:null;
+            let method = api.method.toLocaleLowerCase()
 
-            //call fetch
 
-            let method = api.method;
-            let init:{method:string, headers?:any, body?:string} = {method};
-            if(headers) init.headers = headers;
-            if(body) init.body = body;
-            fetch(url, init).then(result=>{
-                result.json().then(data=>{
-                    //如果有test code, run it
-                    let responseBody =  JSON.stringify(data);  //该变量可被测试使用
-                    let testsCode = api.testsCode
-                    if(testsCode){
-                        try {
-                            eval(testsCode);
-                        }catch (e) {
-                            //TODO 将结果放入测试
-                            console.log(e)
-                        }
-                    }
-                    dispatch(updateCurrentApi({responseBody}))
-
-                    return data;
-                })
-
+            ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then(data=>{
+                dispatch(updateCurrentApi({responseBody:data}))
             }).catch(function(error) {
                 dispatch(updateCurrentApi({responseBody:"调用错误: "+error.message}))
             })
 
-
-            // let url =  api.url
-            // let method = api.method
-            // let sbody = {
-            //     "username":"admin@effwork.net",
-            //     "password":"pass1234"
-            // }
-            // let body = JSON.stringify(sbody)
-            // let prams = {method, body}
-            // // @ts-ignore
-            // fetch(url!, prams).then(result=>{
-            //     result.json().then(data=>{
-            //         let responseBody =  JSON.stringify(data);  //该变量可被测试使用
-            //         console.log("hte response body is ", responseBody)
-            //     })
-            //     console.log("here is result", result)
-            // })
-            console.log("here is the api ", api)
         }
     }
 

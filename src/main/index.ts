@@ -1,6 +1,7 @@
 import { BrowserWindow, app, ipcMain } from 'electron';
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
+import './apiHandler'
 
 
 function loadHtml(window: BrowserWindow, name: string) {

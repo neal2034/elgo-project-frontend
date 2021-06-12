@@ -61,6 +61,8 @@ export interface API{
     bodyJson?:string,
     testsCode?:string,
     responseBody?:string,
+    treeItemId?:number,
+    exampleName?:string,
 }
 
 
@@ -138,6 +140,10 @@ const apiSlice = createSlice({
             state.activeApis.push(newApi)
             state.currentApiSerial=serial
         },
+        pushActiveApi:(state,action)=>{
+            state.currentApiSerial = action.payload.serial
+            state.activeApis.push(action.payload)
+        },
         //设置当前激活的API
         setCurrentApiSerial:(state, action)=>{
             state.currentApiSerial = action.payload
@@ -151,6 +157,49 @@ const apiSlice = createSlice({
         },
         setApiTreeItems:(state, action)=>{
             state.apiTreeItems = action.payload
+
+        },
+        removeActiveApi:(state, action)=>{
+            let serial = action.payload
+            let removeIndex:number=-1
+            state.activeApis.forEach((item,index)=>{
+                if(item.serial=== serial){
+                    removeIndex = index;
+                }
+            })
+            state.activeApis.splice(removeIndex,1);
+            //如果没有可激活的api，则设置当前激活序列号为null
+            let activeSerial = state.currentApiSerial;
+
+            if(state.activeApis.length===0){
+                //如果工作区API数组为空，则没有可激活API
+                activeSerial = -1;
+            }else if(serial === activeSerial){
+                if(removeIndex===0){
+                    //如果当前删除的API为第一个， 则设置第二个
+                    activeSerial =  state.activeApis[0].serial;
+                }else{
+                    activeSerial = state.activeApis[removeIndex-1].serial;
+                }
+            }
+            state.currentApiSerial = activeSerial
+        },
+        setCurrentApiSaved:(state)=>{
+            state.activeApis.forEach(item=>{
+                if(item.serial === state.currentApiSerial){
+                    Object.assign(item,  {dirty:false})
+                }
+            })
+        },
+
+        addApiExample:(state)=>{
+            let serial = getUsableSerial(state.activeApis)
+            let currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
+            const {url, name, method, params, headers, bodyType, bodyJson, responseBody} = currentApi
+            let examplePart = {url, name, method, params, headers, bodyType, bodyJson, responseBody, apiId:currentApi.id, exampleName:currentApi.name, dirty:true,}
+            let apiExample = Object.assign({},{serial, isExample:true}, examplePart )
+            state.activeApis.push(apiExample)
+            state.currentApiSerial = serial
         }
     }
 })
@@ -282,18 +331,61 @@ const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void
         let currentApiSerial = getState().api.currentApiSerial
         let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
         let params = currentApi.params? JSON.stringify(currentApi.params):undefined
+        let headers = currentApi.headers? JSON.stringify(currentApi.headers):undefined
+        let pathVars = currentApi.pathVars? JSON.stringify(currentApi.pathVars):undefined
         let payload = {
             parentId:apiItem.parentId,
             name:apiItem.name,
-            method:currentApi.method,
+            method:currentApi.method.toUpperCase(),
             url:currentApi.url,
             description: apiItem.description,
+            authType:currentApi.authType,
+            authToken:currentApi.authToken,
+            bodyType:currentApi.bodyType,
+            bodyJson:currentApi.bodyJson,
+            testsCode:currentApi.testsCode,
             params,
+            headers,
+            pathVars,
         }
         let result = await _addApi(payload)
-        if(result){
+        if(result.isSuccess){
             dispatch(listApiTreeItems())
+            dispatch(updateCurrentApi({name:apiItem.name, id:result.data.id, treeItemId:result.data.treeItemId}))
+            dispatch(setCurrentApiSaved())
+
         }
+    }
+}
+
+const editApi:()=>void  = ()=>{
+    return async (dispatch:Dispatch<any>, getState:any) =>{
+        let currentApiSerial = getState().api.currentApiSerial
+        let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+        let params = currentApi.params? JSON.stringify(currentApi.params):undefined
+        let headers = currentApi.headers? JSON.stringify(currentApi.headers):undefined
+        let pathVars = currentApi.pathVars? JSON.stringify(currentApi.pathVars):undefined
+        let payload = {...currentApi}
+        payload.params = params
+        payload.headers = headers
+        payload.pathVars = pathVars
+        payload.method = payload.method.toUpperCase()
+        if(payload.pathVars && payload.pathVars.length === 0){
+           delete  payload.pathVars
+        }
+        delete payload.treeItemId
+        delete payload.parentId
+        delete payload.examples
+        delete payload.serial
+        delete payload.dirty
+        delete payload.isExample
+        let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
+        if(result.isSuccess){
+            dispatch(setCurrentApiSaved())
+        }
+        return result
+
+
     }
 }
 
@@ -310,15 +402,79 @@ const _addApi:(apiItem:{parentId:number,
     authToken?:string,
     pathVars?:string,
     description?:string,
-})=>Promise<boolean> = async (apiItem)=>{
+})=>any = async (apiItem)=>{
     let result = await request.post({url:apiUrl.api.apiRes, data:apiItem})
-    return result.isSuccess
+    return result
 }
 
 
+const apiSelected = (id:number)=>{
+    return async (dispatch:Dispatch<any>, getState:any)=>{
+        let activeApis = getState().api.activeApis;
+        let activeApi = activeApis.filter((item:API)=>item.treeItemId===id)[0]
+        if(activeApi){
+            //如果当前tree item id在激活API内，则直接激活
+            dispatch(setCurrentApiSerial(activeApi.serial))
+        }else{
+            //如果指定 tree item id不在激活API内， 则获取API详情，并激活
 
-export const {addActiveApi, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen} = apiSlice.actions
+            let result = await request.get({url:apiUrl.api.apiViaTreeItem, params:{treeItemId:id}})
+            if(result.isSuccess){
+                let apiData = result.data
+                let serial = getUsableSerial(activeApis)
+                let theApi = Object.assign({}, apiData, {serial,dirty:false})
+                theApi.params = theApi.params? JSON.parse(theApi.params):[{key:0}];
+                theApi.headers = theApi.headers? JSON.parse(theApi.headers):[{key:0}];
+                if(theApi.pathVars){
+                    theApi.pathVars = JSON.parse(theApi.pathVars)
+                }
+                console.log("here is the api ", theApi)
+                dispatch(pushActiveApi(theApi))
+            }
 
-export {editApiTreeItem, addApi, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
+        }
+    }
+}
+
+
+export const apiThunks = {
+    saveApiExample: () => {
+        return async (dispatch:Dispatch<any>, getState:any)=>{
+            let currentApiSerial = getState().api.currentApiSerial
+            let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+            let {url, bodyType, bodyJson, method} = currentApi
+            let apiExample = {url, bodyType, bodyJson, method,
+                name:currentApi.exampleName,
+                response:currentApi.responseBody? JSON.stringify(currentApi.responseBody):null,
+                params:currentApi.params? JSON.stringify(currentApi.params):null,
+                headers:currentApi.headers? JSON.stringify(currentApi.headers):null,
+                pathVars:currentApi.pathVars? JSON.stringify(currentApi.pathVars):null,
+                id:undefined,
+                apiId: undefined
+            }
+            let isSaved = !!currentApi.id
+            let result;
+            if(isSaved){
+                apiExample.id = currentApi.id
+                result = await request.put({url:apiUrl.apiExample.apiExampleRes, data:apiExample})
+            }else{
+                apiExample.apiId = currentApi.apiId
+                result = await request.post({url:apiUrl.apiExample.apiExampleRes, data:apiExample})
+            }
+            if(result.isSuccess){
+                dispatch(setCurrentApiSaved());
+            }
+
+        }
+    }
+}
+
+
+const apiActions = apiSlice.actions
+export {apiActions};
+
+export const {addActiveApi, addApiExample, setCurrentApiSaved, setCurrentApiSerial, updateCurrentApi,setApiTreeItems, setToastOpen, pushActiveApi, removeActiveApi} = apiSlice.actions
+
+export {editApiTreeItem,editApi, apiSelected, addApi, addApiSet,editApiSet,delApiTreeItem, editApiGroup, deleteApiSet,listApiTreeItems,addApiGroup, deleteApiGroup, withdrawDelApiTreeItem, addApiTreeItem};
 
 export default apiSlice.reducer

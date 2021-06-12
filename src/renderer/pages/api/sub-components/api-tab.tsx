@@ -7,7 +7,7 @@ import {CloseOutlined} from '@ant-design/icons'
 import './api-wrapper.less'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {setCurrentApiSerial} from '@slice/apiSlice'
+import {setCurrentApiSerial,removeActiveApi} from '@slice/apiSlice'
 
 interface ApiProps{
     api:API
@@ -32,6 +32,9 @@ export default function ApiTab(props:ApiProps){
     const handler = {
         handleTabClick:()=>{
             dispatch(setCurrentApiSerial(serial))
+        },
+        handleClose:()=>{
+            dispatch(removeActiveApi(serial))
         }
     }
 
@@ -43,7 +46,7 @@ export default function ApiTab(props:ApiProps){
             </div>
             <div className="d-flex">
                 {dirty?<div className="dirty"/>:null}
-                <CloseOutlined className="btn-close" />
+                <CloseOutlined onClick={handler.handleClose} className="btn-close" />
             </div>
         </div>
     )

@@ -10,12 +10,13 @@ import "ace-builds/webpack-resolver";
 interface CodeEditorProps{
     mode?:string
     value?:string
+    readonly?:boolean
     onChange:(value:string)=>void
 }
 
 
 export default function EffCodeEditor(props:CodeEditorProps){
-    const {mode="javascript", onChange, value=''} = props
+    const {mode="javascript", onChange, value='', readonly=false} = props
 
 
     const handler = {
@@ -28,6 +29,7 @@ export default function EffCodeEditor(props:CodeEditorProps){
         mode={mode}
         theme="github"
         value={value}
+        readOnly={readonly}
         showPrintMargin={false}
         width={"100%"}
         className="eff-code-editor"
