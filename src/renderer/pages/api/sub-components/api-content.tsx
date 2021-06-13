@@ -27,7 +27,7 @@ export default function ApiContent(){
     const saveExampleBtnDisabled = currentApi? (!currentApi.exampleName || !currentApi.dirty):false
 
     useEffect(()=>{
-        let theWidth = contentRef.current!.offsetWidth-200;
+        let theWidth = contentRef.current!.offsetWidth-400;
         setContentWidth(theWidth);
     },[])
 

@@ -3,6 +3,7 @@ import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
 import api from "../../pages/api/api";
+import {act} from "react-dom/test-utils";
 
 type ApiMethod = "GET"|"POST"|"DELETE"|"PUT"
 type BodyType = "NONE" | "JSON"
@@ -114,6 +115,12 @@ interface IPayloadDelApiItem{
 
 interface IPayloadDelApiTreeItem{
     treeItemId:number
+}
+
+interface IApiEnv{
+    name?:string,
+    value?:string,
+    used?:boolean
 }
 
 let theActiveApis: Array<API> = []
@@ -260,6 +267,13 @@ const apiSlice = createSlice({
                     item.examples!.splice(index,1)
                 }
             })
+        },
+
+        setEnvs:(state, action)=>{
+            state.envs = action.payload
+        },
+        setCurrentEnv:(state, action)=>{
+            state.currentEnvId = action.payload
         }
     }
 })
@@ -576,6 +590,39 @@ export const apiThunks = {
                     dispatch(apiActions.setCurrentApiExample(exampleResult.data))
                 }
 
+            }
+        }
+    },
+    listApiEnvs: ()=>{
+        return async (dispatch:Dispatch<any>)=>{
+            let result = await request.get({url:apiUrl.apiEnv.apiEnvRes})
+            if(result.isSuccess){
+                console.log("envs are ", result.data)
+                dispatch(apiActions.setEnvs(result.data))
+            }
+        }
+    },
+    addApiEnv:(name:string, items:IApiEnv[])=>{
+        return async (dispatch:Dispatch<any>, getState:any)=>{
+            let result = await request.post({url: apiUrl.apiEnv.apiEnvRes, data:{name,items}})
+            if(result.isSuccess){
+                dispatch(apiThunks.listApiEnvs())
+            }
+        }
+    },
+    editApiEnv:(name:string, items:IApiEnv[], id:number)=>{
+      return async (dispatch:Dispatch<any>)=>{
+          let result = await request.put({url:apiUrl.apiEnv.apiEnvRes, data:{name,items,id}})
+          if(result.isSuccess){
+              dispatch(apiThunks.listApiEnvs())
+          }
+      }
+    },
+    delApiEnv:(id:number)=>{
+        return async(dispatch:Dispatch<any>)=>{
+            let result = await request.delete({url:apiUrl.apiEnv.apiEnvRes, params:{id}})
+            if(result.isSuccess){
+                dispatch(apiThunks.listApiEnvs())
             }
         }
     }

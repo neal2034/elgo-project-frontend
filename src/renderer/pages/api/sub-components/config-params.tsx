@@ -59,6 +59,7 @@ export default function ConfigParams(props:ApiProps){
         const tmpParams = Object.assign([], api.params)
         const item = api.params[index]
         if(dataIndex!=='selected' && item.selected===undefined){
+            //若当前行未曾选中过， 且当前修改列不是选中列，则除了将值并入外，再将当且列置为选中
             tmpParams.splice(index, 1, {...item, ...{[dataIndex]:value, selected:true}})
         }else{
             tmpParams.splice(index, 1, {...item, ...{[dataIndex]:value}})
