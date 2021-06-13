@@ -62,7 +62,7 @@ export default function ApiContent(){
                           <ApiName api={currentApi}/>
                           {hasApi && isShowDescription && !!currentApi.id ? <ApiDescription api={currentApi}/>:null}
                       </div>
-                    <ApiExample/>
+                    <ApiExample api={currentApi}/>
                   </div>}
 
 

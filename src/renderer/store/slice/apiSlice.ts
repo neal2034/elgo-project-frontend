@@ -64,6 +64,7 @@ export interface API{
     treeItemId?:number,
     exampleName?:string,
     description?:string,
+    examples?:[]
 }
 
 
@@ -220,6 +221,28 @@ const apiSlice = createSlice({
             let apiExample = Object.assign({},{serial, isExample:true}, examplePart )
             state.activeApis.push(apiExample)
             state.currentApiSerial = serial
+        },
+
+        editApiExample:(state,action)=>{
+            let serial = getUsableSerial(state.activeApis)
+            let example = action.payload
+            let {url, id, name, method,headers,bodyType, response} = example
+            let currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
+            let apiExample = {
+                url, id, name, method,bodyType, response,serial,
+                isExample:true,
+                apiId: currentApi.id,
+                params:  example.params ? JSON.parse(example.params):[],
+                headers: example.headers? JSON.parse(example.headers):[],
+                bodyJson: example.bodyJson?example.bodyJson:null,
+                responseBody: example.response? JSON.parse(example.response):null,
+                exampleName: example.name,
+                dirty:false
+            }
+            state.activeApis.push(apiExample)
+            state.currentApiSerial = serial
+
+
         }
     }
 })
