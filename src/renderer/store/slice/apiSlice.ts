@@ -205,6 +205,13 @@ const apiSlice = createSlice({
                 }
             })
         },
+        setCurrentApiExample:(state, action)=>{
+            state.activeApis.forEach(item=>{
+                if(item.serial === state.currentApiSerial){
+                    Object.assign(item,  {examples:action.payload})
+                }
+            })
+        },
         setCurrentApiDes:(state,action)=>{
             state.activeApis.forEach(item=>{
                 if(item.serial === state.currentApiSerial){
@@ -243,6 +250,16 @@ const apiSlice = createSlice({
             state.currentApiSerial = serial
 
 
+        },
+
+        delApiExample:(state, action)=>{
+            state.activeApis.forEach(item=>{
+                if(item.serial === state.currentApiSerial){
+                    let id = action.payload
+                    let index = item.examples!.findIndex((item:any) => item.id === id)
+                    item.examples!.splice(index,1)
+                }
+            })
         }
     }
 })
@@ -471,7 +488,6 @@ const apiSelected = (id:number)=>{
                 if(theApi.pathVars){
                     theApi.pathVars = JSON.parse(theApi.pathVars)
                 }
-                console.log("here is the api ", theApi)
                 dispatch(apiActions.pushActiveApi(theApi))
             }
 
@@ -537,6 +553,29 @@ export const apiThunks = {
             if(result.isSuccess){
                 dispatch(listApiTreeItems())
                 dispatch(apiSlice.actions.setCurrentApiDes(description))
+            }
+        }
+    },
+    delApiExample: (id:number)=>{
+        return async (dispatch:Dispatch<any>, getState:any)=>{
+            let result = await request.delete({url: apiUrl.apiExample.apiExampleRes, params:{id}})
+            if(result.isSuccess){
+                dispatch(apiActions.delApiExample(id))
+                dispatch(apiActions.setToastOpen(true))
+            }
+        }
+    },
+    withdrawDelApiExample: (id:number)=>{
+        return async (dispatch:Dispatch<any>, getState:any)=>{
+            let result = await request.get({url:apiUrl.apiExample.withdrawDel, params:{id}})
+            let currentApiSerial = getState().api.currentApiSerial
+            let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+            if(result.isSuccess){
+                let exampleResult = await request.get({url: apiUrl.apiExample.apiExampleRes, params:{apiId:currentApi.id}})
+                if(exampleResult.isSuccess){
+                    dispatch(apiActions.setCurrentApiExample(exampleResult.data))
+                }
+
             }
         }
     }
