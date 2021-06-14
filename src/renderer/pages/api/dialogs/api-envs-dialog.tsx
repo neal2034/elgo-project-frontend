@@ -128,7 +128,6 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
             })
             tmpEnvDatas.push({key:env.envItems.length})
             setEnvsData(tmpEnvDatas)
-            console.log("env items ", env)
         }
     }
 

@@ -8,6 +8,7 @@ import {RootState} from "../../store/store";
 import umbrella from 'umbrella-storage';
 import {setName} from '../organizationHome/orgSlice'
 import globalConfig from '../../config/global.config'
+import {Dispatch} from "react";
 
 
 interface PayloadLogin {
@@ -15,10 +16,22 @@ interface PayloadLogin {
     password:string,
 }
 
+
+
 const accountSlice = createSlice({
     name: 'account',
-    initialState:{},
-    reducers:{}
+    initialState:{
+        memberName:null,
+        memberEmail:null,
+    },
+    reducers:{
+        setMemberName:(state, action)=>{
+            state.memberName = action.payload
+        },
+        setMemberEmail:(state, action)=>{
+            state.memberEmail = action.payload
+        }
+    }
 })
 
 
@@ -26,7 +39,6 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
      return  async  (dispatch , getState)=>{
          let baseURL = globalConfig.baseUrl.replace(globalConfig.apiPrefix, '')
          let result = await request.post({url: apiUrl.user.login, data, config:{baseURL}})
-         console.log(baseURL, " is the baeUrl")
          if(result.isSuccess){
              umbrella.setLocalStorage('token', result.data.token)
              //获取组织列表
@@ -39,6 +51,18 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
     }
 }
 
+
+export const accountThunks = {
+    getCurrentMember: ()=>{
+        return async (dispatch:Dispatch<any>)=>{
+            let result = await request.get({url: apiUrl.orgMember.currentMember})
+            if(result.isSuccess){
+                dispatch(accountSlice.actions.setMemberName(result.data.name))
+                dispatch(accountSlice.actions.setMemberEmail(result.data.email))
+            }
+        }
+    }
+}
 
 
 

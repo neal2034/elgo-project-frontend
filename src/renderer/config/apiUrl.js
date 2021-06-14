@@ -22,6 +22,7 @@ const  apiUrl = {
     },
     orgMember:{
         available: '/org-member/available',                     //可以分配给指定项目的组织成员
+        currentMember: 'org-member/current',                    //获取当前成员信息
     },
     project:{
         projectRes: '/project',        //项目资源,

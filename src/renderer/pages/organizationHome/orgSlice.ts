@@ -50,6 +50,18 @@ export const listProjects = ()=>{
     }
 }
 
+export const orgThunks = {
+    getOrganizationDetail: ()=> {
+        return async (dispatch: Dispatch<any>) => {
+            let result = await request.get({url: apiUrl.organization.detail})
+            if (result.isSuccess) {
+                dispatch(orgSlice.actions.setOrganization(result.data))
+                dispatch(orgSlice.actions.setName(result.data.name))
+            }
+        }
+    }
+}
+
 
 export const {setName} = orgSlice.actions
 
