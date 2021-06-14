@@ -301,6 +301,17 @@ export default function ApiUrlArea(props:IApiProps){
 
 
             ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then(data=>{
+                let testsCode = api.testsCode
+                let responseBody =  JSON.stringify(data);  //该变量可被测试使用
+                if(testsCode){
+                    try {
+                        eval(testsCode);
+                    }catch (e) {
+                        //TODO 将结果放入测试
+                        console.log(e)
+                    }
+                }
+
                 dispatch(apiActions.updateApiQuite({responseBody:data}))
             }).catch(function(error) {
                 dispatch(apiActions.updateApiQuite({responseBody:"调用错误: "+error.message}))
