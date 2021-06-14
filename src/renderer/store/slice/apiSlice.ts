@@ -168,6 +168,13 @@ const apiSlice = createSlice({
                 }
             })
         },
+        updateApiQuite:(state, action) => {
+            state.activeApis.forEach(item=>{
+                if(item.serial === state.currentApiSerial){
+                    Object.assign(item, action.payload)
+                }
+            })
+        },
         setApiTreeItems:(state, action)=>{
             state.apiTreeItems = action.payload
 
@@ -597,7 +604,6 @@ export const apiThunks = {
         return async (dispatch:Dispatch<any>)=>{
             let result = await request.get({url:apiUrl.apiEnv.apiEnvRes})
             if(result.isSuccess){
-                console.log("envs are ", result.data)
                 dispatch(apiActions.setEnvs(result.data))
             }
         }

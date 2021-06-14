@@ -205,7 +205,6 @@ export default function ApiUrlArea(props:IApiProps){
         handleSaveClick:()=>{
             if(api.id){
                 dispatch(editApi());
-                console.log("will edit api")
             }else{
                 setApiDlgVisible(true)
                 let collections = mapTreeData(getApiCollections(apiItems));
@@ -302,9 +301,9 @@ export default function ApiUrlArea(props:IApiProps){
 
 
             ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then(data=>{
-                dispatch(apiActions.updateCurrentApi({responseBody:data}))
+                dispatch(apiActions.updateApiQuite({responseBody:data}))
             }).catch(function(error) {
-                dispatch(apiActions.updateCurrentApi({responseBody:"调用错误: "+error.message}))
+                dispatch(apiActions.updateApiQuite({responseBody:"调用错误: "+error.message}))
             })
 
         }
