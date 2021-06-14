@@ -23,6 +23,7 @@ export default function ApiTabs(props:IApiTabsProps){
     const {maxContentWidth} = props;
     const dispatch = useDispatch()
     const [apiEnvDlgVisible, setApiEnvDlgVisible] = useState(false)
+    const envs = useSelector((state:RootState)=>state.api.envs)
     let activeApis = useSelector((state:RootState) => state.api.activeApis)
     const activeTabs = activeApis.map(item=>{
         return <ApiTab api={item} key={item.serial}/>
@@ -39,6 +40,18 @@ export default function ApiTabs(props:IApiTabsProps){
     const handler = {
         closeEnvDlg: ()=>{
             setApiEnvDlgVisible(false)
+        },
+        envSelectChange: (envId:number)=>{
+            dispatch(apiActions.setCurrentEnv(envId))
+        }
+    }
+
+    const ui = {
+        envOptions: ()=>{
+            let defaultOption = <Option key={-1} value={-1}>未指定环境</Option>
+            let envOptions = envs.map((env:any)=> <Option key={env.id} value={env.id}>{env.name}</Option>)
+            envOptions.splice(0, 0, defaultOption)
+            return envOptions
         }
     }
 
@@ -53,7 +66,9 @@ export default function ApiTabs(props:IApiTabsProps){
                 </div>
             </div>
             <div className="d-flex align-center env-selector mb5">
-                <Select placeholder={"未指定环境"} style={{width:'200px'}}/>
+                <Select onChange={handler.envSelectChange} defaultValue={-1} placeholder={"未指定环境"} style={{width:'200px'}}>
+                    {ui.envOptions()}
+                </Select>
                 <img onClick={()=>setApiEnvDlgVisible(true)} src={IconSetting} className="ml5 cursor-pointer" width={14} height={14} />
             </div>
              <ApiEnvsDlg visible={apiEnvDlgVisible} onClose={handler.closeEnvDlg}/>
