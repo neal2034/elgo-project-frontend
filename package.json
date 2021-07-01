@@ -25,7 +25,7 @@
   "author": "",
   "license": "ISC",
   "build": {
-    "productName": "Electron App",
+    "productName": "EffWrok",
     "appId": "electron.app",
     "files": [
       "dist/",
@@ -43,7 +43,7 @@
       "backgroundColor": "#ffffff",
       "icon": "./resources/icons/app.icns",
       "iconSize": 80,
-      "title": "Electron App"
+      "title": "EffWork"
     },
     "win": {
       "target": [
