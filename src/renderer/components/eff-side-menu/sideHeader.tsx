@@ -23,6 +23,8 @@ export default function SideHeader(){
         dispatch(accountThunks.getCurrentMember())
     },[])
 
+
+    //设置点击弹出菜单以外的地方关闭菜单
     useEffect(()=>{
         document.addEventListener("click", handleClickOutside, false);
         return () =>{
@@ -32,6 +34,7 @@ export default function SideHeader(){
     }, [])
 
     const handleClickOutside = (event:any) =>{
+        event.stopPropagation();
         if(!(event.target.className.includes("ant-dropdown-menu-item") || event.target.className.includes("drop-down-menu-trigger"))){
             setOrgMenuVisible(false)
         }
@@ -49,6 +52,7 @@ export default function SideHeader(){
             setOrgMenuVisible(false)
             switch (key){
                 case 'switch-org':
+                    history.push("/app/org-switch")
                     break;
                 case 'change-pwd':
                     alert('修改密码功能开发中')
@@ -58,6 +62,10 @@ export default function SideHeader(){
                     break;
             }
         },
+        openDropdownMenu: (event:any)=>{
+            event.stopPropagation();
+            setOrgMenuVisible(true);
+        }
     }
 
 
@@ -82,7 +90,7 @@ export default function SideHeader(){
             <Dropdown  overlayStyle={{width:'200px'}} overlay={menu} visible={orgMenuVisible}  placement="bottomRight" >
                 <span onClick={handler.goHome} className="font-title cursor-pointer org-name">
                     {orgName}
-                    <div className="drop-down-menu-trigger"  onClick={()=>setOrgMenuVisible(true)}>
+                    <div className="drop-down-menu-trigger"  onClick={response.openDropdownMenu}>
                         <img className="drop-down-menu-trigger" src={ImgUpDown} width={14}/>
                     </div>
                 </span>

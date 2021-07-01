@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
+import umbrella from "umbrella-storage";
 
 
 const orgSlice = createSlice({
@@ -11,6 +12,7 @@ const orgSlice = createSlice({
         projects:[],
         departments:[],
         organization: null,          //当前组织
+        orgList:[],
     },
     reducers:{
         setName:  (state, action) => {
@@ -24,6 +26,9 @@ const orgSlice = createSlice({
         },
         setOrganization:(state, action)=>{
             state.organization = action.payload
+        },
+        setOrganizationList: (state,action)=>{
+            state.orgList = action.payload
         }
     }
 })
@@ -58,6 +63,16 @@ export const orgThunks = {
                 dispatch(orgSlice.actions.setOrganization(result.data))
                 dispatch(orgSlice.actions.setName(result.data.name))
             }
+        }
+    },
+    listOrganizations: ()=>{
+        return async (dispatch: Dispatch<any>) => {
+            let orgs = await request.get({url:apiUrl.organization.orgRes})
+            if(orgs.isSuccess){
+                console.log(orgs.data)
+                dispatch(orgSlice.actions.setOrganizationList(orgs.data))
+            }
+
         }
     }
 }

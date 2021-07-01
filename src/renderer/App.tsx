@@ -6,6 +6,7 @@ import ProjectHome from "./pages/projectHome/projectHome";
 import {Switch} from "react-router-dom";
 import EffSideMenu from "./components/eff-side-menu/effSideMenu";
 import Api from "./pages/api/api";
+import OrgSwitch from "./pages/orgSwitch/orgSwitch";
 import {useSelector} from "react-redux";
 import {RootState} from "./store/store";
 import EffBreadCrumb from "./components/eff-breadcrumb/eff-breadcrumb";
@@ -23,6 +24,7 @@ const App = () => {
                      <Switch>
                          <PrivateRoute path="/app/organization" component={OrganizationHome}/>
                          <PrivateRoute component={ProjectHome} path="/app/project"/>
+                         <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
                          <PrivateRoute component={Api} path="/app/api" />
                      </Switch>
              </Content>
