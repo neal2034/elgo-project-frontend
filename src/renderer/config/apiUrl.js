@@ -19,6 +19,9 @@ const  apiUrl = {
         getMemberInfo: '/organization/member',                      //获取组织成员详情
         currentMemberInfo: '/organization/current-member',          //当前组织成员信息
         orgMemberRes: '/organization/member',                     //组织成员资源
+        lastLogin: '/organization/last-login',                    //设置最近登录组织
+        getLogin: '/organization/login',                          //获取需要登录的组织
+
     },
     orgMember:{
         available: '/org-member/available',                     //可以分配给指定项目的组织成员

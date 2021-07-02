@@ -26,6 +26,7 @@ const orgSlice = createSlice({
         },
         setOrganization:(state, action)=>{
             state.organization = action.payload
+            state.name = action.payload.name
         },
         setOrganizationList: (state,action)=>{
             state.orgList = action.payload
@@ -69,10 +70,14 @@ export const orgThunks = {
         return async (dispatch: Dispatch<any>) => {
             let orgs = await request.get({url:apiUrl.organization.orgRes})
             if(orgs.isSuccess){
-                console.log(orgs.data)
                 dispatch(orgSlice.actions.setOrganizationList(orgs.data))
             }
 
+        }
+    },
+    setLastLoginOrg: ()=>{
+        return ()=>{
+            request.put({url:apiUrl.organization.lastLogin})
         }
     }
 }

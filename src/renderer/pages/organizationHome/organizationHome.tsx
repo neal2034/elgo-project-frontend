@@ -3,7 +3,7 @@ import './orgHome.less'
 import {Divider} from "antd";
 import EffOrganization from "../../components/eff-organization/effOrganization";
 import EffProject from "../../components/eff-project/effProject";
-import {getOrganizationDetail, listProjects} from './orgSlice'
+import {getOrganizationDetail, listProjects, orgThunks} from './orgSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 
@@ -12,17 +12,14 @@ export default function OrganizationHome (){
 
     //获取数据，组织详情，项目详情
     const dispatch = useDispatch();
-    useEffect(()=>{
-        dispatch(getOrganizationDetail())
-
-    },[dispatch])
-    useEffect(()=>{
-        dispatch(listProjects())
-    },[dispatch])
-
+    //将当前组织设置为最近登录
+    useEffect(()=>{dispatch(orgThunks.setLastLoginOrg())}, [])
+    useEffect(()=>{dispatch(getOrganizationDetail())},[dispatch])
+    useEffect(()=>{dispatch(listProjects())},[dispatch])
 
     let departments = useSelector((state:RootState) => state.organization.departments)
     let projects = useSelector((state:RootState)=>state.organization.projects)
+    let organization:any = useSelector((state:RootState)=>state.organization.organization)
     const departmentList = departments.map((item:any)=>{
         return   <EffProject key={item.serial} project={item} />
     })
@@ -35,7 +32,7 @@ export default function OrganizationHome (){
 
     return (
         <div className="orgHome padding20 ">
-            <Divider className="d-flex align-center justify-center">EffWork</Divider>
+            <Divider className="d-flex align-center justify-center">{organization && organization.name}</Divider>
             <div className="area">
                 <EffOrganization/>
             </div>

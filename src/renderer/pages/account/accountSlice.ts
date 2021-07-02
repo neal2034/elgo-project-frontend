@@ -42,10 +42,11 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
          if(result.isSuccess){
              umbrella.setLocalStorage('token', result.data.token)
              //获取组织列表
-             let orgs = await request.get({url:apiUrl.organization.orgRes})
-             umbrella.setLocalStorage('oserial', orgs.data[0].serial);
-             dispatch(setName( orgs.data[0].name))
-             let proResult = await request.get({url:apiUrl.project.projectRes})
+             let loginOrg = await request.get({url:apiUrl.organization.getLogin})
+             if(loginOrg.isSuccess){
+                 umbrella.setLocalStorage('oserial', loginOrg.data.serial);
+                 dispatch(setName( loginOrg.data.name))
+             }
          }
          return result.isSuccess
     }
