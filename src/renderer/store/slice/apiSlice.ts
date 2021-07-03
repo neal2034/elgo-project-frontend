@@ -2,8 +2,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
-import api from "../../pages/api/api";
-import {act} from "react-dom/test-utils";
 
 type ApiMethod = "GET"|"POST"|"DELETE"|"PUT"
 type BodyType = "NONE" | "JSON"
@@ -463,6 +461,7 @@ const editApi:()=>void  = ()=>{
         let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
         if(result.isSuccess){
             dispatch(apiActions.setCurrentApiSaved())
+            dispatch(listApiTreeItems());
         }
         return result
 

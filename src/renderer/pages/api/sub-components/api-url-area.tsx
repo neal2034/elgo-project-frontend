@@ -323,10 +323,10 @@ export default function ApiUrlArea(props:IApiProps){
     return (
         <div className="d-flex">
             <Select style={{ width: 120 }} value={api.method} onChange={response.handleMethodChange}>
-                <Option value="get">Get</Option>
-                <Option value="post">Post</Option>
-                <Option value="put">Put</Option>
-                <Option value="delete">Delete</Option>
+                <Option value="get">GET</Option>
+                <Option value="post">POST</Option>
+                <Option value="put">PUT</Option>
+                <Option value="delete">DELETE</Option>
             </Select>
             <Input value={api.url} onChange={handler.handleUrlChange}/>
             <Button onClick={handler.handleCallApi}>发送</Button>
