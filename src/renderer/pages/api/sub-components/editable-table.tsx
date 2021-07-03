@@ -44,7 +44,7 @@ const EditableCell = (props:any)=>{
         ):(
             <div className="editable-cell-value-wrap" onClick={toggleEdit}>
                 {children}
-                {delAction && hoverRowKey===props.record.key? <img className="del-action" onClick={delParams} alt={"删除"} width={14} src={ImgClose}/>:null}
+                {delAction && hoverRowKey===props.record.key? <div className={"action-area"}><img onClick={delParams} alt={"删除"} width={14} src={ImgClose}/></div>:null}
             </div>
 
         )

@@ -16,11 +16,13 @@ interface IApiEnvsProps{
     onClose: ()=>void
 }
 
+type DlgContent = 'list' | 'edit' | 'add'; //对话框类型
+
 export default function ApiEnvsDlg(props:IApiEnvsProps){
     const {visible, onClose} = props
     const dispatch = useDispatch()
     const [title, setTitle] = useState<string>("环境管理")
-    const [contentType, setContentType] = useState("list")
+    const [contentType, setContentType] = useState<DlgContent>("list")
     const [confirmDelDlgVisible, setConfirmDelDlgVisible] = useState(false)
     const [envsData, setEnvsData] = useState<any>([{key:0}])
     const [willDelEnv, setWillDelEnv] = useState<any>()
@@ -38,17 +40,22 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
             title:'',
             dataIndex: 'selected',
             selectable:true,
+            width:'50px',
         },
         {
             title:'变量名',
             dataIndex: 'varName',
             editable:true,
+            width: 200,
+            ellipsis:true,
         },
         {
             title:'变量值',
             dataIndex: 'varValue',
             editable:true,
             delAction:true,         //该列显示删除操作
+            width:400,
+            ellipsis:true,
         }
 
     ]
@@ -131,50 +138,52 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
         }
     }
 
-    const noEnvContent = (<div className="no-env">
-        <div>环境是一组变量的集合，可以在定义API的过程中引用，方便在不同的开发或者域名环境下进行切换</div>
-        <div className="mt10">点击下方“<span className="add-text">添加</span>”按钮创建环境</div>
-        <EffButton onClick={handler.handleAddEnv} className="btn-add" round={true} type={"filled"}  key={"add"} text={"添加"}/>
-    </div>)
 
-
-    const envListContent = <div className="d-flex-column">
-        {envs.map((item:any)=>
-        <div key={item.id} className="d-flex mb10 justify-between env-item">
-            <span>{item.name}</span>
-            <div className="d-flex">
-                <div onClick={()=>handler.goEditEnv(item)} className="cursor-pointer">
-                    <img src={IconEdit} width={14} />
-                    <span className="ml5">编辑</span>
-                </div>
-                <div onClick={()=>handler.delEnv(item)} className="ml10 cursor-pointer">
-                    <img src={IconDel} width={14} />
-                    <span className="ml5">删除</span>
+    const ui = {
+        //添加或者编辑环境表格内容
+        envContentForm:(
+            <div className="d-flex-column">
+                <Form form={form}>
+                    <Form.Item name="name" rules={[{ required: true, message: '请输入环境名称' }]}>
+                        <Input placeholder={"环境名称"} className="mb10"/>
+                    </Form.Item>
+                </Form>
+                <EditableTable valueChange={valueChanged} valueDel={paramsDel}  columns={varColumns} dataSource={envsData} />
+                <div className="mt20 self-flex-end">
+                    <EffButton onClick={handler.cancelAddEnv}  round={true} key={"cancel"} text={"取消"}/>
+                    <EffButton onClick={handler.confirmAddEnv} className="ml10" round={true} type={"filled"}  key={"ok"} text={"确定"}/>
                 </div>
             </div>
-        </div>
-        )}
-        <EffButton onClick={handler.handleAddEnv} className="btn-add self-flex-end mr40" round={true} type={"filled"}  key={"add"} text={"添加"}/>
-    </div>
+        ),
 
-    const addEnvContent = (
-        <div className="d-flex-column">
-            <Form form={form}>
-                <Form.Item name="name" rules={[{ required: true, message: '请输入环境名称' }]}>
-                    <Input placeholder={"环境名称"} className="mb10"/>
-                </Form.Item>
-            </Form>
-            <EditableTable valueChange={valueChanged} valueDel={paramsDel}  columns={varColumns} dataSource={envsData} />
-            <div className="mt20 self-flex-end">
-                <EffButton onClick={handler.cancelAddEnv}  round={true} key={"cancel"} text={"取消"}/>
-                <EffButton onClick={handler.confirmAddEnv} className="ml10" round={true} type={"filled"}  key={"ok"} text={"确定"}/>
-            </div>
-        </div>
-    )
+        envListContent: <div className="d-flex-column">
+            {envs.map((item:any)=>
+                <div key={item.id} className="d-flex mb10 justify-between env-item">
+                    <span>{item.name}</span>
+                    <div className="d-flex">
+                        <div onClick={()=>handler.goEditEnv(item)} className="cursor-pointer">
+                            <img src={IconEdit} width={14} />
+                            <span className="ml5">编辑</span>
+                        </div>
+                        <div onClick={()=>handler.delEnv(item)} className="ml10 cursor-pointer">
+                            <img src={IconDel} width={14} />
+                            <span className="ml5">删除</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <EffButton onClick={handler.handleAddEnv} className="btn-add self-flex-end mr40" round={true} type={"filled"}  key={"add"} text={"添加"}/>
+        </div>,
+
+        noEnvContent:  (<div className="no-env">
+            <div>环境是一组变量的集合，可以在定义API的过程中引用，方便在不同的开发或者域名环境下进行切换</div>
+            <div className="mt10">点击下方“<span className="add-text">添加</span>”按钮创建环境</div>
+            <EffButton onClick={handler.handleAddEnv} className="btn-add" round={true} type={"filled"}  key={"add"} text={"添加"}/>
+        </div>)
+    }
 
     return ( <Modal width={700} className="api-envs-dialog" title={titleArea} footer={null}   destroyOnClose={true} closable = {false} visible={visible}>
-        {contentType==='list'? (isEmpty?noEnvContent:envListContent):null}
-        {contentType==='add' || contentType==='edit'?addEnvContent:null}
+        {contentType==='list' ? (isEmpty? ui.noEnvContent: ui.envListContent) : ui.envContentForm}
         <EffConfirmDlg className="mt40"  visible={confirmDelDlgVisible}>
             <div className="d-flex-column">
                 <div className="d-flex-column">
