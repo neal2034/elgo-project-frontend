@@ -8,6 +8,7 @@ import './api-wrapper.less'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {apiActions} from '@slice/apiSlice'
+import {Tooltip} from "antd";
 
 interface ApiProps{
     api:API
@@ -39,15 +40,17 @@ export default function ApiTab(props:ApiProps){
     }
 
     return (
-        <div onClick={handler.handleTabClick} className={`api-tab  ${isActive?'active-tab':''} `}>
-            <div className="d-flex align-center">
-                {isExample? <div className="example mr5">例</div>:<span className={'method '+methodColorClass()}>{method.toUpperCase()}</span>}
-                <span>{name}</span>
+        <Tooltip title={name} mouseEnterDelay={.5} color={'#999999'}>
+            <div onClick={handler.handleTabClick} className={`api-tab  ${isActive?'active-tab':''} `}>
+                    <div className="d-flex align-center">
+                        {isExample? <div className="example mr5">例</div>:<span className={'method '+methodColorClass()}>{method.toUpperCase()}</span>}
+                        <span className="name-area">{name}</span>
+                    </div>
+                <div className="d-flex">
+                    {dirty?<div className="dirty"/>:null}
+                    <CloseOutlined onClick={handler.handleClose} className="btn-close" />
+                </div>
             </div>
-            <div className="d-flex">
-                {dirty?<div className="dirty"/>:null}
-                <CloseOutlined onClick={handler.handleClose} className="btn-close" />
-            </div>
-        </div>
+        </Tooltip>
     )
 }
