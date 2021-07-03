@@ -30,7 +30,7 @@
 
 .api-sidebar{
   border: 1px solid @color-board;
-  width: 200px;
+  width: 240px;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -116,6 +116,8 @@
     align-items: center;
     justify-content: flex-start;
     color: #666666;
+    position: relative;
+    max-width: 212px;
 
     .api-group-menu{
       position: absolute;
@@ -128,6 +130,13 @@
       justify-content: center;
       align-items: center;
 
+    }
+
+    .name-area{
+      max-width: 140px;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
 
     .menu-circle{

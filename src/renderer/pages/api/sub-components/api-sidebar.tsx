@@ -274,7 +274,7 @@ export default function ApiSideBar(){
             let methodClassName = method.toLowerCase()
             return <div className="api-item" onClick={response.apiSelected}  onMouseEnter={response.showMenu}>
                 <span className={'mr10 ml10 api-method '+methodClassName}>{method}</span>
-                {data.name}
+                <span className="name-area">{data.name}</span>
                 <Dropdown className={visibleApiMenuSetId===data.id? 'd-flex':'hide-menu'} overlay={ui.apiItemMenu} placement={"bottomCenter"}>
                     <div className="api-group-menu">
                         <div className="menu-circle"/>
