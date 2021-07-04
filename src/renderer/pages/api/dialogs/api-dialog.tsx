@@ -86,6 +86,11 @@ export default function ApiDialog(props: IApiDlgProps){
         handleSelectApiCollection: (selectedKeys:any)=>{
             setErrorChooseCollection(false)
             setSelectedKeys(selectedKeys)
+        },
+
+        dlgClean: ()=>{
+            setName(undefined)
+            setDescription(undefined)
         }
     }
 
@@ -97,7 +102,7 @@ export default function ApiDialog(props: IApiDlgProps){
     }
 
     return (
-        <Modal destroyOnClose={true} title={title} closable={false} footer={ui.footArea} visible={visible}>
+        <Modal destroyOnClose={true} title={title} closable={false} afterClose={response.dlgClean} footer={ui.footArea} visible={visible}>
             <Input onFocus={()=>setErrorNameEmpty(false)} value={name} placeholder={"API  名称"} onChange={e=>setName(e.target.value)}/>
             {errorNameEmpty?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请输入API名称</span>:null}
             <TextArea onChange={e=>setDescription(e.target.value)} value={description} className="mt10" autoSize={{minRows: 15, maxRows: 20}}/>

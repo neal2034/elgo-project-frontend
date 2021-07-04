@@ -21,6 +21,7 @@ interface ApiSetDlgProps{
     parentId?:number
 }
 
+//API 集合/分组 添加，编辑对话框
 export default function ApiSetDialog(props:ApiSetDlgProps){
     const {visible, editItem, closeDlg, dlgType, mode} = props
     let title = mode === 'add'? '新建':'编辑'
@@ -28,14 +29,12 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
     const parentId = props.parentId!
     const dispatch = useDispatch();
     const [errorNameEmpty, setErrorNameEmpty] = useState(false)
-    const [name,setApiSetName] = useState(editItem && editItem.name)
+    const [name,setApiSetName] = useState(editItem ? editItem.name:null)
     const [authType, setAuthType] = useState( (editItem && editItem.authType) || 'NONE')
     const [description, setDescription] = useState(editItem && editItem.description)
     const [authToken, setAuthToken] = useState(editItem && editItem.authToken)
 
     let namePlaceHolder = dlgType==='set'? "集合名称":"分组名称"
-
-
     useEffect(()=>{
         if(mode==='edit'){
             setApiSetName(editItem.name)
@@ -45,7 +44,6 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
         }
 
     },[editItem])
-
     const response = {
         handleConfirm:()=>{
             if(dlgType === 'set' && mode=== 'add'){
@@ -119,6 +117,13 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
             }
             dispatch(addApiGroup(payload))
             closeDlg();
+        },
+
+        dlgClean: ()=>{
+            setApiSetName(null)
+            setDescription(null)
+            setAuthToken(null)
+            setAuthType('NONE')
         }
     }
 
@@ -136,7 +141,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
 
 
     return (
-        <Modal destroyOnClose={true} title={titleArea} closable = {false} footer={footArea}   visible={visible}>
+        <Modal destroyOnClose={true} title={titleArea} closable = {false} footer={footArea}  afterClose={response.dlgClean}  visible={visible}>
              <Input onFocus={()=>setErrorNameEmpty(false)} value={name} placeholder={namePlaceHolder} onChange={updateApiSetName}/>
             {errorNameEmpty?<span style={{color:globalColor.mainRed3, fontSize:'12px'}}>请输入集合名称</span>:null}
              <Tabs>
