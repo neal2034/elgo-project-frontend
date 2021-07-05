@@ -33,7 +33,8 @@ export default function ApiExample(props:IApiProps){
             setPopoverVisible(false)
             dispatch(apiActions.editApiExample(example))
         },
-        confirmDelExample: (example:any)=>{
+        confirmDelExample: (event:any, example:any)=>{
+            event.stopPropagation();
             setPopoverVisible(false)
             setWillDelExample(example)
             setConfirmDelDlgVisible(true)
@@ -53,19 +54,18 @@ export default function ApiExample(props:IApiProps){
         }
     }
     const content = examples.map((example:any)=>{
-      return (<div className="api-example cursor-pointer d-flex justify-between" key={example.id}>
+      return (<div className="api-example cursor-pointer d-flex justify-between" key={example.id} onClick={()=>handler.editExample(example)}>
             <span className="ml10">{example.name}</span>
-            <div className="d-flex actions">
-                <img onClick={()=>handler.editExample(example)} src={IconEdit} width={14} />
-                <img onClick={()=>handler.confirmDelExample(example)} src={IconRemove} className="ml5 mr10" width={14} />
+            <div className="d-flex actions"  >
+                <img onClick={(event)=>handler.confirmDelExample(event, example)} src={IconRemove} className="ml5 mr10" width={14} />
             </div>
         </div>)
     })
     return (
         <div className="api-examples">
-            示例({apiNum})
-            <Popover visible={popoverVisible} content={content} placement="bottomLeft" trigger={"click"}>
-                <CaretDownOutlined onClick={()=>setPopoverVisible(true)} />
+
+            <Popover   content={content} placement="bottomLeft" trigger={"click"}>
+                <span className="cursor-pointer">示例({apiNum})<CaretDownOutlined /></span>
             </Popover>
             <EffConfirmDlg visible={confirmDelDlgVisible}>
                 <div>

@@ -35,7 +35,7 @@ export default function SideHeader(){
 
     const handleClickOutside = (event:any) =>{
         event.stopPropagation();
-        if(!(event.target.className.includes("ant-dropdown-menu-item") || event.target.className.includes("drop-down-menu-trigger"))){
+        if(!(  event.target.className && typeof event.target.className === 'string' && (event.target.className.includes("ant-dropdown-menu-item") || event.target.className.includes("drop-down-menu-trigger")))){
             setOrgMenuVisible(false)
         }
     }
