@@ -44,7 +44,7 @@ const EditableCell = (props:any)=>{
         ):(
             <div className="editable-cell-value-wrap" onClick={toggleEdit}>
                 {children}
-                {delAction && hoverRowKey===props.record.key? <div className={"action-area"}><img onClick={delParams} alt={"删除"} width={14} src={ImgClose}/></div>:null}
+                {delAction && hoverRowKey===props.record.key && hoverRowKey!==props.lastkey && <div className={"action-area"}><img onClick={delParams} alt={"删除"} width={14} src={ImgClose}/></div>}
             </div>
 
         )
@@ -61,6 +61,7 @@ const EditableCell = (props:any)=>{
 export default function EditableTable(props:any){
 
     const {columns, dataSource, valueChange, valueDel} = props
+    const lastkey = dataSource[dataSource.length -1].key  //未进行编辑的内容的key
 
     const [hoverRowKey, setHoverRowKey] = useState(-1)
     const tableCols = columns.map((col:any) => {
@@ -71,6 +72,7 @@ export default function EditableTable(props:any){
             ...col,
             onCell: (record: any) => ({
                 record,
+                lastkey,
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,

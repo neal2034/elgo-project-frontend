@@ -6,7 +6,7 @@ import EditableTable from "../sub-components/editable-table";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {CloseOutlined} from '@ant-design/icons'
-import {apiThunks} from "@slice/apiSlice";
+import {ApiParams, apiThunks} from "@slice/apiSlice";
 import IconEdit from '@imgs/gray-edit.png'
 import IconDel from '@imgs/delete.png'
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
@@ -82,7 +82,13 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
 
 
     }
-    const paramsDel = (record:any) =>{}
+    //删除操作
+    const paramsDel = (record:any) =>{
+        const index = envsData.findIndex((item:any)=>item.key === record.key)
+        const tmpEnvData = Object.assign([], envsData)
+        tmpEnvData.splice(index, 1)
+        setEnvsData(tmpEnvData)
+    }
 
 
     const handler = {
