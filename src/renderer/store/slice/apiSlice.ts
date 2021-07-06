@@ -441,23 +441,16 @@ const editApi:()=>void  = ()=>{
     return async (dispatch:Dispatch<any>, getState:any) =>{
         let currentApiSerial = getState().api.currentApiSerial
         let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-        let params = currentApi.params? JSON.stringify(currentApi.params):undefined
-        let headers = currentApi.headers? JSON.stringify(currentApi.headers):undefined
-        let pathVars = currentApi.pathVars? JSON.stringify(currentApi.pathVars):undefined
-        let payload = {...currentApi}
-        payload.params = params
-        payload.headers = headers
-        payload.pathVars = pathVars
-        payload.method = payload.method.toUpperCase()
+        let {id, url, method, name, params, headers, bodyJson, bodyType, testsCode, pathVars, authType, authToken, description} = currentApi
+        params = params? JSON.stringify(params):params
+        headers = headers? JSON.stringify(headers):headers
+        pathVars = pathVars? JSON.stringify(pathVars):pathVars
+        method = method.toUpperCase()
+        let payload = {id, url, method, name, params, headers, bodyJson, bodyType, testsCode, pathVars, authType, authToken, description}
         if(payload.pathVars && payload.pathVars.length === 0){
            delete  payload.pathVars
         }
-        delete payload.treeItemId
-        delete payload.parentId
-        delete payload.examples
-        delete payload.serial
-        delete payload.dirty
-        delete payload.isExample
+
         let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
         if(result.isSuccess){
             dispatch(apiActions.setCurrentApiSaved())
