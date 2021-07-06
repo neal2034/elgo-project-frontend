@@ -308,6 +308,7 @@ export default function ApiUrlArea(props:IApiProps){
                         eval(testsCode);
                     }catch (e) {
                         //TODO 将结果放入测试
+                        alert("测试代码错误 "+e)
                         console.log(e)
                     }
                 }
