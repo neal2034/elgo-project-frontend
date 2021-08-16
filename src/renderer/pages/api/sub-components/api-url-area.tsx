@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {API, ApiEnv, ApiEnvItem,editApi, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
 
-import {ipcRenderer} from 'electron'
+// import {ipcRenderer} from 'electron'
 
 
 const {Option}  = Select
@@ -298,9 +298,8 @@ export default function ApiUrlArea(props:IApiProps){
             //body
             let body = api.bodyType === 'JSON'? api.bodyJson:null;
             let method = api.method.toLocaleLowerCase()
-
-
-            ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then(data=>{
+            const { ipcRenderer } = window.require('electron');
+            ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then((data:any)=>{
                 let testsCode = api.testsCode
                 let responseBody =  JSON.stringify(data);  //该变量可被测试使用
                 if(testsCode){
@@ -314,9 +313,10 @@ export default function ApiUrlArea(props:IApiProps){
                 }
 
                 dispatch(apiActions.updateApiQuite({responseBody:data}))
-            }).catch(function(error) {
+            }).catch(function(error:any) {
                 dispatch(apiActions.updateApiQuite({responseBody:"调用错误: "+error.message}))
             })
+
 
         }
     }
