@@ -1,6 +1,6 @@
 {
   "name": "effwork-pc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/main/main.prod.js",
   "scripts": {
