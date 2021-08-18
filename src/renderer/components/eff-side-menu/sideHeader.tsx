@@ -18,6 +18,7 @@ export default function SideHeader(){
     const memberName = useSelector((state:RootState)=>state.account.memberName)
     const memberEmail = useSelector((state:RootState)=>state.account.memberEmail)
 
+
     useEffect(()=>{
         dispatch(orgThunks.getOrganizationDetail())
         dispatch(accountThunks.getCurrentMember())

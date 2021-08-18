@@ -21,7 +21,7 @@ export default function Login(){
         // @ts-ignore
          dispatch(login({username,password})).then(result=>{
              if(result){
-                history.push("/app/organization")
+                history.push("/app/project-center")
              }else{
                  message.error('用户名或密码有误')
              }
