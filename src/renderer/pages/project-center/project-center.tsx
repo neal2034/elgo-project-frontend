@@ -39,7 +39,7 @@ export default function ProjectCenter(){
         setShowAddDlg(false)
     }
 
-    const uiProjects = projects.map((pro:any)=><ProjectItem  key={pro.serial} name={pro.name}/>)
+    const uiProjects = projects.map((pro:any)=><ProjectItem serial={pro.serial}  key={pro.serial} name={pro.name}/>)
 
 
     return (

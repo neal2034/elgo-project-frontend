@@ -25,12 +25,13 @@ const App = () => {
                  <EffBreadCrumb breads={breads}/>
                      <Switch>
                          <PrivateRoute path="/app/organization" component={OrganizationHome}/>
-                         <PrivateRoute component={ProjectHome} path="/app/project"/>
                          <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
                          <PrivateRoute component={Api} path="/app/api" />
                          <PrivateRoute component={ProjectCenter} path={'/app/project-center'}/>
+                         <PrivateRoute component={ProjectHome} path='/app/project/:serial'/>
                      </Switch>
              </Content>
+
          </Layout>
     )
 }
