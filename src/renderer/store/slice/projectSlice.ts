@@ -32,7 +32,6 @@ const projectThunks = {
         return async (dispatch:Dispatch<any>)=>{
             let result = await request.get({url:apiUrl.project.projectRes})
             if(result.isSuccess){
-                console.log("projects are ", result.data)
                 dispatch(projectActions.setProjects(result.data))
             }
         }

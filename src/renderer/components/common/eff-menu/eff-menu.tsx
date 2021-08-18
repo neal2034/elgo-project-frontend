@@ -15,7 +15,7 @@ interface IEffMenu{
 
 // 基础Menu组件
 export default function EffMenu(props:IEffMenu){
-    const {defaultKey, children, ...rest} = props
+    const {defaultKey, children} = props
     const [selectedKey, setSelectedKey] = useState(defaultKey)
 
 
@@ -23,19 +23,17 @@ export default function EffMenu(props:IEffMenu){
     const menuItems = children.map((item:any, index:number)=>React.cloneElement(item, {
         key:index,
         selectedKey,
-        handleClick: (value:string)=>setSelectedKey(value)
-        }))
-
-    const response = {
-        handleClick : ()=>{
+        handleClick: (value:string)=>{
+            setSelectedKey(value)
             if(props.onClick){
-                props.onClick({key:selectedKey})
+                props.onClick({key:value})
             }
         }
-    }
+        }))
+
 
     return (
-        <div className='eff-menu d-flex' onClick={response.handleClick}>
+        <div className='eff-menu d-flex'>
             {menuItems}
         </div>
     )

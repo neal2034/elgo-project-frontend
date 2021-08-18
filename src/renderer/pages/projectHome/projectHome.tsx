@@ -7,54 +7,57 @@ import Task from "../task/task";
 import PrivateRoute from "../../routes/privateRoute";
 import {setBreadcrumbs} from "../../store/breadcrumbSlice";
 import {useDispatch} from "react-redux";
-import {Menu} from "antd";
 import './project-home.less'
 import EffMenu, {EffMenuItem} from "../../components/common/eff-menu/eff-menu";
+import {menuActions} from "@slice/menuSlice";
+import Api from "../api/api";
 
 export default function ProjectHome (props:any){
     const dispatch = useDispatch()
     const history = useHistory()
+    useEffect(()=>{dispatch(menuActions.setActiveMenu(''))},[dispatch])
     //TODO 对面包屑应该想办法统一处理
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     const {serial} = useParams()
     const {url, path} = useRouteMatch()
-    const menuKeys = {
-        requirement:{key:'requirement', path:`${url}/requirement`},
-        funztion:{key:'funztion',path:`${url}/funztion` },
-        task:{key:'task', path:`${url}/task`}
-    }
+
+    //项目菜单属性集
+    const proMenuProps = [
+        {key:'requirement', path:`${url}/requirement`, name:'需求'},
+        {key:'funztion',path:`${url}/funztion`,name:'功能'},
+        {key:'task', path:`${url}/task`, name:'任务'},
+        {key:'api', path:`${url}/api`, name:'API'},
+    ]
 
     const response = {
         menuClick: (e:any)=>{
             let key = e.key
-            switch (key){
-                case menuKeys.requirement.key:
-                    history.push(menuKeys.requirement.path)
-                    break
-                case menuKeys.funztion.key:
-                    history.push(menuKeys.funztion.path)
-                    break
-                case menuKeys.task.key:
-                    history.push(menuKeys.task.path)
-                    break
-            }
+            proMenuProps.forEach(menu=>{
+                if(menu.key==key){
+                    history.push(menu.path)
+                }
+            })
+
         }
+    }
+
+    const ui = {
+        menuItems : proMenuProps.map(menu=><EffMenuItem key={menu.key} value={menu.key}>{menu.name}</EffMenuItem>)
     }
 
 
 
     return (
         <div>
-            <EffMenu defaultKey={menuKeys.requirement.key} onClick={response.menuClick}>
-                <EffMenuItem value={menuKeys.requirement.key}>需求</EffMenuItem>
-                <EffMenuItem value={menuKeys.funztion.key}>功能</EffMenuItem>
-                <EffMenuItem value={menuKeys.task.key}>任务</EffMenuItem>
+            <EffMenu defaultKey={proMenuProps[0] && proMenuProps[0].key} onClick={response.menuClick}>
+                {ui.menuItems}
             </EffMenu>
 
             <Switch>
                 <PrivateRoute component={Requirement} path={`${path}/requirement`}/>
                 <PrivateRoute component={Funztion} path={`${path}/funztion`}/>
                 <PrivateRoute component={Task} path={`${path}/task`}/>
+                <PrivateRoute component={Api} path={`${path}/api`}/>
             </Switch>
         </div>
     )

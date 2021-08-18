@@ -9,9 +9,11 @@ import Colors from '@config/globalColor';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {menuActions} from "@slice/menuSlice";
+import {useHistory} from "react-router";
 
 export default function EffSideMenu (){
     const dispatch = useDispatch();
+    const history = useHistory();
     const activeMenu = useSelector((state:RootState) => state.menu.activeMenu)
 
     const mainMenus = [
@@ -20,6 +22,7 @@ export default function EffSideMenu (){
             icon: <HomeOutlined style={{ fontSize: '16px', color: '#666666' }}/>,
             activeIcon: <HomeOutlined style={{ fontSize: '16px', color:  Colors.mainYellowDark }}/>,
             key: 'home',
+            path:'/app/project-center'
         },
         {
             name:'我的任务',
@@ -38,6 +41,11 @@ export default function EffSideMenu (){
 
     const  handleClick = (key:string)=>{
         dispatch(menuActions.setActiveMenu(key))
+        mainMenus.forEach(item=>{
+            if(item.key==key && item.path){
+                history.push(item.path)
+            }
+        })
     }
 
     const mainMenuItems = mainMenus.map(item=>{
