@@ -78,29 +78,39 @@ const reqThunks = {
     },
 
     //列出需求
-    listPageRequirement : (params:IRequirementListParams)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const {page=0} = params
-                let result = await request.get({url:apiUrl.requirements.index, params})
-                if(result.isSuccess){
-                    dispatch(reqActions.setPage(page))
-                    dispatch(reqActions.setRequirements(result.data.data))
-                    dispatch(reqActions.setReqTotal(result.data.total))
-                }
-            }
-        },
-
-    //添加需求分类
-    addReqClazz : (name:string)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let data = {name}
-                let result = await request.post({url:apiUrl.requirementsClass.index, data })
-                if(result.isSuccess){
-                    dispatch(reqThunks.listAllReqClasses())
-                }
+    listPageRequirement: (params: IRequirementListParams) => {
+        return async (dispatch: Dispatch<any>) => {
+            const {page = 0} = params
+            let result = await request.get({url: apiUrl.requirements.index, params})
+            if (result.isSuccess) {
+                dispatch(reqActions.setPage(page))
+                dispatch(reqActions.setRequirements(result.data.data))
+                dispatch(reqActions.setReqTotal(result.data.total))
             }
         }
+    },
+
+    //添加需求分类
+    addReqClazz: (name: string) => {
+        return async (dispatch: Dispatch<any>) => {
+            let data = {name}
+            let result = await request.post({url: apiUrl.requirementsClass.index, data})
+            if (result.isSuccess) {
+                dispatch(reqThunks.listAllReqClasses())
+            }
+        }
+    },
+
+    delReqClazz: (id:number) => {
+        return async (dispatch: Dispatch<any>) => {
+            let result = await request.delete({url:`${apiUrl.requirementsClass.index}/${id}`})
+            if(result.isSuccess){
+                dispatch(reqThunks.listAllReqClasses())
+            }
+        }
+    }
 }
+
 
 
 

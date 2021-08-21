@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {MoreOutlined, PlusSquareOutlined} from '@ant-design/icons'
+import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined} from '@ant-design/icons'
 import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
@@ -11,8 +11,10 @@ import {RootState} from "../../store/store";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {tagThunks} from "@slice/tagSlice";
 import AddReqClazzDlg from "./add-req-clazz-dlg";
+import DelReqClazzDlg from "./del-req-clazz-dlg";
 
 interface IReqClassItemProps{
+    id:number,
     name:string,
     num:number,
     className:string
@@ -122,7 +124,7 @@ function ReqClass(props:any){
     const [showReqClazzDlg, setShowReqClazzDlg] = useState(false)
 
     const ui = {
-        reqClassItems: reqClasses.map((item:any)=><ReqClassItem key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
+        reqClassItems: reqClasses.map((item:any)=><ReqClassItem id={item.id} key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
     }
 
     const response = {
@@ -141,7 +143,7 @@ function ReqClass(props:any){
                 </Popover>
 
             </div>
-            <ReqClassItem className="mt20" name={'所有的'} num={30}/>
+            <ReqClassItem id={22222} className="mt20" name={'所有的'} num={30}/>
             {ui.reqClassItems}
         </div>
     )
@@ -173,7 +175,7 @@ function ReqContent(props: IRequirementContentProps){
 
 
 function ReqClassItem(props:IReqClassItemProps){
-    const {name, num, className} = props
+    const {name, num, className, id} = props
     const [showMenuTrigger,setShowMenuTrigger] = useState(false) //控制是否显示菜单触发器
     const [menuVisible, setMenuVisible] = useState(false) //控制是否显示菜单
     const response = {
@@ -189,7 +191,7 @@ function ReqClassItem(props:IReqClassItemProps){
                 <span>{name}</span>
                 <span>{num}</span>
             </div>
-            <Popover visible={menuVisible} className={`${showMenuTrigger? 'show-menu':'hide-menu'}`} content={<ReqClassMenu onMouseLeave={response.handleMenuLave} />} placement={'bottom'} trigger={'click'}>
+            <Popover visible={menuVisible} className={`${showMenuTrigger? 'show-menu':'hide-menu'}`} content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />} placement={'bottom'} trigger={'click'}>
                 <span > <MoreOutlined   onClick={()=>setMenuVisible(true)} style={{fontSize:'14px', fontWeight:'bold'}} /></span>
             </Popover>
         </div>
@@ -197,11 +199,35 @@ function ReqClassItem(props:IReqClassItemProps){
 }
 
 function ReqClassMenu(props:any){
+    const {name, id} = props
+    const dispatch = useDispatch()
+    const [showDelDlg, setShowDelDlg] = useState(false)
+
+    const response = {
+        confirmDelReqClazz: async()=>{
+            await dispatch(reqThunks.delReqClazz(id))
+            setShowDelDlg(false)
+        },
+        cancelDelReqClass:(e:any)=>{
+            e.stopPropagation()
+            setShowDelDlg(false)
+        }
+    }
 
     return (
         <div {...props} className="req-clazz-menu">
-            <div className="menu">编辑</div>
-            <div className="menu">删除</div>
+            <div className="menu">
+                <FormOutlined className="mr10"/> 编辑
+            </div>
+            <div className="menu" onClick={()=>setShowDelDlg(true)}>
+                <Popover visible={showDelDlg} placement={'bottom'} trigger={'click'} content={<DelReqClazzDlg
+                    onCancel={response.cancelDelReqClass}
+                    onConfirm={response.confirmDelReqClazz}
+                    name={name} />}>
+                    <DeleteOutlined  className="mr10" /> 删除
+                </Popover>
+
+            </div>
 
         </div>
     )
