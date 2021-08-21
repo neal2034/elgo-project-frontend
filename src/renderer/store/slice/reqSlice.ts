@@ -108,7 +108,16 @@ const reqThunks = {
                 dispatch(reqThunks.listAllReqClasses())
             }
         }
-    }
+    },
+
+    editReqClazz : (id:number,name:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                 let result = await request.put({url:apiUrl.requirementsClass.index,data:{name,id}})
+                if(result.isSuccess){
+                    dispatch(reqThunks.listAllReqClasses())
+                }
+            }
+        }
 }
 
 

@@ -14,10 +14,10 @@ import AddReqClazzDlg from "./add-req-clazz-dlg";
 import DelReqClazzDlg from "./del-req-clazz-dlg";
 
 interface IReqClassItemProps{
-    id:number,
+    id?:number,
     name:string,
     num:number,
-    className:string
+    className?:string
 }
 
 interface IAddReqFormProps{
@@ -122,6 +122,10 @@ function ReqClass(props:any){
     const dispatch = useDispatch()
     const {reqClasses} = props
     const [showReqClazzDlg, setShowReqClazzDlg] = useState(false)
+    let totalNum = 0
+    reqClasses.forEach((item:any)=>{
+        totalNum = totalNum + item.requirementNum
+    })
 
     const ui = {
         reqClassItems: reqClasses.map((item:any)=><ReqClassItem id={item.id} key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
@@ -143,7 +147,7 @@ function ReqClass(props:any){
                 </Popover>
 
             </div>
-            <ReqClassItem id={22222} className="mt20" name={'所有的'} num={30}/>
+            <ReqClassItem className="mt20" name={'所有的'} num={totalNum}  />
             {ui.reqClassItems}
         </div>
     )
@@ -191,7 +195,7 @@ function ReqClassItem(props:IReqClassItemProps){
                 <span>{name}</span>
                 <span>{num}</span>
             </div>
-            <Popover visible={menuVisible} className={`${showMenuTrigger? 'show-menu':'hide-menu'}`} content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />} placement={'bottom'} trigger={'click'}>
+            <Popover visible={menuVisible} className={`${showMenuTrigger && id && id!==-1? 'show-menu':'hide-menu'}`} content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />} placement={'bottom'} trigger={'click'}>
                 <span > <MoreOutlined   onClick={()=>setMenuVisible(true)} style={{fontSize:'14px', fontWeight:'bold'}} /></span>
             </Popover>
         </div>
@@ -200,8 +204,10 @@ function ReqClassItem(props:IReqClassItemProps){
 
 function ReqClassMenu(props:any){
     const {name, id} = props
+    console.log('name change to ', name)
     const dispatch = useDispatch()
     const [showDelDlg, setShowDelDlg] = useState(false)
+    const [showEditDlg, setShowEditDlg] = useState(false)
 
     const response = {
         confirmDelReqClazz: async()=>{
@@ -211,13 +217,25 @@ function ReqClassMenu(props:any){
         cancelDelReqClass:(e:any)=>{
             e.stopPropagation()
             setShowDelDlg(false)
+        },
+        cancelEditReqClazz: (e:any)=>{
+            e.stopPropagation()
+            setShowEditDlg(false)
+        },
+        confirmEditReqClazz: async (name:string)=>{
+            await dispatch(reqThunks.editReqClazz(id,name))
+            setShowEditDlg(false)
         }
     }
 
     return (
         <div {...props} className="req-clazz-menu">
-            <div className="menu">
-                <FormOutlined className="mr10"/> 编辑
+            <div className="menu" onClick={()=>setShowEditDlg(true)}>
+                <Popover visible={showEditDlg} placement={'bottom'} trigger={'click'}
+                         content={<AddReqClazzDlg name={name} isAdd={false} onCancel={response.cancelEditReqClazz} onConfirm={(name)=>response.confirmEditReqClazz(name)}/>}>
+                    <FormOutlined className="mr10"/> 编辑
+                </Popover>
+
             </div>
             <div className="menu" onClick={()=>setShowDelDlg(true)}>
                 <Popover visible={showDelDlg} placement={'bottom'} trigger={'click'} content={<DelReqClazzDlg
