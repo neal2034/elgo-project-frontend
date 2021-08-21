@@ -1,6 +1,7 @@
 import React from "react";
 import {Avatar} from "antd";
 import {colors} from '../../config/sysConstants'
+import './eff-user.less'
 
 interface User{
     id:number,
@@ -11,7 +12,7 @@ interface User{
 }
 
 export default function EffUser(props:User){
-    const {name,size, style,id} = props
+    const {name,size, style,id, ...rest} = props
     let key = typeof name === 'string'? name[0].toUpperCase():"+"+name
     let avatarSize = typeof name === 'string'? size:30
     let colorIndex = id % colors.length
@@ -21,6 +22,6 @@ export default function EffUser(props:User){
         userStyle = {...style, ...userStyle}
     }
     return (
-        <Avatar   style={userStyle} size={avatarSize}>{key}</Avatar>
+        <Avatar {...rest}   style={userStyle} size={avatarSize}>{key}</Avatar>
     )
 }

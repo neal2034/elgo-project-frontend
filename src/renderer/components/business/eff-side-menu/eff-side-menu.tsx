@@ -53,7 +53,7 @@ export default function EffSideMenu (){
     })
 
     return (
-        <Sider width="240" className="side-menu">
+        <Sider width="180" className="side-menu">
             <SideHeader />
             <div className="mt40 menus">
                 {mainMenuItems}

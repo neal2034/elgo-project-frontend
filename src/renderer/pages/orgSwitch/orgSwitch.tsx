@@ -5,11 +5,13 @@ import {RootState} from "../../store/store";
 import './orgSwitch.less'
 import umbrella from 'umbrella-storage';
 import {useHistory} from "react-router";
+import {setBreadcrumbs} from '../../store/breadcrumbSlice'
 
 export default function OrgSwitch(){
 
     const dispatch = useDispatch()
     const history = useHistory()
+    useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     let orgList = useSelector((state:RootState)=>state.organization.orgList);
 
     useEffect(()=>{
@@ -19,7 +21,7 @@ export default function OrgSwitch(){
     const response = {
         switchOrg: (serial:string)=>{
             umbrella.setLocalStorage("oserial", serial);
-            history.push("/app/organization")
+            history.push("/app/project-center")
         }
     }
 

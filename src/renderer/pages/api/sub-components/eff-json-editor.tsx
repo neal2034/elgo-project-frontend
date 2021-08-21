@@ -41,7 +41,7 @@ export default function EffJsonEditor(){
         }
 
         return ()=>{
-            console.log("will destroy")
+
             if (jsoneditor) {
                 jsoneditor.destroy();
             }

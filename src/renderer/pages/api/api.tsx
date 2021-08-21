@@ -14,7 +14,7 @@ export default function Api(){
     const currentEnvId = useSelector((state:RootState)=>state.api.currentEnvId)
     const currentEnv:ApiEnv = useSelector((state:RootState)=>state.api.envs.filter((item:ApiEnv)=>item.id === state.api.currentEnvId)[0])
     //设置面包屑
-    useEffect(()=>{dispatch(setBreadcrumbs(['接口管理']))}, [dispatch])
+    // useEffect(()=>{dispatch(setBreadcrumbs(['接口管理']))}, [dispatch])
     useEffect(()=>{
         window.effwork = {
             //设置环境变量

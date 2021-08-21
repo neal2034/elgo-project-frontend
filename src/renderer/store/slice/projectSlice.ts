@@ -9,10 +9,14 @@ const projectSlice = createSlice({
     name:'project',
     initialState:{
         projects:[],
+        projectDetail:{},   //当前的项目详情
     },
     reducers:{
         setProjects:(state, action)=>{
             state.projects = action.payload
+        },
+        setProjectDetail: (state, action)=>{
+            state.projectDetail = action.payload
         }
     }
 })
@@ -33,6 +37,14 @@ const projectThunks = {
             let result = await request.get({url:apiUrl.project.projectRes})
             if(result.isSuccess){
                 dispatch(projectActions.setProjects(result.data))
+            }
+        }
+    },
+    getProjectDetail: ()=>{
+        return async (dispatch:Dispatch<any>)=>{
+            let result = await request.get({url:apiUrl.project.detail})
+            if(result.isSuccess){
+                dispatch(projectActions.setProjectDetail(result.data))
             }
         }
     }

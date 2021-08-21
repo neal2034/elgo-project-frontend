@@ -5,6 +5,8 @@ import breadcrumbReducer from './breadcrumbSlice'
 import apiReducer from  './slice/apiSlice'
 import menuReducer from './slice/menuSlice'
 import projectSlice from './slice/projectSlice'
+import reqSlice from './slice/reqSlice'
+import tagSlice from './slice/tagSlice'
 
 
 
@@ -16,6 +18,8 @@ let store = configureStore({
         api:apiReducer,
         menu:menuReducer,
         project:projectSlice,
+        requirement: reqSlice,
+        tag:tagSlice
 
 
     },

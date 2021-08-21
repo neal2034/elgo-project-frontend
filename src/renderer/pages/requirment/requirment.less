@@ -1,0 +1,113 @@
+.requirement-class{
+  background-color: white;
+  width: 200px;
+  min-height: 80vh;
+  border-radius: 10px;
+
+  .title{
+    font-size: 16px;
+    color: @color-font-strong;
+    font-weight: bold;
+  }
+}
+
+
+
+.requirement-content{
+  background-color: white;
+  flex-grow: 1;
+  padding-top: 40px;
+
+}
+
+
+.add-req-form{
+  .btn-group{
+    margin-left: 80px;
+  }
+
+  .ant-form-item-label > label{
+    color: @color-font-normal;
+  }
+}
+
+
+.one-requirement{
+  height: 40px;
+
+  .req-main{
+    font-size: 14px;
+    color: @color-font-normal;
+  }
+}
+
+.shadowed{
+  background-color: rgba(243,244,246, .6);
+}
+
+.req-class-item{
+  height: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  padding-left: 30px;
+
+  .hide-menu{
+    opacity: 0;
+  }
+
+  .show-menu{
+    opacity: 1;
+  }
+
+  .more-action{
+    opacity: 0;
+
+    &:hover{
+      opacity: 1;
+    }
+  }
+
+  &:hover .more-action{
+    opacity: 1;
+  }
+
+  &:hover{
+    background-color: rgba(243,244,246, .6);
+  }
+
+
+}
+
+.req-clazz-menu{
+  width: 120px;
+  color: #666666;
+  padding: 20px 0;
+
+  .menu{
+    padding: 0 20px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    &:hover{
+      background-color: rgba(243,244,246, .6);
+      color: @color-main-yellow-dark;
+    }
+  }
+}
+
+
+
+//添加需求分类对话框
+.add-req-clazz-dlg{
+  width: 270px;
+  padding: 10px;
+
+  .title{
+    color: @color-font-strong;
+    border-bottom: 1px solid @color-board;
+  }
+
+
+}

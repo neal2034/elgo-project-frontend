@@ -9,6 +9,7 @@ import umbrella from 'umbrella-storage';
 import {setName} from '../organizationHome/orgSlice'
 import globalConfig from '../../config/global.config'
 import {Dispatch} from "react";
+import {act} from "react-dom/test-utils";
 
 
 interface PayloadLogin {
@@ -23,6 +24,7 @@ const accountSlice = createSlice({
     initialState:{
         memberName:null,
         memberEmail:null,
+        currentMember: {},
     },
     reducers:{
         setMemberName:(state, action)=>{
@@ -30,6 +32,9 @@ const accountSlice = createSlice({
         },
         setMemberEmail:(state, action)=>{
             state.memberEmail = action.payload
+        },
+        setCurrentMember:(state, action)=>{
+            state.currentMember = action.payload
         }
     }
 })
@@ -60,6 +65,7 @@ export const accountThunks = {
             if(result.isSuccess){
                 dispatch(accountSlice.actions.setMemberName(result.data.name))
                 dispatch(accountSlice.actions.setMemberEmail(result.data.email))
+                dispatch(accountSlice.actions.setCurrentMember(result.data))
             }
         }
     }
