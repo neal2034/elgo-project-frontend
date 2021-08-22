@@ -29,11 +29,11 @@ export default function EffButton(props:IEffButtonProps){
 
     let btnStyle:IBtnStyle  = {}
     btnStyle.width =  width
-    btnStyle.fontWeight = 'bold'
     switch (type){
         case "line":
             btnStyle.color = globalColor.mainYellowDark
             btnStyle.borderColor = globalColor.mainYellowDark
+            btnStyle.fontWeight = 'bold'
 
             break
         case "normal":
@@ -43,6 +43,7 @@ export default function EffButton(props:IEffButtonProps){
             btnStyle.color = 'white'
             btnStyle.backgroundColor = globalColor.mainYellowDark;
             btnStyle.border = 'none'
+            btnStyle.fontWeight = 'bold'
             break
     }
 

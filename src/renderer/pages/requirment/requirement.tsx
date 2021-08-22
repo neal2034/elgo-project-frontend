@@ -3,7 +3,7 @@ import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined} from '@ant
 import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
-import {Col, Drawer, Dropdown, Form, Input, Popover, Row, Select} from "antd";
+import {Col, Drawer, Dropdown, Form, Input, Popover, Row, Select,Tag} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../store/store";
@@ -11,6 +11,7 @@ import {tagThunks} from "@slice/tagSlice";
 import AddReqClazzDlg from "./add-req-clazz-dlg";
 import DelReqClazzDlg from "./del-req-clazz-dlg";
 import AddReqForm from "./add-req-form";
+import {REQUIREMENT_STATUS} from "@config/sysConstant";
 
 interface IReqClassItemProps{
     id?:number,
@@ -82,7 +83,7 @@ export default function Requirement(){
     return (
         <div className={'d-flex-column'}>
             <ProjectTollBar>
-                <EffButton onClick={response.handleAddReqBtn} round={true} className="mt10 ml20" text={'+ 新增需求'} key={'add'}/>
+                <EffButton width={100} onClick={response.handleAddReqBtn}  round={true} className="mt10 ml20" text={'+ 新增需求'} key={'add'}/>
             </ProjectTollBar>
             <div className={'d-flex'}>
                 <ReqClass reqClasses={data.reqClasses}/>
@@ -154,7 +155,8 @@ function ReqContent(props: IRequirementContentProps){
                 <span className="ml20">{item.name}</span>
             </div>
             <div>
-                {item.version && item.version.name}{item.status}
+                <span className="version">{item.version && item.version.name}</span>
+                <Tag className="ml10" color={REQUIREMENT_STATUS[item.status].color}>{REQUIREMENT_STATUS[item.status].name}</Tag>
             </div>
         </div>)
     }
