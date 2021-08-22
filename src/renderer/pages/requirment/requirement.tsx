@@ -12,6 +12,8 @@ import AddReqClazzDlg from "./add-req-clazz-dlg";
 import DelReqClazzDlg from "./del-req-clazz-dlg";
 import AddReqForm from "./add-req-form";
 import {REQUIREMENT_STATUS} from "@config/sysConstant";
+import RequirementItem from "./requirement-item";
+import RequirementDetail from "./requirement-detail";
 
 interface IReqClassItemProps{
     id?:number,
@@ -151,29 +153,38 @@ function ReqContent(props: IRequirementContentProps){
     const dispatch = useDispatch()
     const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
     const [currentPage, setCurrentPage] = useState(1)
-    const ui = {
-        reqList: requirements.map((item,index)=><div className={`one-requirement d-flex align-center pr20 justify-between pl20 ${index%2==0?'shadowed':''}`} key={item.id}>
-            <div className="req-main">
-                <span>{item.serial}</span>
-                <span className="ml20">{item.name}</span>
-            </div>
-            <div>
-                <span className="version">{item.version && item.version.name}</span>
-                <Tag className="ml10" color={REQUIREMENT_STATUS[item.status].color}>{REQUIREMENT_STATUS[item.status].name}</Tag>
-            </div>
-        </div>)
-    }
+
     const response = {
         pageChange:(page:number)=>{
             dispatch(reqThunks.listPageRequirement({page:page-1}))
             setCurrentPage(page)
-        }
+        },
+        onReqChosen:(id:number)=>{
+            console.log('it is chosen', id)
+        },
+
+    }
+
+    const ui = {
+        reqList: requirements.map((item,index)=><RequirementItem onChosen={response.onReqChosen} key={item.id} version={item.version && item.version.name} showBg={index%2==0} id={item.id} serial={item.serial} name={item.name} status={item.status} />),
     }
 
     return (
         <div className={'requirement-content ml20 mt20 mr20 d-flex-column'}>
             {ui.reqList}
             <Pagination className="mt20 mr20 align-self-end" onChange={response.pageChange} current={currentPage} defaultCurrent={1} total={totalReq}/>
+
+            <Drawer
+                title={null}
+                width={'60%'}
+                placement="right"
+                closable={false}
+                maskClosable={false}
+                visible={true}
+            >
+                <RequirementDetail/>
+            </Drawer>
+
         </div>
     )
 }
