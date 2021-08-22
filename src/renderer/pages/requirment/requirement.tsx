@@ -4,14 +4,13 @@ import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
 import {Col, Drawer, Dropdown, Form, Input, Popover, Row, Select} from "antd";
-import EffEditor from "../../components/common/eff-editor/eff-editor";
 import {useDispatch, useSelector} from "react-redux";
 import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../store/store";
-import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {tagThunks} from "@slice/tagSlice";
 import AddReqClazzDlg from "./add-req-clazz-dlg";
 import DelReqClazzDlg from "./del-req-clazz-dlg";
+import AddReqForm from "./add-req-form";
 
 interface IReqClassItemProps{
     id?:number,
@@ -20,13 +19,7 @@ interface IReqClassItemProps{
     className?:string
 }
 
-interface IAddReqFormProps{
-    reqClasses: any[],
-    reqSources: any[],
-    reqVersions: any[],
-    tags:any[],
-    onCancel:Function
-}
+
 
 //需求页面props
 interface  IRequirement{
@@ -45,15 +38,6 @@ interface IRequirementContentProps{
     onSelected: Function, //点击选中事件响应
 }
 
-type Requirement = {
-    name:string|null,
-    description:string|null,
-    classId:number|null,
-    versionId:number|null,
-    sourceId: number|null,
-    tagIds: number[],
-
-}
 
 
 export default function Requirement(){
@@ -88,7 +72,12 @@ export default function Requirement(){
         cancelAddReq: ()=>{
             setShowAddForm(false)
         },
-        handleRequirementSelected: ()=>{}
+        handleRequirementSelected: ()=>{},
+
+        handleRequirementAdd:async (requirement:any)=>{
+            await dispatch(reqThunks.addRequirement(requirement))
+            setShowAddForm(false)
+        }
     }
     return (
         <div className={'d-flex-column'}>
@@ -108,6 +97,7 @@ export default function Requirement(){
                 visible={showAddForm}
             >
                  <AddReqForm reqClasses={data.reqClasses}
+                             onConfirm={response.handleRequirementAdd}
                              tags={data.tags}
                              reqSources={data.rqeSources} reqVersions={data.reqVersions} onCancel={response.cancelAddReq}/>
             </Drawer>
@@ -253,107 +243,4 @@ function ReqClassMenu(props:any){
 
 
 
-//新增需求表单
-function AddReqForm(props:IAddReqFormProps){
-    const data:{requirement:Requirement, [x:string]:any} = {
-        requirement:{
-            name:null,
-            description:null,
-            classId: null,
-            versionId: null,
-            sourceId:  null,
-            tagIds: [],
 
-        },
-    }
-    const {reqClasses, reqSources,reqVersions, tags} = props
-    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
-
-
-
-    const [reqForm] = Form.useForm()
-    const response = {
-        handleCancelBtn: ()=>{
-            props.onCancel()
-        },
-        handleDescriptionChange: (html:string)=>{
-            data.requirement.description = html
-        },
-
-        //新增需求响应
-        handleConfirmAdd: ()=>{
-            reqForm.validateFields().then(values=>{
-                Object.assign(data.requirement, values)
-                data.requirement.tagIds = selectedTagIds
-
-
-            })
-        },
-        handleTagsChanged: (tagIds:number[])=>{
-            setSelectedTagIds(tagIds)
-            data.requirement.tagIds = tagIds
-        }
-    }
-
-    const ui = {
-        uiReqClassOptions: reqClasses.map(item=> <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
-        uiReqResourceOptions: reqSources.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
-        uiReqResourceVersions: reqVersions.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
-    }
-
-
-
-    return (
-        <div className="add-req-form">
-            <Form form={reqForm} requiredMark={false} >
-                <Form.Item name="name"  label={'需求名称'} rules={[{ required: true, message: '请输入需求名称' }]}>
-                    <Input/>
-                </Form.Item>
-
-                <Row  gutter={40}>
-                    <Col  span={12}>
-                        <Form.Item name="classId"  className="mt20"  label={'需求分类'}>
-                            <Select placeholder="请选择需求分类">
-                                {ui.uiReqClassOptions}
-                            </Select>
-                        </Form.Item>
-                    </Col>
-
-                    <Col  span={12}>
-                        <Form.Item  name="sourceId"   className="mt20"   label={'需求来源'}>
-                            <Select placeholder="请选择需求来源">
-                                {ui.uiReqResourceOptions}
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row gutter={40}>
-                    <Col span={12}>
-                        <Form.Item  name="versionId" className="mt20"   label={'版本规划'}>
-                            <Select placeholder="请选择需求版本">
-                                {ui.uiReqResourceVersions}
-                            </Select>
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item className="mt20"   label={'标签'}>
-                             <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds} className="ml40" tags={tags}/>
-                        </Form.Item>
-                    </Col>
-
-                </Row>
-                <Form.Item name="description" className="mt20" label={'需求描述'}>
-                    <EffEditor onChange={response.handleDescriptionChange}/>
-                </Form.Item>
-            </Form>
-
-            <div className="btn-group d-flex mt40">
-                <EffButton type={"line"} round={true} className="mr20" onClick={response.handleCancelBtn} text={'取消'} key={'cancel'}/>
-                <EffButton type={'filled'} round={true} onClick={response.handleConfirmAdd} text={'保存'} key={'confirm'}/>
-            </div>
-
-        </div>
-    )
-}

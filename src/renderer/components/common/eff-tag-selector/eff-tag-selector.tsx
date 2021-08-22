@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Input, Popover} from "antd";
 import {SearchOutlined} from '@ant-design/icons'
 import IconTagCheck from '@imgs/tag-check.png'
@@ -28,6 +28,7 @@ export default function EffTagSelector(props:IEffTagSelectorProps){
 
 function TagSelectDlg(props: IEffTagSelectorProps){
     const {tags, chosen, onChange} = props
+    const [availableTags, setAvailableTags] = useState(tags)
     const response = {
         handleTagStatusChange: (id:number, isSelected:boolean)=>{
             let tempChosen = Object.assign([], chosen)
@@ -38,12 +39,23 @@ function TagSelectDlg(props: IEffTagSelectorProps){
                 tempChosen.splice(index, 1)
             }
             onChange(tempChosen)
+        },
+
+        handleSearchKeyChange: (value:string|undefined)=>{
+            if(value){
+                    let filterTags = tags.filter(item=>item.name.indexOf(value)>-1)
+                setAvailableTags(filterTags)
+            }else{
+                setAvailableTags(tags)
+            }
         }
     }
 
     const ui = {
-        uiTags : tags.map(item=><Tag key={item.id} onChange={response.handleTagStatusChange} selected={chosen.includes(item.id)} name={item.name} id={item.id} color={item.color} />)
+        uiTags : availableTags.map(item=><Tag key={item.id} onChange={response.handleTagStatusChange} selected={chosen.includes(item.id)} name={item.name} id={item.id} color={item.color} />)
     }
+
+
 
     return (
         <div className="eff-tag-selector">
@@ -51,7 +63,7 @@ function TagSelectDlg(props: IEffTagSelectorProps){
                 <span>选择标签</span>
             </div>
 
-            <Input placeholder={'搜索标签'} prefix={<SearchOutlined style={{color:'#999999'}} />} className="mt10 mb20"/>
+            <Input onChange={(e:any)=>response.handleSearchKeyChange(e.target.value)} placeholder={'搜索标签'} prefix={<SearchOutlined style={{color:'#999999'}} />} className="mt10 mb20"/>
             {ui.uiTags}
         </div>
     )

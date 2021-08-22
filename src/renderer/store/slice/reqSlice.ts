@@ -73,7 +73,10 @@ const reqThunks = {
     //添加需求
     addRequirement: (requirement: IRequirement) => {
         return async (dispatch: Dispatch<any>) => {
-
+            let result = await request.post({url:apiUrl.requirements.index, data:requirement})
+            if(result.isSuccess){
+                dispatch(reqThunks.listPageRequirement({page:0}))
+            }
         }
     },
 
