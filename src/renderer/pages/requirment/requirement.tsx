@@ -3,7 +3,7 @@ import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined} from '@ant
 import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
-import {Col, Drawer, Dropdown, Form, Input, Popover, Row, Select,Tag} from "antd";
+import {Col, Drawer, Pagination, Form, Input, Popover, Row, Select,Tag} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../store/store";
@@ -148,6 +148,9 @@ function ReqClass(props:any){
 //需求列表内容
 function ReqContent(props: IRequirementContentProps){
     const {requirements} = props
+    const dispatch = useDispatch()
+    const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
+    const [currentPage, setCurrentPage] = useState(1)
     const ui = {
         reqList: requirements.map((item,index)=><div className={`one-requirement d-flex align-center pr20 justify-between pl20 ${index%2==0?'shadowed':''}`} key={item.id}>
             <div className="req-main">
@@ -160,10 +163,17 @@ function ReqContent(props: IRequirementContentProps){
             </div>
         </div>)
     }
+    const response = {
+        pageChange:(page:number)=>{
+            dispatch(reqThunks.listPageRequirement({page:page-1}))
+            setCurrentPage(page)
+        }
+    }
 
     return (
-        <div className={'requirement-content ml20 mt20 mr20'}>
+        <div className={'requirement-content ml20 mt20 mr20 d-flex-column'}>
             {ui.reqList}
+            <Pagination className="mt20 mr20 align-self-end" onChange={response.pageChange} current={currentPage} defaultCurrent={1} total={totalReq}/>
         </div>
     )
 }
