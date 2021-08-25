@@ -6,6 +6,7 @@ import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-sel
 import EffEditor from "../../components/common/eff-editor/eff-editor";
 import EffButton from "../../components/eff-button/eff-button";
 import requirement from "./requirement";
+import {CaretDownOutlined} from '@ant-design/icons'
 
 
 
@@ -92,7 +93,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
                 <Row  gutter={40}>
                     <Col  span={12}>
                         <Form.Item name="classId"  className="mt20"  label={'需求分类'}>
-                            <Select placeholder="请选择需求分类">
+                            <Select placeholder="请选择需求分类" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqClassOptions}
                             </Select>
                         </Form.Item>
@@ -100,7 +101,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
 
                     <Col  span={12}>
                         <Form.Item  name="sourceId"   className="mt20"   label={'需求来源'}>
-                            <Select placeholder="请选择需求来源">
+                            <Select placeholder="请选择需求来源" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqResourceOptions}
                             </Select>
                         </Form.Item>
@@ -110,7 +111,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
                 <Row gutter={40}>
                     <Col span={12}>
                         <Form.Item  name="versionId" className="mt20"   label={'版本规划'}>
-                            <Select placeholder="请选择需求版本">
+                            <Select placeholder="请选择需求版本" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqResourceVersions}
                             </Select>
                         </Form.Item>

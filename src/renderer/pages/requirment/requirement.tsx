@@ -3,7 +3,7 @@ import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined} from '@ant
 import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
-import {Col, Drawer, Pagination, Form, Input, Popover, Row, Select,Tag} from "antd";
+import {Col, Drawer, Pagination, Form, Input, Popover, Row, Tag} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../store/store";
@@ -11,7 +11,6 @@ import {tagThunks} from "@slice/tagSlice";
 import AddReqClazzDlg from "./add-req-clazz-dlg";
 import DelReqClazzDlg from "./del-req-clazz-dlg";
 import AddReqForm from "./add-req-form";
-import {REQUIREMENT_STATUS} from "@config/sysConstant";
 import RequirementItem from "./requirement-item";
 import RequirementDetail from "./requirement-detail";
 
@@ -153,6 +152,7 @@ function ReqContent(props: IRequirementContentProps){
     const dispatch = useDispatch()
     const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
     const [currentPage, setCurrentPage] = useState(1)
+    const [showDetail, setShowDetail] = useState(false) //显示需求详情
 
     const response = {
         pageChange:(page:number)=>{
@@ -160,7 +160,8 @@ function ReqContent(props: IRequirementContentProps){
             setCurrentPage(page)
         },
         onReqChosen:(id:number)=>{
-            console.log('it is chosen', id)
+            dispatch(reqThunks.getReqDetail(id))
+            setShowDetail(true)
         },
 
     }
@@ -179,8 +180,8 @@ function ReqContent(props: IRequirementContentProps){
                 width={'60%'}
                 placement="right"
                 closable={false}
-                maskClosable={false}
-                visible={true}
+                visible={showDetail}
+                onClose={()=>setShowDetail(false)}
             >
                 <RequirementDetail/>
             </Drawer>

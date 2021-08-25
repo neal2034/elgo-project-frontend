@@ -1,15 +1,16 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Input} from "antd";
 import globalColor from "@config/globalColor";
+import './eff-editable-input.less'
 
 interface IEffInputProps{
-    value?:string,
-    placeholder?:string,
-    fontSize?:string
-    fontWeight?:number,
+    value?:string,              //当前值
+    placeholder?:string,        //占位符
+    fontSize?:string            //字体大小
+    fontWeight?:number,  //字重
     errMsg?:string,
-    isRequired?:boolean
-    onChange:(newValue?:string)=>void
+    isRequired?:boolean         //是否必须
+    onChange:(newValue?:string)=>void, //更新事件
 }
 
 export default function EffEditableInput(props:IEffInputProps){
@@ -18,23 +19,28 @@ export default function EffEditableInput(props:IEffInputProps){
     const [isHover, setIsHover] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [isShowError, setIsShowError] = useState(false)
-    const fontStyle = {fontSize, fontWeight}
-    const stylePlaceholder = {
-        color:globalColor.fontWeak,
-        fontSize
-    }
-    const styleError = {
-        fontSize:'14px',
-        color:  globalColor.mainRed3
+
+
+    useEffect(()=>setEditValue(value), [value])
+    const style = {
+        input:{fontSize, fontWeight},
+        emptyError: {
+            fontSize:'14px',
+            color:  globalColor.mainRed3
+        }
     }
 
     const response = {
+        //输入失焦事件
         handleInputBlur: ()=>{
+            let shouldUpdateValue = editValue
             if(isRequired && !editValue){
+                //如果值为必须，将重置当前值
                 setEditValue(value)
                 setIsShowError(false)
+                shouldUpdateValue = value
             }
-            onChange(editValue)
+            onChange(shouldUpdateValue)
             setIsEditing(false)
         },
         valueChanged:(value?:string)=>{
@@ -45,16 +51,19 @@ export default function EffEditableInput(props:IEffInputProps){
             if(value){
                 setIsShowError(false)
             }
+        },
+        handleFocus: ()=>{
+            setIsEditing(true)
         }
     }
 
-    return <div className="eff-editable-input" onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
-        {isHover||isEditing?
-            <div>
-                <Input style={fontStyle} onFocus={()=>setIsEditing(true)} onBlur={response.handleInputBlur}
-                       placeholder={placeholder} value={editValue} onChange={(e:any)=>response.valueChanged(e.target.value)} />
-                {isShowError&&<span style={styleError}>{errMsg}</span>}
-            </div>
-            :editValue? <span style={fontStyle}>{editValue}</span>:<span style={stylePlaceholder} className="placeholder">{placeholder}</span>}
+    return <div className={`${isHover||isEditing? 'input-status':'eff-editable-input'}`} onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
+            <Input style={style.input}
+                   onFocus={response.handleFocus}
+                   onBlur={response.handleInputBlur}
+                   placeholder={placeholder}
+                   value={editValue}
+                   onChange={(e:any)=>response.valueChanged(e.target.value)} />
+            {isShowError&&<span style={style.emptyError}>{errMsg}</span>}
     </div>
 }

@@ -3,13 +3,16 @@ import {Dispatch} from "react";
 import request from "../../utils/request";
 import apiUrl from "@config/apiUrl";
 
-interface IRequirement  {
-    name:string|null,
-    description:string|null,
-    classId:number|null,
-    versionId:number|null,
-    sourceId: number|null,
+interface IRequirement {
+    id?:number,
+    name:string,
+    serial?:number,
+    description?:string,
+    classId?:number,
+    versionId?:number,
+    sourceId?: number,
     tagIds: number[],
+    status?: string,
 
 }
 
@@ -17,6 +20,15 @@ interface IRequirementListParams {
     page?:number,
     name?:string,
 }
+
+type IRequirementOption = Partial<IRequirement>;
+
+interface IReqEdit extends IRequirementOption{
+    id:number,
+    field: "NAME" | "DESCRIPTION" | "CLAZZ" | "VERSION" | "SOURCE" | "STATUS" | "TAG"
+}
+
+
 
 const reqSlice = createSlice({
     name:'requirement',
@@ -27,6 +39,9 @@ const reqSlice = createSlice({
         page:0,             //当前分页索引
         requirements:[],     //当前显示的需求数组
         reqTotal:0,         //需求总数
+          currentReq: {} as IRequirement
+
+        ,      //当前选择的需求
     },
     reducers:{
         setReqClasses: (state, action) => {state.reqClasses = action.payload},
@@ -35,6 +50,7 @@ const reqSlice = createSlice({
         setPage: (state, action) => { state.page = action.payload },
         setRequirements: (state, action) => { state.requirements = action.payload },
         setReqTotal: (state, action) => { state.reqTotal = action.payload },
+        setCurrentReq: (state, action) => { state.currentReq = action.payload },
     }
 })
 
@@ -93,6 +109,26 @@ const reqThunks = {
         }
     },
 
+    //获取需求详情
+    getReqDetail : (id:number)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                // get detail
+                let result = await request.get({url:apiUrl.requirements.detail, params:{id}})
+                if(result.isSuccess){
+                    dispatch(reqActions.setCurrentReq(result.data))
+                }
+            }
+        },
+
+    //需求修改
+    editRequirement : (payload:IReqEdit)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.put({url:apiUrl.requirements.index, data:payload})
+                if(result.isSuccess){
+                    dispatch(reqThunks.getReqDetail(payload.id))
+                }
+            }},
+
     //添加需求分类
     addReqClazz: (name: string) => {
         return async (dispatch: Dispatch<any>) => {
@@ -103,6 +139,7 @@ const reqThunks = {
             }
         }
     },
+
 
     delReqClazz: (id:number) => {
         return async (dispatch: Dispatch<any>) => {
@@ -120,7 +157,7 @@ const reqThunks = {
                     dispatch(reqThunks.listAllReqClasses())
                 }
             }
-        }
+        },
 }
 
 

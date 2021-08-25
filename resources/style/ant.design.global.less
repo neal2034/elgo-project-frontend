@@ -31,3 +31,41 @@
 .ant-pagination-item-active{
   border-color: @color-main-yellow-dark;
 }
+
+
+//选择器边框颜色 圆角调整
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:focus,
+.ant-select-selector:hover,
+.ant-select-selector:active,
+.ant-select-open .ant-select-selector {
+  box-shadow: none !important;
+  border-color: @color-main-yellow-dark !important;
+  border-radius: 5px !important;
+}
+
+
+.ant-input, .ant-select-selector{
+  border-radius: 5px !important;
+}
+.ant-input:focus,.ant-input:hover,.ant-input:active{
+  border-color: @color-main-yellow-dark !important;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+}
+
+.ant-drawer-body{
+  padding: 0 !important;
+}
+
+
+//设置select 选中状态
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+  color: @color-main-yellow-dark;
+  background-color: @color-bg;
+}
+
+//去除antd selector 过渡设置，避免边框色在editable 下的颜色过渡
+.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+  transition:  none !important;
+}

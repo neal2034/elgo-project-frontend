@@ -4,10 +4,11 @@ import {uploadFileToOss} from "../../../utils/fileService";
 
 interface IEffEditorProps{
     onChange:Function,
+    content?:string,
 }
 
 export default function EffEditor(props:IEffEditorProps){
-    const {onChange} = props;
+    const {onChange, content} = props;
     const menus =[
         'head',
         'bold',
@@ -31,7 +32,6 @@ export default function EffEditor(props:IEffEditorProps){
     }
 
     const customUploadImg = (resultFiles:any, insertImgFn:any)=>{
-        console.log(resultFiles,insertImgFn)
         let file = resultFiles[0]
         let size = file.size;
         let exts = file.name.split(".")
@@ -58,6 +58,8 @@ export default function EffEditor(props:IEffEditorProps){
                     menus,
                     customUploadImg
                 }}
+                defaultValue={content}
+
                 onChange={(html) => {
                     response.onChange(html)
                 }}
