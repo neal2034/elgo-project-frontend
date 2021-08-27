@@ -153,7 +153,7 @@ function ReqContent(props: IRequirementContentProps){
     const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
     const [currentPage, setCurrentPage] = useState(1)
     const [showDetail, setShowDetail] = useState(false) //显示需求详情
-
+    dispatch(reqThunks.getReqDetail(24))
     const response = {
         pageChange:(page:number)=>{
             dispatch(reqThunks.listPageRequirement({page:page-1}))
@@ -180,7 +180,7 @@ function ReqContent(props: IRequirementContentProps){
                 width={'60%'}
                 placement="right"
                 closable={false}
-                visible={showDetail}
+                visible={true}
                 onClose={()=>setShowDetail(false)}
             >
                 <RequirementDetail/>

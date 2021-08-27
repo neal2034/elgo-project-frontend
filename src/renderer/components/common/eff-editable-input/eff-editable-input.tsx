@@ -6,15 +6,17 @@ import './eff-editable-input.less'
 interface IEffInputProps{
     value?:string,              //当前值
     placeholder?:string,        //占位符
-    fontSize?:string            //字体大小
+    fontSize?:string,            //字体大小
     fontWeight?:number,  //字重
     errMsg?:string,
-    isRequired?:boolean         //是否必须
+    isRequired?:boolean,         //是否必须
+    className?:string,
     onChange:(newValue?:string)=>void, //更新事件
+
 }
 
 export default function EffEditableInput(props:IEffInputProps){
-    const {value, placeholder='请输入', fontSize='24px', fontWeight=500, onChange, errMsg='请输入', isRequired=false} = props
+    const {value, placeholder='请输入', fontSize='24px', fontWeight=500, onChange, errMsg='请输入', isRequired=false, className} = props
     const [editValue, setEditValue] = useState(value)
     const [isHover, setIsHover] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
@@ -57,7 +59,7 @@ export default function EffEditableInput(props:IEffInputProps){
         }
     }
 
-    return <div className={`${isHover||isEditing? 'input-status':'eff-editable-input'}`} onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
+    return <div style={{height:'45px'}} className={`${isHover||isEditing? 'input-status':'eff-editable-input'} ${className}`} onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
             <Input style={style.input}
                    onFocus={response.handleFocus}
                    onBlur={response.handleInputBlur}

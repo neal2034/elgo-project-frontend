@@ -12,6 +12,10 @@ import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-sel
 import {tagThunks} from "@slice/tagSlice";
 import {REQUIREMENT_STATUS} from "@config/sysConstant";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
+import EffActions from "../../components/business/eff-actions/eff-actions";
+import {EllipsisOutlined, DeleteOutlined} from '@ant-design/icons'
+import EffItemInfo from "../../components/business/eff-item-info/eff-item-info";
+import EffInfoSep from "../../components/business/eff-info-sep/eff-info-sep";
 
 
 export default function RequirementDetail(){
@@ -115,67 +119,75 @@ export default function RequirementDetail(){
         }
     }
 
+    const menuItems = [
+        {key:'delete', name:'删除需求', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
+    ]
+
     return (
-        <div className="pt40 pl40">
+        <div className="pt40 pl40 pr40 pb40" >
+            <div className="d-flex justify-between align-center">
+                <EffEditableInput className="flex-grow-1" isRequired={false} onChange={response.onNameChange} value={currentRequirement.name} placeholder={'请输入需求名称'} />
+                <EffActions onSelect={()=>{}} menus={menuItems} className="ml40"  width={'30px'}/>
+            </div>
+            <EffItemInfo className="ml10" serial={currentRequirement.serial!} creator={currentRequirement.creator && currentRequirement.creator.name}/>
+            <EffInfoSep className="mt20 ml10" name={'基础信息'} />
 
-            <EffEditableInput isRequired={false} onChange={response.onNameChange} value={currentRequirement.name} placeholder={'请输入需求名称'} />
-            <div className="content mt20 ml30">
 
-                <ReqItem>
-                    <Label label={'创建人'}/>
-                    <EffUser id={1} name={'史俊辉'} size={20} />
-                    <span className="ml10">史俊辉</span>
-                </ReqItem>
+            <div className="content mt20 ml40">
+                <div className="d-flex">
+                    <ReqItem>
+                        <Label label={'需求分类'}/>
+                        <EffEditableSelector onChange={response.onReqClazzChange}
+                                             id={currentRequirement.classId}
+                                             placeholder={'未分类'} options={data.reqClasses}/>
+                    </ReqItem>
 
-                <ReqItem>
-                    <Label label={'需求编号'}/>
-                    <span>{currentRequirement.serial}</span>
-                </ReqItem>
+                    <ReqItem>
+                        <Label label={'版本'}/>
+                        <EffEditableSelector options={data.reqVersions} id={currentRequirement.versionId} placeholder={'未指定'}
+                                             onChange={response.onReqVersionChange}/>
+                    </ReqItem>
+                </div>
 
-                <ReqItem>
-                    <Label label={'需求分类'}/>
-                    <EffEditableSelector onChange={response.onReqClazzChange}
-                                         id={currentRequirement.classId}
-                                         placeholder={'未分类'} options={data.reqClasses}/>
-                </ReqItem>
+                <div className="d-flex">
+                    <ReqItem>
+                        <Label label={'状态'}/>
+                        <EffEditableSelector options={reqStatusOptions}
+                                             clear={false}
+                                             id = {currentRequirement.status}
+                                             onChange={response.onStatusChange}/>
+                    </ReqItem>
 
-                <ReqItem>
-                    <Label label={'版本'}/>
-                    <EffEditableSelector options={data.reqVersions} id={currentRequirement.versionId} placeholder={'未指定'}
-                                         onChange={response.onReqVersionChange}/>
-                </ReqItem>
+                    <ReqItem>
+                        <Label label={'需求来源'}/>
+                        <EffEditableSelector options={data.rqeSources}
+                                             id = {currentRequirement.sourceId}
+                                             onChange={response.onReqSourceChange}
+                                             placeholder={'未指定'}/>
+                    </ReqItem>
+                </div>
 
-                <ReqItem>
-                    <Label label={'状态'}/>
-                    <EffEditableSelector options={reqStatusOptions}
-                                         clear={false}
-                                         id = {currentRequirement.status}
-                                         onChange={response.onStatusChange}/>
-                </ReqItem>
 
-                <ReqItem>
-                    <Label label={'需求来源'}/>
-                    <EffEditableSelector options={data.rqeSources}
-                                         id = {currentRequirement.sourceId}
-                                         onChange={response.onReqSourceChange}
-                                         placeholder={'未指定'}/>
-                </ReqItem>
+
 
                 <ReqItem>
                     <Label label={'标签'}/>
-                    <div className="d-flex ml40">
+                    <div className="d-flex ml10">
                         <EffTagArea tags={selectedTags}/>
                         <EffTagSelector onChange={response.onTagsChanged}
                                         chosen={currentRequirement.tagIds?currentRequirement.tagIds:[]}
                                         tags={data.allTags}/>
+
+
                     </div>
                 </ReqItem>
-
-                <div className="d-flex align-start mt20">
-                    <Label label={'需求描述'}/>
-                    <EffEditableDoc content={currentRequirement.description}/>
-                </div>
             </div>
+
+            <EffInfoSep className="mt40 ml10" name={'需求描述'} />
+            <div className="ml20 mt20 pr40" >
+                <EffEditableDoc height={'400px'} className="ml40 mt20" content={currentRequirement.description}/>
+            </div>
+
         </div>
     )
 }
@@ -196,7 +208,7 @@ function Label(props: { label:string }){
 }
 
 function ReqItem(props:{children:any}){
-    return <div className="d-flex align-center mt20">
+    return <div className="d-flex align-center ml20 mt20">
         {props.children}
     </div>
 }

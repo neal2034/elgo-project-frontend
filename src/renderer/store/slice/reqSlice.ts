@@ -13,6 +13,7 @@ interface IRequirement {
     sourceId?: number,
     tagIds: number[],
     status?: string,
+    creator?:any,
 
 }
 

@@ -50,12 +50,15 @@ export default function EffEditor(props:IEffEditorProps){
     }
 
 
+
     return (
         <div>
             <ReactWEditor
                 // @ts-ignore
                 config={{
                     menus,
+                    // @ts-ignore
+                    height:'100%',
                     customUploadImg
                 }}
                 defaultValue={content}

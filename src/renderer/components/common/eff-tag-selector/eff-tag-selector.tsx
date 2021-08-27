@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import {Input, Popover} from "antd";
-import {SearchOutlined} from '@ant-design/icons'
+import {SearchOutlined, PlusCircleOutlined} from '@ant-design/icons'
 import IconTagCheck from '@imgs/tag-check.png'
 
 import EffButton from "../../eff-button/eff-button";
 import './eff-tag-selector.less'
+import globalColor from "@config/globalColor";
 
 interface IEffTagSelectorProps{
     tags: any[],
