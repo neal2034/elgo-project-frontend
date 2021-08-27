@@ -20,5 +20,7 @@ export default function EffTagArea(props:IEffTagAreaProps){
         uiTags : tags.map(item=><Tag onClose={()=>response.onTagDel(item.id)} closable={item.id == hoverId} onMouseEnter={()=>setHoverId(item.id)} onMouseLeave={()=>setHoverId(-1)} className="mr5 ml5 cursor-pointer" key={item.id} color={item.color}>{item.name}</Tag>)
     }
 
-    return ui.uiTags
+    return  <React.Fragment>
+        {ui.uiTags}
+    </React.Fragment>
 }

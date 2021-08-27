@@ -92,6 +92,16 @@ export default function RequirementDetail(){
                 tagIds: ids
             }))
         },
+
+        onDescriptionChanged: async (value?:string)=>{
+            console.log('will update to ',value)
+            await dispatch(reqThunks.editRequirement({
+                id:data.currentRequirement.id!,
+                field:  "DESCRIPTION",
+                description: value
+
+            }))
+        },
         refreshPage:()=>{
             dispatch(reqThunks.listPageRequirement({page: data.currentReqPage}))
         },
@@ -185,7 +195,7 @@ export default function RequirementDetail(){
 
             <EffInfoSep className="mt40 ml10" name={'需求描述'} />
             <div className="ml20 mt20 pr40" >
-                <EffEditableDoc height={'400px'} className="ml40 mt20" content={data.currentRequirement.description}/>
+                <EffEditableDoc onSave={response.onDescriptionChanged} height={'400px'} className="ml40 mt20" content={data.currentRequirement.description}/>
             </div>
 
         </div>
