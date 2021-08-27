@@ -54,8 +54,6 @@ export default function Requirement(){
         tags: useSelector((state:RootState)=>state.tag.tags),
         requirements: useSelector((state:RootState)=>state.requirement.requirements)
     }
-
-
     useEffect(()=>{
         dispatch(reqThunks.listPageRequirement({page:0}))
         dispatch(reqThunks.listAllReqClasses())
@@ -63,8 +61,6 @@ export default function Requirement(){
         dispatch(reqThunks.listAllReqVersions())
         dispatch(tagThunks.listTags())
     },[])
-
-
 
     const response = {
         handleAddReqBtn: ()=>{
@@ -81,6 +77,8 @@ export default function Requirement(){
             setShowAddForm(false)
         }
     }
+
+
     return (
         <div className={'d-flex-column'}>
             <ProjectTollBar>
@@ -153,7 +151,7 @@ function ReqContent(props: IRequirementContentProps){
     const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
     const [currentPage, setCurrentPage] = useState(1)
     const [showDetail, setShowDetail] = useState(false) //显示需求详情
-    dispatch(reqThunks.getReqDetail(24))
+    // dispatch(reqThunks.getReqDetail(24))
     const response = {
         pageChange:(page:number)=>{
             dispatch(reqThunks.listPageRequirement({page:page-1}))
@@ -180,7 +178,7 @@ function ReqContent(props: IRequirementContentProps){
                 width={'60%'}
                 placement="right"
                 closable={false}
-                visible={true}
+                visible={showDetail}
                 onClose={()=>setShowDetail(false)}
             >
                 <RequirementDetail/>

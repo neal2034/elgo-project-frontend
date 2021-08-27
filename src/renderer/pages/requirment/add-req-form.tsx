@@ -72,6 +72,14 @@ export  default  function AddReqForm(props:IAddReqFormProps){
             data.requirement.tagIds = tagIds
             let selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
+        },
+        //响应标签删除
+        onDelTag: (id:number)=>{
+            let currentIds = Object.assign([], selectedTagIds)
+            let index = currentIds.indexOf(id)
+            currentIds.splice(index, 1)
+            response.handleTagsChanged(currentIds)
+
         }
     }
 
@@ -120,7 +128,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
                     <Col span={12}>
                         <Form.Item className="mt20"   label={'标签'}>
                             <div className="d-flex ml40">
-                                <EffTagArea tags={selectedTags}/>
+                                <EffTagArea onDel={response.onDelTag} tags={selectedTags}/>
                                 <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds} className="ml404" tags={tags}/>
                             </div>
                         </Form.Item>

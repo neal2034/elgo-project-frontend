@@ -25,9 +25,9 @@ export default function EffEditableInput(props:IEffInputProps){
 
     useEffect(()=>setEditValue(value), [value])
     const style = {
-        input:{fontSize, fontWeight},
+        input:{fontSize, fontWeight, height:'45px'},
         emptyError: {
-            fontSize:'14px',
+            fontSize:'12px',
             color:  globalColor.mainRed3
         }
     }
@@ -59,7 +59,7 @@ export default function EffEditableInput(props:IEffInputProps){
         }
     }
 
-    return <div style={{height:'45px'}} className={`${isHover||isEditing? 'input-status':'eff-editable-input'} ${className}`} onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
+    return <div   className={`${isHover||isEditing? 'input-status':'eff-editable-input'} ${className}`} onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)}>
             <Input style={style.input}
                    onFocus={response.handleFocus}
                    onBlur={response.handleInputBlur}

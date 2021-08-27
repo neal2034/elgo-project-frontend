@@ -1,27 +1,26 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {Form} from "antd";
+import React, {useEffect, useState} from "react";
+
 import EffEditableInput from "../../components/common/eff-editable-input/eff-editable-input";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {reqThunks} from "@slice/reqSlice";
 import globalColor from "@config/globalColor";
-import EffUser from "../../components/eff-user/effUser";
+
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {tagThunks} from "@slice/tagSlice";
 import {REQUIREMENT_STATUS} from "@config/sysConstant";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
 import EffActions from "../../components/business/eff-actions/eff-actions";
-import {EllipsisOutlined, DeleteOutlined} from '@ant-design/icons'
+import {DeleteOutlined} from '@ant-design/icons'
 import EffItemInfo from "../../components/business/eff-item-info/eff-item-info";
 import EffInfoSep from "../../components/business/eff-info-sep/eff-info-sep";
+import EffLabel from "../../components/business/eff-label/EffLabel";
 
 
 export default function RequirementDetail(){
     const dispatch = useDispatch()
-    const currentRequirement = useSelector((state:RootState)=>state.requirement.currentReq)
-    const currentReqPage = useSelector((state:RootState)=>state.requirement.page)
     const [selectedTags, setSelectedTags] = useState<any[]>([])
 
     //需求状态options
@@ -33,11 +32,21 @@ export default function RequirementDetail(){
         })
     }
 
-
+    const data = {
+        reqClasses: useSelector((state:RootState)=>state.requirement.reqClasses),
+        rqeSources: useSelector( (state:RootState) => state.requirement.reqSources),
+        reqVersions: useSelector((state:RootState)=>state.requirement.reqVersions),
+        allTags: useSelector((state:RootState)=>state.tag.tags),
+        currentReqPage: useSelector((state:RootState)=>state.requirement.page),
+        currentRequirement : useSelector((state:RootState)=>state.requirement.currentReq),
+        menuItems:[
+            {key:'delete', name:'删除需求', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
+        ]
+    }
     const response = {
         onNameChange: async (name?:string)=>{
            await dispatch(reqThunks.editRequirement({
-                id:currentRequirement.id!,
+                id:data.currentRequirement.id!,
                 field:'NAME',
                 name,
             }))
@@ -47,7 +56,7 @@ export default function RequirementDetail(){
         onReqClazzChange: async (id?:number|string)=>{
             let updateId = id ? id: -1
              await dispatch(reqThunks.editRequirement({
-                 id:currentRequirement.id!,
+                 id:data.currentRequirement.id!,
                  field: 'CLAZZ',
                  classId: updateId as number,
              }))
@@ -55,7 +64,7 @@ export default function RequirementDetail(){
         },
         onReqVersionChange: async (id?:number|string)=>{
             await dispatch(reqThunks.editRequirement({
-                id:currentRequirement.id!,
+                id:data.currentRequirement.id!,
                 field:  "VERSION",
                 versionId: id as (number|undefined),
             }))
@@ -63,14 +72,14 @@ export default function RequirementDetail(){
         },
         onReqSourceChange: async (sourceId?:number|string)=>{
             await dispatch(reqThunks.editRequirement({
-                id:currentRequirement.id!,
+                id:data.currentRequirement.id!,
                 field: "SOURCE",
                 sourceId: sourceId as (number|undefined),
             }))
         },
         onStatusChange: async (status?:string|number)=>{
             await dispatch(reqThunks.editRequirement({
-                id:currentRequirement.id!,
+                id: data.currentRequirement.id!,
                 field: "STATUS",
                 status:status as string,
             }))
@@ -78,140 +87,111 @@ export default function RequirementDetail(){
         },
         onTagsChanged: async (ids:any)=>{
             await dispatch(reqThunks.editRequirement({
-                id:currentRequirement.id!,
+                id:data.currentRequirement.id!,
                 field: "TAG",
                 tagIds: ids
             }))
         },
         refreshPage:()=>{
-            dispatch(reqThunks.listPageRequirement({page:currentReqPage}))
+            dispatch(reqThunks.listPageRequirement({page: data.currentReqPage}))
+        },
+        //tags area 标签删除响应
+        delTag: (id:number)=>{
+            let currentIds = Object.assign([], data.currentRequirement.tagIds)
+            let index = currentIds.indexOf(id)
+            currentIds.splice(index, 1)
+            response.onTagsChanged(currentIds)
         }
     }
 
 
-    const data = {
-        reqClasses: useSelector((state:RootState)=>state.requirement.reqClasses),
-        rqeSources: useSelector( (state:RootState) => state.requirement.reqSources),
-        reqVersions: useSelector((state:RootState)=>state.requirement.reqVersions),
-        allTags: useSelector((state:RootState)=>state.tag.tags),
-    }
 
 
+
+    //系统初始化
     useEffect(()=>{
         dispatch(reqThunks.listAllReqClasses())
         dispatch(reqThunks.listAllReqSource())
         dispatch(reqThunks.listAllReqVersions())
         dispatch(tagThunks.listTags())
-
-
     },[])
 
     useEffect(()=>{
-        let tagIds = currentRequirement.tagIds? currentRequirement.tagIds:[]
+        let tagIds = data.currentRequirement.tagIds? data.currentRequirement.tagIds:[]
         let selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
-    }, [currentRequirement.tagIds])
+    }, [data.currentRequirement.tagIds])
 
-    const style = {
-        label:{
-            color:globalColor.fontWeak,
-            fontSize: '14px'
-        }
-    }
 
-    const menuItems = [
-        {key:'delete', name:'删除需求', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
-    ]
+
+
 
     return (
         <div className="pt40 pl40 pr40 pb40" >
             <div className="d-flex justify-between align-center">
-                <EffEditableInput className="flex-grow-1" isRequired={false} onChange={response.onNameChange} value={currentRequirement.name} placeholder={'请输入需求名称'} />
-                <EffActions onSelect={()=>{}} menus={menuItems} className="ml40"  width={'30px'}/>
+                <EffEditableInput errMsg={'请输入需求名称'} className="flex-grow-1" isRequired={true} onChange={response.onNameChange} value={data.currentRequirement.name} placeholder={'请输入需求名称'} />
+                <EffActions onSelect={()=>{}} menus={data.menuItems} className="ml40"  width={'30px'}/>
             </div>
-            <EffItemInfo className="ml10" serial={currentRequirement.serial!} creator={currentRequirement.creator && currentRequirement.creator.name}/>
+            <EffItemInfo className="ml10" serial={data.currentRequirement.serial!} creator={data.currentRequirement.creator && data.currentRequirement.creator.name}/>
             <EffInfoSep className="mt20 ml10" name={'基础信息'} />
 
 
             <div className="content mt20 ml40">
-                <div className="d-flex">
-                    <ReqItem>
-                        <Label label={'需求分类'}/>
+                <div className="d-flex ml20">
+                    <div  className="d-flex align-center">
+                        <EffLabel name={'需求分类'}/>
                         <EffEditableSelector onChange={response.onReqClazzChange}
-                                             id={currentRequirement.classId}
+                                             id={data.currentRequirement.classId}
                                              placeholder={'未分类'} options={data.reqClasses}/>
-                    </ReqItem>
+                    </div>
 
-                    <ReqItem>
-                        <Label label={'版本'}/>
-                        <EffEditableSelector options={data.reqVersions} id={currentRequirement.versionId} placeholder={'未指定'}
+                    <div className="d-flex align-center  ml20">
+                        <EffLabel name={'版本'}/>
+                        <EffEditableSelector options={data.reqVersions} id={data.currentRequirement.versionId} placeholder={'未指定'}
                                              onChange={response.onReqVersionChange}/>
-                    </ReqItem>
+                    </div>
                 </div>
 
-                <div className="d-flex">
-                    <ReqItem>
-                        <Label label={'状态'}/>
+                <div className="d-flex mt10 ml20">
+                    <div className="d-flex align-center">
+                        <EffLabel name={'状态'}/>
                         <EffEditableSelector options={reqStatusOptions}
                                              clear={false}
-                                             id = {currentRequirement.status}
+                                             id = {data.currentRequirement.status}
                                              onChange={response.onStatusChange}/>
-                    </ReqItem>
+                    </div>
 
-                    <ReqItem>
-                        <Label label={'需求来源'}/>
+                    <div className="d-flex align-center ml20">
+                        <EffLabel name={'需求来源'}/>
                         <EffEditableSelector options={data.rqeSources}
-                                             id = {currentRequirement.sourceId}
+                                             id = {data.currentRequirement.sourceId}
                                              onChange={response.onReqSourceChange}
                                              placeholder={'未指定'}/>
-                    </ReqItem>
+                    </div>
                 </div>
 
-
-
-
-                <ReqItem>
-                    <Label label={'标签'}/>
+                <div className="d-flex align-center ml20 mt20">
+                    <EffLabel name={'标签'}/>
                     <div className="d-flex ml10">
-                        <EffTagArea tags={selectedTags}/>
+                        <EffTagArea onDel={response.delTag} tags={selectedTags}/>
                         <EffTagSelector onChange={response.onTagsChanged}
-                                        chosen={currentRequirement.tagIds?currentRequirement.tagIds:[]}
+                                        chosen={data.currentRequirement.tagIds? data.currentRequirement.tagIds:[]}
                                         tags={data.allTags}/>
 
 
                     </div>
-                </ReqItem>
+                </div>
             </div>
 
             <EffInfoSep className="mt40 ml10" name={'需求描述'} />
             <div className="ml20 mt20 pr40" >
-                <EffEditableDoc height={'400px'} className="ml40 mt20" content={currentRequirement.description}/>
+                <EffEditableDoc height={'400px'} className="ml40 mt20" content={data.currentRequirement.description}/>
             </div>
 
         </div>
     )
 }
 
-
-function Label(props: { label:string }){
-    const {label} = props
-    const style = {
-        label:{
-            color:globalColor.fontWeak,
-            fontSize: '14px',
-            width: '60px',
-            whiteSpace: 'nowrap'
-        }
-    }
-    // @ts-ignore
-    return  <span className="mr40" style={style.label}>{label}</span>
-}
-
-function ReqItem(props:{children:any}){
-    return <div className="d-flex align-center ml20 mt20">
-        {props.children}
-    </div>
-}
 
 
 
