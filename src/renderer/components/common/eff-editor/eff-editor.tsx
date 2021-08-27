@@ -5,10 +5,11 @@ import {uploadFileToOss} from "../../../utils/fileService";
 interface IEffEditorProps{
     onChange:Function,
     content?:string,
+    height?:string|number
 }
 
 export default function EffEditor(props:IEffEditorProps){
-    const {onChange, content} = props;
+    const {onChange, content, height='100%'} = props;
     const menus =[
         'head',
         'bold',
@@ -58,7 +59,7 @@ export default function EffEditor(props:IEffEditorProps){
                 config={{
                     menus,
                     // @ts-ignore
-                    height:'100%',
+                    height:height,
                     customUploadImg
                 }}
                 defaultValue={content}

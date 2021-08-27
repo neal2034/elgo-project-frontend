@@ -90,7 +90,7 @@ export default function Requirement(){
                 <ReqContent requirements={data.requirements} onSelected={response.handleRequirementSelected}/>
             </div>
             <Drawer
-                title="新增需求"
+                title={null}
                 width={'60%'}
                 placement="right"
                 closable={false}

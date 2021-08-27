@@ -43,6 +43,9 @@ export  default  function AddReqForm(props:IAddReqFormProps){
 
         },
     }
+
+
+
     const {reqClasses, reqSources,reqVersions, tags, onConfirm} = props
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
@@ -93,15 +96,18 @@ export  default  function AddReqForm(props:IAddReqFormProps){
 
     return (
         <div className="add-req-form">
-            <Form form={reqForm} requiredMark={false} >
+            <div className="title  pb10 mb20">
+                <span>新增需求</span>
+            </div>
+            <Form colon={false} form={reqForm} requiredMark={false} >
                 <Form.Item name="name"  label={'需求名称'} rules={[{ required: true, message: '请输入需求名称' }]}>
-                    <Input/>
+                    <Input size={"large"}/>
                 </Form.Item>
 
                 <Row  gutter={40}>
                     <Col  span={12}>
                         <Form.Item name="classId"  className="mt20"  label={'需求分类'}>
-                            <Select placeholder="请选择需求分类" suffixIcon={<CaretDownOutlined />}>
+                            <Select size={"large"} placeholder="请选择需求分类" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqClassOptions}
                             </Select>
                         </Form.Item>
@@ -109,7 +115,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
 
                     <Col  span={12}>
                         <Form.Item  name="sourceId"   className="mt20"   label={'需求来源'}>
-                            <Select placeholder="请选择需求来源" suffixIcon={<CaretDownOutlined />}>
+                            <Select size={"large"} placeholder="请选择需求来源" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqResourceOptions}
                             </Select>
                         </Form.Item>
@@ -119,7 +125,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
                 <Row gutter={40}>
                     <Col span={12}>
                         <Form.Item  name="versionId" className="mt20"   label={'版本规划'}>
-                            <Select placeholder="请选择需求版本" suffixIcon={<CaretDownOutlined />}>
+                            <Select size={"large"} placeholder="请选择需求版本" suffixIcon={<CaretDownOutlined />}>
                                 {ui.uiReqResourceVersions}
                             </Select>
                         </Form.Item>
@@ -135,8 +141,8 @@ export  default  function AddReqForm(props:IAddReqFormProps){
                     </Col>
 
                 </Row>
-                <Form.Item name="description" className="mt20" label={'需求描述'}>
-                    <EffEditor onChange={response.handleDescriptionChange}/>
+                <Form.Item  name="description" className="mt20 d-flex align-start" label={'需求描述'}>
+                    <EffEditor height={360} onChange={response.handleDescriptionChange}/>
                 </Form.Item>
             </Form>
 
