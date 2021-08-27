@@ -19,7 +19,13 @@ import EffInfoSep from "../../components/business/eff-info-sep/eff-info-sep";
 import EffLabel from "../../components/business/eff-label/EffLabel";
 
 
-export default function RequirementDetail(){
+
+interface IProps{
+    onDel:(id:number)=>void
+}
+
+export default function RequirementDetail(props:IProps){
+    const {onDel} = props
     const dispatch = useDispatch()
     const [selectedTags, setSelectedTags] = useState<any[]>([])
 
@@ -63,18 +69,20 @@ export default function RequirementDetail(){
             dispatch(reqThunks.listAllReqClasses())
         },
         onReqVersionChange: async (id?:number|string)=>{
+            let versionId = id? id : -1
             await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
                 field:  "VERSION",
-                versionId: id as (number|undefined),
+                versionId: versionId as number,
             }))
             response.refreshPage();
         },
         onReqSourceChange: async (sourceId?:number|string)=>{
+            let sId = sourceId? sourceId:-1
             await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
                 field: "SOURCE",
-                sourceId: sourceId as (number|undefined),
+                sourceId: sId as number,
             }))
         },
         onStatusChange: async (status?:string|number)=>{
@@ -94,7 +102,6 @@ export default function RequirementDetail(){
         },
 
         onDescriptionChanged: async (value?:string)=>{
-            console.log('will update to ',value)
             await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
                 field:  "DESCRIPTION",
@@ -111,6 +118,13 @@ export default function RequirementDetail(){
             let index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
+        },
+        //菜单选择响应
+        menuSelected:(key:string)=>{
+            if(key=='delete'){
+                onDel(data.currentRequirement.id as number)
+                console.log('will deltete current ', data.currentRequirement.id)
+            }
         }
     }
 
@@ -140,7 +154,7 @@ export default function RequirementDetail(){
         <div className="pt40 pl40 pr40 pb40" >
             <div className="d-flex justify-between align-center">
                 <EffEditableInput errMsg={'请输入需求名称'} className="flex-grow-1" isRequired={true} onChange={response.onNameChange} value={data.currentRequirement.name} placeholder={'请输入需求名称'} />
-                <EffActions onSelect={()=>{}} menus={data.menuItems} className="ml40"  width={'30px'}/>
+                <EffActions onSelect={response.menuSelected} menus={data.menuItems} className="ml40"  width={'30px'}/>
             </div>
             <EffItemInfo className="ml10" serial={data.currentRequirement.serial!} creator={data.currentRequirement.creator && data.currentRequirement.creator.name}/>
             <EffInfoSep className="mt20 ml10" name={'基础信息'} />

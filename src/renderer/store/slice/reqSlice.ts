@@ -40,9 +40,8 @@ const reqSlice = createSlice({
         page:0,             //当前分页索引
         requirements:[],     //当前显示的需求数组
         reqTotal:0,         //需求总数
-          currentReq: {} as IRequirement
-
-        ,      //当前选择的需求
+        currentReq: {} as IRequirement,      //当前选择的需求
+        reqToast:false,     // 需求页面的toast
     },
     reducers:{
         setReqClasses: (state, action) => {state.reqClasses = action.payload},
@@ -52,6 +51,7 @@ const reqSlice = createSlice({
         setRequirements: (state, action) => { state.requirements = action.payload },
         setReqTotal: (state, action) => { state.reqTotal = action.payload },
         setCurrentReq: (state, action) => { state.currentReq = action.payload },
+        setReqToast: (state, action) => { state.reqToast = action.payload },
     }
 })
 
@@ -96,6 +96,29 @@ const reqThunks = {
             }
         }
     },
+
+    //删除需求
+    delRequirement : (id:number)=>{
+            return async (dispatch:Dispatch<any>, getState:any)=>{
+                let page = getState().requirement.page
+                let result = await request.delete({url:`${apiUrl.requirements.index}/${id}/trash`})
+                if(result.isSuccess){
+                    dispatch(reqThunks.listPageRequirement({page}))
+                    dispatch(reqActions.setReqToast(true))
+                }
+            }},
+
+    //撤销删除需求
+    withdrawDelRequirement : (id: number)=>{
+            return async (dispatch:Dispatch<any>, getState:any)=>{
+                let page = getState().requirement.page
+                let result = await request.post({url:`${apiUrl.requirements.index}/${id}/revert`})
+                if(result.isSuccess){
+                    dispatch(reqThunks.listPageRequirement({page}))
+                    dispatch(reqActions.setReqToast(true))
+                }
+            }
+        },
 
     //列出需求
     listPageRequirement: (params: IRequirementListParams) => {
@@ -164,5 +187,5 @@ const reqThunks = {
 
 
 
-export {reqActions, reqThunks}
+export {reqActions, reqThunks,IRequirement}
 export default reqSlice.reducer

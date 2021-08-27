@@ -24,7 +24,7 @@ interface IProps{
 
 //该组件用于表示详情页面当中的操作菜单
 export default function EffActions(props:IProps){
-    const {width='20px', className, menus} = props
+    const {width='20px', className, menus, onSelect} = props
     const [showMenus, setShowMenus] = useState(false)
     const style = {
         action:{
@@ -44,6 +44,7 @@ export default function EffActions(props:IProps){
         dropdownMenuSelected:({key,domEvent}:{key:string, domEvent:any})=>{
             domEvent.stopPropagation()
             setShowMenus(false)
+            onSelect(key)
         }
     }
 
