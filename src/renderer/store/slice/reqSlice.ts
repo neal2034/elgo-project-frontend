@@ -20,6 +20,11 @@ interface IRequirement {
 interface IRequirementListParams {
     page?:number,
     name?:string,
+    clazzId?:number,
+    sourceId?:number,
+    versionId?:number,
+    tagIds?:number[],
+
 }
 
 type IRequirementOption = Partial<IRequirement>;

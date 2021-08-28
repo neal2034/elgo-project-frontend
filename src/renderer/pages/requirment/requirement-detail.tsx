@@ -123,7 +123,6 @@ export default function RequirementDetail(props:IProps){
         menuSelected:(key:string)=>{
             if(key=='delete'){
                 onDel(data.currentRequirement.id as number)
-                console.log('will deltete current ', data.currentRequirement.id)
             }
         }
     }

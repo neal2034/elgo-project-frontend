@@ -29,7 +29,8 @@ function ProjectHeader(){
 }
 
 function ProjectTollBar(props:any){
-    return <div className={'project-toolbar'}>
+    const {className} = props
+    return <div className={`${className}  project-toolbar`}>
         {props.children}
     </div>
 }

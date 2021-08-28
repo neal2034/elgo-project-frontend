@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined} from '@ant-design/icons'
+import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined,FieldTimeOutlined,UserAddOutlined} from '@ant-design/icons'
 import './requirment.less'
 import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
@@ -14,6 +14,9 @@ import AddReqForm from "./add-req-form";
 import RequirementItem from "./requirement-item";
 import RequirementDetail from "./requirement-detail";
 import EffToast from "../../components/eff-toast/eff-toast";
+import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
+import ReqAdvanceSearch from "./req-advance-search";
+import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
 
 interface IReqClassItemProps{
     id?:number,
@@ -47,13 +50,21 @@ export default function Requirement(){
     const dispatch = useDispatch()
 
     const [showAddForm, setShowAddForm] = useState(false);
+    const [isAdvanceSearch, setIsAdvanceSearch] = useState(false)
+    const [isShowSearchResult, setIsShowSearchResult] = useState(false)
 
     const data = {
         reqClasses: useSelector((state:RootState)=>state.requirement.reqClasses),
         rqeSources: useSelector( (state:RootState) => state.requirement.reqSources),
         reqVersions: useSelector((state:RootState)=>state.requirement.reqVersions),
         tags: useSelector((state:RootState)=>state.tag.tags),
-        requirements: useSelector((state:RootState)=>state.requirement.requirements)
+        requirements: useSelector((state:RootState)=>state.requirement.requirements),
+        totalReqNum: useSelector((state:RootState)=>state.requirement.reqTotal),
+        searchMenus: [
+            {key:'my-create', name:'我创建的需求', icon:<UserAddOutlined />},
+            {key:'on-plan', name:'规划中的需求', icon:<FieldTimeOutlined />},
+
+        ]
     }
     useEffect(()=>{
         dispatch(reqThunks.listPageRequirement({page:0}))
@@ -76,14 +87,49 @@ export default function Requirement(){
         handleRequirementAdd:async (requirement:any)=>{
             await dispatch(reqThunks.addRequirement(requirement))
             setShowAddForm(false)
+        },
+
+        handleSearchMenu: (key:string)=>{
+            switch (key){
+                case 'my-create':
+                    console.log('搜索我创建的')
+                    break
+                case 'on-plan':
+                    console.log('搜索未完成的')
+                    break
+                default:
+                    setIsAdvanceSearch(true)
+            }
+        },
+
+        handleAdvanceSearch: async (searchKeys:any)=>{
+            let params = Object.assign({page:0}, searchKeys)
+            await dispatch(reqThunks.listPageRequirement(params))
+            setIsAdvanceSearch(false)
+            setIsShowSearchResult(true)
+        },
+        handleSearch: async (value:string)=>{
+            await dispatch(reqThunks.listPageRequirement({page:0, name:value}))
+            setIsShowSearchResult(true)
+        },
+        //取消高级搜索
+        handleCancelAdvanceSearch: ()=>{
+            setIsAdvanceSearch(false)
+        },
+        handleCloseSearch:()=>{
+            setIsShowSearchResult(false)
+            dispatch(reqThunks.listPageRequirement({page:0}))
         }
     }
 
 
     return (
         <div className={'d-flex-column'}>
-            <ProjectTollBar>
-                <EffButton width={100} onClick={response.handleAddReqBtn}  round={true} className="mt10 ml20" text={'+ 新增需求'} key={'add'}/>
+            <ProjectTollBar className="d-flex justify-end align-center">
+                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={data.totalReqNum} onClose={response.handleCloseSearch}/>}
+                {isAdvanceSearch? <ReqAdvanceSearch onCancel={response.handleCancelAdvanceSearch} onSearch={response.handleAdvanceSearch} reqClasses={data.reqClasses} reqSources={data.rqeSources} reqVersions={data.reqVersions} tags={data.tags} />:
+                <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus}/>}
+                <EffButton width={100} onClick={response.handleAddReqBtn}  round={true} className="ml10 mr20" text={'+ 新增需求'} key={'add'}/>
             </ProjectTollBar>
             <div className={'d-flex'}>
                 <ReqClass reqClasses={data.reqClasses}/>
@@ -158,6 +204,7 @@ function ReqContent(props: IRequirementContentProps){
     const [toastMsg, setToastMsg] = useState<string>()
     const response = {
         pageChange:(page:number)=>{
+            console.log('response .pagechage')
             dispatch(reqThunks.listPageRequirement({page:page-1}))
             setCurrentPage(page)
         },
@@ -234,7 +281,6 @@ function ReqClassItem(props:IReqClassItemProps){
 
 function ReqClassMenu(props:any){
     const {name, id} = props
-    console.log('name change to ', name)
     const dispatch = useDispatch()
     const [showDelDlg, setShowDelDlg] = useState(false)
     const [showEditDlg, setShowEditDlg] = useState(false)

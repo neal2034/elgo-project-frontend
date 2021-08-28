@@ -38,7 +38,7 @@
 .ant-select-selector:focus,
 .ant-select-selector:hover,
 .ant-select-selector:active,
-.ant-select-open .ant-select-selector {
+.ant-select-open .ant-select-selector{
   box-shadow: none !important;
   border-color: @color-main-yellow-dark !important;
   border-radius: 5px !important;
@@ -59,7 +59,17 @@
 }
 
 
-//设置select 选中状态
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover{
+  border-color: @color-main-yellow-dark !important;
+}
+
+//设置input
+.ant-input-affix-wrapper-focused{
+  border-color: @color-main-yellow-dark !important;
+  box-shadow: none !important;
+}
+
+  //设置select 选中状态
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
   color: @color-main-yellow-dark;
   background-color: @color-bg;
