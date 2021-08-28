@@ -6,6 +6,7 @@ import ApiSideBar from "./sub-components/api-sidebar";
 import ApiContent from "./sub-components/api-content";
 import {RootState} from "../../store/store";
 import {ApiEnv, apiThunks} from "@slice/apiSlice";
+import {ProjectTollBar} from "../projectHome/projectHome";
 
 
 export default function Api(){
@@ -58,9 +59,13 @@ export default function Api(){
         }
     },[currentEnvId])
     return (
-        <div className="api d-flex">
-            <ApiSideBar/>
-            <ApiContent/>
+        <div className="d-flex-column" style={{height:'100%'}}>
+            {/*<ProjectTollBar/>*/}
+            <div className="api d-flex flex-grow-1">
+                <ApiSideBar/>
+                <ApiContent/>
+            </div>
         </div>
+
     )
 }
