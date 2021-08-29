@@ -6,7 +6,6 @@ import ApiSideBar from "./sub-components/api-sidebar";
 import ApiContent from "./sub-components/api-content";
 import {RootState} from "../../store/store";
 import {ApiEnv, apiThunks} from "@slice/apiSlice";
-import {ProjectTollBar} from "../projectHome/projectHome";
 
 
 export default function Api(){

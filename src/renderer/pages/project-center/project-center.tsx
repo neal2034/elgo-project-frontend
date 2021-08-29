@@ -39,7 +39,8 @@ export default function ProjectCenter(){
         setShowAddDlg(false)
     }
 
-    const uiProjects = projects.map((pro:any)=><ProjectItem serial={pro.serial}  key={pro.serial} name={pro.name}/>)
+
+    const uiProjects = projects.filter((pro:any)=>pro.type==='PROJECT').map((pro:any)=><ProjectItem serial={pro.serial}  key={pro.serial} name={pro.name}/>)
 
 
     return (
@@ -53,7 +54,7 @@ export default function ProjectCenter(){
                     </Col>
                 </Row>
                 <Row className="mt20 mb10" justify="end">
-                    <Col offset={14}>
+                    <Col className="d-flex" offset={14}>
                         <EffButton onClick={handleCancelAddProject} className='mr10' round={true} text={'取消'} key={'cancel'}/>
                         <EffButton onClick={handleAddProject} round={true} type={'filled'} text={'确定'} key={'ok'}/>
                     </Col>

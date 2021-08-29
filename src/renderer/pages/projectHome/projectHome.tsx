@@ -28,12 +28,6 @@ function ProjectHeader(){
     )
 }
 
-function ProjectTollBar(props:any){
-    const {className} = props
-    return <div className={`${className}  project-toolbar`}>
-        {props.children}
-    </div>
-}
 
 
 export default function ProjectHome (props:any){
@@ -100,7 +94,6 @@ export default function ProjectHome (props:any){
         </div>
     )
 }
-export {ProjectTollBar}
 
 
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined,FieldTimeOutlined,UserAddOutlined} from '@ant-design/icons'
 import './requirment.less'
-import {ProjectTollBar} from "../projectHome/projectHome";
 import EffButton from "../../components/eff-button/eff-button";
 import {Col, Drawer, Pagination, Form, Input, Popover, Row, Tag} from "antd";
 import {useDispatch, useSelector} from "react-redux";
@@ -125,13 +124,13 @@ export default function Requirement(){
 
     return (
         <div className={'d-flex-column'}>
-            <ProjectTollBar className="d-flex justify-end align-center">
+            <div className="d-flex justify-end mt20 mb20 align-center border-red1">
                 {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={data.totalReqNum} onClose={response.handleCloseSearch}/>}
                 {isAdvanceSearch? <ReqAdvanceSearch onCancel={response.handleCancelAdvanceSearch} onSearch={response.handleAdvanceSearch} reqClasses={data.reqClasses} reqSources={data.rqeSources} reqVersions={data.reqVersions} tags={data.tags} />:
                 <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus}/>}
-                <EffButton width={100} onClick={response.handleAddReqBtn}  round={true} className="ml10 mr20" text={'+ 新增需求'} key={'add'}/>
-            </ProjectTollBar>
-            <div className={'d-flex'}>
+                <EffButton width={100} onClick={response.handleAddReqBtn} type={"line"}  round={true} className="ml10 mr20" text={'+ 新增需求'} key={'add'}/>
+            </div>
+            <div className={'d-flex mt10'}>
                 <ReqClass reqClasses={data.reqClasses}/>
                 <ReqContent requirements={data.requirements} onSelected={response.handleRequirementSelected}/>
             </div>
@@ -176,7 +175,7 @@ function ReqClass(props:any){
     }
 
     return (
-        <div className={'requirement-class ml20 mt20'}>
+        <div className={'requirement-class ml20'}>
             <div className="ml20 mt20 d-flex justify-between">
                 <span className="title">需求分类</span>
                 <Popover visible={showReqClazzDlg} content={<AddReqClazzDlg onConfirm={response.handleAddReqClazz} onCancel={()=>setShowReqClazzDlg(false)} isAdd={true}/>} trigger={'click'} placement={"bottom"}>
@@ -233,7 +232,7 @@ function ReqContent(props: IRequirementContentProps){
     }
 
     return (
-        <div className={'requirement-content ml20 mt20 mr20 d-flex-column'}>
+        <div className={'requirement-content ml20   mr20 d-flex-column'}>
             {ui.reqList}
             <Pagination className="mt20 mr20 align-self-end" onChange={response.pageChange} current={currentPage} defaultCurrent={1} total={totalReq}/>
 
