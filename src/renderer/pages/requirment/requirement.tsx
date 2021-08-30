@@ -124,7 +124,7 @@ export default function Requirement(){
 
     return (
         <div className={'d-flex-column'}>
-            <div className="d-flex justify-end mt20 mb20 align-center">
+            <div style={{height:'40px'}} className="d-flex justify-end mt20 mb20 align-center">
                 {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={data.totalReqNum} onClose={response.handleCloseSearch}/>}
                 {isAdvanceSearch? <ReqAdvanceSearch onCancel={response.handleCancelAdvanceSearch} onSearch={response.handleAdvanceSearch} reqClasses={data.reqClasses} reqSources={data.rqeSources} reqVersions={data.reqVersions} tags={data.tags} />:
                 <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus}/>}
