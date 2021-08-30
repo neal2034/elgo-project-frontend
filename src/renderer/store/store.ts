@@ -8,6 +8,7 @@ import projectSlice from './slice/projectSlice'
 import reqSlice from './slice/reqSlice'
 import tagSlice from './slice/tagSlice'
 import funztionSlice from './slice/funztionSlice'
+import taskSlice from './slice/taskSlice'
 
 
 
@@ -22,6 +23,7 @@ let store = configureStore({
         requirement: reqSlice,
         tag:tagSlice,
         funztion:funztionSlice,
+        task: taskSlice,
 
 
     },

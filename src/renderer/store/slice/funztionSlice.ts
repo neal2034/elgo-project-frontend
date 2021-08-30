@@ -138,5 +138,5 @@ const funztionThunks = {
 
 
 
-export {funztionActions, funztionThunks}
+export {funztionActions, funztionThunks, IFunztion}
 export default funztionSlice.reducer
