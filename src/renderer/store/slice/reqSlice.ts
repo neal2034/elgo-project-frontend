@@ -19,6 +19,7 @@ interface IRequirement {
 
 interface IRequirementListParams {
     page?:number,
+    id?:number,
     name?:string,
     clazzId?:number,
     sourceId?:number,

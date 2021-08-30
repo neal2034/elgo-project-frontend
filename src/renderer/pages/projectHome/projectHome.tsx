@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Redirect, Route, useHistory} from "react-router";
 import {Link, Switch,useParams, useRouteMatch} from "react-router-dom";
 import Requirement from "../requirment/requirement";
-import Funztion from "../funztion/Funztion";
+import Funztion from "../funztion/funztion";
 import Task from "../task/task";
 import PrivateRoute from "../../routes/privateRoute";
 import {setBreadcrumbs} from "../../store/breadcrumbSlice";
@@ -81,8 +81,8 @@ export default function ProjectHome (props:any){
             </EffMenu>
             {/*<ProjectTollBar/>*/}
 
-            <Redirect to={`${path.replace(':serial', serial)}/requirement`} />
-            <div className={'page-content'}>
+            <Redirect to={`${path.replace(':serial', serial)}/funztion`} />
+            <div className={'page-content d-flex-column'}>
                 <Switch>
                     <PrivateRoute component={Requirement} path={`${path}/requirement`}/>
                     <PrivateRoute component={Funztion} path={`${path}/funztion`}/>

@@ -124,7 +124,7 @@ export default function Requirement(){
 
     return (
         <div className={'d-flex-column'}>
-            <div className="d-flex justify-end mt20 mb20 align-center border-red1">
+            <div className="d-flex justify-end mt20 mb20 align-center">
                 {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={data.totalReqNum} onClose={response.handleCloseSearch}/>}
                 {isAdvanceSearch? <ReqAdvanceSearch onCancel={response.handleCancelAdvanceSearch} onSearch={response.handleAdvanceSearch} reqClasses={data.reqClasses} reqSources={data.rqeSources} reqVersions={data.reqVersions} tags={data.tags} />:
                 <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus}/>}
@@ -203,7 +203,6 @@ function ReqContent(props: IRequirementContentProps){
     const [toastMsg, setToastMsg] = useState<string>()
     const response = {
         pageChange:(page:number)=>{
-            console.log('response .pagechage')
             dispatch(reqThunks.listPageRequirement({page:page-1}))
             setCurrentPage(page)
         },

@@ -7,6 +7,7 @@ import menuReducer from './slice/menuSlice'
 import projectSlice from './slice/projectSlice'
 import reqSlice from './slice/reqSlice'
 import tagSlice from './slice/tagSlice'
+import funztionSlice from './slice/funztionSlice'
 
 
 
@@ -19,7 +20,8 @@ let store = configureStore({
         menu:menuReducer,
         project:projectSlice,
         requirement: reqSlice,
-        tag:tagSlice
+        tag:tagSlice,
+        funztion:funztionSlice,
 
 
     },
