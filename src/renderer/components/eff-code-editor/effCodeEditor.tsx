@@ -1,4 +1,5 @@
 import React from "react";
+import "ace-builds";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/mode-javascript";
