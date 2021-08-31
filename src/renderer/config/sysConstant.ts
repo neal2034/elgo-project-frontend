@@ -39,3 +39,10 @@ export const REQUIREMENT_STATUS:Map = {
         color: "#B52B65",
     }
 }
+
+export const PRIORITY:Map = {
+NONE:{name:'无', key:'NONE', color: "#999999"},
+LOW:{name:'低', key:'LOW', color:"#96bb7c",},
+MIDDLE:{name:'中', key:'MIDDLE', color: "#00b7c2"},
+HIGH:{name:'高', key:'HIGH',color:"#f4545c"}
+}

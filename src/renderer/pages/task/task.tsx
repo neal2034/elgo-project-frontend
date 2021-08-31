@@ -3,10 +3,12 @@ import EffSearchResult from "../../components/business/eff-search-result/eff-sea
 import FunztionAdvanceSearch from "../funztion/funztion-advance-search";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import EffButton from "../../components/eff-button/eff-button";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import EffTaskContent from "./eff-task-content";
 import EffTaskGroupHeader from "./eff-task-group-head";
 import {taskThunks} from "@slice/taskSlice";
+import {RootState} from "../../store/store";
+import {tagThunks} from "@slice/tagSlice";
 
 
 export default function Task(){
@@ -15,8 +17,11 @@ export default function Task(){
     const [isShowSearchResult, setIsShowSearchResult] = useState(false)
     const [isOpenAddForm, setIsOpenAddForm] = useState(false)
 
+
+
     useEffect(()=>{
         dispatch(taskThunks.listTaskGroup())
+        dispatch(tagThunks.listTags())
     },[])
 
     const response = {

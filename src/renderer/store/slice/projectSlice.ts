@@ -5,11 +5,17 @@ import {Dispatch} from "react";
 import {apiActions} from "@slice/apiSlice";
 
 
+interface IProjectDetail{
+    members:any [],
+    [x:string]:any
+}
+
+
 const projectSlice = createSlice({
     name:'project',
     initialState:{
         projects:[],
-        projectDetail:{},   //当前的项目详情
+        projectDetail:{} as IProjectDetail,   //当前的项目详情
     },
     reducers:{
         setProjects:(state, action)=>{

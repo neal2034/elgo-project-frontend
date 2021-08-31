@@ -3,7 +3,7 @@ import ReactWEditor from 'wangeditor-for-react';
 import {uploadFileToOss} from "../../../utils/fileService";
 
 interface IEffEditorProps{
-    onChange:Function,
+    onChange?:Function,
     content?:string,
     height?:string|number
 }
@@ -65,7 +65,9 @@ export default function EffEditor(props:IEffEditorProps){
                 defaultValue={content}
 
                 onChange={(html) => {
-                    response.onChange(html)
+                    if(response.onChange){
+                        response.onChange(html)
+                    }
                 }}
 
             />
