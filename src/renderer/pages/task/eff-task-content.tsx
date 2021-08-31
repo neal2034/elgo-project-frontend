@@ -37,7 +37,7 @@ export default function EffTaskContent(){
                 placement="right"
                 closable={false}
                 maskClosable={false}
-                visible={true}
+                visible={false}
             >
                 <AddTaskForm onConfirm={response.occupy} onCancel={response.occupy} tags={data.tags}/>
             </Drawer>
