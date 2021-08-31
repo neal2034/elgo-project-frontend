@@ -13,6 +13,7 @@
     "dev-renderer": "cross-env NODE_ENV=development webpack-dev-server --config webpack.renderer.dev.config.js",
     "dev": "npm run dev-renderer",
     "dev-web": "cross-env NODE_ENV=development webpack-dev-server --config webpack.web.dev.config.js",
+    "build-web": "cross-env NODE_ENV=production webpack --config webpack.web.prod.config.js",
     "package": "npm run build && electron-builder build --publish never",
     "package-win": "npm run build && electron-builder build --win --x64",
     "package-linux": "npm run build && electron-builder build --linux",
