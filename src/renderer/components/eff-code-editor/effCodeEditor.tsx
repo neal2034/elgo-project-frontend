@@ -1,10 +1,10 @@
 import React from "react";
-import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/webpack-resolver";
+import AceEditor from "react-ace";
 
 
 interface CodeEditorProps{
