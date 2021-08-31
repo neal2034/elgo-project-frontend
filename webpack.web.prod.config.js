@@ -30,7 +30,7 @@ const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'none',
-    mode: 'production',
+    mode: 'development',
 
     entry,
     resolve: {
@@ -40,7 +40,7 @@ module.exports = merge.smart(webpackBaseConfig, {
     },
 
     output: {
-        publicPath,
+        publicPath: './',
         filename: 'index.js'
     },
 
@@ -212,7 +212,6 @@ module.exports = merge.smart(webpackBaseConfig, {
     // webpack服务
     devServer: {
         port,
-        publicPath,
         compress: true,
         noInfo: false,
         stats: 'errors-only',
