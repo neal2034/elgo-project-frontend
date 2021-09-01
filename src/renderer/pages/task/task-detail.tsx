@@ -9,7 +9,7 @@ import {RootState} from "../../store/store";
 import EffLabel from "../../components/business/eff-label/EffLabel";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
 import {taskThunks} from "@slice/taskSlice";
-import {PRIORITY} from "@config/sysConstant";
+import {PRIORITY, TASK_STATUS} from "@config/sysConstant";
 import EffEditableDatePicker from "../../components/common/eff-editable-date-picker/eff-editable-date-picker";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
@@ -43,6 +43,10 @@ export default function TaskDetail(props:IProps){
     const priorityOptions = []
     for(let item in PRIORITY){
         priorityOptions.push({id:PRIORITY[item].key, name:PRIORITY[item].name})
+    }
+    const taskStatusOptions = []
+    for(let item in TASK_STATUS){
+        taskStatusOptions.push({id:TASK_STATUS[item].key, name:TASK_STATUS[item].name})
     }
 
     useEffect(()=>{
@@ -78,6 +82,11 @@ export default function TaskDetail(props:IProps){
         },
         handleEditTaskPriority: async (priority?: number|string)=>{
             await dispatch(taskThunks.editTaskPriority(data.currentTask.id, priority as string))
+            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+        },
+
+        handleEditTaskStatus: async (status?:number|string)=>{
+            await dispatch(taskThunks.editTaskStatus(data.currentTask.id, status as string))
             dispatch(taskThunks.listTask(data.currentTask.taskListId))
         },
 
@@ -137,6 +146,11 @@ export default function TaskDetail(props:IProps){
                     <EffLabel name={'截至日期'}/>
                     <EffEditableDatePicker onChange={response.handleEditDeadline} value={data.currentTask.deadline} />
                  </div>
+
+                <div className="d-flex align-center mt20">
+                    <EffLabel name={'任务状态'}/>
+                    <EffEditableSelector clear={false} id={data.currentTask.status} options={taskStatusOptions} onChange={response.handleEditTaskStatus}/>
+                </div>
 
                 <div className="d-flex align-center mt20">
                     <EffLabel name={'标签'}/>

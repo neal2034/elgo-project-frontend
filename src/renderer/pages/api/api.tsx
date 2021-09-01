@@ -13,8 +13,6 @@ export default function Api(){
     const dispatch = useDispatch();
     const currentEnvId = useSelector((state:RootState)=>state.api.currentEnvId)
     const currentEnv:ApiEnv = useSelector((state:RootState)=>state.api.envs.filter((item:ApiEnv)=>item.id === state.api.currentEnvId)[0])
-    //设置面包屑
-    // useEffect(()=>{dispatch(setBreadcrumbs(['接口管理']))}, [dispatch])
     useEffect(()=>{
         window.effwork = {
             //设置环境变量
@@ -59,7 +57,6 @@ export default function Api(){
     },[currentEnvId])
     return (
         <div className="d-flex-column" style={{height:'100%'}}>
-            {/*<ProjectTollBar/>*/}
             <div className="api d-flex flex-grow-1">
                 <ApiSideBar/>
                 <ApiContent/>

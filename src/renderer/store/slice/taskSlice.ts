@@ -27,6 +27,7 @@ interface ITaskDetailInfo{
         name:string
     },
     priority:string,
+    status:string,
     deadline?:string,
     tagIds?:number[],
     description?:string,
@@ -149,6 +150,11 @@ const taskThunks = {
                 await request.put({url:apiUrl.task.editDescription, data:{id,description}})
             }
         },
+    editTaskStatus : (id:number, status:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await request.put({url:apiUrl.task.editStatus, data:{id, status}})
+            }
+        },
     deleteTask : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.delete({url:apiUrl.task.index, params:{id}})
@@ -165,6 +171,7 @@ const taskThunks = {
                 }
             }
         }
+
 }
 
 
