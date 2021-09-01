@@ -12,7 +12,7 @@ interface IProps{
 export default function EffEditableDatePicker(props:IProps){
     const {value, placeholder='未指定', onChange} = props
 
-    console.log(value, " is the value")
+  
 
     const [isHover, setIsHover] = useState(false);
     const [isEditing, setIsEditing] = useState(false)

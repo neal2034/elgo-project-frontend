@@ -29,6 +29,7 @@ interface ITaskDetailInfo{
     priority:string,
     deadline?:string,
     tagIds?:number[],
+    description?:string,
     handlerDto?:{
         id:number
     }
@@ -141,6 +142,11 @@ const taskThunks = {
 
         }
     },
+    editTaskDes : (id:number, description?:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await request.put({url:apiUrl.task.editDescription, data:{id,description}})
+            }
+        }
 }
 
 

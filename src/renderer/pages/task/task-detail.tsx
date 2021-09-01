@@ -16,6 +16,7 @@ import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-sel
 import {reqThunks} from "@slice/reqSlice";
 import {tagThunks} from "@slice/tagSlice";
 import {funztionThunks} from "@slice/funztionSlice";
+import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
 
 
 export default function TaskDetail(){
@@ -92,6 +93,10 @@ export default function TaskDetail(){
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },
+        handleDesChange: async (description?:string)=>{
+            await  dispatch(taskThunks.editTaskDes(data.currentTask.id, description))
+            dispatch(taskThunks.getTaskDetail(data.currentTask.id))
+        },
 
 
     }
@@ -134,6 +139,11 @@ export default function TaskDetail(){
                 </div>
 
 
+            </div>
+
+            <EffInfoSep className="mt40 ml10" name={'任务描述'} />
+            <div className="ml20 mt20 pr40" >
+                <EffEditableDoc onSave={response.handleDesChange} height={'400px'} className="ml40 mt20" content={data.currentTask.description}/>
             </div>
         </div>
     )

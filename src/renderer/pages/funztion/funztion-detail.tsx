@@ -137,7 +137,7 @@ export default function FunztionDetail(props:IProps){
                 </div>
             </div>
 
-            <EffInfoSep className="mt40 ml10" name={'需求描述'} />
+            <EffInfoSep className="mt40 ml10" name={'功能描述'} />
             <div className="ml20 mt20 pr40" >
                 <EffEditableDoc onSave={response.handleDesChange} height={'400px'} className="ml40 mt20" content={data.currentFunztion.description}/>
             </div>
