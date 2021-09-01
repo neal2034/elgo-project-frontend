@@ -111,6 +111,7 @@ const  apiUrl = {
         setDone: '/task/done',                  //设置为已完成
         setUndone: '/task/un-done',             //取消完成
         detail: '/task/detail',                 //任务详情
+        withdraw: '/task/revert',               //撤销删除
     },
     testCase:{
         index: '/test-case',

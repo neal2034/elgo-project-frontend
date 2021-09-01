@@ -2,21 +2,29 @@ import React, {useEffect, useState} from "react";
 import EffTaskGroup from "./eff-task-group";
 import './eff-tasks.less'
 import {useDispatch, useSelector} from "react-redux";
-import {taskThunks} from "@slice/taskSlice";
+import {taskActions, taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import {Drawer} from "antd";
 import AddTaskForm from "./add-task-form";
 import {tagThunks} from "@slice/tagSlice";
 import TaskDetail from "./task-detail";
+import EffToast from "../../components/eff-toast/eff-toast";
+import {reqActions} from "@slice/reqSlice";
+import {funztionThunks} from "@slice/funztionSlice";
 
 export default function EffTaskContent(){
     const dispatch = useDispatch()
     const [activeGroupId, setActiveGroupId] = useState(-1);       //当前用于添加任务的分组ID
     const [showAddTaskFrom, setShowAddTaskForm] = useState(false);    //是否打开添加任务对话框
     const [showTaskDetail, setShowTaskDetail] = useState(false);      //是否显示任务详情
+    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
+    const [toastMsg, setToastMsg] = useState<string>()
+    const [lastDelTaskId, setLastDelTaskId] = useState(-1)
+    const [lastDelTaskGroupId, setLastDelTaskGroupId] = useState(-1)
     const data = {
         groups: useSelector((state:RootState)=>state.task.groups),
         tags: useSelector((state:RootState)=>state.tag.tags),
+        isToastOpen :  useSelector((state:RootState)=>state.task.taskToast)
     }
 
     useEffect(()=>{
@@ -45,6 +53,23 @@ export default function EffTaskContent(){
             await dispatch(taskThunks.getTaskDetail(id))
             setShowTaskDetail(true)
 
+        },
+        handleDelTask: async (id:number, taskGroupId:number)=>{
+            setToastMsg('任务放入回收站成功')
+            setIsToastWithdraw(true)
+            await dispatch(taskThunks.deleteTask(id))
+            dispatch(taskThunks.listTask(taskGroupId))
+            setLastDelTaskId(id)
+            setLastDelTaskGroupId(taskGroupId)
+            setShowTaskDetail(false)
+        },
+        handleWithdrawDelTask: async ()=>{
+            setIsToastWithdraw(false)
+            setToastMsg('撤销成功')
+            await dispatch(taskThunks.withdrawDelTask(lastDelTaskId))
+            dispatch(taskThunks.listTask(lastDelTaskGroupId))
+            setLastDelTaskId(-1)
+            setLastDelTaskGroupId(-1)
         }
     }
 
@@ -75,8 +100,9 @@ export default function EffTaskContent(){
                 onClose={()=>setShowTaskDetail(false)}
                 visible={showTaskDetail}
             >
-                <TaskDetail/>
+                <TaskDetail onDel={response.handleDelTask}/>
             </Drawer>
+            <EffToast onWithDraw={response.handleWithdrawDelTask} open={data.isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(taskActions.setTaskToast(false))}/>
         </div>
     )
 }

@@ -41,7 +41,8 @@ const taskSlice = createSlice({
     initialState:{
         groups:[],
         tasks:{},
-        currentTask: {} as ITaskDetailInfo
+        currentTask: {} as ITaskDetailInfo,
+        taskToast:false,            //task 对应的toast
     },
     reducers:{
             setGroups: (state, action) => { state.groups = action.payload },
@@ -52,6 +53,7 @@ const taskSlice = createSlice({
 
             },
             setCurrentTask: (state, action) => { state.currentTask = action.payload },
+            setTaskToast: (state, action) => { state.taskToast = action.payload },
     }
 })
 
@@ -145,6 +147,22 @@ const taskThunks = {
     editTaskDes : (id:number, description?:string)=>{
             return async (dispatch:Dispatch<any>)=>{
                 await request.put({url:apiUrl.task.editDescription, data:{id,description}})
+            }
+        },
+    deleteTask : (id:number)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.delete({url:apiUrl.task.index, params:{id}})
+                if(result.isSuccess){
+                    dispatch(taskActions.setTaskToast(true))
+                }
+            }
+        },
+    withdrawDelTask : (id:number)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await  request.post({url:apiUrl.task.withdraw, params:{id}})
+                if(result.isSuccess){
+                    dispatch(taskActions.setTaskToast(true))
+                }
             }
         }
 }

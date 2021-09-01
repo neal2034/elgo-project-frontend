@@ -19,7 +19,13 @@ import {funztionThunks} from "@slice/funztionSlice";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
 
 
-export default function TaskDetail(){
+interface IProps{
+    onDel:(id:number, taskGroupId:number)=>void
+}
+
+
+export default function TaskDetail(props:IProps){
+    const {onDel} = props
     const dispatch = useDispatch()
     const [memberOptions, setMemberOptions] = useState<any[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
@@ -97,6 +103,12 @@ export default function TaskDetail(){
             await  dispatch(taskThunks.editTaskDes(data.currentTask.id, description))
             dispatch(taskThunks.getTaskDetail(data.currentTask.id))
         },
+        //菜单选择响应
+        menuSelected:(key:string)=>{
+            if(key=='delete'){
+                onDel(data.currentTask.id, data.currentTask.taskListId)
+            }
+        }
 
 
     }
@@ -106,7 +118,7 @@ export default function TaskDetail(){
         <div className="pt40 pl40 pr40 pb40">
             <div className="d-flex justify-between align-center">
                 <EffEditableInput errMsg={'请输入任务名称'} className="flex-grow-1" isRequired={true} onChange={response.handleEditTaskName} value={data.currentTask.name} placeholder={'请输入任务名称'} />
-                <EffActions onSelect={response.occupy} menus={data.menuItems} className="ml40"  width={'30px'}/>
+                <EffActions onSelect={response.menuSelected} menus={data.menuItems} className="ml40"  width={'30px'}/>
             </div>
             <EffItemInfo className="ml10" serial={data.currentTask.serial} creator={data.currentTask.creatorDto && data.currentTask.creatorDto.name}/>
             <EffInfoSep className="mt20 ml10" name={'基础信息'} />
