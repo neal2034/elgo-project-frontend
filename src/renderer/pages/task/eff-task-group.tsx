@@ -1,17 +1,34 @@
-import React from "react";
+import React, {useEffect} from "react";
 import EffTaskGroupHeader from "./eff-task-group-head";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";
+import {RootState} from "../../store/store";
+import OneTask from "./one-task";
 
 interface IProps{
     name:string,
     id:number,
     isNew?:boolean,
+    onAdd:(id:number)=>void
 }
 
 export default function EffTaskGroup(props:IProps){
     const dispatch = useDispatch()
-    const {id, name, isNew=false} = props
+    const {id, name, isNew=false, onAdd} = props
+
+    // @ts-ignore
+    const taskItems = useSelector((state:RootState)=>state.task.tasks[id])
+    let usableTaskItems = taskItems? taskItems:[]
+
+
+    useEffect(()=>{
+        dispatch(taskThunks.listTask(id))
+    },[])
+
+    const ui = {
+        tasks:  usableTaskItems.map((onetask:any)=><OneTask key={onetask.id} task={onetask}/>)
+    }
+
 
     const response = {
         handleEditName: async (name?:string)=>{
@@ -22,7 +39,12 @@ export default function EffTaskGroup(props:IProps){
     }
 
     return (<div className="mb40">
-            <EffTaskGroupHeader editName={response.handleEditName} editing={isNew} name={name}/>
+
+            <EffTaskGroupHeader onAdd={()=>onAdd(id)} editName={response.handleEditName} editing={isNew} name={name}/>
+
+            <div className="mt20">
+                {ui.tasks}
+            </div>
     </div>)
 
 }

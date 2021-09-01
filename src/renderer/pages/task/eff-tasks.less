@@ -4,6 +4,9 @@
 
 
 .eff-task-group-header{
+  padding-left: 100px;
+
+
   .name{
     font-size: 20px;
     font-weight: bold;
@@ -42,7 +45,7 @@
 
 
 .eff-task-content{
-  padding-left: 100px;
+  //padding-left: 100px;
 }
 
 
@@ -62,5 +65,26 @@
 
   .btn-group{
     margin-left: 80px;
+  }
+}
+
+.eff-one-task{
+  padding-top: 20px;
+  cursor: pointer;
+
+
+  .task-inner{
+    border-bottom: 1px solid @color-board;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  &:hover{
+    background-color: rgba(243,244,246, .6);
+  }
+
+  .is-done{
+    opacity: .5;
   }
 }

@@ -40,9 +40,18 @@ export const REQUIREMENT_STATUS:Map = {
     }
 }
 
+//优先级
 export const PRIORITY:Map = {
 NONE:{name:'无', key:'NONE', color: "#999999"},
 LOW:{name:'低', key:'LOW', color:"#96bb7c",},
 MIDDLE:{name:'中', key:'MIDDLE', color: "#00b7c2"},
 HIGH:{name:'高', key:'HIGH',color:"#f4545c"}
+}
+
+//任务状态
+export const TASK_STATUS:Map = {
+    UNSTART:{name:'未开始', key:'UNSTART', color:'#F4545C'},
+    START:{name:'已开始', key:'START', color:'#4E89AE'},
+    DONE:{name:'已完成', key:'DONE', color: '#408C55'},
+    DEPEND:{name:'被阻碍', key:'DEPEND',color: '#FFA372'}
 }

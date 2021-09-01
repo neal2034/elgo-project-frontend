@@ -52,7 +52,7 @@ export default function FunztionAdvanceSearch(props:IProps){
                 reqId:values.reqId,
                 tagIds: tagIds? tagIds.join(","):undefined
             }
-            console.log(values, 'are values')
+
 
             onSearch(params)
         }

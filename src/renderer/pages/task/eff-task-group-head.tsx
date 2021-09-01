@@ -7,11 +7,12 @@ interface IProps{
     name?:string,
     editing?:boolean,     //是否应该处于编辑状态
     editName:(name?:string)=>void,      //名称发生修改
+    onAdd:()=>void,
 
 }
 
 export default function EffTaskGroupHeader(props:IProps){
-    const {name, editing=false, editName} = props
+    const {name, editing=false, editName,onAdd} = props
     const [isEdit, setIsEdit] = useState(false)
     const inputRef = useRef<Input>(null);
     const [groupName, setGroupName] = useState(name)
@@ -53,7 +54,7 @@ export default function EffTaskGroupHeader(props:IProps){
             <div className="name-group">
                 {isEdit? <Input placeholder={'输入分组名称'} onChange={response.onNameChange} value={groupName} ref={inputRef} onBlur={response.confirmEdit}  style={{width:'200px'}} size={"large"}/>:
                     <span onClick={response.goEdit} className="name">{groupName}</span>}
-                <PlusOutlined  className="ml10 add"/>
+                <PlusOutlined onClick={()=>onAdd()} className="ml10 add"/>
                 <MoreOutlined className="ml10 more" />
             </div>
 

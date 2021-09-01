@@ -51,14 +51,12 @@ export default function AddTaskForm(props:IProps){
 
 
     const response = {
-        occupy: ()=>{},
-
         handleAddTask: async ()=>{
             let values = await taskForm.validateFields()
             let taskData:ITaskData = Object.assign({},values)
             taskData.tagIds = selectedTagIds
             onConfirm(taskData)
-            console.log(taskData, " are values")
+
         },
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
@@ -73,6 +71,9 @@ export default function AddTaskForm(props:IProps){
             response.handleTagsChanged(currentIds)
 
         },
+        handleCancelAdd: ()=>{
+            onCancel()
+        }
     }
 
     return (
@@ -80,7 +81,7 @@ export default function AddTaskForm(props:IProps){
             <div className="title  pb10 mb20">
                 <span>新增任务</span>
             </div>
-            <Form colon={false}  form={taskForm}  requiredMark={false} >
+            <Form initialValues={{priority:'NONE'}} colon={false}  form={taskForm}  requiredMark={false} >
                 <Form.Item name="name"  label={'任务名称'} rules={[{ required: true, message: '请输入任务名称' }]}>
                     <Input size={"large"}/>
                 </Form.Item>
@@ -99,8 +100,8 @@ export default function AddTaskForm(props:IProps){
                 </div>
 
                 <div className="d-flex justify-between mt20">
-                    <Form.Item name="priority" style={{width:'50%'}}  label={'优先级'}>
-                        <Select defaultValue={'NONE'} className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
+                    <Form.Item  name="priority" style={{width:'50%'}}  label={'优先级'}>
+                        <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
                             {ui.priorityOptions}
                         </Select>
                     </Form.Item>
@@ -121,7 +122,7 @@ export default function AddTaskForm(props:IProps){
             </Form>
 
             <div className="btn-group d-flex mt40">
-                <EffButton type={"line"} round={true} className="mr20" onClick={response.occupy} text={'取消'} key={'cancel'}/>
+                <EffButton type={"line"} round={true} className="mr20" onClick={response.handleCancelAdd} text={'取消'} key={'cancel'}/>
                 <EffButton type={'filled'} round={true} onClick={response.handleAddTask} text={'保存'} key={'confirm'}/>
             </div>
         </div>
