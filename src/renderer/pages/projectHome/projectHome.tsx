@@ -15,6 +15,9 @@ import umbrella from "umbrella-storage";
 import {RootState} from "../../store/store";
 import IconMusic from '@imgs/music.png'
 import {projectActions, projectThunks} from "@slice/projectSlice";
+import ProjectSetting from "../project-setting/project-setting";
+import TestCase from "../case/test-case";
+import TestPlan from "../test-plan/test-plan";
 
 function ProjectHeader(){
     const projectDetail:any = useSelector((state:RootState)=>state.project.projectDetail)
@@ -52,7 +55,10 @@ export default function ProjectHome (props:any){
         {key:'requirement', path:`${url}/requirement`, name:'需求'},
         {key:'funztion',path:`${url}/funztion`,name:'功能'},
         {key:'task', path:`${url}/task`, name:'任务'},
+        {key:'test-case', path:`${url}/test-case`, name:'测试用例'},
+        {key:'test-plan', path:`${url}/test-plan`, name:'测试计划'},
         {key:'api', path:`${url}/api`, name:'API'},
+        {key:'project-setting', path:`${url}/project-setting`, name:'设置'},
     ]
 
     const response = {
@@ -87,7 +93,10 @@ export default function ProjectHome (props:any){
                     <PrivateRoute component={Requirement} path={`${path}/requirement`}/>
                     <PrivateRoute component={Funztion} path={`${path}/funztion`}/>
                     <PrivateRoute component={Task} path={`${path}/task`}/>
+                    <PrivateRoute component={TestCase} path={`${path}/test-case`}/>
+                    <PrivateRoute component={TestPlan} path={`${path}/test-plan`}/>
                     <PrivateRoute component={Api} path={`${path}/api`}/>
+                    <PrivateRoute component={ProjectSetting} path={`${path}/project-setting`}/>
                 </Switch>
             </div>
 
