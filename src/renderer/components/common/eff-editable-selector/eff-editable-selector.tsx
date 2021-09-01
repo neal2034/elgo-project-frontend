@@ -67,6 +67,7 @@ export default function EffEditableSelector(props:IEffEditableSelectorProps){
                onMouseLeave={()=>setIsHover(false)}>
 
             <Select onClear={response.handlerClearSelection}
+                    size={'large'}
                     showSearch={searchAble}
                     defaultActiveFirstOption={false}
                     allowClear={clear}

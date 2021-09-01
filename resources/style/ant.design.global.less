@@ -34,6 +34,10 @@
 
 
 //选择器边框颜色 圆角调整
+.ant-picker,
+.ant-picker:focus,
+.ant-picker:hover,
+.ant-picker:active,
 .ant-select-focused .ant-select-selector,
 .ant-select-selector:focus,
 .ant-select-selector:hover,
@@ -78,4 +82,8 @@
 //去除antd selector 过渡设置，避免边框色在editable 下的颜色过渡
 .ant-select:not(.ant-select-customize-input) .ant-select-selector{
   transition:  none !important;
+}
+
+.ant-picker{
+  transition: none !important;
 }

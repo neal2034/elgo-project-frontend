@@ -18,12 +18,29 @@ interface IAddTaskDto{
     funztionId?:number,
 }
 
+interface ITaskDetailInfo{
+    name:string,
+    id:number,
+    serial:number,
+    taskListId:number,
+    creatorDto:{
+        name:string
+    },
+    priority:string,
+    deadline?:string,
+    tagIds?:number[],
+    handlerDto?:{
+        id:number
+    }
+}
+
 
 const taskSlice = createSlice({
     name: 'task',
     initialState:{
         groups:[],
-        tasks:{}
+        tasks:{},
+        currentTask: {} as ITaskDetailInfo
     },
     reducers:{
             setGroups: (state, action) => { state.groups = action.payload },
@@ -33,6 +50,7 @@ const taskSlice = createSlice({
                 state.tasks[groupId] = action.payload.tasks
 
             },
+            setCurrentTask: (state, action) => { state.currentTask = action.payload },
     }
 })
 
@@ -81,7 +99,48 @@ const taskThunks = {
                   await request.put({url:apiUrl.task.setDone, params:{id}})
 
             }
+        },
+    getTaskDetail : (id:number)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.task.detail, params:{id}})
+                if(result.isSuccess){
+                    dispatch(taskActions.setCurrentTask(result.data))
+                }
+            }
+        },
+    editTaskName : (id:number, name:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.put({url:apiUrl.task.editName, data:{id,name}})
+                if(result.isSuccess){
+                    dispatch(taskThunks.getTaskDetail(id))
+                }
+            }
+        },
+    editTaskHandler : (id:number, handlerId?:number)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                 await request.put({url:apiUrl.task.editHandler, data:{id,handlerId}})
+
+            }
+        },
+    editTaskPriority : (id:number, priority:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await request.put({url:apiUrl.task.editPriority, data:{id, priority}})
+            }
+        },
+    editTaskDeadline : (id:number, deadline?:string)=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await  request.put({url:apiUrl.task.editDeadline, data:{id, deadline}})
+            }
+        },
+    //修改任务标签
+    editTaskTags : (id:number, tagIds:number[])=>{
+        return async (dispatch:Dispatch<any>)=>{
+            let data = {id,tagIds}
+            await request.put({url:apiUrl.task.editTags, data})
+
+
         }
+    },
 }
 
 

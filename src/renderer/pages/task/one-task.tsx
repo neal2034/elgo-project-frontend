@@ -23,12 +23,14 @@ interface ITask{
 }
 
 interface IProps{
-    task:ITask
+    task:ITask,
+    onSelect:()=>void
 }
 
 export default function OneTask(props:IProps){
     const dispatch = useDispatch()
     const {name,serial,priority,deadline,status, handlerDto, id} = props.task
+    const {onSelect} = props
     const [isTaskDone, setIsTaskDone] = useState(false)
 
     useEffect(()=>{
@@ -42,7 +44,7 @@ export default function OneTask(props:IProps){
         }
     }
 
-    return (<div className="eff-one-task" style={{
+    return (<div onClick={onSelect} className="eff-one-task" style={{
         paddingLeft:'100px',
         paddingRight:'20px'
     }}>

@@ -4,17 +4,19 @@ import {useDispatch, useSelector} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import OneTask from "./one-task";
+import {on} from "cluster";
 
 interface IProps{
     name:string,
     id:number,
     isNew?:boolean,
-    onAdd:(id:number)=>void
+    onAdd:(id:number)=>void,
+    onTaskSelected:(id:number)=>void,
 }
 
 export default function EffTaskGroup(props:IProps){
     const dispatch = useDispatch()
-    const {id, name, isNew=false, onAdd} = props
+    const {id, name, isNew=false, onAdd,onTaskSelected} = props
 
     // @ts-ignore
     const taskItems = useSelector((state:RootState)=>state.task.tasks[id])
@@ -26,7 +28,7 @@ export default function EffTaskGroup(props:IProps){
     },[])
 
     const ui = {
-        tasks:  usableTaskItems.map((onetask:any)=><OneTask key={onetask.id} task={onetask}/>)
+        tasks:  usableTaskItems.map((onetask:any)=><OneTask onSelect={()=>onTaskSelected(onetask.id)} key={onetask.id} task={onetask}/>)
     }
 
 

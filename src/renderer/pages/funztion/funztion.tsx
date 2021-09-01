@@ -100,6 +100,7 @@ export default function Funztion(){
             >
                 <FunztionForm tags={data.tags} onCancel={response.handleCancelAdd} onConfirm={response.handleAddFunztion}/>
             </Drawer>
+
         </div>
     )
 }

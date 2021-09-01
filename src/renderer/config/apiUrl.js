@@ -110,6 +110,7 @@ const  apiUrl = {
         editTags: '/task/tag',                  //修改任务标签
         setDone: '/task/done',                  //设置为已完成
         setUndone: '/task/un-done',             //取消完成
+        detail: '/task/detail',                 //任务详情
     },
     testCase:{
         index: '/test-case',
