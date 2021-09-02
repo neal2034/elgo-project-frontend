@@ -16,6 +16,7 @@ import EffEmpty from "../../components/common/eff-empty/eff-empty";
 import {tagThunks} from "@slice/tagSlice";
 import TestCaseItem from "./test-case-item";
 import {funztionThunks} from "@slice/funztionSlice";
+import TestCaseDetail from "./test-case-detail";
 
 
 
@@ -24,6 +25,7 @@ export default function TestCase(){
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false)
     const [isShowSearchResult, setIsShowSearchResult] = useState(false)
     const [showAddTestCaseForm, setShowAddTestCaseForm] = useState(false)
+    const [showTestCaseDetail, setShowTestCaseDetail] = useState(false)
     const page = useSelector((state:RootState)=>state.testCase.page)
     const testCases = useSelector((state:RootState)=>state.testCase.testCases)
     const totalCaseNum = useSelector((state:RootState)=>state.testCase.total)
@@ -44,8 +46,8 @@ export default function TestCase(){
     },[])
     const response = {
         handleItemChosen: async (id:number)=>{
-            // await dispatch(funztionThunks.getFunztionDetail(id))
-            // setShowDetail(true)
+            await dispatch(testCaseThunks.getTestCaseDetail(id))
+            setShowTestCaseDetail(true)
         },
         occupy: ()=>{},
         handleCancelAdd: ()=>{
@@ -62,6 +64,10 @@ export default function TestCase(){
         },
         handlePageChange:(pageId:number)=>{
             dispatch(testCaseThunks.listTestCase({page:pageId-1}))
+        },
+        handleClose: ()=>{
+            setShowTestCaseDetail(false)
+            setShowAddTestCaseForm(false)
         }
     }
 
@@ -89,11 +95,15 @@ export default function TestCase(){
                     width={'60%'}
                     placement="right"
                     closable={false}
-                    maskClosable={false}
-                    visible={showAddTestCaseForm}
+                    onClose={response.handleClose}
+                    maskClosable={true}
+                    visible={showAddTestCaseForm||showTestCaseDetail}
                 >
-                    <AddTestCaseForm onConfirm={response.handleAddTestCase} onCancel={response.handleCancelAdd} tags={data.tags}/>
+                    {showAddTestCaseForm && <AddTestCaseForm onConfirm={response.handleAddTestCase} onCancel={response.handleCancelAdd} tags={data.tags}/>}
+                    {showTestCaseDetail && <TestCaseDetail/>}
                 </Drawer>
+
+
 
             </div>
         </div>

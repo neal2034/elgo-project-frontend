@@ -8,6 +8,7 @@ import {reqActions} from "@slice/reqSlice";
 
 
 interface IListFunztionParams{
+    id?:number,
     page?:number,
     name?:string,
     reqId?:number,
