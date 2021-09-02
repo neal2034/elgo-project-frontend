@@ -18,7 +18,14 @@ import {funztionActions, funztionThunks} from "@slice/funztionSlice";
 import {tagThunks} from "@slice/tagSlice";
 
 
-export default function TestCaseDetail(){
+
+interface IProps{
+    onDel:(id:number)=>void
+}
+
+
+export default function TestCaseDetail(props:IProps){
+    const {onDel} = props
     const dispatch = useDispatch()
     const currentTestCase = useSelector((state:RootState)=>state.testCase.currentTestCase)
     const page = useSelector((state:RootState)=>state.testCase.page)
@@ -89,13 +96,19 @@ export default function TestCaseDetail(){
             await dispatch(testCaseThunks.editTags({id:currentTestCase.id, tagIds:ids}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id))
         },
+        //菜单选择响应
+        menuSelected:(key:string)=>{
+            if(key=='delete'){
+                onDel(currentTestCase.id as number)
+            }
+        }
     }
 
     return (
         <div className="pt40 pl40 pr40 pb40">
             <div className="d-flex justify-between align-center">
                 <EffEditableInput errMsg={'请输入用例名称'} className="flex-grow-1" isRequired={true} onChange={response.handleEditName} value={currentTestCase.name} placeholder={'请输入用例名称'} />
-                <EffActions onSelect={response.occupy} menus={menuItems} className="ml40"  width={'30px'}/>
+                <EffActions onSelect={response.menuSelected} menus={menuItems} className="ml40"  width={'30px'}/>
             </div>
             <EffItemInfo className="ml10" serial={ currentTestCase.serial!} creator={currentTestCase.creator && currentTestCase.creator.name}/>
             <EffInfoSep className="mt20 ml10" name={'基础信息'} />

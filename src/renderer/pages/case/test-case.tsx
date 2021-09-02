@@ -11,12 +11,14 @@ import {Drawer, Pagination} from "antd";
 import AddTaskForm from "../task/add-task-form";
 import AddTestCaseForm from "./add-test-case-form";
 import {taskThunks} from "@slice/taskSlice";
-import {testCaseThunks} from "@slice/testCaseSlice";
+import {testCaseActions, testCaseThunks} from "@slice/testCaseSlice";
 import EffEmpty from "../../components/common/eff-empty/eff-empty";
 import {tagThunks} from "@slice/tagSlice";
 import TestCaseItem from "./test-case-item";
 import {funztionThunks} from "@slice/funztionSlice";
 import TestCaseDetail from "./test-case-detail";
+import EffToast from "../../components/eff-toast/eff-toast";
+import {reqActions} from "@slice/reqSlice";
 
 
 
@@ -26,9 +28,13 @@ export default function TestCase(){
     const [isShowSearchResult, setIsShowSearchResult] = useState(false)
     const [showAddTestCaseForm, setShowAddTestCaseForm] = useState(false)
     const [showTestCaseDetail, setShowTestCaseDetail] = useState(false)
+    const isToastOpen =  useSelector((state:RootState)=>state.testCase.isToastOpen)
     const page = useSelector((state:RootState)=>state.testCase.page)
     const testCases = useSelector((state:RootState)=>state.testCase.testCases)
     const totalCaseNum = useSelector((state:RootState)=>state.testCase.total)
+    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
+    const [toastMsg, setToastMsg] = useState<string>()
+    const [lastDelCaseId, setLastDelCaseId] = useState(-1)
 
 
     const data = {
@@ -68,7 +74,23 @@ export default function TestCase(){
         handleClose: ()=>{
             setShowTestCaseDetail(false)
             setShowAddTestCaseForm(false)
-        }
+        },
+        handleDelCase: async (id:number)=>{
+            setToastMsg('测试用例放入回收站成功')
+            setIsToastWithdraw(true)
+            await dispatch(testCaseThunks.deleteTestCase(id))
+            dispatch(testCaseThunks.listTestCase({page}))
+            setLastDelCaseId(id)
+            setShowTestCaseDetail(false)
+        },
+        handleWithdrawDelFunztion: async ()=>{
+            setIsToastWithdraw(false)
+            setToastMsg('撤销成功')
+            await dispatch(testCaseThunks.withdrawDelTestCase(lastDelCaseId))
+            dispatch(testCaseThunks.listTestCase({page}))
+            setLastDelCaseId(-1)
+
+        },
     }
 
     const ui = {
@@ -100,12 +122,13 @@ export default function TestCase(){
                     visible={showAddTestCaseForm||showTestCaseDetail}
                 >
                     {showAddTestCaseForm && <AddTestCaseForm onConfirm={response.handleAddTestCase} onCancel={response.handleCancelAdd} tags={data.tags}/>}
-                    {showTestCaseDetail && <TestCaseDetail/>}
+                    {showTestCaseDetail && <TestCaseDetail onDel={response.handleDelCase}/>}
                 </Drawer>
 
 
 
             </div>
+            <EffToast onWithDraw={response.handleWithdrawDelFunztion} open={isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(testCaseActions.setIsToastOpen(false))}/>
         </div>
     )
 }
