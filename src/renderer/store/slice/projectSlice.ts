@@ -57,5 +57,5 @@ const projectThunks = {
 }
 
 const projectActions = projectSlice.actions
-export {projectActions, projectThunks}
+export {projectActions, projectThunks, IProjectDetail}
 export default projectSlice.reducer

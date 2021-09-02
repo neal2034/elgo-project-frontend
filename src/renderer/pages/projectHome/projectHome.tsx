@@ -87,7 +87,7 @@ export default function ProjectHome (props:any){
             </EffMenu>
             {/*<ProjectTollBar/>*/}
 
-            <Redirect to={`${path.replace(':serial', serial)}/requirement`} />
+            <Redirect to={`${path.replace(':serial', serial)}/test-case`} />
             <div className={'page-content d-flex-column'}>
                 <Switch>
                     <PrivateRoute component={Requirement} path={`${path}/requirement`}/>
