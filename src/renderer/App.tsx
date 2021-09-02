@@ -17,6 +17,8 @@ import './assets/css/app.less'
 import {Redirect, useHistory} from "react-router";
 import {orgThunks} from "./pages/organizationHome/orgSlice";
 import {accountThunks} from "./pages/account/accountSlice";
+import MyTask from "./pages/my-task/my-task";
+import MyBugs from "./pages/my-bugs/my-bugs";
 
 const {Content} = Layout
 
@@ -83,6 +85,8 @@ const App = () => {
                          <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
                          <PrivateRoute component={Api} path="/app/api" />
                          <PrivateRoute component={ProjectCenter} path={'/app/project-center'}/>
+                         <PrivateRoute component={MyTask} path={'/app/my-task'}/>
+                         <PrivateRoute component={MyBugs} path={'/app/my-bug'}/>
                          <PrivateRoute component={ProjectHome} path='/app/project/:serial'/>
 
                      </Switch>
