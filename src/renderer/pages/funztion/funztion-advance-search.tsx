@@ -12,7 +12,7 @@ interface IProps{
     onSearch:(params:any)=>void,
 }
 
-export default function FunztionAdvanceSearch(props:IProps){
+export default function  FunztionAdvanceSearch(props:IProps){
     const dispatch = useDispatch()
     const {onCancel, onSearch,tags} = props
     const [reqOptions, setReqOptions] = useState<any>([])

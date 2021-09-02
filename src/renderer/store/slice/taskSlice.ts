@@ -36,12 +36,20 @@ interface ITaskDetailInfo{
     }
 }
 
+interface ITaskGroup{
+    id:number,
+    name:string,
+    [x:string]:any,
+}
+
+
 
 const taskSlice = createSlice({
     name: 'task',
     initialState:{
-        groups:[],
+        groups:[] as ITaskGroup[],
         tasks:{},
+        totalTasks:0,
         currentTask: {} as ITaskDetailInfo,
         taskToast:false,            //task 对应的toast
     },
@@ -51,6 +59,13 @@ const taskSlice = createSlice({
                 let groupId = action.payload.taskGroupId
                 // @ts-ignore
                 state.tasks[groupId] = action.payload.tasks
+                let total = 0
+                for(let key in state.tasks){
+                    // @ts-ignore
+                    let num = state.tasks[key].length
+                    total = total + num
+                }
+                state.totalTasks = total
 
             },
             setCurrentTask: (state, action) => { state.currentTask = action.payload },
@@ -85,9 +100,10 @@ const taskThunks = {
                 await  request.post({url:apiUrl.task.index, data:task})
             }
         },
-    listTask : (taskGroupId:number)=>{
+    listTask : (taskGroupId:number, name?:string, handlerId?:number, priority?:string, tagIds?:string)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.task.index, params:{size:2000, taskListId:taskGroupId}})
+                let result = await request.get({url:apiUrl.task.index, params:{size:2000, taskListId:taskGroupId,
+                        key:name,handlerIds:handlerId, priorities:priority, tagIds}})
                 if(result.isSuccess){
                     let payload = {
                         taskGroupId:taskGroupId,
