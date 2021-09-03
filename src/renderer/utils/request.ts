@@ -2,13 +2,16 @@ import axios from "axios";
 import globalConfig from '../config/global.config'
 import umbrella from 'umbrella-storage';
 
-
+interface Map {
+    [key: string]: any;
+    [index: number]: any;
+}
 
 type METHODS = 'get' | 'post' | 'put' | 'delete';
 
 interface IFRequestParam {
     url: string;
-    params?:object;
+    params?:Map;
     data?: object;
     config?: object;
 }
@@ -77,6 +80,12 @@ const post =   ({url, data, params, config}:IFRequestParam)=>{
 }
 
 const get = ({url, params, config}:IFRequestParam) => {
+    //将get 参数当中的数组转成字符串拼接
+    for(let x in params){
+        if(params.hasOwnProperty(x) && Array.isArray(params[x])){
+            params[x] = params[x].join(',')
+        }
+    }
     return request({method:'get', url, params, config})
 }
 

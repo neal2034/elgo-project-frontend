@@ -19,6 +19,7 @@ import {funztionThunks} from "@slice/funztionSlice";
 import TestCaseDetail from "./test-case-detail";
 import EffToast from "../../components/eff-toast/eff-toast";
 import {reqActions} from "@slice/reqSlice";
+import TestCaseAdvanceSearch from "./test-case-advance-search";
 
 
 
@@ -36,12 +37,11 @@ export default function TestCase(){
     const [toastMsg, setToastMsg] = useState<string>()
     const [lastDelCaseId, setLastDelCaseId] = useState(-1)
 
-
     const data = {
         tags: useSelector((state:RootState)=>state.tag.tags),
         searchMenus: [
-            {key:'my-task', name:'我的任务', icon:<UserAddOutlined />},
-            {key:'unstart', name:'未开始的任务', icon:<FieldTimeOutlined />},
+            {key:'my-create', name:'我创建的', icon:<UserAddOutlined />},
+            // {key:'unstart', name:'未开始的任务', icon:<FieldTimeOutlined />},
 
         ],
     }
@@ -55,7 +55,6 @@ export default function TestCase(){
             await dispatch(testCaseThunks.getTestCaseDetail(id))
             setShowTestCaseDetail(true)
         },
-        occupy: ()=>{},
         handleCancelAdd: ()=>{
             setShowAddTestCaseForm(false)
         },
@@ -91,6 +90,36 @@ export default function TestCase(){
             setLastDelCaseId(-1)
 
         },
+        handleAdvanceSearch: async (searchKeys:any)=>{
+            let params:any = {page:0, searchKey:searchKeys.name, funztionId:searchKeys.funztionId, tagIds:searchKeys.tagIds}
+            if(searchKeys.priority){
+                params.priorities = [searchKeys.priority]
+            }
+            await dispatch(testCaseThunks.listTestCase(params))
+            setIsAdvanceSearch(false)
+            setIsShowSearchResult(true)
+        },
+        handleCloseSearch:()=>{
+            setIsShowSearchResult(false)
+            dispatch(testCaseThunks.listTestCase({page:0}))
+        },
+        //取消高级搜索
+        handleCancelAdvanceSearch: ()=>{
+            setIsAdvanceSearch(false)
+        },
+        handleSearchMenu: (key:string)=>{
+            switch (key){
+                case 'my-create':
+                    console.log('搜索我创建的')
+                    break
+                default:
+                    setIsAdvanceSearch(true)
+            }
+        },
+        handleSearch: async (value:string)=>{
+            await dispatch(testCaseThunks.listTestCase({page:0, searchKey:value}))
+            setIsShowSearchResult(true)
+        },
     }
 
     const ui = {
@@ -101,9 +130,9 @@ export default function TestCase(){
     return (
         <div className="flex-grow-1 d-flex-column eff-tasks">
             <div style={{height:'40px'}} className="d-flex justify-end mt20 mb20 align-center">
-                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={22} onClose={response.occupy}/>}
-                {isAdvanceSearch? <TaskAdvanceSearch onSearch={response.occupy} onCancel={response.occupy} tags={data.tags}/> :
-                    <EffSearchArea onSearch={response.occupy} menuSelected={response.occupy} menus={data.searchMenus}/>}
+                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={totalCaseNum} onClose={response.handleCloseSearch}/>}
+                {isAdvanceSearch? <TestCaseAdvanceSearch onSearch={response.handleAdvanceSearch} onCancel={response.handleCancelAdvanceSearch} tags={data.tags}/> :
+                    <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus}/>}
                 <EffButton width={100} onClick={response.handleGoAdd} type={"line"}  round={true} className="ml10 mr20" text={'+ 新增用例'} key={'add'}/>
             </div>
             <div className="eff-test-case-content d-flex-column">

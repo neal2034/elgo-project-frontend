@@ -44,7 +44,6 @@ export default function AddTestCaseForm(props:IProps){
     }, [funztions])
 
     const response = {
-        occupy:()=>{},
         handleAddTask: async ()=>{
             let values = await testCaseForm.validateFields()
             let testCaseData:ITestCaseData = Object.assign({},values)

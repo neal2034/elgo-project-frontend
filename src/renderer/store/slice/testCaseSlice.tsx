@@ -40,7 +40,7 @@ const testCaseSlice = createSlice({
 
 const testCaseActions = testCaseSlice.actions
 const testCaseThunks = {
-    listTestCase : (params:{page:number, name?:string})=>{
+    listTestCase : (params:{page:number, searchKey?:string, funztionId?:number, tagIds?:number[], priorities?:string[] })=>{
             return async (dispatch:Dispatch<any>)=>{
 
                 let result = await request.get({url:apiUrl.testCase.index, params})
