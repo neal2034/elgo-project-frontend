@@ -112,5 +112,5 @@ const testCaseThunks = {
 
 
 
-export {testCaseActions,testCaseThunks}
+export {testCaseActions,testCaseThunks,ITestCaseDetail}
 export default testCaseSlice.reducer

@@ -92,7 +92,7 @@ export default function  FunztionAdvanceSearch(props:IProps){
                 </Form.Item>
 
                 <div className="d-flex justify-end">
-                    <EffButton onClick={response.occupy} text={'取消'} key={'cancel'} round={true} width={80} type={"line"}/>
+                    <EffButton onClick={()=>onCancel()} text={'取消'} key={'cancel'} round={true} width={80} type={"line"}/>
                     <EffButton htmlType={'submit'}  className="ml10" text={'搜索'} key={'search'} round={true} width={80} type={"filled"}/>
                 </div>
             </Form>

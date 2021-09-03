@@ -24,7 +24,7 @@ interface IFunztion{
 const funztionSlice = createSlice({
     name:'funztion',
     initialState:{
-        funztions:[],       //当前所有功能
+        funztions:[] as IFunztion[],       //当前所有功能
         page:0,             //当前分页
         funzTotal:0,        //功能总数
         funztionStatus:[],  //功能状态

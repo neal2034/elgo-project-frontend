@@ -128,7 +128,7 @@ export default function TestCase(){
 
 
     return (
-        <div className="flex-grow-1 d-flex-column eff-tasks">
+        <div className="flex-grow-1 d-flex-column">
             <div style={{height:'40px'}} className="d-flex justify-end mt20 mb20 align-center">
                 {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={totalCaseNum} onClose={response.handleCloseSearch}/>}
                 {isAdvanceSearch? <TestCaseAdvanceSearch onSearch={response.handleAdvanceSearch} onCancel={response.handleCancelAdvanceSearch} tags={data.tags}/> :
