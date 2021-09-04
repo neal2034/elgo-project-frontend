@@ -4,7 +4,6 @@ import PrivateRoute from "./routes/privateRoute";
 import OrganizationHome from "./pages/organizationHome/organizationHome";
 import ProjectHome from "./pages/projectHome/projectHome";
 import {Switch} from "react-router-dom";
-// import EffSideMenu from "./components/eff-side-menu/effSideMenu";
 import EffSideMenu from "./components/business/eff-side-menu/eff-side-menu";
 import Api from "./pages/api/api";
 import OrgSwitch from "./pages/orgSwitch/orgSwitch";
@@ -15,12 +14,11 @@ import ProjectCenter from "./pages/project-center/project-center";
 import EffUser from "./components/eff-user/effUser"
 import './assets/css/app.less'
 import {Redirect, useHistory} from "react-router";
-import {orgThunks} from "./pages/organizationHome/orgSlice";
 import {accountThunks} from "./pages/account/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import {SnackbarProvider, useSnackbar} from "notistack";
-import EffToast from "./components/common/eff-toast/eff-toast";
+import EffToastUtil from '@components/common/eff-toast-util/eff-toast-util'
 
 const {Content} = Layout
 
@@ -34,7 +32,7 @@ const App = () => {
     useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
 
     const {enqueueSnackbar, closeSnackbar} = useSnackbar()
-    EffToast.setSnackBar(enqueueSnackbar,closeSnackbar)
+    EffToastUtil.setSnackBar(enqueueSnackbar,closeSnackbar)
 
     const [orgMenuVisible, setOrgMenuVisible] = useState(false);
     const response = {

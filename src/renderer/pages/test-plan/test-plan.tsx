@@ -9,15 +9,11 @@ import {UserAddOutlined} from '@ant-design/icons'
 import './test-plan.less'
 import EffEmpty from "../../components/common/eff-empty/eff-empty";
 import {Drawer, Pagination} from "antd";
-import AddTestCaseForm from "../case/add-test-case-form";
-import TestCaseDetail from "../case/test-case-detail";
 import AddTestPlanForm from "./add-test-plan-form";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
-import {funztionThunks} from "@slice/funztionSlice";
 import TestPlanDetail from "./test-plan-detail";
-// import EffToast from "../../components/common/eff-toast/eff-toast";
-import EffToastUtil from "../../components/common/eff-toast/eff-toast";
+import EffToastUtil from  '@components/common/eff-toast-util/eff-toast-util'
 
 export default function TestPlan(){
     const dispatch = useDispatch()

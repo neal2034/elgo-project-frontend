@@ -7,6 +7,7 @@
     "paths" : {
       "@config/*" : ["./src/renderer/config/*"],
       "@imgs/*" : ["./src/renderer/assets/imgs/*"],
+      "@components/*" : ["./src/renderer/components/*"],
       "@slice/*" : ["./src/renderer/store/slice/*"]
     },
     "lib": [
