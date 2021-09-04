@@ -13,7 +13,7 @@ import AddTestPlanForm from "./add-test-plan-form";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
 import TestPlanDetail from "./test-plan-detail";
-import EffToastUtil from  '@components/common/eff-toast-util/eff-toast-util'
+import {EffToastUtil} from  '@components/common/eff-toast-util/eff-toast-util'
 
 export default function TestPlan(){
     const dispatch = useDispatch()

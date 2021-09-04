@@ -18,8 +18,8 @@ import {accountThunks} from "./pages/account/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import {SnackbarProvider, useSnackbar} from "notistack";
-import EffToastUtil from '@components/common/eff-toast-util/eff-toast-util'
-
+import {EffToastUtil} from '@components/common/eff-toast-util/eff-toast-util'
+// import {EffTo}
 const {Content} = Layout
 
 

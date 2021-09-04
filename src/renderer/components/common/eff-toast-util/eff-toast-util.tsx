@@ -1,7 +1,7 @@
 import EffWithdraw from "../../business/eff-withdraw/eff-withdraw";
 import React from "react";
 
-class EffToastUtil{
+class EffToast{
     #snackBar = {
         enqueueSnackbar: (msg:string, rest:any)=>{},
         closeSnackbar: (key?:any) => {},
@@ -53,5 +53,5 @@ class EffToastUtil{
 
 }
 
-
-export default new EffToastUtil()
+const EffToastUtil = new EffToast()
+export  {EffToastUtil}

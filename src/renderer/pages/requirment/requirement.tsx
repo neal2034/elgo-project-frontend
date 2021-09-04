@@ -12,10 +12,10 @@ import DelReqClazzDlg from "./del-req-clazz-dlg";
 import AddReqForm from "./add-req-form";
 import RequirementItem from "./requirement-item";
 import RequirementDetail from "./requirement-detail";
-import EffToast from "../../components/eff-toast/eff-toast";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import ReqAdvanceSearch from "./req-advance-search";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
+import {EffToastUtil} from "@components/common/eff-toast-util/eff-toast-util";
 
 interface IReqClassItemProps{
     id?:number,
@@ -198,9 +198,9 @@ function ReqContent(props: IRequirementContentProps){
     const isToastOpen =  useSelector((state:RootState)=>state.requirement.reqToast)
     const [currentPage, setCurrentPage] = useState(1)
     const [showDetail, setShowDetail] = useState(false) //显示需求详情
-    const [lastDelReqId, setLastDelReqId] = useState(-1)
-    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
-    const [toastMsg, setToastMsg] = useState<string>()
+
+
+
     const response = {
         pageChange:(page:number)=>{
             dispatch(reqThunks.listPageRequirement({page:page-1}))
@@ -211,18 +211,19 @@ function ReqContent(props: IRequirementContentProps){
             setShowDetail(true)
         },
         onDeleteReq: async (id:number)=>{
-            setToastMsg('需求放入回收站成功')
-            setIsToastWithdraw(true)
-            await dispatch(reqThunks.delRequirement(id))
 
-            setLastDelReqId(id)
-            setShowDetail(false)
+          let result:any =  await dispatch(reqThunks.delRequirement(id))
+            if(result){
+                EffToastUtil.success_withdraw('需求放入回收站成功',()=>response.handleWithdrawDelReq(id))
+                setShowDetail(false)
+            }
         },
-        handleWithdrawDelReq:()=>{
-            setIsToastWithdraw(false)
-            setToastMsg('撤销成功')
-            dispatch(reqThunks.withdrawDelRequirement(lastDelReqId))
-            setLastDelReqId(-1)
+        handleWithdrawDelReq: async (id:number)=>{
+            let result:any = await dispatch(reqThunks.withdrawDelRequirement(id))
+            if(result ){
+                EffToastUtil.success('撤销成功')
+            }
+
         }
 
     }
@@ -246,8 +247,6 @@ function ReqContent(props: IRequirementContentProps){
             >
                 <RequirementDetail onDel={response.onDeleteReq}/>
             </Drawer>
-            <EffToast onWithDraw={response.handleWithdrawDelReq} open={isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(reqActions.setReqToast(false))}/>
-
         </div>
     )
 }
