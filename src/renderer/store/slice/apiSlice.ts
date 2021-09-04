@@ -130,7 +130,6 @@ const apiSlice = createSlice({
         activeApis:theActiveApis,
         currentApiSerial:-1,
         apiTreeItems:[],
-        toastOpen:false,
         envs:[],        //环境变量
         currentEnvId:-1,    //当前环境变量id
         showDescription:false,  //是否显示api 描述
@@ -139,9 +138,6 @@ const apiSlice = createSlice({
     reducers:{
         setShowDescription:(state, action)=>{
             state.showDescription = action.payload
-        },
-        setToastOpen:(state, action)=>{
-            state.toastOpen = action.payload
         },
         addActiveApi:(state)=>{
             let serial = getUsableSerial(state.activeApis)
@@ -319,7 +315,6 @@ const deleteApiSet = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url:apiUrl.api.setRes,params})
         if(result.isSuccess){
-            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
@@ -330,7 +325,6 @@ const withdrawDelApiTreeItem = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>) =>{
         let result = await request.get({url:apiUrl.api.withdraw, params})
         if(result.isSuccess){
-            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
         return result.isSuccess
@@ -360,9 +354,9 @@ const deleteApiGroup = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
         let result = await request.delete({url: apiUrl.api.groupRes, params})
         if(result.isSuccess){
-            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems())
         }
+        return result.isSuccess
     }
 }
 
@@ -380,9 +374,9 @@ const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
     return async (dispatch: Dispatch<any>)=>{
         let result = await  request.delete({url:apiUrl.api.apiTreeItemRes, params})
         if(result.isSuccess){
-            dispatch(apiActions.setToastOpen(true))
             dispatch(listApiTreeItems());
         }
+        return result.isSuccess
     }
 }
 
@@ -574,8 +568,8 @@ export const apiThunks = {
             let result = await request.delete({url: apiUrl.apiExample.apiExampleRes, params:{id}})
             if(result.isSuccess){
                 dispatch(apiActions.delApiExample(id))
-                dispatch(apiActions.setToastOpen(true))
             }
+            return result.isSuccess
         }
     },
     withdrawDelApiExample: (id:number)=>{

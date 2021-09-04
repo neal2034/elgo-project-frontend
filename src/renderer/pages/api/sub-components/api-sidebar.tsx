@@ -16,7 +16,7 @@ import ImgOpenInNew from '@imgs/api/open-in-new.png'
 import ApiDialog from "../dialogs/api-dialog";
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
 import EffButton from "../../../components/eff-button/eff-button";
-import EffToast from "../../../components/eff-toast/eff-toast";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
 /**
@@ -26,7 +26,6 @@ import EffToast from "../../../components/eff-toast/eff-toast";
 export default function ApiSideBar(){
 
     const dispatch = useDispatch();
-    let isToastOpen = useSelector((state:RootState)=>state.api.toastOpen)
     const [visibleApiMenuSetId, setVisibleApiMenuSetId] = useState(-1); //api 集合菜单可见性
     const [expandedKeys, setExpandedKeys] = useState<number[]>( []);  // 展开树节点的key
     const [visibleApiSetDlg, setApiSetDlgVisible] = useState(false); //API 集合/分组对话框可见性
@@ -37,8 +36,6 @@ export default function ApiSideBar(){
     const [parentId, setParentId] = useState<number>()
     const [apiParentId, setApiParentId]=useState<number>();             //添加API 时， API的父级节点
     const [visibleConfirmDelItemDlg, setConfirmDelItemDlgVisible] = useState(false); //确认删除集合对话框显示开关
-    const [toastMessage, setToastMessage] = useState<string>();
-    const [isToastWithdraw, setToastWithdraw] = useState(false);
     const [willDelApiItem, setWillDelApiItem] = useState<any>({});
     const [editingApiItem, setEditingApiItem] = useState(); //当前在编辑的API 集合
     const [searchKey, setSearchKey] = useState()
@@ -121,19 +118,25 @@ export default function ApiSideBar(){
 
         delApiItem:async ()=>{
             setConfirmDelItemDlgVisible(false)
-            setToastWithdraw(true)
+            let result:any = false
             switch (willDelApiItem.type.toLowerCase()){
                 case 'set':
-                    setToastMessage(`集合${willDelApiItem.name}已放入回收站`)
-                    dispatch(deleteApiSet({id:willDelApiItem.id}))
+                    result = dispatch(deleteApiSet({id:willDelApiItem.id}))
+                    if(result){
+                        effToast.success_withdraw(`集合${willDelApiItem.name}已放入回收站`, ()=>withdrawDelApiItem(willDelApiItem.id))
+                    }
                     break;
                 case 'group':
-                    setToastMessage(`分组${willDelApiItem.name}已放入回收站`)
-                    dispatch(deleteApiGroup({id:willDelApiItem.id}))
+                    result = dispatch(deleteApiGroup({id:willDelApiItem.id}))
+                    if(result){
+                        effToast.success_withdraw(`分组${willDelApiItem.name}已放入回收站`, ()=>withdrawDelApiItem(willDelApiItem.id))
+                    }
                     break;
                 case 'api':
-                    setToastMessage(`API ${willDelApiItem.name}已放入回收站`)
-                    dispatch(delApiTreeItem({treeItemId:willDelApiItem.id}))
+                    result = dispatch(delApiTreeItem({treeItemId:willDelApiItem.id}))
+                    if(result){
+                        effToast.success_withdraw(`API ${willDelApiItem.name}已放入回收站`, ()=>withdrawDelApiItem(willDelApiItem.id))
+                    }
                     break;
 
             }
@@ -291,10 +294,11 @@ export default function ApiSideBar(){
 
 
     //撤销删除集合
-    const withdrawDelApiItem = ()=>{
-        setToastMessage("撤销成功")
-        setToastWithdraw(false)
-        dispatch(withdrawDelApiTreeItem({id:willDelApiItem.id}))
+    const withdrawDelApiItem = async (id:number)=>{
+        let result:any = dispatch(withdrawDelApiTreeItem({id}))
+        if(result){
+            effToast.success('撤销成功')
+        }
     }
 
 
@@ -302,8 +306,7 @@ export default function ApiSideBar(){
 
     return (
         <div className="api-sidebar d-flex-column">
-            <EffToast onWithDraw={withdrawDelApiItem} isWithDraw={isToastWithdraw} open={isToastOpen} message={toastMessage!} onClose={()=>dispatch(apiActions.setToastOpen(false))}/>
-            <Input onChange={response.filterApi} className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
+             <Input onChange={response.filterApi} className="search-api ml5 mt5 mr5"  prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}/>
             <span className="mt10 btn-add-set" onClick={response.goAddApiSet}>+ 添加集合</span>
             <Tree   onMouseLeave={response.closeAllApiSettMenu} expandedKeys={expandedKeys} onSelect={response.treeItemSelected} blockNode={true} titleRender={renderTreeNodes} treeData={treeItems}/>
             <ApiSetDialog editItem={editingApiItem} dlgType={dlgType} parentId={parentId} visible={visibleApiSetDlg} closeDlg={response.closeDialog}  mode={apiDlgMode} />

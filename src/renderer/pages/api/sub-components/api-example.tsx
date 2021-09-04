@@ -4,13 +4,11 @@ import {API, apiThunks} from "@slice/apiSlice";
 import {Popover} from "antd";
 import './api-example.less'
 import {apiActions} from "@slice/apiSlice";
-import IconEdit from '@imgs/pen-edit.png'
 import IconRemove from '@imgs/remove.png'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
 import EffButton from "../../../components/eff-button/eff-button";
-import EffToast from "../../../components/eff-toast/eff-toast";
-import {RootState} from "../../../store/store";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
 interface IApiProps{
@@ -21,21 +19,15 @@ interface IApiProps{
 export default function ApiExample(props:IApiProps){
     const {examples=[]} = props.api
     const dispatch = useDispatch()
-    let isToastOpen = useSelector((state:RootState)=>state.api.toastOpen)
     const [willDelExample, setWillDelExample] = useState<any>()
     const [confirmDelDlgVisible, setConfirmDelDlgVisible] = useState(false)
-    const [popoverVisible, setPopoverVisible] = useState(false)
-    const [toastMessage, setToastMessage] = useState<string>();
-    const [isToastWithdraw, setToastWithdraw] = useState(false);
     const apiNum = examples.length
     const handler = {
         editExample: (example:any)=>{
-            setPopoverVisible(false)
             dispatch(apiActions.editApiExample(example))
         },
         confirmDelExample: (event:any, example:any)=>{
             event.stopPropagation();
-            setPopoverVisible(false)
             setWillDelExample(example)
             setConfirmDelDlgVisible(true)
 
@@ -43,14 +35,15 @@ export default function ApiExample(props:IApiProps){
         delExample: async ()=>{
             setConfirmDelDlgVisible(false)
             let id = willDelExample.id
-            setToastMessage(`示例${willDelExample.name}已放入回收站`)
-            setToastWithdraw(true)
-            await dispatch(apiThunks.delApiExample(id))
+           let result:any =  await dispatch(apiThunks.delApiExample(id))
+            if(result){
+                effToast.success_withdraw(`示例${willDelExample.name}已放入回收站`, ()=>handler.withdrawDelApiExample(id))
+            }
 
 
         },
-        withdrawDelApiExample: ()=>{
-            dispatch(apiThunks.withdrawDelApiExample(willDelExample.id))
+        withdrawDelApiExample: (id:number)=>{
+            dispatch(apiThunks.withdrawDelApiExample(id))
         }
     }
     const content = examples.map((example:any)=>{
@@ -78,7 +71,6 @@ export default function ApiExample(props:IApiProps){
                     </div>
                 </div>
             </EffConfirmDlg>
-            <EffToast onWithDraw={handler.withdrawDelApiExample} isWithDraw={isToastWithdraw} open={isToastOpen} message={toastMessage!} onClose={()=>dispatch(apiActions.setToastOpen(false))}/>
-        </div>
+         </div>
     )
 }

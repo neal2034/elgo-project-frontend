@@ -13,13 +13,12 @@ import EffBreadCrumb from "./components/eff-breadcrumb/eff-breadcrumb";
 import ProjectCenter from "./pages/project-center/project-center";
 import EffUser from "./components/eff-user/effUser"
 import './assets/css/app.less'
-import {Redirect, useHistory} from "react-router";
+import {useHistory} from "react-router";
 import {accountThunks} from "./pages/account/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
-import {SnackbarProvider, useSnackbar} from "notistack";
+import {useSnackbar} from "notistack";
 import {effToast} from '@components/common/eff-toast/eff-toast'
-// import {EffTo}
 const {Content} = Layout
 
 

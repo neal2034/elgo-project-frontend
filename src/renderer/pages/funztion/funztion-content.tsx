@@ -7,8 +7,6 @@ import {RootState} from "../../store/store";
 import {funztionThunks} from "@slice/funztionSlice";
 import {Drawer, Pagination} from "antd";
 import FunztionDetail from "./funztion-detail";
-import EffToast from "../../components/eff-toast/eff-toast";
-import {reqActions} from "@slice/reqSlice";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
