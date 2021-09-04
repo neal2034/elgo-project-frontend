@@ -11,6 +11,7 @@ import TaskDetail from "./task-detail";
 import EffToast from "../../components/eff-toast/eff-toast";
 import {reqActions} from "@slice/reqSlice";
 import {funztionThunks} from "@slice/funztionSlice";
+import {EffToastUtil} from "@components/common/eff-toast-util/eff-toast-util";
 
 export default function EffTaskContent(){
     const dispatch = useDispatch()
@@ -55,21 +56,22 @@ export default function EffTaskContent(){
 
         },
         handleDelTask: async (id:number, taskGroupId:number)=>{
-            setToastMsg('任务放入回收站成功')
-            setIsToastWithdraw(true)
-            await dispatch(taskThunks.deleteTask(id))
-            dispatch(taskThunks.listTask(taskGroupId))
-            setLastDelTaskId(id)
-            setLastDelTaskGroupId(taskGroupId)
-            setShowTaskDetail(false)
+            let result:any =await dispatch(taskThunks.deleteTask(id))
+            if(result as boolean){
+                EffToastUtil.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id, taskGroupId))
+                dispatch(taskThunks.listTask(taskGroupId))
+                setShowTaskDetail(false)
+            }
+
+
+
         },
-        handleWithdrawDelTask: async ()=>{
-            setIsToastWithdraw(false)
-            setToastMsg('撤销成功')
-            await dispatch(taskThunks.withdrawDelTask(lastDelTaskId))
-            dispatch(taskThunks.listTask(lastDelTaskGroupId))
-            setLastDelTaskId(-1)
-            setLastDelTaskGroupId(-1)
+        handleWithdrawDelTask: async (id:number, taskGroupId:number)=>{
+            let result:any = await dispatch(taskThunks.withdrawDelTask(id))
+            if(result as boolean){
+                EffToastUtil.success("撤销成功")
+                dispatch(taskThunks.listTask(taskGroupId))
+            }
         }
     }
 
@@ -102,7 +104,6 @@ export default function EffTaskContent(){
             >
                 <TaskDetail onDel={response.handleDelTask}/>
             </Drawer>
-            <EffToast onWithDraw={response.handleWithdrawDelTask} open={data.isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(taskActions.setTaskToast(false))}/>
-        </div>
+         </div>
     )
 }
