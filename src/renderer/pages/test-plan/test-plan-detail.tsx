@@ -6,11 +6,7 @@ import EffInfoSep from "../../components/business/eff-info-sep/eff-info-sep";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {DeleteOutlined} from '@ant-design/icons'
-import {SnackbarProvider, useSnackbar} from "notistack";
-import EffWithdraw from "../../components/business/eff-withdraw/eff-withdraw";
-import {toast} from "../../components/eff-toast/eff-toast";
-import EffToast from "../../components/common/eff-toast/eff-toast";
-import {testPlanThunks} from "@slice/testPlanSlice";
+
 
 interface IProps{
     onDel:(id:number)=>void

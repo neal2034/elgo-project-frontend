@@ -214,6 +214,7 @@ function ReqContent(props: IRequirementContentProps){
             setToastMsg('需求放入回收站成功')
             setIsToastWithdraw(true)
             await dispatch(reqThunks.delRequirement(id))
+
             setLastDelReqId(id)
             setShowDetail(false)
         },

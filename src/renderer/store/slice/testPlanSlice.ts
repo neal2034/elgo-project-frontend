@@ -52,12 +52,14 @@ const testPlanThunks = {
         },
     delTestPlan : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
-                await  request.delete({url:apiUrl.testPlan.index, params:{id}})
+                let result = await  request.delete({url:apiUrl.testPlan.index, params:{id}})
+                return result.isSuccess
             }
         },
     withdrawDelTestPlan : (params:{id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                  await  request.put({url:apiUrl.testPlan.withdrawDel, params})
+                let result  =  await  request.put({url:apiUrl.testPlan.withdrawDel, params})
+                return result.isSuccess
             }
         },
     getTestPlanDetail : (params:{id:number})=>{

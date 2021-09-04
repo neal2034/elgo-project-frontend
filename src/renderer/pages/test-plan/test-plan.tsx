@@ -16,8 +16,8 @@ import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
 import {funztionThunks} from "@slice/funztionSlice";
 import TestPlanDetail from "./test-plan-detail";
-import EffToast from "../../components/common/eff-toast/eff-toast";
-
+// import EffToast from "../../components/common/eff-toast/eff-toast";
+import EffToastUtil from "../../components/common/eff-toast/eff-toast";
 
 export default function TestPlan(){
     const dispatch = useDispatch()
@@ -56,16 +56,21 @@ export default function TestPlan(){
             setShowDetail(true)
         },
         handleDelTestPlan: async (id:number)=>{
-            let result = await dispatch(testPlanThunks.delTestPlan(id))
-            dispatch(testPlanThunks.listTestPlan({page}))
-            console.log('here is result ', result)
-            EffToast.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
-            setShowDetail(false)
+            let result:any = await dispatch(testPlanThunks.delTestPlan(id))
+            if(result as boolean){
+                dispatch(testPlanThunks.listTestPlan({page}))
+                EffToastUtil.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
+                setShowDetail(false)
+            }
+
         },
         handleWithdraw: async (id:number)=>{
-            await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
-            dispatch(testPlanThunks.listTestPlan({page}))
-            EffToast.success("撤销成功")
+           let result:any  = await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
+            if(result){
+                dispatch(testPlanThunks.listTestPlan({page}))
+                EffToastUtil.success("撤销成功")
+            }
+
         }
     }
     const ui = {
