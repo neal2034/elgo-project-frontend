@@ -53,5 +53,5 @@ class EffToast{
 
 }
 
-const EffToastUtil = new EffToast()
-export  {EffToastUtil}
+const effToast = new EffToast()
+export  {effToast}

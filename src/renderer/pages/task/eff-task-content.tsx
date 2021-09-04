@@ -11,7 +11,7 @@ import TaskDetail from "./task-detail";
 import EffToast from "../../components/eff-toast/eff-toast";
 import {reqActions} from "@slice/reqSlice";
 import {funztionThunks} from "@slice/funztionSlice";
-import {EffToastUtil} from "@components/common/eff-toast-util/eff-toast-util";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 export default function EffTaskContent(){
     const dispatch = useDispatch()
@@ -58,7 +58,7 @@ export default function EffTaskContent(){
         handleDelTask: async (id:number, taskGroupId:number)=>{
             let result:any =await dispatch(taskThunks.deleteTask(id))
             if(result as boolean){
-                EffToastUtil.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id, taskGroupId))
+                effToast.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id, taskGroupId))
                 dispatch(taskThunks.listTask(taskGroupId))
                 setShowTaskDetail(false)
             }
@@ -69,7 +69,7 @@ export default function EffTaskContent(){
         handleWithdrawDelTask: async (id:number, taskGroupId:number)=>{
             let result:any = await dispatch(taskThunks.withdrawDelTask(id))
             if(result as boolean){
-                EffToastUtil.success("撤销成功")
+                effToast.success("撤销成功")
                 dispatch(taskThunks.listTask(taskGroupId))
             }
         }

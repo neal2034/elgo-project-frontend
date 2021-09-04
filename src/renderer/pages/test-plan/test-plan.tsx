@@ -13,7 +13,7 @@ import AddTestPlanForm from "./add-test-plan-form";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
 import TestPlanDetail from "./test-plan-detail";
-import {EffToastUtil} from  '@components/common/eff-toast-util/eff-toast-util'
+import {effToast} from '@components/common/eff-toast/eff-toast'
 
 export default function TestPlan(){
     const dispatch = useDispatch()
@@ -55,7 +55,7 @@ export default function TestPlan(){
             let result:any = await dispatch(testPlanThunks.delTestPlan(id))
             if(result as boolean){
                 dispatch(testPlanThunks.listTestPlan({page}))
-                EffToastUtil.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
+                effToast.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
                 setShowDetail(false)
             }
 
@@ -64,7 +64,7 @@ export default function TestPlan(){
            let result:any  = await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
             if(result){
                 dispatch(testPlanThunks.listTestPlan({page}))
-                EffToastUtil.success("撤销成功")
+                effToast.success("撤销成功")
             }
 
         }

@@ -15,7 +15,7 @@ import RequirementDetail from "./requirement-detail";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import ReqAdvanceSearch from "./req-advance-search";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
-import {EffToastUtil} from "@components/common/eff-toast-util/eff-toast-util";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 interface IReqClassItemProps{
     id?:number,
@@ -214,14 +214,14 @@ function ReqContent(props: IRequirementContentProps){
 
           let result:any =  await dispatch(reqThunks.delRequirement(id))
             if(result){
-                EffToastUtil.success_withdraw('需求放入回收站成功',()=>response.handleWithdrawDelReq(id))
+                effToast.success_withdraw('需求放入回收站成功',()=>response.handleWithdrawDelReq(id))
                 setShowDetail(false)
             }
         },
         handleWithdrawDelReq: async (id:number)=>{
             let result:any = await dispatch(reqThunks.withdrawDelRequirement(id))
             if(result ){
-                EffToastUtil.success('撤销成功')
+                effToast.success('撤销成功')
             }
 
         }

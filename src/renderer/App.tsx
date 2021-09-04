@@ -18,7 +18,7 @@ import {accountThunks} from "./pages/account/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import {SnackbarProvider, useSnackbar} from "notistack";
-import {EffToastUtil} from '@components/common/eff-toast-util/eff-toast-util'
+import {effToast} from '@components/common/eff-toast/eff-toast'
 // import {EffTo}
 const {Content} = Layout
 
@@ -32,7 +32,7 @@ const App = () => {
     useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
 
     const {enqueueSnackbar, closeSnackbar} = useSnackbar()
-    EffToastUtil.setSnackBar(enqueueSnackbar,closeSnackbar)
+    effToast.setSnackBar(enqueueSnackbar,closeSnackbar)
 
     const [orgMenuVisible, setOrgMenuVisible] = useState(false);
     const response = {
