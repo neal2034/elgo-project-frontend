@@ -186,31 +186,35 @@ interface IFunztionSelectItemProps{
     name:string,
     status:any,
     statusId:number,
-    selected:boolean,
-    onSelected:(id:number, selected:boolean)=>void,
+    selected?:boolean,
+    showCheck?:boolean,         //是否显示checkbox
+    onSelected?:(id:number, selected:boolean)=>void,
 
 }
 
-function FunztionSelectItem(props:IFunztionSelectItemProps){
-    const {id,showBg,serial,name,status,statusId,onSelected,selected} = props
+export function FunztionSelectItem(props:IFunztionSelectItemProps){
+    const {id,showBg,serial,name,status,statusId,onSelected,selected=false, showCheck=true} = props
     let theStatus:{name:string, color:string} = status.filter((item:any)=>item.id === statusId)[0]
 
     const response = {
         handleChange:(event:any)=>{
             const selected = event.target.checked
-            onSelected(id, selected)
+            if(onSelected){
+                onSelected(id, selected)
+            }
+
         }
     }
 
     return (
         <div  className={`funztion-select-item d-flex align-center pr20 justify-between pl20 ${showBg?'shadowed':''}`}  >
             <div className="funz-main">
-                <Checkbox checked={selected} onChange={response.handleChange} />
+                {showCheck && <Checkbox checked={selected} onChange={response.handleChange} />}
                 <span className="ml10">{serial}</span>
                 <span className="ml20">{name}</span>
             </div>
             <div>
-                <Tag className="ml10" color={theStatus.color}>{theStatus.name}</Tag>
+                <Tag className="ml10" color={theStatus && theStatus.color}>{theStatus && theStatus.name}</Tag>
             </div>
         </div>
     )

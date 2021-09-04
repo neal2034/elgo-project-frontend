@@ -10,7 +10,8 @@ interface ITestPlanDetail{
     functionIds?:number[],
     creator:string,
     addAt:string,
-    status:string
+    status:string,
+
 }
 
 
@@ -78,6 +79,11 @@ const testPlanThunks = {
     editFunztions : (data:{funztionIds?:number[], id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
                 await request.put({url:apiUrl.testPlan.editFunztion, data})
+            }
+        },
+    editStatus : (data:{id:number, status:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await request.put({url:apiUrl.testPlan.editStatus, data})
             }
         }
 }

@@ -129,6 +129,7 @@ const  apiUrl = {
         editName: '/test-plan/name',        //编辑计划名称
         editDescription: '/test-plan/description',     // 编辑计划描述
         editFunztion: '/test-plan/funztion',        //编辑计划测试功能
+        editStatus: '/test-plan/status',            //编辑计划状态
         withdrawDel: '/test-plan/withdraw',        //撤销删除
         planCase: '/plan-case',                     //测试计划测试用例
         planCaseDetail:'/plan-case/detail',         //测试计划测试用例详情

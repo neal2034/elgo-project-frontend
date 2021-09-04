@@ -67,7 +67,11 @@ export default function TestPlan(){
                 effToast.success("撤销成功")
             }
 
-        }
+        },
+        handleClose: ()=>{
+            setShowDetail(false)
+            setShowAddForm(false)
+        },
     }
     const ui = {
         testPlanList: testPlans.map((item:any, index)=><TestPlanItem onClick={()=>response.handleTestPlanClick(item.id)} key={item.id} showBg={index%2==0} testPlan={item}/>)
@@ -91,7 +95,7 @@ export default function TestPlan(){
                     width={'60%'}
                     placement="right"
                     closable={false}
-                    onClose={response.occupy}
+                    onClose={response.handleClose}
                     maskClosable={true}
                     visible={showAddForm||showDetail}
                 >

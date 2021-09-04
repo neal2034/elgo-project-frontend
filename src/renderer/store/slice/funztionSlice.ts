@@ -133,7 +133,15 @@ const funztionThunks = {
                 }
                 return result.isSuccess
             }
-        }
+        },
+    listWithIds : (params:{ids:number[]})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.funztion.withIds, params})
+                if(result.isSuccess){
+                    dispatch(funztionActions.setFunztions(result.data))
+                }
+            }
+        },
 }
 
 
