@@ -19,6 +19,8 @@ import {orgThunks} from "./pages/organizationHome/orgSlice";
 import {accountThunks} from "./pages/account/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
+import {SnackbarProvider, useSnackbar} from "notistack";
+import EffToast from "./components/common/eff-toast/eff-toast";
 
 const {Content} = Layout
 
@@ -30,6 +32,9 @@ const App = () => {
     let breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
     const currentMember:any = useSelector((state:RootState)=>state.account.currentMember)
     useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
+
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+    EffToast.setSnackBar(enqueueSnackbar,closeSnackbar)
 
     const [orgMenuVisible, setOrgMenuVisible] = useState(false);
     const response = {
@@ -75,10 +80,10 @@ const App = () => {
          <Layout className="app_layout">
              <EffSideMenu/>
              <Content className="app_content">
-                 <EffBreadCrumb breads={breads}/>
-                 <Dropdown  overlayStyle={{width:'200px'}} overlay={menu} visible={orgMenuVisible}  placement="bottomRight" >
-                     <EffUser onClick={response.userClick} id={currentMember.id} name={currentMember.name} size={24} className="current-user cursor-pointer"/>
-                 </Dropdown>
+                     <EffBreadCrumb breads={breads}/>
+                     <Dropdown  overlayStyle={{width:'200px'}} overlay={menu} visible={orgMenuVisible}  placement="bottomRight" >
+                         <EffUser onClick={response.userClick} id={currentMember.id} name={currentMember.name} size={24} className="current-user cursor-pointer"/>
+                     </Dropdown>
 
                      <Switch>
                          <PrivateRoute path="/app/organization" component={OrganizationHome}/>
@@ -90,8 +95,7 @@ const App = () => {
                          <PrivateRoute component={ProjectHome} path='/app/project/:serial'/>
 
                      </Switch>
-             </Content>
-
+                 </Content>
          </Layout>
     )
 }

@@ -130,6 +130,7 @@
     "jsoneditor": "^9.4.1",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
+    "notistack": "^1.0.10",
     "react": "^16.13.1",
     "react-ace": "^9.4.3",
     "react-dom": "^16.13.1",

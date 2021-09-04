@@ -2,6 +2,8 @@ import React from "react";
 import Snackbar from '@material-ui/core/Snackbar';
 import {CheckOutlined} from '@ant-design/icons'
 import './eff-toast.less'
+import EffWithdraw from "../business/eff-withdraw/eff-withdraw";
+import {useSnackbar} from "notistack";
 
 interface IEffToastProps{
     open:boolean,
@@ -29,5 +31,16 @@ export default function EffToast(props:IEffToastProps){
          </Snackbar>
         </React.Fragment>
 
+    )
+}
+
+
+export function toast(message:string){
+    const {enqueueSnackbar,closeSnackbar} = useSnackbar()
+    enqueueSnackbar(message, {
+        variant: 'success',
+        action:<EffWithdraw onWithDraw={()=>{closeSnackbar()}}/>})
+    return (
+        <div></div>
     )
 }

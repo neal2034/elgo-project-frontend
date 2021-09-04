@@ -16,12 +16,12 @@ interface ITestPlan{
 interface IProps{
     showBg:boolean,     //是否显示background color
     testPlan:ITestPlan
-    onChosen:(id:number)=>void
+    [x:string]:any
 }
 
 export default function TestPlanItem(props:IProps){
 
-    const {testPlan, onChosen,showBg} = props
+    const {testPlan, showBg, ...rest} = props
 
     const response = {
         handleExecute:(e:any)=>{
@@ -32,7 +32,7 @@ export default function TestPlanItem(props:IProps){
 
 
     return (
-        <div onClick={()=>onChosen(testPlan.id)} className={`one-test-plan d-flex align-center pr20 justify-between pl20 ${showBg?'shadowed':''}`} key={testPlan.id}>
+        <div  {...rest} className={`one-test-plan d-flex align-center pr20 justify-between pl20 ${showBg?'shadowed':''}`} key={testPlan.id}>
             <div className="test-plan-main">
                 <span>{testPlan.serial}</span>
                 <span className="ml20">{testPlan.name}</span>

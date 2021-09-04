@@ -15,6 +15,8 @@ import AddTestPlanForm from "./add-test-plan-form";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
 import {funztionThunks} from "@slice/funztionSlice";
+import TestPlanDetail from "./test-plan-detail";
+import EffToast from "../../components/common/eff-toast/eff-toast";
 
 
 export default function TestPlan(){
@@ -48,10 +50,26 @@ export default function TestPlan(){
         },
         handlePageChange: (page:number)=>{
             dispatch(testPlanThunks.listTestPlan({page:page-1}))
+        },
+        handleTestPlanClick: async (id:number)=>{
+            await dispatch(testPlanThunks.getTestPlanDetail({id}))
+            setShowDetail(true)
+        },
+        handleDelTestPlan: async (id:number)=>{
+            let result = await dispatch(testPlanThunks.delTestPlan(id))
+            dispatch(testPlanThunks.listTestPlan({page}))
+            console.log('here is result ', result)
+            EffToast.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
+            setShowDetail(false)
+        },
+        handleWithdraw: async (id:number)=>{
+            await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
+            dispatch(testPlanThunks.listTestPlan({page}))
+            EffToast.success("撤销成功")
         }
     }
     const ui = {
-        testPlanList: testPlans.map((item:any, index)=><TestPlanItem key={item.id} showBg={index%2==0} testPlan={item} onChosen={response.occupy}/>)
+        testPlanList: testPlans.map((item:any, index)=><TestPlanItem onClick={()=>response.handleTestPlanClick(item.id)} key={item.id} showBg={index%2==0} testPlan={item}/>)
     }
     return (
         <div className="flex-grow-1 d-flex-column eff-test-plan">
@@ -77,7 +95,7 @@ export default function TestPlan(){
                     visible={showAddForm||showDetail}
                 >
                     {showAddForm && <AddTestPlanForm onConfirm={response.handleAddTestPlan} onCancel={response.handleCancelAdd} tags={tags}/>}
-                    {showDetail && <TestCaseDetail onDel={response.occupy}/>}
+                    {showDetail && <TestPlanDetail onDel={response.handleDelTestPlan}/>}
                 </Drawer>
 
 

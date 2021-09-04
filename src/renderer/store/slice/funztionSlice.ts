@@ -17,6 +17,7 @@ interface IListFunztionParams{
 
 interface IFunztion{
     id:number,
+    name:string,
     [x:string]:any
 }
 
