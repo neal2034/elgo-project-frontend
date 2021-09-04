@@ -7,13 +7,12 @@ import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editabl
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {DeleteOutlined} from '@ant-design/icons'
-import {testCaseActions, testCaseThunks} from "@slice/testCaseSlice";
+import {testCaseThunks} from "@slice/testCaseSlice";
 import EffLabel from "../../components/business/eff-label/EffLabel";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {PRIORITY} from "@config/sysConstant";
-import {reqActions, reqThunks} from "@slice/reqSlice";
 import {funztionActions, funztionThunks} from "@slice/funztionSlice";
 import {tagThunks} from "@slice/tagSlice";
 
@@ -33,7 +32,7 @@ export default function TestCaseDetail(props:IProps){
     const tags = useSelector((state:RootState)=>state.tag.tags)
     const [selectedTags, setSelectedTags] = useState<any>([])
     const menuItems = [
-            {key:'delete', name:'删除需求', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
+            {key:'delete', name:'删除测试用例', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
         ]
     const priorityOptions = []
     for(let item in PRIORITY){

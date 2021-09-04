@@ -1,25 +1,19 @@
 import React, {useEffect, useState} from "react";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
-import TaskAdvanceSearch from "../task/task-advance-search";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import EffButton from "../../components/eff-button/eff-button";
-import EffTaskContent from "../task/eff-task-content";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
-import {UserAddOutlined, FieldTimeOutlined} from '@ant-design/icons'
+import {UserAddOutlined} from '@ant-design/icons'
 import {Drawer, Pagination} from "antd";
-import AddTaskForm from "../task/add-task-form";
 import AddTestCaseForm from "./add-test-case-form";
-import {taskThunks} from "@slice/taskSlice";
-import {testCaseActions, testCaseThunks} from "@slice/testCaseSlice";
+import {testCaseThunks} from "@slice/testCaseSlice";
 import EffEmpty from "../../components/common/eff-empty/eff-empty";
 import {tagThunks} from "@slice/tagSlice";
 import TestCaseItem from "./test-case-item";
-import {funztionThunks} from "@slice/funztionSlice";
 import TestCaseDetail from "./test-case-detail";
-import EffToast from "../../components/eff-toast/eff-toast";
-import {reqActions} from "@slice/reqSlice";
 import TestCaseAdvanceSearch from "./test-case-advance-search";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
 
@@ -29,20 +23,15 @@ export default function TestCase(){
     const [isShowSearchResult, setIsShowSearchResult] = useState(false)
     const [showAddTestCaseForm, setShowAddTestCaseForm] = useState(false)
     const [showTestCaseDetail, setShowTestCaseDetail] = useState(false)
-    const isToastOpen =  useSelector((state:RootState)=>state.testCase.isToastOpen)
     const page = useSelector((state:RootState)=>state.testCase.page)
     const testCases = useSelector((state:RootState)=>state.testCase.testCases)
     const totalCaseNum = useSelector((state:RootState)=>state.testCase.total)
-    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
-    const [toastMsg, setToastMsg] = useState<string>()
-    const [lastDelCaseId, setLastDelCaseId] = useState(-1)
+
 
     const data = {
         tags: useSelector((state:RootState)=>state.tag.tags),
         searchMenus: [
             {key:'my-create', name:'我创建的', icon:<UserAddOutlined />},
-            // {key:'unstart', name:'未开始的任务', icon:<FieldTimeOutlined />},
-
         ],
     }
 
@@ -75,20 +64,19 @@ export default function TestCase(){
             setShowAddTestCaseForm(false)
         },
         handleDelCase: async (id:number)=>{
-            setToastMsg('测试用例放入回收站成功')
-            setIsToastWithdraw(true)
-            await dispatch(testCaseThunks.deleteTestCase(id))
-            dispatch(testCaseThunks.listTestCase({page}))
-            setLastDelCaseId(id)
-            setShowTestCaseDetail(false)
+            let result:any = await dispatch(testCaseThunks.deleteTestCase(id))
+            if(result){
+                setShowTestCaseDetail(false)
+                effToast.success_withdraw('测试用例放入回收站成功',()=>response.handleWithdrawDelTestCase(id))
+                dispatch(testCaseThunks.listTestCase({page}))
+            }
         },
-        handleWithdrawDelFunztion: async ()=>{
-            setIsToastWithdraw(false)
-            setToastMsg('撤销成功')
-            await dispatch(testCaseThunks.withdrawDelTestCase(lastDelCaseId))
-            dispatch(testCaseThunks.listTestCase({page}))
-            setLastDelCaseId(-1)
-
+        handleWithdrawDelTestCase: async (id:number)=>{
+            let result:any = await dispatch(testCaseThunks.withdrawDelTestCase(id))
+            if(result){
+                effToast.success('撤销成功')
+                dispatch(testCaseThunks.listTestCase({page}))
+            }
         },
         handleAdvanceSearch: async (searchKeys:any)=>{
             let params:any = {page:0, searchKey:searchKeys.name, funztionId:searchKeys.funztionId, tagIds:searchKeys.tagIds}
@@ -157,7 +145,6 @@ export default function TestCase(){
 
 
             </div>
-            <EffToast onWithDraw={response.handleWithdrawDelFunztion} open={isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(testCaseActions.setIsToastOpen(false))}/>
-        </div>
+         </div>
     )
 }

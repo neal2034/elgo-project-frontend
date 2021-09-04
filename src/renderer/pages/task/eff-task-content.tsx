@@ -2,15 +2,12 @@ import React, {useEffect, useState} from "react";
 import EffTaskGroup from "./eff-task-group";
 import './eff-tasks.less'
 import {useDispatch, useSelector} from "react-redux";
-import {taskActions, taskThunks} from "@slice/taskSlice";
+import {taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import {Drawer} from "antd";
 import AddTaskForm from "./add-task-form";
 import {tagThunks} from "@slice/tagSlice";
 import TaskDetail from "./task-detail";
-import EffToast from "../../components/eff-toast/eff-toast";
-import {reqActions} from "@slice/reqSlice";
-import {funztionThunks} from "@slice/funztionSlice";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 
 export default function EffTaskContent(){
@@ -18,14 +15,9 @@ export default function EffTaskContent(){
     const [activeGroupId, setActiveGroupId] = useState(-1);       //当前用于添加任务的分组ID
     const [showAddTaskFrom, setShowAddTaskForm] = useState(false);    //是否打开添加任务对话框
     const [showTaskDetail, setShowTaskDetail] = useState(false);      //是否显示任务详情
-    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
-    const [toastMsg, setToastMsg] = useState<string>()
-    const [lastDelTaskId, setLastDelTaskId] = useState(-1)
-    const [lastDelTaskGroupId, setLastDelTaskGroupId] = useState(-1)
     const data = {
         groups: useSelector((state:RootState)=>state.task.groups),
         tags: useSelector((state:RootState)=>state.tag.tags),
-        isToastOpen :  useSelector((state:RootState)=>state.task.taskToast)
     }
 
     useEffect(()=>{

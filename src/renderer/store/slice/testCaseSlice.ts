@@ -25,14 +25,12 @@ const testCaseSlice = createSlice({
         page:0,
         total:0,
         currentTestCase: {} as ITestCaseDetail,
-        isToastOpen:false,
     },
     reducers:{
         setTestCases: (state, action) => { state.testCases = action.payload },
         setPage: (state, action) => { state.page = action.payload },
         setTotal: (state, action) => { state.total = action.payload },
         setCurrentTestCase: (state, action) => { state.currentTestCase = action.payload },
-        setIsToastOpen: (state, action) => { state.isToastOpen = action.payload },
     }
 })
 
@@ -94,17 +92,13 @@ const testCaseThunks = {
     deleteTestCase : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await  request.delete({url:apiUrl.testCase.index, params:{id}})
-                if(result.isSuccess){
-                    dispatch(testCaseActions.setIsToastOpen(true))
-                }
+                return result.isSuccess
             }
         },
     withdrawDelTestCase : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.put({url:apiUrl.testCase.withdrawDel, params:{id}})
-                if(result.isSuccess){
-                    dispatch(testCaseActions.setIsToastOpen(true))
-                }
+                return result.isSuccess
             }
         }
 

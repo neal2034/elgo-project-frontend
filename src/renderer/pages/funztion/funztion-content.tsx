@@ -6,10 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {funztionThunks} from "@slice/funztionSlice";
 import {Drawer, Pagination} from "antd";
-import RequirementDetail from "../requirment/requirement-detail";
 import FunztionDetail from "./funztion-detail";
 import EffToast from "../../components/eff-toast/eff-toast";
-import {reqActions, reqThunks} from "@slice/reqSlice";
+import {reqActions} from "@slice/reqSlice";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
 interface IProps{
@@ -20,13 +20,9 @@ export default function FunztionContent(props:IProps){
     const dispatch = useDispatch()
     const {funztions} = props
     const funztionStatus = useSelector((state:RootState)=>state.funztion.funztionStatus)
-    const isToastOpen =  useSelector((state:RootState)=>state.funztion.funztionToast)
     const currentPage = useSelector((state:RootState)=>state.funztion.page)
     const totalFunztion = useSelector((state:RootState)=>state.funztion.funzTotal)
     const [showDetail, setShowDetail] = useState(false) //显示功能详情
-    const [isToastWithdraw, setIsToastWithdraw] = useState(false)    //toast 是否包含撤销
-    const [toastMsg, setToastMsg] = useState<string>()
-    const [lastDelFunztionId, setLastDelFunztionId] = useState(-1)
     useEffect(()=>{
         dispatch(funztionThunks.listFunztionStatus())
     },[])
@@ -37,19 +33,17 @@ export default function FunztionContent(props:IProps){
             setShowDetail(true)
         },
         handleDelFunztion: async (id:number)=>{
-            setToastMsg('功能放入回收站成功')
-            setIsToastWithdraw(true)
-            dispatch(funztionThunks.delFunztion(id))
-            setLastDelFunztionId(id)
-            setShowDetail(false)
-
-
+            let result:any = await dispatch(funztionThunks.delFunztion(id))
+            if(result){
+                setShowDetail(false)
+                effToast.success_withdraw('功能放入回收站成功', ()=>response.handleWithdrawDelFunztion(id))
+            }
         },
-        handleWithdrawDelFunztion: ()=>{
-            setIsToastWithdraw(false)
-            setToastMsg('撤销成功')
-           dispatch(funztionThunks.withdrawDelFunztion(lastDelFunztionId))
-            setLastDelFunztionId(-1)
+        handleWithdrawDelFunztion: async (id:number)=>{
+           let result:any = await dispatch(funztionThunks.withdrawDelFunztion(id))
+            if(result){
+                effToast.success('撤销成功')
+            }
         },
         handlePageChange: (page:number)=>{
             dispatch(funztionThunks.listFunztion({page:page-1}))
@@ -74,8 +68,7 @@ export default function FunztionContent(props:IProps){
             >
                 <FunztionDetail onDel={response.handleDelFunztion} />
             </Drawer>
-            <EffToast onWithDraw={response.handleWithdrawDelFunztion} open={isToastOpen} message={toastMsg as string} isWithDraw={isToastWithdraw} onClose={()=>dispatch(reqActions.setReqToast(false))}/>
-        </div>
+         </div>
     )
 
 }

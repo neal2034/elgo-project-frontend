@@ -35,7 +35,7 @@ export default function FunztionDetail(props:IProps){
         filteredReqs: useSelector((state:RootState)=>state.requirement.requirements),
         page: useSelector((state:RootState)=>state.funztion.page),
         menuItems:[
-            {key:'delete', name:'删除需求', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
+            {key:'delete', name:'删除功能', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
         ]
     }
 

@@ -30,7 +30,6 @@ const funztionSlice = createSlice({
         funzTotal:0,        //功能总数
         funztionStatus:[],  //功能状态
         currentFunztion: {} as IFunztion,
-        funztionToast:false,    //是否打开toast
 
     },
     reducers:{
@@ -39,7 +38,6 @@ const funztionSlice = createSlice({
         setFunzTotal: (state, action) => { state.funzTotal = action.payload },
         setFunztionStatus: (state, action) => { state.funztionStatus = action.payload },
         setCurrentFunztion: (state, action) => { state.currentFunztion = action.payload },
-        setFunztionToast: (state, action) => { state.funztionToast = action.payload },
     }
 })
 
@@ -121,8 +119,8 @@ const funztionThunks = {
                 let result = await request.delete({url:apiUrl.funztion.index, params:{id}})
                 if(result.isSuccess){
                     dispatch(funztionThunks.listFunztion({page}))
-                    dispatch(funztionActions.setFunztionToast(true))
                 }
+                return result.isSuccess
             }
         },
     //撤销删除
@@ -132,8 +130,8 @@ const funztionThunks = {
                 let result = await request.put({url:apiUrl.funztion.withdrawDel, params:{id}})
                 if(result.isSuccess){
                     dispatch(funztionThunks.listFunztion({page}))
-                    dispatch(funztionActions.setFunztionToast(true))
                 }
+                return result.isSuccess
             }
         }
 }
