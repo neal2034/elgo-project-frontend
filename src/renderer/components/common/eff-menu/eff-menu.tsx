@@ -43,7 +43,7 @@ export default function EffMenu(props:IEffMenu){
 // 基础EffMenuItem 组件
 function EffMenuItem(props:IEffMenuItem){
     const {value,children, handleClick, selectedKey} = props
-    const isSelected = selectedKey == value
+    const isSelected = (selectedKey == value)
 
     return (
         <div className={`mr40 eff-menu-item ${isSelected?'eff-menu-item-selected':''}`} onClick={()=>handleClick(value)}>

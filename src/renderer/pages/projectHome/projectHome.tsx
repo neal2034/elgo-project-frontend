@@ -17,7 +17,7 @@ import IconMusic from '@imgs/music.png'
 import {projectThunks} from "@slice/projectSlice";
 import ProjectSetting from "../project-setting/project-setting";
 import TestCase from "../case/test-case";
-import TestPlan from "../test-plan/test-plan";
+import TestPlanHome from "../test-plan/test-plan-home";
 
 function ProjectHeader(){
     const projectDetail:any = useSelector((state:RootState)=>state.project.projectDetail)
@@ -56,7 +56,7 @@ export default function ProjectHome (props:any){
         {key:'funztion',path:`${url}/funztion`,name:'功能'},
         {key:'task', path:`${url}/task`, name:'任务'},
         {key:'test-case', path:`${url}/test-case`, name:'测试用例'},
-        {key:'test-plan', path:`${url}/test-plan`, name:'测试计划'},
+        {key:'test-plan-home', path:`${url}/test-plan-home/test-plan`, name:'测试计划'},
         {key:'api', path:`${url}/api`, name:'API'},
         {key:'project-setting', path:`${url}/project-setting`, name:'设置'},
     ]
@@ -87,14 +87,14 @@ export default function ProjectHome (props:any){
             </EffMenu>
 
 
-            <Redirect to={`${path.replace(':serial', serial)}/test-plan`} />
+            <Redirect to={`${path.replace(':serial', serial)}/test-plan-home/test-plan`} />
             <div className={'page-content d-flex-column'}>
                 <Switch>
                     <PrivateRoute component={Requirement} path={`${path}/requirement`}/>
                     <PrivateRoute component={Funztion} path={`${path}/funztion`}/>
                     <PrivateRoute component={Task} path={`${path}/task`}/>
                     <PrivateRoute component={TestCase} path={`${path}/test-case`}/>
-                    <PrivateRoute component={TestPlan} path={`${path}/test-plan`}/>
+                    <PrivateRoute component={TestPlanHome} path={`${path}/test-plan-home`}/>
                     <PrivateRoute component={Api} path={`${path}/api`}/>
                     <PrivateRoute component={ProjectSetting} path={`${path}/project-setting`}/>
                 </Switch>

@@ -1,8 +1,10 @@
 import React from "react";
 import './test-plan.less'
 import {RightOutlined} from '@ant-design/icons'
-import EffPriority from "../../components/business/eff-priority/eff-priority";
 import TestPlanStatus from "./TestPlanStatus";
+import {useHistory} from "react-router";
+import {testPlanThunks} from "@slice/testPlanSlice";
+import {useDispatch} from "react-redux";
 
 
 interface ITestPlan{
@@ -21,12 +23,16 @@ interface IProps{
 
 export default function TestPlanItem(props:IProps){
 
+    const dispatch = useDispatch()
     const {testPlan, showBg, ...rest} = props
+    const history = useHistory()
+
 
     const response = {
         handleExecute:(e:any)=>{
             e.stopPropagation()
-            alert('执行')
+            dispatch(testPlanThunks.getTestPlanDetail({id:testPlan.id}))
+            history.push(`./test-plan-execute`)
         }
     }
 

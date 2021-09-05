@@ -14,6 +14,11 @@ interface ITestPlanDetail{
 
 }
 
+interface IPlanCase{
+    id:number,
+    [x:string]:any
+}
+
 
 const testPlanSlice = createSlice({
     name:'testPlan',
@@ -22,6 +27,9 @@ const testPlanSlice = createSlice({
         total:0,
         testPlans:[],
         currentTestPlan: {} as ITestPlanDetail,
+        planCases:[] as IPlanCase[],
+        casePage:0,
+        totalCaseNum:0,
 
     },
     reducers:{
@@ -29,6 +37,9 @@ const testPlanSlice = createSlice({
         setTotal: (state, action) => { state.total = action.payload },
         setTestPlans: (state, action) => { state.testPlans = action.payload },
         setCurrentTestPlan: (state, action) => { state.currentTestPlan = action.payload },
+        setPlanCases: (state, action) => { state.planCases = action.payload },
+        setCasePage: (state, action) => { state.casePage = action.payload },
+        setTotalCaseNum: (state, action) => { state.totalCaseNum = action.payload },
     }
 })
 
@@ -86,7 +97,18 @@ const testPlanThunks = {
             return async (dispatch:Dispatch<any>)=>{
                 await request.put({url:apiUrl.testPlan.editStatus, data})
             }
-        }
+        },
+    listPlanCase : (params:{planId:number, page?:number, caseName?:string,status?:string, funztionId?:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.testPlan.planCase, params})
+                if(result.isSuccess){
+                    dispatch(testPlanActions.setPlanCases(result.data.data))
+                    dispatch(testPlanActions.setTotalCaseNum(result.data.total))
+                    const page = params && params.page? params.page : 0
+                    dispatch(testPlanActions.setCasePage(page))
+                }
+            }
+        },
 }
 
 

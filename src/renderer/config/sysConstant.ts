@@ -65,6 +65,15 @@ export const TEST_PLAN_STATUS:Map = {
 
 }
 
+//测试计划用例状态
+export const PLAN_CASE_STATUS:Map = {
+    UNTEST:{name:'未测试', key:'UNTEST', color:'#F4545C'},
+    PASS:{name:'通过', key:'PASS', color:'#4E89AE'},
+    FAIL:{name:'失败', key:'FAIL', color: '#408C55'},
+
+}
+
+
 
 
 
