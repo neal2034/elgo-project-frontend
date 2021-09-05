@@ -55,7 +55,6 @@ export default function TestPlanDetail(props:IProps){
                     selectAll = false
                 }
             }
-            console.log('will set to ', selectAll)
             setIsSelectAll(selectAll)
         },
         [funztions, selectedFunztionIds])
@@ -64,11 +63,9 @@ export default function TestPlanDetail(props:IProps){
         if(isEditing){
             setSelectedFunztionIds(currentTestPlan.functionIds? currentTestPlan.functionIds:[])
             dispatch(funztionThunks.listFunztion({page:0}))
-            console.log(' will editing')
         }else{
             if(currentTestPlan.functionIds){
                 let ids = currentTestPlan.functionIds.slice(0,10)
-                console.log('here is the dis ', ids)
                 dispatch(funztionThunks.listWithIds({ids}))
                 dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length))
             }
@@ -146,8 +143,8 @@ export default function TestPlanDetail(props:IProps){
             await dispatch(testPlanThunks.getTestPlanDetail({id:currentTestPlan.id}))
             setIsEditing(false)
         },
-        handleEditName: async (value:string)=>{
-            await dispatch(testPlanThunks.editName({id:currentTestPlan.id, name:value}))
+        handleEditName: async (value?:string)=>{
+            await dispatch(testPlanThunks.editName({id:currentTestPlan.id, name:value!}))
             dispatch(testPlanThunks.getTestPlanDetail({id:currentTestPlan.id}))
             dispatch(testPlanThunks.listTestPlan({page:currentPage}))
         }

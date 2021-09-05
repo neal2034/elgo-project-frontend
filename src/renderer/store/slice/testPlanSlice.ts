@@ -35,13 +35,14 @@ const testPlanSlice = createSlice({
 
 const testPlanActions = testPlanSlice.actions
 const testPlanThunks = {
-    listTestPlan : (params:{page?:number,key?:string})=>{
+    listTestPlan : (params?:{page?:number,key?:string, status?:string})=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.get({url:apiUrl.testPlan.index, params})
+                const page = params && params.page? params.page : 0
                 if(result.isSuccess){
                     dispatch(testPlanActions.setTotal(result.data.total))
                     dispatch(testPlanActions.setTestPlans(result.data.data))
-                    dispatch(testPlanActions.setPage(params.page?params.page:0))
+                    dispatch(testPlanActions.setPage(page))
                 }
 
             }

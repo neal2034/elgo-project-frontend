@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
-import TestCaseAdvanceSearch from "../case/test-case-advance-search";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import EffButton from "../../components/eff-button/eff-button";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +13,7 @@ import {testPlanThunks} from "@slice/testPlanSlice";
 import TestPlanItem from "./test-plan-item";
 import TestPlanDetail from "./test-plan-detail";
 import {effToast} from '@components/common/eff-toast/eff-toast'
+import AdvanceTestPlanSearch from "./advance-test-plan-search";
 
 export default function TestPlan(){
     const dispatch = useDispatch()
@@ -32,7 +32,6 @@ export default function TestPlan(){
     },[])
 
     const response = {
-        occupy: ()=>{},
         handleGoAddTestPlan: ()=>{
             setShowAddForm(true)
         },
@@ -72,6 +71,31 @@ export default function TestPlan(){
             setShowDetail(false)
             setShowAddForm(false)
         },
+        handleCloseAdvanceSearch: ()=>{
+            setIsAdvanceSearch(false)
+        },
+        handleSearchMenu: (key:string)=>{
+            switch (key){
+                case 'my-create':
+                    console.log('搜索我创建的')
+                    break
+                default:
+                    setIsAdvanceSearch(true)
+            }
+        },
+        handleAdvanceSearch: (params:{name?:string, status?:string})=>{
+            dispatch(testPlanThunks.listTestPlan({page:0, key:params.name, status:params.status}))
+            setIsAdvanceSearch(false)
+            setIsShowSearchResult(true)
+        },
+        handleCloseSearchResult: ()=>{
+            dispatch(testPlanThunks.listTestPlan())
+            setIsShowSearchResult(false)
+        },
+        handleSearch: (value:string)=>{
+            dispatch(testPlanThunks.listTestPlan({key:value}))
+            setIsShowSearchResult(true)
+        }
     }
     const ui = {
         testPlanList: testPlans.map((item:any, index)=><TestPlanItem onClick={()=>response.handleTestPlanClick(item.id)} key={item.id} showBg={index%2==0} testPlan={item}/>)
@@ -79,9 +103,9 @@ export default function TestPlan(){
     return (
         <div className="flex-grow-1 d-flex-column eff-test-plan">
             <div style={{height:'40px'}} className="d-flex justify-end mt20 mb20 align-center">
-                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={22} onClose={response.occupy}/>}
-                {isAdvanceSearch? <TestCaseAdvanceSearch onSearch={response.occupy} onCancel={response.occupy} tags={tags}/> :
-                    <EffSearchArea onSearch={response.occupy} menuSelected={response.occupy} menus={searchMenus}/>}
+                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={totalPlanNum} onClose={response.handleCloseSearchResult}/>}
+                {isAdvanceSearch? <AdvanceTestPlanSearch onSearch={response.handleAdvanceSearch} onCancel={response.handleCloseAdvanceSearch}/> :
+                    <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={searchMenus}/>}
                 <EffButton width={100} onClick={response.handleGoAddTestPlan} type={"line"}  round={true} className="ml10 mr20" text={'+ 新增计划'} key={'add'}/>
             </div>
             <div className="eff-test-case-content d-flex-column">
