@@ -1,18 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Checkbox, Form, Input, Pagination, Select, Tag} from "antd";
-import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
-import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
-import EffEditor from "../../components/common/eff-editor/eff-editor";
+import {Checkbox, Form, Input, Pagination, Tag} from "antd";
 import EffButton from "../../components/eff-button/eff-button";
 import {useDispatch, useSelector} from "react-redux";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import {UserAddOutlined} from '@ant-design/icons'
 import {RootState} from "../../store/store";
 import {funztionThunks} from "@slice/funztionSlice";
-import FunztionItem from "../funztion/funztion-item";
 import './test-plan.less'
-import {testPlanThunks} from "@slice/testPlanSlice";
-import {testCaseThunks} from "@slice/testCaseSlice";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
 import FunztionAdvanceSearch from "../funztion/funztion-advance-search";
 import EffLabel from "../../components/business/eff-label/EffLabel";

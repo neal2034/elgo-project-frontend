@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import {Redirect, Route, useHistory} from "react-router";
-import {Link, Switch,useParams, useRouteMatch} from "react-router-dom";
+import {Redirect, useHistory} from "react-router";
+import {Switch,useParams, useRouteMatch} from "react-router-dom";
 import Requirement from "../requirment/requirement";
 import Funztion from "../funztion/funztion";
 import Task from "../task/task";
@@ -14,7 +14,7 @@ import Api from "../api/api";
 import umbrella from "umbrella-storage";
 import {RootState} from "../../store/store";
 import IconMusic from '@imgs/music.png'
-import {projectActions, projectThunks} from "@slice/projectSlice";
+import {projectThunks} from "@slice/projectSlice";
 import ProjectSetting from "../project-setting/project-setting";
 import TestCase from "../case/test-case";
 import TestPlan from "../test-plan/test-plan";
@@ -82,10 +82,10 @@ export default function ProjectHome (props:any){
     return (
         <div className={'project-home'}>
             <ProjectHeader/>
-            <EffMenu defaultKey={proMenuProps[0] && proMenuProps[0].key} onClick={response.menuClick}>
+            <EffMenu defaultKey={proMenuProps[0].key} onClick={response.menuClick}>
                 {ui.menuItems}
             </EffMenu>
-            {/*<ProjectTollBar/>*/}
+
 
             <Redirect to={`${path.replace(':serial', serial)}/test-plan`} />
             <div className={'page-content d-flex-column'}>
