@@ -11,6 +11,7 @@ import funztionSlice from './slice/funztionSlice'
 import taskSlice from './slice/taskSlice'
 import testCaseSlice from './slice/testCaseSlice'
 import testPlanSlice from './slice/testPlanSlice'
+import bugSlice from './slice/bugSlice'
 
 
 
@@ -28,6 +29,7 @@ let store = configureStore({
         task: taskSlice,
         testCase:testCaseSlice,
         testPlan:testPlanSlice,
+        bug:bugSlice,
 
 
     },

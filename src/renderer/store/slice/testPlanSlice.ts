@@ -113,5 +113,5 @@ const testPlanThunks = {
 
 
 
-export {testPlanActions, testPlanThunks, ITestPlanDetail}
+export {testPlanActions, testPlanThunks, ITestPlanDetail,IPlanCase}
 export default testPlanSlice.reducer

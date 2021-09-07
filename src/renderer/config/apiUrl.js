@@ -143,7 +143,8 @@ const  apiUrl = {
         editHandler: '/defect/handler',         //修改解决人
         editTags: '/defect/tags',               //修改标签
         editSeverity: '/defect/severity',       //修改优先级
-        editStatus: '/defect/status',           //修改状态
+        editStatus: '/defect/status',           //修改状态,
+        withdrawDel: '/defect/withdraw',        //撤销删除
 
     }
 }

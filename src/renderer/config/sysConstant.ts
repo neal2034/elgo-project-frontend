@@ -73,6 +73,24 @@ export const PLAN_CASE_STATUS:Map = {
 
 }
 
+export const BUG_SEVERITY:Map = {
+    CRASH : {name:'崩溃', key:'CRASH', color:'#F4545C'},
+    SERIOUS : {name:'严重', key:'SERIOUS', color:'#4E89AE'},
+    NORMAL:{name:'一般', key:'NORMAL', color:'#408C55'},
+    HINT : {name:'提示', key:'HINT', color:'#FFA372'},
+    ADVICE:{name:'建议', key:'ADVICE', color:'#4f8a8b'},
+
+}
+
+
+export const BUG_STATUS:Map = {
+    'OPEN' : {name:'待解决', key:'OPEN', color:'#F4545C'},
+    'REJECT' : {name:'已拒绝', key:'REJECT', color:'#4E89AE'},
+    'FIXED' : {name:'已解决', key:'FIXED', color:'#FFA372'},
+    'VERIFIED':{name:'已确认', key:'VERIFIED', color:'#4f8a8b'},
+    'WORK_AS_DESIGN': {name:'非缺陷', key:'WORK_AS_DESIGN', color:'#78bf73'},
+    'CAN_NOT_REPRODUCE':{name:'无法重现', key:'CAN_NOT_REPRODUCE', color:'#f8bd7f'},
+}
 
 
 
