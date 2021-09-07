@@ -26,6 +26,24 @@ interface IBugDetail{
     status:string
 }
 
+export type TBugSeverity = 'CRASH' | 'SERIOUS' | 'NORMAL' | 'HINT' | 'ADVICE';
+export type TBugStatus = 'OPEN' | 'REJECT' | 'FIXED' | 'VERIFIED' | 'WORK_AS_DESIGN' | 'CAN_NOT_REPRODUCE';
+
+export interface IBugSearchParams{
+    searchKey?:string,
+    testerIds?:string,
+    handlerIds?:string,
+    severities?: TBugSeverity[],
+    tagIds?: number[],
+    statusList?: TBugStatus[],
+
+}
+
+
+export interface IBugListParams extends IBugSearchParams{
+    page?:number
+}
+
 const bugSlice = createSlice({
     name:'bug',
     initialState:{
@@ -48,9 +66,10 @@ const bugSlice = createSlice({
 
 const  bugActions = bugSlice.actions
 const bugThunks = {
-    listBugs : (params?:{page?:number})=>{
+    listBugs : (params?:IBugListParams)=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.get({url: apiUrl.bug.index, params})
+                console.log('here is the data ', result, params)
                 if(result.isSuccess){
                     dispatch(bugActions.setBugs(result.data.data))
                     dispatch(bugActions.setTotal(result.data.total))

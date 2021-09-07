@@ -6,16 +6,16 @@ import EffButton from "@components/eff-button/eff-button";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {tagThunks} from "@slice/tagSlice";
-import {bugThunks, IAddBugDto} from "@slice/bugSlice";
+import {bugThunks, IAddBugDto, IBugSearchParams} from "@slice/bugSlice";
 import {UserAddOutlined} from '@ant-design/icons'
 import EffEmpty from "@components/common/eff-empty/eff-empty";
 import {Drawer, Pagination} from "antd";
-import TestCaseDetail from "../case/test-case-detail";
 import AddBugForm from "./add-bug-form";
 import BugItem from "./bug-item";
-import {testCaseThunks} from "@slice/testCaseSlice";
 import BugDetail from "./bug-detail";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import BugAdvanceSearch from "./bug-advance-search";
+import {taskThunks} from "@slice/taskSlice";
 
 
 export default function Bug(){
@@ -37,7 +37,6 @@ export default function Bug(){
     }, [])
 
     const response = {
-        occupy: ()=>{},
         handleCancelAdd: ()=>{
             setShowAddForm(false)
         },
@@ -76,6 +75,32 @@ export default function Bug(){
                 effToast.success('撤销成功');
                 dispatch(bugThunks.listBugs({page}))
             }
+        },
+        handleCancelAdvanceSearch: ()=>{
+            setIsAdvanceSearch(false)
+        },
+        handleSearchMenu: (key:string)=>{
+            switch (key){
+                case 'my-task':
+                    console.log('搜索我创建的')
+                    break
+                default:
+                    setIsAdvanceSearch(true)
+            }
+        },
+        handleAdvanceSearch: async (searchKeys:IBugSearchParams)=>{
+            dispatch(bugThunks.listBugs(searchKeys))
+            setIsAdvanceSearch(false)
+            setIsShowSearchResult(true)
+
+        },
+        handleClearSearchResult: ()=>{
+            dispatch(bugThunks.listBugs())
+            setIsShowSearchResult(false)
+        },
+        handleSearch: (searchKey?:string)=>{
+            dispatch(bugThunks.listBugs({searchKey}))
+            setIsShowSearchResult(true)
         }
     }
 
@@ -84,9 +109,9 @@ export default function Bug(){
     return (
         <div className="flex-grow-1 d-flex-column">
             <div style={{height:'40px'}} className="d-flex justify-end mt20 mb20 align-center">
-                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={totalNum} onClose={response.occupy}/>}
-                {isAdvanceSearch? <TestCaseAdvanceSearch onSearch={response.occupy} onCancel={response.occupy} tags={tags}/> :
-                    <EffSearchArea onSearch={response.occupy} menuSelected={response.occupy} menus={searchMenus}/>}
+                {isShowSearchResult && !isAdvanceSearch &&  <EffSearchResult value={totalNum} onClose={response.handleClearSearchResult}/>}
+                {isAdvanceSearch? <BugAdvanceSearch onSearch={response.handleAdvanceSearch} onCancel={response.handleCancelAdvanceSearch} tags={tags}/> :
+                    <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={searchMenus}/>}
                 <EffButton width={100} onClick={response.handleGoAdd} type={"line"}  round={true} className="ml10 mr20" text={'+ 新增Bug'} key={'add'}/>
             </div>
 
