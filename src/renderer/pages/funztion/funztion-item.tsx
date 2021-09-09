@@ -22,7 +22,7 @@ export default function FunztionItem(props:IProps){
                 <span className="ml20">{name}</span>
             </div>
             <div>
-                <Tag className="ml10" color={theStatus.color}>{theStatus.name}</Tag>
+                <Tag className="ml10" color={theStatus && theStatus.color}>{theStatus && theStatus.name}</Tag>
             </div>
         </div>
     )
