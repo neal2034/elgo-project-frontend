@@ -89,7 +89,7 @@ export default function ProjectHome (props:any){
             </EffMenu>
 
 
-            <Redirect to={`${path.replace(':serial', serial)}/bug`} />
+            <Redirect to={`${path.replace(':serial', serial)}/requirement`} />
             <div className={'page-content d-flex-column'}>
                 <Switch>
                     <PrivateRoute component={Requirement} path={`${path}/requirement`}/>

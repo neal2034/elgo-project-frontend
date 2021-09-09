@@ -20,24 +20,25 @@ import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editabl
 
 
 interface IProps{
-    onDel:(id:number, taskGroupId:number)=>void
+    onDel:(id:number, taskGroupId:number)=>void,
+    projectMembers?:any,
 }
 
 
 export default function TaskDetail(props:IProps){
-    const {onDel} = props
+    const {onDel, projectMembers} = props
     const dispatch = useDispatch()
     const [memberOptions, setMemberOptions] = useState<any[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
 
     const data = {
-        menuItems:[
-            {key:'delete', name:'删除任务', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
-        ],
+        menuItems:[{key:'delete', name:'删除任务', icon:<DeleteOutlined style={{fontSize:'14px'}}/>}],
         allTags: useSelector((state:RootState)=>state.tag.tags),
-        members: useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[]),
+        members: useSelector((state:RootState)=>state.project.projectDetail.members),
+        projectMembers: useSelector((state:RootState)=>state.project.projectMembers),
         currentTask: useSelector((state:RootState)=>state.task.currentTask)
     }
+
 
 
     const priorityOptions = []
@@ -50,19 +51,29 @@ export default function TaskDetail(props:IProps){
     }
 
     useEffect(()=>{
+        let members = []
+        if(data.projectMembers.length>0){
+            members = data.projectMembers
+        }else{
+            members = data.members? data.members:[]
+        }
+        console.log('members are ', members, data.members)
         let options:any[] = []
-        data.members.forEach(item=>{
+        members.forEach(item=>{
             options.push({
                 id:item.orgMemberId,
                 name:item.name
             })
         })
         setMemberOptions(options)
-    },[data.members])
-    useEffect(()=>{
+    },[data.members,data.projectMembers])
 
+
+    useEffect(()=>{
         dispatch(tagThunks.listTags())
     },[])
+
+
     useEffect(()=>{
         let tagIds = data.currentTask.tagIds? data.currentTask.tagIds:[]
         let selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)

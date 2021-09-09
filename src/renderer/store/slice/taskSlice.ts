@@ -49,6 +49,7 @@ const taskSlice = createSlice({
     initialState:{
         groups:[] as ITaskGroup[],
         tasks:{},
+        myTasks:[],
         totalTasks:0,
         currentTask: {} as ITaskDetailInfo,
     },
@@ -68,6 +69,7 @@ const taskSlice = createSlice({
 
             },
             setCurrentTask: (state, action) => { state.currentTask = action.payload },
+            setMyTasks: (state, action) => { state.myTasks = action.payload },
     }
 })
 
@@ -75,6 +77,15 @@ const taskSlice = createSlice({
 const taskActions = taskSlice.actions
 
 const taskThunks = {
+    listMyTasks : ()=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url: apiUrl.task.mine})
+                if(result.isSuccess){
+                    dispatch(taskActions.setMyTasks(result.data))
+                }
+            }
+        },
+
     listTaskGroup : ()=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.get({url:apiUrl.taskList.index})
@@ -116,6 +127,11 @@ const taskThunks = {
             return async (dispatch:Dispatch<any>)=>{
                   await request.put({url:apiUrl.task.setDone, params:{id}})
 
+            }
+        },
+    markTaskUnDone : (params:{id:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                await request.put({url:apiUrl.task.setUndone, params})
             }
         },
     getTaskDetail : (id:number)=>{

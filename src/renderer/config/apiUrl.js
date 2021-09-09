@@ -112,6 +112,7 @@ const  apiUrl = {
         setUndone: '/task/un-done',             //取消完成
         detail: '/task/detail',                 //任务详情
         withdraw: '/task/revert',               //撤销删除
+        mine:'/my/task',                        //我的任务
     },
     testCase:{
         index: '/test-case',

@@ -38,19 +38,30 @@ export default function OneTask(props:IProps){
     },[status])
 
     const response = {
-        taskDone: (status:any)=>{
-            setIsTaskDone(status.target.checked)
-            dispatch(taskThunks.markTaskDone(id))
+        taskDone: (event:any)=>{
+            event.stopPropagation()
+            setIsTaskDone(event.target.checked)
+            if(event.target.checked){
+                dispatch(taskThunks.markTaskDone(id))
+            }else{
+                dispatch(taskThunks.markTaskUnDone({id}))
+            }
+
+        },
+        handleTaskSelected:(event:any)=>{
+            if(event.target.type !== 'checkbox'){
+                onSelect()
+            }
         }
     }
 
-    return (<div onClick={onSelect} className="eff-one-task" style={{
+    return (<div onClick={response.handleTaskSelected} className="eff-one-task" style={{
         paddingLeft:'100px',
         paddingRight:'20px'
     }}>
         <div className={`d-flex align-center justify-between task-inner ${isTaskDone?'is-done':''}`} >
             <div className="d-flex">
-                <Checkbox checked={isTaskDone} onChange={response.taskDone} />
+                <Checkbox style={{zIndex:10}} checked={isTaskDone} onChange={response.taskDone} />
                 <span className="ml20">{serial}</span>
                 <span className="ml20">{name}</span>
             </div>

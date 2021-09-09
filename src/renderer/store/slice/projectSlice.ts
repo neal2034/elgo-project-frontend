@@ -16,6 +16,7 @@ const projectSlice = createSlice({
     initialState:{
         projects:[],
         projectDetail:{} as IProjectDetail,   //当前的项目详情
+        projectMembers:[],                     //用于在组织环境下选择某个项目的成员
     },
     reducers:{
         setProjects:(state, action)=>{
@@ -23,7 +24,8 @@ const projectSlice = createSlice({
         },
         setProjectDetail: (state, action)=>{
             state.projectDetail = action.payload
-        }
+        },
+        setProjectMembers: (state, action) => { state.projectMembers = action.payload },
     }
 })
 
@@ -48,6 +50,7 @@ const projectThunks = {
     },
     getProjectDetail: ()=>{
         return async (dispatch:Dispatch<any>)=>{
+            console.log('will get project detail ')
             let result = await request.get({url:apiUrl.project.detail})
             if(result.isSuccess){
                 dispatch(projectActions.setProjectDetail(result.data))
