@@ -11,12 +11,30 @@ import {effToast} from "@components/common/eff-toast/eff-toast";
 import {projectActions} from "@slice/projectSlice";
 
 
+interface IGroupTasks{
+    id:number,
+    taskListName:string,
+    tasks:[]
+}
+
+interface IProjectTasks{
+    projectId:number,
+    projectName:string,
+    members:[],
+    taskList:IGroupTasks[]
+}
+
+interface IPropProjectTasks{
+    item:IProjectTasks,
+    onTaskSelected:(id:number)=>void,
+}
+
+
 
 export default function MyTask(){
     const dispatch = useDispatch()
     const myTasks = useSelector((state:RootState)=>state.task.myTasks)
     const [showTaskDetail, setShowTaskDetail] = useState(false);      //是否显示任务详情
-    const projectMembers = null
     useEffect(()=>{
         dispatch(setBreadcrumbs(['我的任务']))
         dispatch(taskThunks.listMyTasks())
@@ -70,23 +88,6 @@ export default function MyTask(){
 
 
 
-interface IGroupTasks{
-    id:number,
-    taskListName:string,
-    tasks:[]
-}
-
-interface IProjectTasks{
-    projectId:number,
-    projectName:string,
-    members:[],
-    taskList:IGroupTasks[]
-}
-
-interface IPropProjectTasks{
-    item:IProjectTasks,
-    onTaskSelected:(id:number)=>void,
-}
 
 function MyProjectTask(props:IPropProjectTasks){
     const dispatch = useDispatch()

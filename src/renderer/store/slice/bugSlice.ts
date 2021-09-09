@@ -48,6 +48,7 @@ const bugSlice = createSlice({
     name:'bug',
     initialState:{
         bugs:[],
+        myBugs:[],
         page:0,
         total:0,
         currentBug:{} as IBugDetail
@@ -57,6 +58,7 @@ const bugSlice = createSlice({
         setPage: (state, action) => { state.page = action.payload },
         setTotal: (state, action) => { state.total = action.payload },
         setCurrentBug: (state, action) => { state.currentBug = action.payload },
+        setMyBugs: (state, action) => { state.myBugs = action.payload },
 
     }
 })
@@ -66,6 +68,14 @@ const bugSlice = createSlice({
 
 const  bugActions = bugSlice.actions
 const bugThunks = {
+    listMyBugs : ()=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.bug.mine})
+                if(result.isSuccess){
+                    dispatch(bugActions.setMyBugs(result.data))
+                }
+            }
+        },
     listBugs : (params?:IBugListParams)=>{
             return async (dispatch:Dispatch<any>)=>{
                 let result = await request.get({url: apiUrl.bug.index, params})

@@ -57,7 +57,7 @@ export default function TaskDetail(props:IProps){
         }else{
             members = data.members? data.members:[]
         }
-        console.log('members are ', members, data.members)
+
         let options:any[] = []
         members.forEach(item=>{
             options.push({

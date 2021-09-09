@@ -25,7 +25,9 @@ export default function BugDetail(props:IProps){
     const menuItems = [{key:'delete', name:'删除Bug', icon:<DeleteOutlined style={{fontSize:'14px'}}/>}]
     const [memberOptions, setMemberOptions] = useState<any[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
-    const members = useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[])
+    const members = useSelector((state:RootState)=>state.project.projectDetail.members)
+    const projectMembers = useSelector((state:RootState)=>state.project.projectMembers)
+
     const allTags = useSelector((state:RootState)=>state.tag.tags)
     const page = useSelector((state:RootState)=>state.bug.page)
     const severityOptions = Object.keys(BUG_SEVERITY).map((item:any)=>{
@@ -84,16 +86,24 @@ export default function BugDetail(props:IProps){
         }
     }
 
+
     useEffect(()=>{
+        let availableMembers = []
+        if(projectMembers.length>0){
+            availableMembers = projectMembers
+        }else{
+            availableMembers =  members? members:[]
+        }
+
         let options:any[] = []
-        members.forEach(item=>{
+        availableMembers.forEach(item=>{
             options.push({
                 id:item.orgMemberId,
                 name:item.name
             })
         })
         setMemberOptions(options)
-    },[members])
+    },[members, projectMembers])
 
     return (  <div className="pt40 pl40 pr40 pb40">
         <div className="d-flex justify-between align-center">
