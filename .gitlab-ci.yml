@@ -12,14 +12,15 @@ before_script:
       APP_HOME="/mnt/websites/effwork/develop";
       fi;
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-      FRONTEND_SRC="$BUILD_HOME/effwork-frontend/master";
-      APP_HOME="/mnt/websites/effwork/master";
+      FRONTEND_SRC="$BUILD_HOME/effwork-frontend/production";
+      APP_HOME="/mnt/websites/effwork/production";
       fi;
 
 clean:
   stage: clean
   only:
     - develop
+    - master
   script:
     - echo "===========Clean=============="
     - rm -rf $FRONTEND_SRC
@@ -30,6 +31,7 @@ build:
   stage: build
   only:
     - develop
+    - master
   script:
     - echo "===========Build==========="
     - git clone http://gitlab+deploy-token-20:-3ziAm63EZyETZiXWa1n@www.repo.codeheros.net:8025/eff-work/effwork-pc.git -b $CI_COMMIT_REF_NAME $FRONTEND_SRC
@@ -40,6 +42,7 @@ deploy:
   stage: deploy
   only:
     - develop
+    - master
   script:
     - echo "===========Deploy==========="
     - mkdir -p $APP_HOME
