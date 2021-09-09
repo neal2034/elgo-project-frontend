@@ -89,7 +89,7 @@ export default function BugDetail(props:IProps){
 
     useEffect(()=>{
         let availableMembers = []
-        if(projectMembers.length>0){
+        if(projectMembers && projectMembers.length>0){
             availableMembers = projectMembers
         }else{
             availableMembers =  members? members:[]

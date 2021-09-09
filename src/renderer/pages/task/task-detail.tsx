@@ -52,7 +52,7 @@ export default function TaskDetail(props:IProps){
 
     useEffect(()=>{
         let members = []
-        if(data.projectMembers.length>0){
+        if( data.projectMembers && data.projectMembers.length>0){
             members = data.projectMembers
         }else{
             members = data.members? data.members:[]
