@@ -8,8 +8,8 @@ interface IProps{
 }
 export default function TestPlanStatus(props:IProps){
     const {value,className} = props
-    const name = TEST_PLAN_STATUS[value].name
-    const color = TEST_PLAN_STATUS[value].color
+    const name = TEST_PLAN_STATUS[value] &&  TEST_PLAN_STATUS[value].name
+    const color = TEST_PLAN_STATUS[value] && TEST_PLAN_STATUS[value].color
     return (
         <div style={{
             border: '1px solid ' + color,
