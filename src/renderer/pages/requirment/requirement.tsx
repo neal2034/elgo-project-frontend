@@ -195,7 +195,6 @@ function ReqContent(props: IRequirementContentProps){
     const {requirements} = props
     const dispatch = useDispatch()
     const totalReq = useSelector((state:RootState)=>state.requirement.reqTotal)
-    const isToastOpen =  useSelector((state:RootState)=>state.requirement.reqToast)
     const [currentPage, setCurrentPage] = useState(1)
     const [showDetail, setShowDetail] = useState(false) //显示需求详情
 

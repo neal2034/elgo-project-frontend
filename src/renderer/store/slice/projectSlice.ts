@@ -56,7 +56,13 @@ const projectThunks = {
                 dispatch(projectActions.setProjectDetail(result.data))
             }
         }
-    }
+    },
+    removeMember : (params:{projectMemberId:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await  request.delete({url:apiUrl.project.members, params})
+                return result.isSuccess
+            }
+        }
 }
 
 const projectActions = projectSlice.actions

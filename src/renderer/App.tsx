@@ -19,6 +19,7 @@ import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import {useSnackbar} from "notistack";
 import {effToast} from '@components/common/eff-toast/eff-toast'
+import OrgMembers from "./pages/org-members/org-members";
 const {Content} = Layout
 
 
@@ -89,6 +90,7 @@ const App = () => {
                          <PrivateRoute component={ProjectCenter} path={'/app/project-center'}/>
                          <PrivateRoute component={MyTask} path={'/app/my-task'}/>
                          <PrivateRoute component={MyBugs} path={'/app/my-bug'}/>
+                         <PrivateRoute component={OrgMembers} path={'/app/org-member'}/>
                          <PrivateRoute component={ProjectHome} path='/app/project/:serial'/>
 
                      </Switch>

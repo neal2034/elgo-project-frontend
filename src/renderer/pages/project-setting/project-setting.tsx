@@ -1,11 +1,59 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import './project-setting.less'
+import SettingMenus from "./setting-menus";
+import {useParams, useRouteMatch} from "react-router-dom";
+import {Switch} from "react-router-dom";
+import PrivateRoute from "../../routes/privateRoute";
+import {useHistory} from "react-router";
+import MemberSetting from "./member-setting/member-setting";
+import TagSetting from "./tag-setting/tag-setting";
+import ReqSourceSetting from "./req-source-setting/pro-req-source-setting";
+import VersionSetting from "./version-setting/version-setting";
+
+
 
 
 
 export default function ProjectSetting(){
+
+    const {url, path} = useRouteMatch()
+    const {serial} = useParams()
+    const history = useHistory()
+    const [activeKey, setActiveKey] = useState('members')
+    let basePath = path.replace(':serial', serial)
+
+    const menus = [
+        {key:'members', name:'项目成员'},
+        {key:'tags', name:'标签'},
+        {key:'sources', name:'需求来源'},
+        {key:'versions', name:'版本'},
+    ]
+
+    useEffect(()=>{
+        let defaultPath = `${basePath}/members`
+        history.push(defaultPath)
+    },[])
+
+    const response = {
+        menuSelected: (key:string)=>{
+            setActiveKey(key)
+            history.push(`${basePath}/${key}`)
+        }
+    }
+
+
     return (
-        <div>
-            <h1>将用来设置标签，版本，迭代等基础信息</h1>
+        <div className="pl40 pt40 d-flex">
+            <SettingMenus activeKey={activeKey} menuSelected={response.menuSelected} menus={menus}/>
+            <div className="ml40 mr40 flex-grow-1">
+                <Switch>
+                    <PrivateRoute component={MemberSetting} path={`${path}/members`}/>
+                    <PrivateRoute component={TagSetting} path={`${path}/tags`}/>
+                    <PrivateRoute component={ReqSourceSetting} path={`${path}/sources`}/>
+                    <PrivateRoute component={VersionSetting} path={`${path}/versions`}/>
+                </Switch>
+
+            </div>
         </div>
     )
 }

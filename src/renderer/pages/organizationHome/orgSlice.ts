@@ -2,7 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
-import umbrella from "umbrella-storage";
 
 
 const orgSlice = createSlice({
@@ -60,6 +59,7 @@ export const orgThunks = {
     getOrganizationDetail: ()=> {
         return async (dispatch: Dispatch<any>) => {
             let result = await request.get({url: apiUrl.organization.detail})
+            console.log('organizaiton is ', result)
             if (result.isSuccess) {
                 dispatch(orgSlice.actions.setOrganization(result.data))
                 dispatch(orgSlice.actions.setName(result.data.name))
@@ -79,10 +79,20 @@ export const orgThunks = {
         return ()=>{
             request.put({url:apiUrl.organization.lastLogin})
         }
-    }
+    },
+    inviteMember : (data:{orgMembers:{email:string}[]})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.post({url: apiUrl.organization.addMember, data})
+                return result.isSuccess
+            }
+        }
 }
 
 
 export const {setName} = orgSlice.actions
+
+const orgActions = orgSlice.actions
+
+export {orgActions}
 
 export default orgSlice.reducer

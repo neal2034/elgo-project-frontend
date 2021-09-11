@@ -1,0 +1,48 @@
+.member-item{
+  color: @color-font-weak;
+  width: 380px;
+  overflow: hidden;
+
+
+  .title{
+    font-size: 12px;
+    white-space: nowrap;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .name{
+    color: @color-font-normal;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .email{
+    font-size: 12px;
+    width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sleep{
+    color: @color-main-yellow;
+    font-size: 12px;
+    margin-left: 10px;
+    white-space: nowrap;
+  }
+
+  .remove{
+    color: @color-red-3;
+    cursor: pointer;
+
+    white-space: nowrap;
+    opacity: 0;
+
+  }
+
+  &:hover{
+    .remove{
+      opacity: 1;
+    }
+  }
+}

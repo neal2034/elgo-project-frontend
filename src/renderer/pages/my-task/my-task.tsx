@@ -95,7 +95,6 @@ function MyProjectTask(props:IPropProjectTasks){
     const [tasks, setTasks] = useState([])
 
     const response = {
-        occupy: ()=>{},
         handleSelected: (id:number)=>{
             dispatch(projectActions.setProjectMembers(item.members))
             props.onTaskSelected(id)

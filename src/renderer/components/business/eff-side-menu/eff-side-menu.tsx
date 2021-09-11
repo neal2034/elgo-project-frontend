@@ -4,7 +4,7 @@ const {Sider} = Layout
 import SideHeader from "./side-header";
 import './eff-side-menu.less'
 import MenuItem from "../menu/menu-item/menu-item";
-import {HomeOutlined, MessageOutlined, CheckSquareOutlined, BugOutlined} from '@ant-design/icons'
+import {HomeOutlined, UsergroupAddOutlined, CheckSquareOutlined, BugOutlined} from '@ant-design/icons'
 import Colors from '@config/globalColor';
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
@@ -37,12 +37,13 @@ export default function EffSideMenu (){
             key: 'my-bug',
             path:'/app/my-bug'
         },
-        // {
-        //     name:'我的消息',
-        //     icon: <MessageOutlined style={{ fontSize: '16px', color: '#666666' }}/>,
-        //     activeIcon: <MessageOutlined style={{ fontSize: '16px', color:  Colors.mainYellowDark }}/>,
-        //     key: 'my-message'
-        // },
+        {
+            name:'组织成员',
+            icon: <UsergroupAddOutlined style={{ fontSize: '16px', color: '#666666' }}/>,
+            activeIcon: <UsergroupAddOutlined style={{ fontSize: '16px', color:  Colors.mainYellowDark }}/>,
+            key: 'org-member',
+            path: '/app/org-member',
+        },
 
     ]
 

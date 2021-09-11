@@ -17,7 +17,7 @@ export default function EffUser(props:User){
     let avatarSize = typeof name === 'string'? size:30
     let colorIndex = id % colors.length
     let color = colors[colorIndex]
-    let userStyle = {backgroundColor: color}
+    let userStyle = {backgroundColor: color, flexShrink:0}
     if(style){
         userStyle = {...style, ...userStyle}
     }
