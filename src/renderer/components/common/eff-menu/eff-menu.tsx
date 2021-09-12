@@ -1,44 +1,45 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './eff-menu.less'
+import {projectMenus} from "@config/projectMenus";
+import {useHistory, useRouteMatch} from "react-router";
 
 interface IEffMenuItem{
     children?:JSX.Element | string
     value:string,
-    handleClick:(value:string)=>void,
-    selectedKey:string,
+    handleClick?:(value:string)=>void,
+    selectedKey?:string,
     [propNames:string]:any
 }
 
 interface IEffMenu{
-    defaultKey: string,
-    children: IEffMenuItem[],
-    onClick:(value:any)=>void,
-    [propNames:string]:any
+    defaultSelectedKey?:string,
 }
 
 
 // 基础Menu组件
 export default function EffMenu(props:IEffMenu){
-    const {defaultKey, children} = props
-    const [selectedKey, setSelectedKey] = useState(defaultKey)
+    const {defaultSelectedKey} = props
+    const [selectMenuKey, setSelectMenuKey] = useState<string>()
+    const {url} = useRouteMatch()
+    const history = useHistory()
 
-
-    //遍历children， 复制并添加必要的props
-    const menuItems = children.map((item:any, index:number)=>React.cloneElement(item, {
-        key:index,
-        selectedKey,
-        handleClick: (value:string)=>{
-            setSelectedKey(value)
-            if(props.onClick){
-                props.onClick({key:value})
-            }
+    useEffect(()=>{setSelectMenuKey(defaultSelectedKey)},[defaultSelectedKey])
+    const response = {
+        menuSelected: (key:string)=>{
+            let href = `${url}/${key}`;
+            history.push(href)
+            setSelectMenuKey(key)
         }
-        }))
-
+    }
+    const ui = {
+        menuItems : projectMenus.map((menu:any)=><EffMenuItem key={menu.key}
+                                                              handleClick={response.menuSelected}
+                                                              selectedKey={selectMenuKey} value={menu.key}>{menu.name}</EffMenuItem>)
+    }
 
     return (
         <div className='eff-menu d-flex'>
-            {menuItems}
+            {ui.menuItems}
         </div>
     )
 }
@@ -48,9 +49,16 @@ export default function EffMenu(props:IEffMenu){
 function EffMenuItem(props:IEffMenuItem){
     const {value,children, handleClick, selectedKey} = props
     const isSelected = (selectedKey == value)
+    const response = {
+        onClick: ()=>{
+            if(handleClick){
+                handleClick(value)
+            }
+        }
+    }
 
     return (
-        <div className={`mr40 eff-menu-item ${isSelected?'eff-menu-item-selected':''}`} onClick={()=>handleClick(value)}>
+        <div className={`mr40 eff-menu-item ${isSelected?'eff-menu-item-selected':''}`} onClick={response.onClick}>
             <div className="mb10">
                 {children}
             </div>

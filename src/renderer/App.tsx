@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Dropdown, Layout, Menu} from "antd";
 import PrivateRoute from "./routes/privateRoute";
-import OrganizationHome from "./pages/organizationHome/organizationHome";
 import ProjectHome from "./pages/projectHome/projectHome";
 import {Switch} from "react-router-dom";
 import EffSideMenu from "./components/business/eff-side-menu/eff-side-menu";
@@ -84,7 +83,6 @@ const App = () => {
                      </Dropdown>
 
                      <Switch>
-                         <PrivateRoute path="/app/organization" component={OrganizationHome}/>
                          <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
                          <PrivateRoute component={Api} path="/app/api" />
                          <PrivateRoute component={ProjectCenter} path={'/app/project-center'}/>
