@@ -7,6 +7,8 @@ import {effToast} from "@components/common/eff-toast/eff-toast";
 import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
 import globalColor from "@config/globalColor";
 import {projectThunks} from "@slice/projectSlice";
+import {Empty, Modal} from "antd";
+import './member-setting.less'
 
 
 export default function MemberSetting(){
@@ -14,13 +16,11 @@ export default function MemberSetting(){
     const project = useSelector((state:RootState)=>state.project.projectDetail)
     const [showConfirmDlg, setShowConfirmDlg] = useState(false)
     const [willDelMember, setWillDelMember] = useState<any>()
+    const [showAddDlg, setShowAddDlg] = useState(false)
+    const [noAvailableMembers, setNoAvailableMembers] = useState(false)
+    const availableOrgMembers = useSelector((state:RootState)=>state.project.availableOrgMembers)
+    const selectedMembers:number[] = []
 
-    const members = []
-    for(let i=0; i<10; i++){
-        if(project.members){
-            members.push(project.members[0])
-        }
-    }
     const response = {
         handleRemoveMember:(member:any)=>{
             if(member.boolProjectOwner){
@@ -37,11 +37,34 @@ export default function MemberSetting(){
                effToast.success('移除项目成员成功');
                dispatch(projectThunks.getProjectDetail())
             }
+        },
+        goAddProjectMember: ()=>{
+            dispatch(projectThunks.listAvailableMember())
+            setShowAddDlg(true)
+        },
+        confirmAddProjectMember: async ()=>{
+            if(selectedMembers.length==0){
+                effToast.warning('请至少选择一个项目成员')
+                return
+            }
+            let result:any = await dispatch(projectThunks.addMember({memberIds:selectedMembers}))
+            setShowAddDlg(false)
+            if(result as boolean){
+                dispatch(projectThunks.getProjectDetail())
+            }
+        },
+        onMemberSelected: (checked:boolean, id:number)=>{
+            if(checked){
+                selectedMembers.push(id)
+            }else{
+                let index = selectedMembers.indexOf(id)
+                selectedMembers.splice(index,1)
+            }
         }
     }
     return (
         <div className="d-flex-column">
-            <EffButton round={true} className="align-self-end" text={'+ 添加成员'} key={'add'} type={"line"} />
+            <EffButton onClick={response.goAddProjectMember} round={true} className="align-self-end" text={'+ 添加成员'} key={'add'} type={"line"} />
             <div className="mt20 d-flex flex-wrap align-center">
                 {project.members &&  project.members.map(item=><EffMemberItem onDel={()=>response.handleRemoveMember(item)} member={item} key={item.id}/>)}
             </div>
@@ -57,7 +80,19 @@ export default function MemberSetting(){
                 </div>
 
             </EffConfirmDlg>
-
+            <Modal width={900} visible={showAddDlg} title={null} footer={null} closable={false}>
+                <div className="add-members-dlg">
+                    <div className="title">添加项目成员</div>
+                    <div className={`content flex-wrap   d-flex pb20 ${noAvailableMembers? 'justify-center':'align-start'}`}>
+                        {noAvailableMembers && <Empty description={'无可添加成员'} image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+                        {availableOrgMembers.map((item:any)=><EffMemberItem onSelect={(checked:boolean)=>response.onMemberSelected(checked,item.id)} className="ml20" select={true} key={item.id} member={item}/>)}
+                    </div>
+                    <div className="d-flex justify-end footer">
+                        <EffButton onClick={()=>setShowAddDlg(false)} text={'取消'} key={'cancel'} type={"line"} round={true}/>
+                        <EffButton onClick={response.confirmAddProjectMember} className="ml20" text={'确定'} key={'save'} type={"filled"} round={true}/>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }

@@ -103,13 +103,17 @@ export default function OrgMembers(){
                 effToast.success('已为邀请成员发送邀请邮件')
                 dispatch(orgThunks.getOrganizationDetail())
             }
+        },
+
+        removeOrgMember: (member:any)=>{
+
         }
     }
 
     return (<div className="pt40 pl40 pr40 d-flex-column">
          <EffButton onClick={()=>setShowInviteDlg(true)} className="align-self-end" text={'+ 邀请成员'} key={'invite'} type={"line"} round={true}/>
         <div className="d-flex justify-start flex-wrap mt20">
-            {organization && organization.members && organization.members.map((item:any)=><EffMemberItem member={item} key={item.id}/>)}
+            {organization && organization.members && organization.members.map((item:any)=><EffMemberItem onDel={()=>response.removeOrgMember(item)} member={item} key={item.id}/>)}
         </div>
 
          <Modal visible={showInviteDlg} title={null} footer={null} closable={false}>

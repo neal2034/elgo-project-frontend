@@ -17,6 +17,7 @@ const projectSlice = createSlice({
         projects:[],
         projectDetail:{} as IProjectDetail,   //当前的项目详情
         projectMembers:[],                     //用于在组织环境下选择某个项目的成员
+        availableOrgMembers:[],                 //可用于添加到组织的成员
     },
     reducers:{
         setProjects:(state, action)=>{
@@ -26,6 +27,7 @@ const projectSlice = createSlice({
             state.projectDetail = action.payload
         },
         setProjectMembers: (state, action) => { state.projectMembers = action.payload },
+        setAvailableOrgMembers: (state, action) => { state.availableOrgMembers = action.payload },
     }
 })
 
@@ -61,6 +63,21 @@ const projectThunks = {
             return async (dispatch:Dispatch<any>)=>{
                 let result = await  request.delete({url:apiUrl.project.members, params})
                 return result.isSuccess
+            }
+        },
+    addMember : (data:{memberIds:number[]})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                 let result = await request.post({url:apiUrl.project.members, data})
+                return result.isSuccess
+            }
+        },
+    listAvailableMember : ()=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.orgMember.available})
+                console.log('result is ', result)
+                if(result.isSuccess){
+                    dispatch(projectActions.setAvailableOrgMembers(result.data.members))
+                }
             }
         }
 }
