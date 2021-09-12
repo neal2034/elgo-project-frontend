@@ -11,10 +11,10 @@ module.exports = merge.smart(webpackBaseConfig, {
 
     target: 'node',
 
-    entry: path.join(__dirname, 'src/main/index.ts'),
+    entry: path.join(__dirname, '../src/main/index.ts'),
 
     output: {
-        path: path.join(__dirname, 'dist/main'),
+        path: path.join(__dirname, '../dist/main'),
         filename: 'main.dev.js'
     },
 

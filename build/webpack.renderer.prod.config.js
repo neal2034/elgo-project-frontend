@@ -8,13 +8,13 @@ const merge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack.base.config');
 
 const entry = {
-    index: path.join(__dirname, 'src/renderer/index.tsx'), // 页面入口
+    index: path.join(__dirname, '../src/renderer/index.tsx'), // 页面入口
 };
 // 对每一个入口生成一个.html文件
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
     inject: 'body',
     scriptLoading: 'defer',
-    template: path.join(__dirname, 'resources/template/template.html'),
+    template: path.join(__dirname, '../resources/template/template.html'),
     minify: false,
     filename: `${name}/index.html`,
     chunks: [name]
@@ -30,7 +30,7 @@ module.exports = merge.smart(webpackBaseConfig, {
     entry,
 
     output: {
-        path: path.join(__dirname, 'dist/renderer/'),
+        path: path.join(__dirname, '../dist/renderer/'),
         publicPath: '../',
         filename: '[name]/index.prod.js' // 输出则是每一个入口对应一个文件夹
     },
@@ -141,10 +141,10 @@ module.exports = merge.smart(webpackBaseConfig, {
                     {
                         loader: 'style-resources-loader',
                         options: {
-                            patterns: [path.resolve(__dirname,'./resources/style/reset.global.less'),
-                                path.resolve(__dirname,'./resources/style/flex.global.less'),
-                                path.resolve(__dirname,'./resources/style/ant.design.global.less'),
-                                path.resolve(__dirname,'./resources/style/normal.global.less')]
+                            patterns: [path.resolve(__dirname,'../resources/style/reset.global.less'),
+                                path.resolve(__dirname,'../resources/style/flex.global.less'),
+                                path.resolve(__dirname,'../resources/style/ant.design.global.less'),
+                                path.resolve(__dirname,'../resources/style/normal.global.less')]
                         }
                     }
                 ],

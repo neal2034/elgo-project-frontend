@@ -16,20 +16,20 @@ const hot = [
 ];
 
 const entry = {
-    index: hot.concat(require.resolve('./src/renderer/index.tsx')),
+    index: hot.concat(require.resolve('../src/renderer/index.tsx')),
 };
 
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
     inject: 'body',
     scriptLoading: 'defer',
-    template: path.join(__dirname, 'resources/template/template.html'),
+    template: path.join(__dirname, '../resources/template/template.html'),
     minify: false,
     filename: `${name}.html`,
     chunks: [name]
 }));
 
 module.exports = merge.smart(webpackBaseConfig, {
-    devtool: 'none',
+    devtool: 'inline-source-map',
     mode: 'development',
 
     entry,
@@ -40,8 +40,8 @@ module.exports = merge.smart(webpackBaseConfig, {
     },
 
     output: {
-        publicPath: './',
-        filename: 'index.js'
+        publicPath,
+        filename: '[name].dev.js'
     },
 
     module: {
@@ -126,10 +126,10 @@ module.exports = merge.smart(webpackBaseConfig, {
                     {
                         loader: 'style-resources-loader',
                         options: {
-                            patterns: [path.resolve(__dirname,'./resources/style/reset.global.less'),
-                                path.resolve(__dirname,'./resources/style/flex.global.less'),
-                                path.resolve(__dirname,'./resources/style/ant.design.global.less'),
-                                path.resolve(__dirname,'./resources/style/normal.global.less')]
+                            patterns: [path.resolve(__dirname,'../resources/style/reset.global.less'),
+                                path.resolve(__dirname,'../resources/style/flex.global.less'),
+                                path.resolve(__dirname,'../resources/style/ant.design.global.less'),
+                                path.resolve(__dirname,'../resources/style/normal.global.less')]
                         }
                     }
                 ],
@@ -212,6 +212,7 @@ module.exports = merge.smart(webpackBaseConfig, {
     // webpack服务
     devServer: {
         port,
+        publicPath,
         compress: true,
         noInfo: false,
         stats: 'errors-only',

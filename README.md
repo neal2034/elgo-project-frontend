@@ -1,2 +1,2 @@
-# EffWork PC端
+# Elgo PC端
 

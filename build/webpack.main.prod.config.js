@@ -10,7 +10,7 @@ module.exports = merge.smart(webpackDevConfig, {
     mode: 'production',
 
     output: {
-        path: path.join(__dirname, 'dist/main'),
+        path: path.join(__dirname, '../dist/main'),
         filename: 'main.prod.js'
     },
 
