@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Modal, Input, Tabs, Select, Button} from "antd";
+import {Modal, Input, Tabs, Select} from "antd";
 import './api-set-dialog.less'
 import EffButton from "../../../components/eff-button/eff-button";
 import globalColor from "@config/globalColor";
-import {addApiSet, addApiGroup, editApiSet, editApiGroup, deleteApiGroup} from '@slice/apiSlice'
+import {addApiSet, addApiGroup, editApiSet, editApiGroup} from '@slice/apiSlice'
 import {useDispatch} from "react-redux";
 
 const {TabPane} = Tabs
@@ -34,7 +34,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
     const [description, setDescription] = useState(editItem && editItem.description)
     const [authToken, setAuthToken] = useState(editItem && editItem.authToken)
 
-    let namePlaceHolder = dlgType==='set'? "集合名称":"分组名称"
+    const namePlaceHolder = dlgType==='set'? "集合名称":"分组名称"
     useEffect(()=>{
         if(mode==='edit'){
             setApiSetName(editItem.name)
@@ -62,7 +62,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 setErrorNameEmpty(true)
                 return
             }
-            let payload = {
+            const payload = {
                 name,
                 authType,
                 description,
@@ -77,7 +77,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 setErrorNameEmpty(true)
                 return
             }
-            let payload = {
+            const payload = {
                 name,
                 authType,
                 description,
@@ -93,7 +93,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 setErrorNameEmpty(true)
                 return
             }
-            let payload = {
+            const payload = {
                 name,
                 authType,
                 description,
@@ -108,7 +108,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps){
                 setErrorNameEmpty(true)
                 return
             }
-            let payload = {
+            const payload = {
                 name,
                 authType,
                 description,

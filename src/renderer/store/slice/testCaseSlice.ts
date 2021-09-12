@@ -41,7 +41,7 @@ const testCaseThunks = {
     listTestCase : (params:{page:number, searchKey?:string, funztionId?:number, tagIds?:number[], priorities?:string[] })=>{
             return async (dispatch:Dispatch<any>)=>{
 
-                let result = await request.get({url:apiUrl.testCase.index, params})
+                const result = await request.get({url:apiUrl.testCase.index, params})
                 if(result.isSuccess){
                     dispatch(testCaseActions.setPage(params.page))
                     dispatch(testCaseActions.setTotal(result.data.total))
@@ -50,54 +50,54 @@ const testCaseThunks = {
             }
         },
     addTestCase : (data:{name:string, description?:string,priority:string, funztionId?:number, tagIds?:number[]})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let payload:any = Object.assign({}, data)
+            return async ()=>{
+                const payload:any = Object.assign({}, data)
                 await  request.post({url:apiUrl.testCase.index, data:payload})
             }
         },
     getTestCaseDetail : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.get({url:apiUrl.testCase.detail, params:{id}})
+                const result = await  request.get({url:apiUrl.testCase.detail, params:{id}})
                 if(result.isSuccess){
                     dispatch(testCaseActions.setCurrentTestCase(result.data))
                 }
             }
         },
     editTestCaseName : (data:{id:number,name:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                     await  request.put({url:apiUrl.testCase.editName, data})
 
             }
         },
     editTestCaseDes : (data:{id:number, description?:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.testCase.editDescription, data})
             }
         },
     editFunztion : (data:{id:number, funztionId?:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.testCase.editFunztion, data})
             }
         },
     editPriority : (data:{id:number, priority?:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await  request.put({url:apiUrl.testCase.editPriority, data})
             }
         },
     editTags: (data:{id:number, tagIds?:number[]})=>{
-        return async (dispatch:Dispatch<any>)=>{
+        return async ()=>{
             await  request.put({url:apiUrl.testCase.editTag, data})
         }
     },
     deleteTestCase : (id:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.delete({url:apiUrl.testCase.index, params:{id}})
+            return async ()=>{
+                const result = await  request.delete({url:apiUrl.testCase.index, params:{id}})
                 return result.isSuccess
             }
         },
     withdrawDelTestCase : (id:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await request.put({url:apiUrl.testCase.withdrawDel, params:{id}})
+            return async ()=>{
+                const result = await request.put({url:apiUrl.testCase.withdrawDel, params:{id}})
                 return result.isSuccess
             }
         }

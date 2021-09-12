@@ -51,7 +51,7 @@ export default function TestPlan(){
             setShowDetail(true)
         },
         handleDelTestPlan: async (id:number)=>{
-            let result:any = await dispatch(testPlanThunks.delTestPlan(id))
+            const result:any = await dispatch(testPlanThunks.delTestPlan(id))
             if(result as boolean){
                 dispatch(testPlanThunks.listTestPlan({page}))
                 effToast.success_withdraw('计划放入回收站成功', ()=>response.handleWithdraw(id))
@@ -60,7 +60,7 @@ export default function TestPlan(){
 
         },
         handleWithdraw: async (id:number)=>{
-           let result:any  = await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
+           const result:any  = await dispatch(testPlanThunks.withdrawDelTestPlan({id}))
             if(result){
                 dispatch(testPlanThunks.listTestPlan({page}))
                 effToast.success("撤销成功")

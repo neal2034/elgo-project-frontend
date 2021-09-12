@@ -34,8 +34,8 @@ export default function ApiExample(props:IApiProps){
         },
         delExample: async ()=>{
             setConfirmDelDlgVisible(false)
-            let id = willDelExample.id
-           let result:any =  await dispatch(apiThunks.delApiExample(id))
+            const id = willDelExample.id
+           const result:any =  await dispatch(apiThunks.delApiExample(id))
             if(result){
                 effToast.success_withdraw(`示例${willDelExample.name}已放入回收站`, ()=>handler.withdrawDelApiExample(id))
             }

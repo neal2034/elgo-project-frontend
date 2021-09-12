@@ -25,7 +25,7 @@ export default function ProjectCenter(){
     const handleFocusInName = ()=>setShowNameError(false)
 
     const handleAddProject = async ()=>{
-        let name = nameInputRef.current!.input.value
+        const name = nameInputRef.current!.input.value
         if(!name){
             setShowNameError(true)
             return

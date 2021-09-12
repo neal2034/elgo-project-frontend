@@ -12,7 +12,7 @@ export default function OrgSwitch(){
     const dispatch = useDispatch()
     const history = useHistory()
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
-    let orgList = useSelector((state:RootState)=>state.organization.orgList);
+    const orgList = useSelector((state:RootState)=>state.organization.orgList);
 
     useEffect(()=>{
         dispatch(orgThunks.listOrganizations())

@@ -12,8 +12,8 @@ type METHODS = 'get' | 'post' | 'put' | 'delete';
 interface IFRequestParam {
     url: string;
     params?:Map;
-    data?: object;
-    config?: object;
+    data?: {[x:string]:any};
+    config?: {[x:string]:any};
 }
 
 interface IFRequestConfig extends IFRequestParam{
@@ -25,7 +25,7 @@ interface IFRequestConfig extends IFRequestParam{
 const responseErrorHandler = (error:any)=>{
 
     if(error.response.status === 401){
-        let loginPath = window.location.href.replace(window.location.hash, "#/login")
+        const loginPath = window.location.href.replace(window.location.hash, "#/login")
         window.location.href = loginPath
     }
 }
@@ -62,7 +62,7 @@ axios.interceptors.response.use(response =>{
         //TODO add message
         console.log("error is ", response.data.message)
     }
-    let result = response.data
+    const result = response.data
 
     result.isSuccess = result.status === 0
     return result;
@@ -81,8 +81,8 @@ const post =   ({url, data, params, config}:IFRequestParam)=>{
 
 const get = ({url, params, config}:IFRequestParam) => {
     //将get 参数当中的数组转成字符串拼接
-    for(let x in params){
-        if(params.hasOwnProperty(x) && Array.isArray(params[x])){
+    for(const x in params){
+        if(Object.prototype.hasOwnProperty.call(params,x)&& Array.isArray(params[x])){
             params[x] = params[x].join(',')
         }
     }

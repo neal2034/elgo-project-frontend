@@ -3,7 +3,7 @@ import ReactWEditor from 'wangeditor-for-react';
 import {uploadFileToOss} from "../../../utils/fileService";
 
 interface IEffEditorProps{
-    onChange?:Function,
+    onChange?:(value?:string)=>void,
     content?:string,
     height?:string|number
 }
@@ -33,17 +33,17 @@ export default function EffEditor(props:IEffEditorProps){
     }
 
     const customUploadImg = (resultFiles:any, insertImgFn:any)=>{
-        let file = resultFiles[0]
-        let size = file.size;
-        let exts = file.name.split(".")
-        let ext = exts[exts.length - 1];
+        const file = resultFiles[0]
+        const size = file.size;
+        const exts = file.name.split(".")
+        const ext = exts[exts.length - 1];
         if(size/1000 > 1000){
             alert('最大只能上传1M的文件')
             // return false
         }
 
-        let  randomStr = Math.random().toString(36).slice(-8);
-        let uploadFileName = (new Date().getTime()) + randomStr +  "." + ext;
+        const  randomStr = Math.random().toString(36).slice(-8);
+        const uploadFileName = (new Date().getTime()) + randomStr +  "." + ext;
 
         uploadFileToOss(file, uploadFileName).then(result=>{
             insertImgFn(result.url+uploadFileName)
@@ -55,11 +55,10 @@ export default function EffEditor(props:IEffEditorProps){
     return (
         <div>
             <ReactWEditor
-                // @ts-ignore
+
                 config={{
                     menus,
-                    // @ts-ignore
-                    height:height,
+                    height:height as (number|undefined),
                     customUploadImg
                 }}
                 defaultValue={content}

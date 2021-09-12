@@ -1,7 +1,7 @@
 /**
  * 组件： 用于描述API Tab
  */
-import React, {useState} from "react";
+import React from "react";
 import {API} from "@slice/apiSlice";
 import {CloseOutlined} from '@ant-design/icons'
 import './api-wrapper.less'

@@ -7,7 +7,7 @@ import {SnackbarProvider} from "notistack";
 
 
 
-export default ()=> {
+export default function Pages(){
 
 
 
@@ -27,4 +27,4 @@ export default ()=> {
         </Switch>
       </SnackbarProvider>
     </Router>)
-};
+}

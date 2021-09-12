@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setBreadcrumbs} from "../../store/breadcrumbSlice";
-import {taskThunks} from "@slice/taskSlice";
 import {bugThunks} from "@slice/bugSlice";
 import {RootState} from "../../store/store";
 import {Drawer} from "antd";
-import TaskDetail from "../task/task-detail";
 import BugDetail from "../bug/bug-detail";
 import {projectActions} from "@slice/projectSlice";
-import OneTask from "../task/one-task";
 import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
 import BugItem from "../bug/bug-item";
 import {effToast} from "@components/common/eff-toast/eff-toast";
@@ -47,7 +44,7 @@ export default function MyBugs(){
 
     const response = {
         handleDel: async (id:number)=>{
-            let result:any =await dispatch(bugThunks.deleteBug({id}))
+            const result:any =await dispatch(bugThunks.deleteBug({id}))
             if(result as boolean){
                 effToast.success_withdraw('Bug放入回收站成功',()=>response.handleWithdrawDel(id))
                 dispatch(bugThunks.listMyBugs())
@@ -55,7 +52,7 @@ export default function MyBugs(){
             }
         },
         handleWithdrawDel: async (id:number)=>{
-            let result:any = await dispatch(bugThunks.withdrawDelBug({id}))
+            const result:any = await dispatch(bugThunks.withdrawDelBug({id}))
             if(result as boolean){
                 effToast.success("撤销成功")
                 dispatch(bugThunks.listMyBugs())

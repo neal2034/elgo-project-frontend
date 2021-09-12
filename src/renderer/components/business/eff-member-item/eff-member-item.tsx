@@ -16,8 +16,8 @@ interface IMember{
 
 interface IProps{
     member:IMember,
-    onDel?:Function,
-    onSelect?:Function,
+    onDel?:()=>void,
+    onSelect?:(value:boolean)=>void,
     select?:boolean,
     className?:string
 }
@@ -26,7 +26,7 @@ export default function EffMemberItem(props:IProps){
     const {member} = props
     let title = member.boolProjectOwner?'项目拥有者':''
     title = member.boolOwner?'超级管理员':title
-    let width = props.select? '260px':'380px';
+    const width = props.select? '260px':'380px';
 
     const response = {
         handleDel(){
@@ -38,7 +38,6 @@ export default function EffMemberItem(props:IProps){
             if(props.onSelect){
                 props.onSelect(e.target.checked)
             }
-            console.log(e.target.checked)
         }
     }
 

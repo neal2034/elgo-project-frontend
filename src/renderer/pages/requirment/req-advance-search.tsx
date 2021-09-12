@@ -31,7 +31,7 @@ export default function ReqAdvanceSearch(props: IProps){
                     tagIds.push(item[1])
                 })
             }
-            let params = {
+            const params = {
                 name: values.name,
                 clazzId: values.clazzId,
                 sourceId: values.sourceId,
@@ -47,7 +47,7 @@ export default function ReqAdvanceSearch(props: IProps){
         uiReqResourceOptions: reqSources.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
         uiReqVersionOptions: reqVersions.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
     }
-    let tagOptions:any = []
+    const tagOptions:any = []
     tags.forEach(item=>{
         tagOptions.push({value:[item.color, item.id], label:item.name, color:item.color})
     })

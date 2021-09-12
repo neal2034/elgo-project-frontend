@@ -28,39 +28,39 @@ export default function OrgMembers(){
     const response = {
 
         handleRemoveInviteInput: (index:number)=>{
-            let tempMembers:any = Object.assign([], newMembers)
+            const tempMembers:any = Object.assign([], newMembers)
             tempMembers[index].show = false
             setNewMembers(tempMembers)
 
             //获取当前依然显示的邀请输入框
-           let num = tempMembers.reduce((cur:any,next:any)=>{
+           const num = tempMembers.reduce((cur:any,next:any)=>{
                 return next.show? cur + 1:cur
             },0)
             setInputNum(num)
         },
         handleInviteValueChange: (index:number, value?:string)=>{
-            let tempMembers:any = Object.assign([], newMembers)
+            const tempMembers:any = Object.assign([], newMembers)
             tempMembers[index].value = value
             tempMembers[index].errMsg = null
             setNewMembers(tempMembers)
         },
         handleAddInviteInput: ()=>{
-            let tempMembers:any = Object.assign([], newMembers)
+            const tempMembers:any = Object.assign([], newMembers)
             tempMembers.push({show:true})
             setNewMembers(tempMembers)
             //设置input数量
-            let num = inputNum + 1
+            const num = inputNum + 1
             setInputNum(num)
         },
         goInviteMember: async ()=>{
             //检查邮箱格式是否有效
             let formatValid = true
-            let tempMembers:any = Object.assign([], newMembers)
-            let reg=/[A-z0-9_-]*\@[A-z0-9]+\.[A-z]+/;
+            const tempMembers:any = Object.assign([], newMembers)
+            const reg=/[A-z0-9_-]*@[A-z0-9]+\.[A-z]+/;
             tempMembers.forEach((item:any)=>{
                 if(item.show && item.value){
 
-                    let result = reg.test(item.value.trim())
+                    const result = reg.test(item.value.trim())
                     if(!result){
                         item.errMsg = "邮箱格式不正确"
                         formatValid = false
@@ -77,7 +77,7 @@ export default function OrgMembers(){
             if(inputNum == 1){
                 tempMembers.forEach((item:any)=>{
                     if(item.show){
-                        let value = item.value && item.value.trim()
+                        const value = item.value && item.value.trim()
                         if(!value){
                             emptyValid = false
                             item.errMsg = '请填写邮箱'
@@ -91,13 +91,13 @@ export default function OrgMembers(){
             }
 
             //添加组织成员
-            let orgMembers:any = []
+            const orgMembers:any = []
             tempMembers.forEach((item:any)=>{
                 if(item.show && item.value && item.value.trim()){
                     orgMembers.push({email:item.value.trim()})
                 }
             })
-            let result:any = await dispatch(orgThunks.inviteMember({orgMembers}))
+            const result:any = await dispatch(orgThunks.inviteMember({orgMembers}))
             setShowInviteDlg(false)
             if(result as boolean){
                 effToast.success('已为邀请成员发送邀请邮件')
@@ -106,7 +106,7 @@ export default function OrgMembers(){
         },
 
         removeOrgMember: (member:any)=>{
-
+            console.log('will remove ',member)
         }
     }
 
@@ -142,7 +142,7 @@ export default function OrgMembers(){
 
 
 
-function InviteInput(props:{errMsg?:string, showDel:boolean, onDel:Function, onChange:Function}){
+function InviteInput(props:{errMsg?:string, showDel:boolean, onDel:()=>void, onChange:(value:string)=>void}){
 
     const response={
         handleDel(){

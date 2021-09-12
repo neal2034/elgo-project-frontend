@@ -13,7 +13,6 @@ import {tagThunks} from "@slice/tagSlice";
 import {reqActions, reqThunks} from "@slice/reqSlice";
 import {funztionThunks} from "@slice/funztionSlice";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
-import {Select} from "antd";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
 
 
@@ -49,23 +48,25 @@ export default function FunztionDetail(props:IProps){
     },[])
 
     useEffect(()=>{
-        let tagIds = data.currentFunztion.tagIds? data.currentFunztion.tagIds:[]
-        let selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
+        const tagIds = data.currentFunztion.tagIds? data.currentFunztion.tagIds:[]
+        const selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
     }, [data.currentFunztion.tagIds])
 
 
 
     const response = {
-        occupy: ()=>{},
+        occupy: ()=>{
+            //TODO 替换该函数
+        },
         onTagsChanged: async (ids:any)=>{
            await dispatch(funztionThunks.editFunztionTags(data.currentFunztion.id, ids))
             dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id))
         },
         //tags area 标签删除响应
         delTag: (id:number)=>{
-            let currentIds = Object.assign([], data.currentFunztion.tagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], data.currentFunztion.tagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },

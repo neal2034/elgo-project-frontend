@@ -27,7 +27,7 @@ const {Content} = Layout
 const App = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    let breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
+    const breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
     const currentMember:any = useSelector((state:RootState)=>state.account.currentMember)
     useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
 

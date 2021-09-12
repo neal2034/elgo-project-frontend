@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import FunztionContent from "./funztion-content";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
-import ReqAdvanceSearch from "../requirment/req-advance-search";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import EffButton from "../../components/eff-button/eff-button";
 import FunztionAdvanceSearch from "./funztion-advance-search";
@@ -13,7 +12,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {tagThunks} from "@slice/tagSlice";
 import {funztionThunks} from "@slice/funztionSlice";
-import {reqThunks} from "@slice/reqSlice";
 
 
 export default function Funztion(){
@@ -39,7 +37,6 @@ export default function Funztion(){
     },[])
 
     const response = {
-        occupy: ()=>{},
         handleAddFunztion: async (funztion:any)=>{
             await dispatch(funztionThunks.addFunztion(funztion))
             setIsOpenAddForm(false)
@@ -56,7 +53,7 @@ export default function Funztion(){
             setIsAdvanceSearch(false)
         },
         handleAdvanceSearch: async (searchKeys:any)=>{
-            let params = Object.assign({page:0}, searchKeys)
+            const params = Object.assign({page:0}, searchKeys)
             await dispatch(funztionThunks.listFunztion(params))
             setIsAdvanceSearch(false)
             setIsShowSearchResult(true)

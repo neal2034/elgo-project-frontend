@@ -38,7 +38,7 @@ export default function PlanCaseAdvanceSearch(props:IProps){
         testPlanStatusOptions: [] as any,
 
     }
-    for(let item in PLAN_CASE_STATUS){
+    for(const item in PLAN_CASE_STATUS){
         ui.testPlanStatusOptions.push(<Select.Option key={PLAN_CASE_STATUS[item].key} value={PLAN_CASE_STATUS[item].key}>{PLAN_CASE_STATUS[item].name}</Select.Option>)
     }
 

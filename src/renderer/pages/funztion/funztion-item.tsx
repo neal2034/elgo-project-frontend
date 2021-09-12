@@ -14,7 +14,7 @@ interface IProps{
 
 export default function FunztionItem(props:IProps){
     const {showBg, id, serial, name, statusId, onChosen,status} = props
-    let theStatus:{name:string, color:string} = status.filter((item:any)=>item.id === statusId)[0]
+    const theStatus:{name:string, color:string} = status.filter((item:any)=>item.id === statusId)[0]
     return (
         <div onClick={()=>onChosen(id)} className={`one-funztion d-flex align-center pr20 justify-between pl20 ${showBg?'shadowed':''}`} key={id}>
             <div className="funz-main">

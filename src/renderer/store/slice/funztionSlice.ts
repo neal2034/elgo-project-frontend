@@ -2,8 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
 import request from "../../utils/request";
 import apiUrl from "@config/apiUrl";
-import api from "../../pages/api/api";
-import {reqActions} from "@slice/reqSlice";
 
 
 
@@ -48,7 +46,7 @@ const funztionActions = funztionSlice.actions
 const funztionThunks = {
     addFunztion : (funztion:any)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url:apiUrl.funztion.index, data:funztion})
+                const result = await request.post({url:apiUrl.funztion.index, data:funztion})
                 if(result.isSuccess){
                     dispatch(funztionThunks.listFunztion({page:0}))
                 }
@@ -57,7 +55,7 @@ const funztionThunks = {
         },
     getFunztionDetail : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.funztion.detail, params:{id}})
+                const result = await request.get({url:apiUrl.funztion.detail, params:{id}})
                 if(result.isSuccess){
                     dispatch(funztionActions.setCurrentFunztion(result.data))
                 }
@@ -66,7 +64,7 @@ const funztionThunks = {
     listFunztion : (params:IListFunztionParams)=>{
             return async (dispatch:Dispatch<any>)=>{
                 const {page = 0} = params
-                   let result = await request.get({url: apiUrl.funztion.index, params})
+                   const result = await request.get({url: apiUrl.funztion.index, params})
                     if(result.isSuccess){
                         dispatch(funztionActions.setPage(page))
                         dispatch(funztionActions.setFunztions(result.data.data))
@@ -76,7 +74,7 @@ const funztionThunks = {
         },
     listFunztionStatus : ()=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.funztionStatus.index})
+                const result = await request.get({url:apiUrl.funztionStatus.index})
                 if(result.isSuccess){
                     dispatch(funztionActions.setFunztionStatus(result.data))
                 }
@@ -84,8 +82,8 @@ const funztionThunks = {
         },
     //修改功能标签
     editFunztionTags : (id:number, tagIds:number[])=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let data = {id,tagIds}
+            return async ()=>{
+                const data = {id,tagIds}
                 await request.put({url:apiUrl.funztion.tags, data})
 
 
@@ -93,30 +91,30 @@ const funztionThunks = {
         },
     //修改功能所属需求
     editFunztionRequirement : (id:number, reqId?:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let data = {id,reqId}
+            return async ()=>{
+                const data = {id,reqId}
                 await request.put({url:apiUrl.funztion.editRequirement, data})
             }
         },
     //修改功能状态
     editFunztionStatus : (id:number,statusId:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let data = {id, statusId}
+            return async ()=>{
+                const data = {id, statusId}
                 await request.put({url:apiUrl.funztion.status, data})
             }
         },
     //修改功能描述
     editFunztionDes : (id:number, description?:string)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let data = {id, description}
+            return async ()=>{
+                const data = {id, description}
                 await request.put({url:apiUrl.funztion.description, data})
             }
         },
     //删除功能
     delFunztion : (id:number)=>{
             return async (dispatch:Dispatch<any>, getState:any)=>{
-                let page = getState().funztion.page
-                let result = await request.delete({url:apiUrl.funztion.index, params:{id}})
+                const page = getState().funztion.page
+                const result = await request.delete({url:apiUrl.funztion.index, params:{id}})
                 if(result.isSuccess){
                     dispatch(funztionThunks.listFunztion({page}))
                 }
@@ -126,8 +124,8 @@ const funztionThunks = {
     //撤销删除
     withdrawDelFunztion : (id:number)=>{
             return async (dispatch:Dispatch<any>, getState:any)=>{
-                let page = getState().funztion.page
-                let result = await request.put({url:apiUrl.funztion.withdrawDel, params:{id}})
+                const page = getState().funztion.page
+                const result = await request.put({url:apiUrl.funztion.withdrawDel, params:{id}})
                 if(result.isSuccess){
                     dispatch(funztionThunks.listFunztion({page}))
                 }
@@ -136,7 +134,7 @@ const funztionThunks = {
         },
     listWithIds : (params:{ids:number[]})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.funztion.withIds, params})
+                const result = await request.get({url:apiUrl.funztion.withIds, params})
                 if(result.isSuccess){
                     dispatch(funztionActions.setFunztions(result.data))
                 }

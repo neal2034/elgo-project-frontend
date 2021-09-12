@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {MoreOutlined, PlusSquareOutlined,FormOutlined,DeleteOutlined,FieldTimeOutlined,UserAddOutlined} from '@ant-design/icons'
 import './requirment.less'
 import EffButton from "../../components/eff-button/eff-button";
-import {Col, Drawer, Pagination, Form, Input, Popover, Row, Tag} from "antd";
+import {Drawer, Pagination, Popover} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import {reqActions, reqThunks} from "@slice/reqSlice";
+import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../store/store";
 import {tagThunks} from "@slice/tagSlice";
 import AddReqClazzDlg from "./add-req-clazz-dlg";
@@ -40,7 +40,6 @@ interface  IRequirement{
 
 interface IRequirementContentProps{
     requirements:IRequirement[], //当前显示的需求列表
-    onSelected: Function, //点击选中事件响应
 }
 
 
@@ -81,7 +80,6 @@ export default function Requirement(){
         cancelAddReq: ()=>{
             setShowAddForm(false)
         },
-        handleRequirementSelected: ()=>{},
 
         handleRequirementAdd:async (requirement:any)=>{
             await dispatch(reqThunks.addRequirement(requirement))
@@ -102,7 +100,7 @@ export default function Requirement(){
         },
 
         handleAdvanceSearch: async (searchKeys:any)=>{
-            let params = Object.assign({page:0}, searchKeys)
+            const params = Object.assign({page:0}, searchKeys)
             await dispatch(reqThunks.listPageRequirement(params))
             setIsAdvanceSearch(false)
             setIsShowSearchResult(true)
@@ -132,7 +130,7 @@ export default function Requirement(){
             </div>
             <div className={'d-flex mt10'}>
                 <ReqClass reqClasses={data.reqClasses}/>
-                <ReqContent requirements={data.requirements} onSelected={response.handleRequirementSelected}/>
+                <ReqContent requirements={data.requirements}/>
             </div>
             <Drawer
                 title={null}
@@ -211,14 +209,14 @@ function ReqContent(props: IRequirementContentProps){
         },
         onDeleteReq: async (id:number)=>{
 
-          let result:any =  await dispatch(reqThunks.delRequirement(id))
+          const result:any =  await dispatch(reqThunks.delRequirement(id))
             if(result){
                 effToast.success_withdraw('需求放入回收站成功',()=>response.handleWithdrawDelReq(id))
                 setShowDetail(false)
             }
         },
         handleWithdrawDelReq: async (id:number)=>{
-            let result:any = await dispatch(reqThunks.withdrawDelRequirement(id))
+            const result:any = await dispatch(reqThunks.withdrawDelRequirement(id))
             if(result ){
                 effToast.success('撤销成功')
             }

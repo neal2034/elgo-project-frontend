@@ -35,7 +35,7 @@ export default function TestCaseDetail(props:IProps){
             {key:'delete', name:'删除测试用例', icon:<DeleteOutlined style={{fontSize:'14px'}}/>},
         ]
     const priorityOptions = []
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         priorityOptions.push({id:PRIORITY[item].key, name:PRIORITY[item].name})
     }
 
@@ -49,13 +49,12 @@ export default function TestCaseDetail(props:IProps){
     },[])
 
     useEffect(()=>{
-        let tagIds = currentTestCase.tagIds? currentTestCase.tagIds:[]
-        let selectTags = tags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
+        const tagIds = currentTestCase.tagIds? currentTestCase.tagIds:[]
+        const selectTags = tags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
     }, [currentTestCase.tagIds])
 
     const response = {
-        occupy: ()=>{},
         handleEditName: async (name?:string)=>{
             await dispatch(testCaseThunks.editTestCaseName({id:currentTestCase.id, name:name as string}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id))
@@ -86,8 +85,8 @@ export default function TestCaseDetail(props:IProps){
         },
         //tags area 标签删除响应
         delTag: (id:number)=>{
-            let currentIds = Object.assign([], currentTestCase.tagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], currentTestCase.tagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },

@@ -39,7 +39,7 @@ export default function TestPlanDetail(props:IProps){
 
     useEffect(()=>{
         if(currentTestPlan.functionIds){
-            let ids = currentTestPlan.functionIds.slice(0,10)
+            const ids = currentTestPlan.functionIds.slice(0,10)
             dispatch(funztionThunks.listWithIds({ids}))
             dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length))
         }
@@ -50,7 +50,7 @@ export default function TestPlanDetail(props:IProps){
 
     useEffect(()=>{
             let selectAll = funztions.length > 0
-            for(let funztion of funztions){
+            for(const funztion of funztions){
                 if(selectedFunztionIds.indexOf(funztion.id)===-1){
                     selectAll = false
                 }
@@ -65,7 +65,7 @@ export default function TestPlanDetail(props:IProps){
             dispatch(funztionThunks.listFunztion({page:0}))
         }else{
             if(currentTestPlan.functionIds){
-                let ids = currentTestPlan.functionIds.slice(0,10)
+                const ids = currentTestPlan.functionIds.slice(0,10)
                 dispatch(funztionThunks.listWithIds({ids}))
                 dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length))
             }
@@ -73,12 +73,11 @@ export default function TestPlanDetail(props:IProps){
     },[isEditing])
 
     const planStatusOptions = []
-    for(let item in TEST_PLAN_STATUS){
+    for(const item in TEST_PLAN_STATUS){
         planStatusOptions.push({id:TEST_PLAN_STATUS[item].key, name:TEST_PLAN_STATUS[item].name})
     }
 
     const response = {
-        occupy: ()=>{},
         handleMenuSelected:async ()=>{
             props.onDel(currentTestPlan.id)
         },
@@ -86,42 +85,41 @@ export default function TestPlanDetail(props:IProps){
             dispatch(testPlanThunks.editStatus({id:currentTestPlan.id, status:status as string}))
         },
         handlePageChange: (page:number)=>{
-            console.log('page is ',page)
             if(isEditing){
                 dispatch(funztionThunks.listFunztion({page:page-1}))
             }else{
-                let ids = currentTestPlan.functionIds!.slice(page*10-10,  page*10)
+                const ids = currentTestPlan.functionIds!.slice(page*10-10,  page*10)
                 dispatch(funztionThunks.listWithIds({ids}))
                 dispatch(funztionActions.setPage(page-1))
             }
 
         },
         handleFunztionSelected:(id:number, selected:boolean)=>{
-            let tempIds = Object.assign([], selectedFunztionIds)
+            const tempIds = Object.assign([], selectedFunztionIds)
             if(selected){
                 tempIds.push(id)
             }else {
-                let index = tempIds.indexOf(id)
+                const index = tempIds.indexOf(id)
                 tempIds.splice(index, 1)
             }
             setSelectedFunztionIds(tempIds)
         },
         handleSelectAll: (e:any)=>{
-            let selected = e.target.checked
+            const selected = e.target.checked
             setIsSelectAll(selected)
             if(selected){
-                let notSelectIds = []
-                for(let funztion of funztions){
+                const notSelectIds = []
+                for(const funztion of funztions){
                     if(selectedFunztionIds.indexOf(funztion.id)===-1){
                         notSelectIds.push(funztion.id)
                     }
                 }
-                let tempIds = notSelectIds.concat(selectedFunztionIds)
+                const tempIds = notSelectIds.concat(selectedFunztionIds)
                 setSelectedFunztionIds(tempIds)
             }else{
-                let tempIds = Object.assign([], selectedFunztionIds)
-                for(let funztion of funztions){
-                    let index = tempIds.indexOf(funztion.id)
+                const tempIds = Object.assign([], selectedFunztionIds)
+                for(const funztion of funztions){
+                    const index = tempIds.indexOf(funztion.id)
                     if(index>-1){
                         tempIds.splice(index, 1)
                     }
@@ -132,7 +130,7 @@ export default function TestPlanDetail(props:IProps){
         handleCancelEdit: ()=>{
             setIsEditing(false)
             if(currentTestPlan.functionIds){
-                let ids = currentTestPlan.functionIds.slice(0,10)
+                const ids = currentTestPlan.functionIds.slice(0,10)
                 dispatch(funztionThunks.listWithIds({ids}))
                 dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length))
             }

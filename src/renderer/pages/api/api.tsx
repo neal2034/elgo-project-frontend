@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import './api.less'
 import {useDispatch, useSelector} from "react-redux";
-import {setBreadcrumbs} from '../../store/breadcrumbSlice'
 import ApiSideBar from "./sub-components/api-sidebar";
 import ApiContent from "./sub-components/api-content";
 import {RootState} from "../../store/store";
@@ -23,13 +22,13 @@ export default function Api(){
                 }
 
                 //在当前环境里找寻所有key,满足条件则设置为value
-                let  env:any = {
+                const  env:any = {
                     id:currentEnv.id,
                     name:currentEnv.name,
                     items:Object.assign([],currentEnv.envItems)
                 };
 
-                let item = {name:key,value,used:true};
+                const item = {name:key,value,used:true};
                 if(env.items){
                     let setted = false
                     env.items.forEach((envItem:any)=>{
@@ -39,7 +38,7 @@ export default function Api(){
                         }
                     })
                     if(!setted) {
-                        let lastitem = env.items[env.items.length-1];
+                        const lastitem = env.items[env.items.length-1];
                         if(!lastitem.name && !lastitem.value && !lastitem.used){
                             env.items[env.items.length-1] = item;
                         }else {

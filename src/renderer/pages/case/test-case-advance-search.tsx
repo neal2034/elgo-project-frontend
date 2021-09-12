@@ -4,7 +4,6 @@ import EffButton from "../../components/eff-button/eff-button";
 import './test-case.less'
 import {CaretDownOutlined} from '@ant-design/icons'
 import {PRIORITY} from "@config/sysConstant";
-import {reqActions, reqThunks} from "@slice/reqSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {funztionActions, funztionThunks} from "@slice/funztionSlice";
 import {RootState} from "../../store/store";
@@ -28,11 +27,11 @@ export default function TestCaseAdvanceSearch(props:IProps){
         priorityOptions: [] as any[],
 
     }
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         ui.priorityOptions.push(<Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)
     }
 
-    let tagOptions:any = []
+    const tagOptions:any = []
     tags.forEach(item=>{
         tagOptions.push({value:[item.color, item.id], label:item.name, color:item.color})
     })
@@ -61,7 +60,7 @@ export default function TestCaseAdvanceSearch(props:IProps){
                     tagIds.push(item[1])
                 })
             }
-            let params = {
+            const params = {
                 name: values.name,
                 funztionId:values.funztionId,
                 priority:values.priority,

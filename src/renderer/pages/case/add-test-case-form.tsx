@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {DatePicker, Form, Input, Select} from "antd";
+import {Form, Input, Select} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import EffEditor from "../../components/common/eff-editor/eff-editor";
@@ -7,7 +7,6 @@ import EffButton from "../../components/eff-button/eff-button";
 import './test-case.less'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
-import {reqActions, reqThunks} from "@slice/reqSlice";
 import {funztionActions, funztionThunks} from "@slice/funztionSlice";
 import {CaretDownOutlined} from '@ant-design/icons'
 import {PRIORITY} from "@config/sysConstant";
@@ -16,7 +15,7 @@ import {PRIORITY} from "@config/sysConstant";
 
 interface IProps{
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(testCaseData:ITestCaseData)=>void
 }
 
@@ -45,8 +44,8 @@ export default function AddTestCaseForm(props:IProps){
 
     const response = {
         handleAddTask: async ()=>{
-            let values = await testCaseForm.validateFields()
-            let testCaseData:ITestCaseData = Object.assign({},values)
+            const values = await testCaseForm.validateFields()
+            const testCaseData:ITestCaseData = Object.assign({},values)
             testCaseData.tagIds = selectedTagIds
             onConfirm(testCaseData)
 
@@ -63,13 +62,13 @@ export default function AddTestCaseForm(props:IProps){
         },
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
-            let selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
+            const selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
         },
         //响应标签删除
         onDelTag: (id:number)=>{
-            let currentIds = Object.assign([], selectedTagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], selectedTagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.handleTagsChanged(currentIds)
 
@@ -82,7 +81,7 @@ export default function AddTestCaseForm(props:IProps){
     const ui = {
         priorityOptions: [] as any[]
     }
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         ui.priorityOptions.push(<Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)
     }
 

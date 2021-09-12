@@ -1,5 +1,5 @@
 import React from "react";
-import {DatePicker, Form, Input, Select, Tag} from "antd";
+import {Form, Input, Select, Tag} from "antd";
 import {CaretDownOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
@@ -24,11 +24,11 @@ export default function TaskAdvanceSearch(props:IProps){
         memberOptions: data.members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>),
         priorityOptions: [] as any[]
     }
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         ui.priorityOptions.push(<Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)
     }
 
-    let tagOptions:any = []
+    const tagOptions:any = []
     tags.forEach(item=>{
         tagOptions.push({value:[item.color, item.id], label:item.name, color:item.color})
     })
@@ -44,7 +44,7 @@ export default function TaskAdvanceSearch(props:IProps){
                     tagIds.push(item[1])
                 })
             }
-            let params = {
+            const params = {
                 name: values.name,
                 handlerId:values.handlerId,
                 priority: values.priority,
@@ -55,7 +55,6 @@ export default function TaskAdvanceSearch(props:IProps){
         handleCancelSearch: ()=>{
           onCancel()
         },
-        occupy: ()=>{}
     }
     return (
         <div className="task-advance-search">

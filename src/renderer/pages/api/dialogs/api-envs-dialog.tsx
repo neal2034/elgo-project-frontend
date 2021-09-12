@@ -6,7 +6,7 @@ import EditableTable from "../sub-components/editable-table";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {CloseOutlined} from '@ant-design/icons'
-import {ApiParams, apiThunks} from "@slice/apiSlice";
+import {apiThunks} from "@slice/apiSlice";
 import IconEdit from '@imgs/gray-edit.png'
 import IconDel from '@imgs/delete.png'
 import EffConfirmDlg from "../../../components/eff-confirm-dlg/eff-confirm-dlg";
@@ -74,7 +74,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
         }
         //如果编辑的是最后一行，则添加新的空白行
         if(index === tmpEnvsData.length-1){
-            let lastKey = tmpEnvsData[tmpEnvsData.length-1].key
+            const lastKey = tmpEnvsData[tmpEnvsData.length-1].key
             tmpEnvsData.push({key:lastKey+1})
         }
 
@@ -101,7 +101,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
         },
         confirmAddEnv: ()=>{
             form.validateFields().then(values => {
-                let items:any = []
+                const items:any = []
                 envsData.map((env:any)=>{
                     if(env.selected!==undefined){
                         items.push({name:env.varName, value:env.varValue, used:env.selected})
@@ -130,7 +130,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps){
             setWillEditEnv(env)
             setContentType('edit')
             form.setFieldsValue({name:env.name})
-            let tmpEnvDatas:any = []
+            const tmpEnvDatas:any = []
             env.envItems.map((item:any, index:number)=>{
                 tmpEnvDatas.push({
                     key:index,

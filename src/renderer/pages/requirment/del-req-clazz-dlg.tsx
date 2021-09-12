@@ -4,8 +4,8 @@ import './requirment.less'
 
 interface IDelReqClazzDlgProps{
     name:string,
-    onCancel:Function,
-    onConfirm:Function
+    onCancel:()=>void,
+    onConfirm:()=>void
 }
 
 export default function DelReqClazzDlg(props:IDelReqClazzDlgProps){
@@ -16,7 +16,7 @@ export default function DelReqClazzDlg(props:IDelReqClazzDlgProps){
                删除需求分类
            </div>
             <span className="mt20 message">
-                确定删除需求分类"{name}"?<br/>
+                确定删除需求分类&quot{name}&ldquo?<br/>
                 删除后对应需求将被标记为未分类.
             </span>
             <div className="mt20 d-flex justify-end">

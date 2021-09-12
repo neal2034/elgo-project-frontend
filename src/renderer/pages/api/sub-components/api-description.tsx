@@ -39,7 +39,7 @@ export default function ApiDescription(props:IApiProps){
                 </div>
             </div>:
             <div onMouseEnter={()=>setHoverOnDes(true)} onMouseLeave={()=>setHoverOnDes(false)} className="d-flex">
-                {!!description?<span>{description}</span>:<span className="add-des-btn cursor-pointer" onClick={()=>setIsEdit(true)}>添加简介</span>}
+                {description?<span>{description}</span>:<span className="add-des-btn cursor-pointer" onClick={()=>setIsEdit(true)}>添加简介</span>}
                 {(hoverOnDes && !!description)?<img onClick={()=>{setIsEdit(true); setHoverOnDes(false)}} className="cursor-pointer ml10" src={ImgEdit} width={14}/>:null}
             </div>}
         </div>

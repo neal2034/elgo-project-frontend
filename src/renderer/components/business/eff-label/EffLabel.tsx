@@ -10,11 +10,11 @@ export default function EffLabel(props:{name:string}){
             color:globalColor.fontWeak,
             fontSize: '14px',
             width: '60px',
-            whiteSpace: 'nowrap'
+            whiteSpace: "nowrap" as const
         }
     }
 
-    // @ts-ignore
+
     return  <span className="mr40" style={style.label}>{name}</span>
 
 }

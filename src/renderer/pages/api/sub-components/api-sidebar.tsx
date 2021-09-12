@@ -5,7 +5,7 @@ import {RightOutlined, SearchOutlined} from '@ant-design/icons';
 import ImgApiSet from "@imgs/api-set.png"
 import ImgApiFolder from '@imgs/api-folder.png'
 import ApiSetDialog from "../dialogs/api-set-dialog";
-import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, apiActions, withdrawDelApiTreeItem, apiSelected} from '@slice/apiSlice'
+import {delApiTreeItem, deleteApiGroup, deleteApiSet, listApiTreeItems, withdrawDelApiTreeItem, apiSelected} from '@slice/apiSlice'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import ImgAddApiGroup from '@imgs/api/api-group-add.png'
@@ -45,8 +45,8 @@ export default function ApiSideBar(){
 
     //判断当前item 是否应该在搜索的范围内
     const isIn = (item:any, key:string)=>{
-        let isLeafNode = item.children == null || item.children.length <= 0
-        let noSearchKey = !key
+        const isLeafNode = item.children == null || item.children.length <= 0
+        const noSearchKey = !key
         if(noSearchKey){
             return true;
         }else if (isLeafNode){
@@ -76,7 +76,7 @@ export default function ApiSideBar(){
         return keys;
     }
 
-    let treeItems = useSelector((state:RootState)=>{
+    const treeItems = useSelector((state:RootState)=>{
         return mapTreeData(state.api.apiTreeItems);
     })
 
@@ -84,10 +84,10 @@ export default function ApiSideBar(){
 
     const response = {
         filterApi:(e:any)=>{
-            let {value} = e.target
+            const {value} = e.target
             setSearchKey(value)
             if(value){
-                let allKeys = getKeys(treeItems);
+                const allKeys = getKeys(treeItems);
                 setExpandedKeys(allKeys)
             }else{
                 setExpandedKeys([])
@@ -102,9 +102,9 @@ export default function ApiSideBar(){
         },
         treeItemSelected: (selectedKeys: React.Key[], info: any) => {
 
-            let key =  info.node.key
-            let keys = Object.assign([], expandedKeys)
-            let keyIndex = keys.indexOf(key)
+            const key =  info.node.key
+            const keys = Object.assign([], expandedKeys)
+            const keyIndex = keys.indexOf(key)
             if(keyIndex === -1){
                 keys.push(key)
             }else{
@@ -155,7 +155,7 @@ export default function ApiSideBar(){
     const renderTreeNodes = (data:any)=>{
 
 
-        let isSelected = expandedKeys.indexOf(data.key)>-1
+        const isSelected = expandedKeys.indexOf(data.key)>-1
         const response = {
             apiSelected:()=>{
                 dispatch(apiSelected(data.id))
@@ -198,7 +198,7 @@ export default function ApiSideBar(){
                 setConfirmDelItemDlgVisible(true)
             },
             goEditItem: ()=>{
-                let dlgType = data.type.toLowerCase()
+                const dlgType = data.type.toLowerCase()
                 setDlgType(dlgType)
                 setEditingApiItem(data);
                 setApiDlgMode('edit');
@@ -274,7 +274,7 @@ export default function ApiSideBar(){
         else if(data.type === 'API'){
             let method = data.method.toUpperCase();
             method = method==='DELETE'? 'DEL':method
-            let methodClassName = method.toLowerCase()
+            const methodClassName = method.toLowerCase()
             return <div className="api-item" onClick={response.apiSelected}  onMouseEnter={response.showMenu}>
                 <span className={'mr10 ml10 api-method '+methodClassName}>{method}</span>
                 <span className="name-area">{data.name}</span>
@@ -295,7 +295,7 @@ export default function ApiSideBar(){
 
     //撤销删除集合
     const withdrawDelApiItem = async (id:number)=>{
-        let result:any = dispatch(withdrawDelApiTreeItem({id}))
+        const result:any = dispatch(withdrawDelApiTreeItem({id}))
         if(result){
             effToast.success('撤销成功')
         }

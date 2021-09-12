@@ -1,5 +1,4 @@
 import React from "react";
-import {Tag} from "antd";
 import EffPriority from "../../components/business/eff-priority/eff-priority";
 import './test-case.less'
 

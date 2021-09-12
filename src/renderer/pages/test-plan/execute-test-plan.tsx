@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router";
 import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
 import {LeftCircleOutlined,UserAddOutlined} from '@ant-design/icons'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import './test-plan.less'
 import EffSearchResult from "@components/business/eff-search-result/eff-search-result";
-import AdvanceTestPlanSearch from "./advance-test-plan-search";
 import EffSearchArea from "@components/business/eff-search-area/eff-search-area";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import PlanCaseItem from "./plan-case-item";
@@ -32,7 +30,9 @@ export default function ExecuteTestPlan(){
     },[currentTestPlan])
 
     const response = {
-        occupy: ()=>{},
+        occupy: ()=>{
+            console.log('will uses this latter')
+        },
         goBackTestPlan: ()=>{
             history.back()
         },

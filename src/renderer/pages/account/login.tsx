@@ -1,11 +1,12 @@
 import React from 'react'
 import  './login.less'
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button} from 'antd';
 import EffLogo from '@imgs/logo.png'
 import {useDispatch} from "react-redux";
 import {login} from './accountSlice'
 import md5 from 'md5'
 import {useHistory} from "react-router";
+import {effToast} from "@components/common/eff-toast/eff-toast";
 
 
 
@@ -16,16 +17,15 @@ export default function Login(){
 
 
     const handleSubmit = async (values: any) => {
-        let username = values.username
-        let password = md5(values.password)
-        // @ts-ignore
-         dispatch(login({username,password})).then(result=>{
-             if(result){
+        const username = values.username
+        const password = md5(values.password)
+
+        const result:any =  dispatch(login({username,password}))
+            if(result){
                 history.push("/app/project-center")
-             }else{
-                 message.error('用户名或密码有误')
-             }
-        })
+            }else{
+                effToast.error('用户名或密码有误')
+            }
     };
 
         return (

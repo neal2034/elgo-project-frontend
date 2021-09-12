@@ -10,7 +10,7 @@ const orgSlice = createSlice({
         name:'',
         projects:[],
         departments:[],
-        organization: null,          //当前组织
+        organization: {} as any,          //当前组织
         orgList:[],
     },
     reducers:{
@@ -36,7 +36,7 @@ const orgSlice = createSlice({
 //获取组织详情
 export const getOrganizationDetail = ()=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.get({url:apiUrl.organization.detail})
+        const result = await request.get({url:apiUrl.organization.detail})
         if(result.isSuccess){
             dispatch(orgSlice.actions.setOrganization(result.data))
         }
@@ -45,10 +45,10 @@ export const getOrganizationDetail = ()=>{
 
 export const listProjects = ()=>{
     return async(dispatch:Dispatch<any>)=>{
-        let result = await request.get({url:apiUrl.project.projectRes})
+        const result = await request.get({url:apiUrl.project.projectRes})
         if(result.isSuccess){
-            let projects = result.data.filter((item:any) => item.type==='PROJECT');
-            let departments = result.data.filter((item:any) => item.type==='DEPARTMENT');
+            const projects = result.data.filter((item:any) => item.type==='PROJECT');
+            const departments = result.data.filter((item:any) => item.type==='DEPARTMENT');
             dispatch(orgSlice.actions.setProjects(projects))
             dispatch(orgSlice.actions.setDepartments(departments))
         }
@@ -58,8 +58,7 @@ export const listProjects = ()=>{
 export const orgThunks = {
     getOrganizationDetail: ()=> {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.get({url: apiUrl.organization.detail})
-            console.log('organizaiton is ', result)
+            const result = await request.get({url: apiUrl.organization.detail})
             if (result.isSuccess) {
                 dispatch(orgSlice.actions.setOrganization(result.data))
                 dispatch(orgSlice.actions.setName(result.data.name))
@@ -68,7 +67,7 @@ export const orgThunks = {
     },
     listOrganizations: ()=>{
         return async (dispatch: Dispatch<any>) => {
-            let orgs = await request.get({url:apiUrl.organization.orgRes})
+            const orgs = await request.get({url:apiUrl.organization.orgRes})
             if(orgs.isSuccess){
                 dispatch(orgSlice.actions.setOrganizationList(orgs.data))
             }
@@ -81,8 +80,8 @@ export const orgThunks = {
         }
     },
     inviteMember : (data:{orgMembers:{email:string}[]})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url: apiUrl.organization.addMember, data})
+            return async ()=>{
+                const result = await request.post({url: apiUrl.organization.addMember, data})
                 return result.isSuccess
             }
         }

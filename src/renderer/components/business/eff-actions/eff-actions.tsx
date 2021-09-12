@@ -1,10 +1,7 @@
 import React, {ReactNode, useState} from "react";
 import globalColor from "@config/globalColor";
 import {EllipsisOutlined} from '@ant-design/icons'
-import {Dropdown, Menu, MenuProps} from "antd";
-import EffUser from "../../eff-user/effUser";
-import IconTest from '@imgs/remove.png'
-
+import {Dropdown, Menu} from "antd";
 
 
 interface IMenus{

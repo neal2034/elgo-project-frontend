@@ -22,7 +22,7 @@ export default function AdvanceTestPlanSearch(props:IProps){
         testPlanStatusOptions: [] as any,
 
     }
-    for(let item in TEST_PLAN_STATUS){
+    for(const item in TEST_PLAN_STATUS){
         ui.testPlanStatusOptions.push(<Select.Option key={TEST_PLAN_STATUS[item].key} value={TEST_PLAN_STATUS[item].key}>{TEST_PLAN_STATUS[item].name}</Select.Option>)
     }
 

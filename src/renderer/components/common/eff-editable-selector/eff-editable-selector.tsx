@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Form, Select} from "antd";
+import {Select} from "antd";
 import {CaretDownOutlined} from '@ant-design/icons'
 import './eff-editable-selector.less'
 
@@ -22,7 +22,7 @@ interface IEffEditableSelectorProps{
 }
 
 export default function EffEditableSelector(props:IEffEditableSelectorProps){
-    const {id, options, placeholder="请选择", onChange, clear=true, searchAble=false, onSearch, size='middle'} = props
+    const {id, options, placeholder="请选择", onChange, clear=true, searchAble=false, onSearch} = props
     const [isHover, setIsHover] = useState(false);
     const [isEditing, setIsEditing] = useState(false)
     const [chosenId, setChosenId] = useState<string|number|undefined>(id)        //选中时显示的key
@@ -31,7 +31,7 @@ export default function EffEditableSelector(props:IEffEditableSelectorProps){
 
     useEffect(()=>setChosenId(id), [id])
     useEffect(()=>{
-        let opList = options.map(item=><Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
+        const opList = options.map(item=><Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
         setOptionList(opList)
     },[options])
 

@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain } from 'electron';
+import { BrowserWindow, app} from 'electron';
 import path from "path";
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
 import './apiHandler'
@@ -60,6 +60,8 @@ app.on('activate', () => {
 });
 
 app.whenReady().then(() => {
-    installExtension([REACT_PERF, REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS]).then(() => {});
+    installExtension([REACT_PERF, REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS]).then(() => {
+        //TODO should add handler
+    });
 });
 

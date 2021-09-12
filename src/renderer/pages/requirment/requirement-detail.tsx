@@ -5,7 +5,6 @@ import EffEditableSelector from "../../components/common/eff-editable-selector/e
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {reqThunks} from "@slice/reqSlice";
-import globalColor from "@config/globalColor";
 
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
@@ -31,7 +30,7 @@ export default function RequirementDetail(props:IProps){
 
     //需求状态options
     const reqStatusOptions = []
-    for(let opt in REQUIREMENT_STATUS){
+    for(const opt in REQUIREMENT_STATUS){
         reqStatusOptions.push({
             id: REQUIREMENT_STATUS[opt].key,
             name: REQUIREMENT_STATUS[opt].name,
@@ -60,7 +59,7 @@ export default function RequirementDetail(props:IProps){
 
         },
         onReqClazzChange: async (id?:number|string)=>{
-            let updateId = id ? id: -1
+            const updateId = id ? id: -1
              await dispatch(reqThunks.editRequirement({
                  id:data.currentRequirement.id!,
                  field: 'CLAZZ',
@@ -69,7 +68,7 @@ export default function RequirementDetail(props:IProps){
             dispatch(reqThunks.listAllReqClasses())
         },
         onReqVersionChange: async (id?:number|string)=>{
-            let versionId = id? id : -1
+            const versionId = id? id : -1
             await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
                 field:  "VERSION",
@@ -78,7 +77,7 @@ export default function RequirementDetail(props:IProps){
             response.refreshPage();
         },
         onReqSourceChange: async (sourceId?:number|string)=>{
-            let sId = sourceId? sourceId:-1
+            const sId = sourceId? sourceId:-1
             await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
                 field: "SOURCE",
@@ -114,8 +113,8 @@ export default function RequirementDetail(props:IProps){
         },
         //tags area 标签删除响应
         delTag: (id:number)=>{
-            let currentIds = Object.assign([], data.currentRequirement.tagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], data.currentRequirement.tagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },
@@ -140,8 +139,8 @@ export default function RequirementDetail(props:IProps){
     },[])
 
     useEffect(()=>{
-        let tagIds = data.currentRequirement.tagIds? data.currentRequirement.tagIds:[]
-        let selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
+        const tagIds = data.currentRequirement.tagIds? data.currentRequirement.tagIds:[]
+        const selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
     }, [data.currentRequirement.tagIds])
 

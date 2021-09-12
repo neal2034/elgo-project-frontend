@@ -13,7 +13,7 @@ import {BUG_SEVERITY} from "@config/sysConstant";
 
 interface IProps{
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(bugData:any)=>void
 }
 
@@ -32,10 +32,9 @@ export default function AddBugForm(props:IProps){
     const members = useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[])
     const [addForm] = Form.useForm()
     const response = {
-        occupy: ()=>{},
         handleAddBug: async ()=>{
-            let values = await addForm.validateFields()
-            let bugData:IBugData = Object.assign({},values)
+            const values = await addForm.validateFields()
+            const bugData:IBugData = Object.assign({},values)
             bugData.tagIds = selectedTagIds
             console.log('here is the bug data ', bugData)
             props.onConfirm(bugData)
@@ -43,13 +42,13 @@ export default function AddBugForm(props:IProps){
         },
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
-            let selectTags = props.tags.filter(item=>tagIds.indexOf(item.id)>-1)
+            const selectTags = props.tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
         },
         //响应标签删除
         onDelTag: (id:number)=>{
-            let currentIds = Object.assign([], selectedTagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], selectedTagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.handleTagsChanged(currentIds)
 

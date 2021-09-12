@@ -64,7 +64,7 @@ export default function TestCase(){
             setShowAddTestCaseForm(false)
         },
         handleDelCase: async (id:number)=>{
-            let result:any = await dispatch(testCaseThunks.deleteTestCase(id))
+            const result:any = await dispatch(testCaseThunks.deleteTestCase(id))
             if(result){
                 setShowTestCaseDetail(false)
                 effToast.success_withdraw('测试用例放入回收站成功',()=>response.handleWithdrawDelTestCase(id))
@@ -72,14 +72,14 @@ export default function TestCase(){
             }
         },
         handleWithdrawDelTestCase: async (id:number)=>{
-            let result:any = await dispatch(testCaseThunks.withdrawDelTestCase(id))
+            const result:any = await dispatch(testCaseThunks.withdrawDelTestCase(id))
             if(result){
                 effToast.success('撤销成功')
                 dispatch(testCaseThunks.listTestCase({page}))
             }
         },
         handleAdvanceSearch: async (searchKeys:any)=>{
-            let params:any = {page:0, searchKey:searchKeys.name, funztionId:searchKeys.funztionId, tagIds:searchKeys.tagIds}
+            const params:any = {page:0, searchKey:searchKeys.name, funztionId:searchKeys.funztionId, tagIds:searchKeys.tagIds}
             if(searchKeys.priority){
                 params.priorities = [searchKeys.priority]
             }

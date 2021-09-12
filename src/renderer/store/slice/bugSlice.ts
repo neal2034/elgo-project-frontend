@@ -70,7 +70,7 @@ const  bugActions = bugSlice.actions
 const bugThunks = {
     listMyBugs : ()=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.bug.mine})
+                const result = await request.get({url:apiUrl.bug.mine})
                 if(result.isSuccess){
                     dispatch(bugActions.setMyBugs(result.data))
                 }
@@ -78,7 +78,7 @@ const bugThunks = {
         },
     listBugs : (params?:IBugListParams)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url: apiUrl.bug.index, params})
+                const result = await request.get({url: apiUrl.bug.index, params})
                 console.log('here is the data ', result, params)
                 if(result.isSuccess){
                     dispatch(bugActions.setBugs(result.data.data))
@@ -89,63 +89,63 @@ const bugThunks = {
             }
         },
     addBug : (data:IAddBugDto)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.post({url:apiUrl.bug.index, data})
+            return async ()=>{
+                const result = await  request.post({url:apiUrl.bug.index, data})
                 return result.isSuccess
             }
         },
     getBugDetail : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url: apiUrl.bug.detail, params:{id}})
+                const result = await request.get({url: apiUrl.bug.detail, params:{id}})
                 if(result.isSuccess){
                     dispatch(bugActions.setCurrentBug(result.data))
                 }
             }
         },
     editName : (data:{id:number, name:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.bug.editName, data})
             }
         },
     editQa : (data:{id:number, testerId?:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.bug.editTester, data})
             }
         },
     editHandler : (data:{id:number, handlerId?:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await  request.put({url:apiUrl.bug.editHandler, data})
             }
         },
     editStatus : (data:{id:number, status:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await  request.put({url:apiUrl.bug.editStatus, data})
             }
         },
     editSeverity : (data:{id:number, severity:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.bug.editSeverity, data})
             }
         },
     editTags : (data:{id:number, tagIds?:number[]})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await  request.put({url:apiUrl.bug.editTags, data})
             }
         },
     editDescription : (data:{id:number, description?:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.bug.editDescription, data})
             }
         },
     deleteBug : (params:{id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.delete({url:apiUrl.bug.index, params})
+            return async ()=>{
+                const result = await  request.delete({url:apiUrl.bug.index, params})
                 return result.isSuccess
             }
         },
     withdrawDelBug : (params:{id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.put({url: apiUrl.bug.withdrawDel, params})
+            return async ()=>{
+                const result = await  request.put({url: apiUrl.bug.withdrawDel, params})
                 return result.isSuccess
             }
         }

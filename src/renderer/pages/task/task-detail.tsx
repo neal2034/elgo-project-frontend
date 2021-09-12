@@ -13,9 +13,7 @@ import {PRIORITY, TASK_STATUS} from "@config/sysConstant";
 import EffEditableDatePicker from "../../components/common/eff-editable-date-picker/eff-editable-date-picker";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
-import {reqThunks} from "@slice/reqSlice";
 import {tagThunks} from "@slice/tagSlice";
-import {funztionThunks} from "@slice/funztionSlice";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
 
 
@@ -26,7 +24,7 @@ interface IProps{
 
 
 export default function TaskDetail(props:IProps){
-    const {onDel, projectMembers} = props
+    const {onDel} = props
     const dispatch = useDispatch()
     const [memberOptions, setMemberOptions] = useState<any[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
@@ -42,11 +40,11 @@ export default function TaskDetail(props:IProps){
 
 
     const priorityOptions = []
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         priorityOptions.push({id:PRIORITY[item].key, name:PRIORITY[item].name})
     }
     const taskStatusOptions = []
-    for(let item in TASK_STATUS){
+    for(const item in TASK_STATUS){
         taskStatusOptions.push({id:TASK_STATUS[item].key, name:TASK_STATUS[item].name})
     }
 
@@ -58,7 +56,7 @@ export default function TaskDetail(props:IProps){
             members = data.members? data.members:[]
         }
 
-        let options:any[] = []
+        const options:any[] = []
         members.forEach(item=>{
             options.push({
                 id:item.orgMemberId,
@@ -75,14 +73,13 @@ export default function TaskDetail(props:IProps){
 
 
     useEffect(()=>{
-        let tagIds = data.currentTask.tagIds? data.currentTask.tagIds:[]
-        let selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
+        const tagIds = data.currentTask.tagIds? data.currentTask.tagIds:[]
+        const selectTags = data.allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
     }, [data.currentTask.tagIds])
 
 
     const response = {
-        occupy : ()=>{},
         handleHandlerChange:(handlerId?:number|string)=>{
             dispatch(taskThunks.editTaskHandler(data.currentTask.id, handlerId as (number|undefined)))
             dispatch(taskThunks.listTask(data.currentTask.taskListId))
@@ -102,7 +99,7 @@ export default function TaskDetail(props:IProps){
         },
 
         handleEditDeadline: async (deadline?:any)=>{
-            let value = deadline? deadline.format('YYYY-MM-DD 00:00:00'):undefined
+            const value = deadline? deadline.format('YYYY-MM-DD 00:00:00'):undefined
             await  dispatch(taskThunks.editTaskDeadline(data.currentTask.id, value))
             dispatch(taskThunks.getTaskDetail(data.currentTask.id))
             dispatch(taskThunks.listTask(data.currentTask.taskListId))
@@ -114,8 +111,8 @@ export default function TaskDetail(props:IProps){
         },
         //tags area 标签删除响应
         delTag: (id:number)=>{
-            let currentIds = Object.assign([], data.currentTask.tagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], data.currentTask.tagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },

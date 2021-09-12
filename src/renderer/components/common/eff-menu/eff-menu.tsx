@@ -3,12 +3,16 @@ import './eff-menu.less'
 
 interface IEffMenuItem{
     children?:JSX.Element | string
+    value:string,
+    handleClick:(value:string)=>void,
+    selectedKey:string,
     [propNames:string]:any
 }
 
 interface IEffMenu{
     defaultKey: string,
     children: IEffMenuItem[],
+    onClick:(value:any)=>void,
     [propNames:string]:any
 }
 

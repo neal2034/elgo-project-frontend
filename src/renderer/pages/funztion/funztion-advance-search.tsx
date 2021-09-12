@@ -28,7 +28,6 @@ export default function  FunztionAdvanceSearch(props:IProps){
     }, [data.filteredReqs])
 
     const response = {
-        occupy:()=>{},
         searchReqs: async (value:string)=>{
             if(value){
                 await dispatch(reqThunks.listPageRequirement({page:0, name:value}))
@@ -47,7 +46,7 @@ export default function  FunztionAdvanceSearch(props:IProps){
                     tagIds.push(item[1])
                 })
             }
-            let params = {
+            const params = {
                 name: values.name,
                 reqId:values.reqId,
                 tagIds: tagIds? tagIds.join(","):undefined
@@ -58,7 +57,7 @@ export default function  FunztionAdvanceSearch(props:IProps){
         }
     }
 
-    let tagOptions:any = []
+    const tagOptions:any = []
     tags.forEach(item=>{
         tagOptions.push({value:[item.color, item.id], label:item.name, color:item.color})
     })

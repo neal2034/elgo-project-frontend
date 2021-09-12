@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from '../../config/apiUrl'
 import {Dispatch} from "react";
@@ -121,7 +121,7 @@ interface IApiEnv{
     used?:boolean
 }
 
-let theActiveApis: Array<API> = []
+const theActiveApis: Array<API> = []
 
 
 const apiSlice = createSlice({
@@ -140,8 +140,8 @@ const apiSlice = createSlice({
             state.showDescription = action.payload
         },
         addActiveApi:(state)=>{
-            let serial = getUsableSerial(state.activeApis)
-            let newApi = {name:'未命名接口', serial:serial, method:'GET' as ApiMethod,  isExample:false, dirty:false,
+            const serial = getUsableSerial(state.activeApis)
+            const newApi = {name:'未命名接口', serial:serial, method:'GET' as ApiMethod,  isExample:false, dirty:false,
                 headers: [{key:10}],
                 params:[{key:0}]}
             state.activeApis.push(newApi)
@@ -174,8 +174,8 @@ const apiSlice = createSlice({
 
         },
         removeActiveApi:(state, action)=>{
-            let serial = action.payload
-            let removeIndex:number=-1
+            const serial = action.payload
+            let removeIndex=-1
             state.activeApis.forEach((item,index)=>{
                 if(item.serial=== serial){
                     removeIndex = index;
@@ -229,21 +229,21 @@ const apiSlice = createSlice({
         },
 
         addApiExample:(state)=>{
-            let serial = getUsableSerial(state.activeApis)
-            let currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
+            const serial = getUsableSerial(state.activeApis)
+            const currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
             const {url, name, method, params, headers, bodyType, bodyJson, responseBody} = currentApi
-            let examplePart = {url, name, method, params, headers, bodyType, bodyJson, responseBody, apiId:currentApi.id, exampleName:currentApi.name, dirty:true,}
-            let apiExample = Object.assign({},{serial, isExample:true}, examplePart )
+            const examplePart = {url, name, method, params, headers, bodyType, bodyJson, responseBody, apiId:currentApi.id, exampleName:currentApi.name, dirty:true,}
+            const apiExample = Object.assign({},{serial, isExample:true}, examplePart )
             state.activeApis.push(apiExample)
             state.currentApiSerial = serial
         },
 
         editApiExample:(state,action)=>{
-            let serial = getUsableSerial(state.activeApis)
-            let example = action.payload
-            let {url, id, name, method,headers,bodyType, response} = example
-            let currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
-            let apiExample = {
+            const serial = getUsableSerial(state.activeApis)
+            const example = action.payload
+            const {url, id, name, method,bodyType, response} = example
+            const currentApi = state.activeApis.filter(item=>item.serial===state.currentApiSerial)[0]
+            const apiExample = {
                 url, id, name, method,bodyType, response,serial,
                 isExample:true,
                 apiId: currentApi.id,
@@ -261,11 +261,11 @@ const apiSlice = createSlice({
         },
 
         delApiExample:(state, action)=>{
-            state.activeApis.forEach(item=>{
+            state.activeApis.forEach((item:any)=>{
                 if(item.serial === state.currentApiSerial){
-                    let id = action.payload
-                    let index = item.examples!.findIndex((item:any) => item.id === id)
-                    item.examples!.splice(index,1)
+                    const id = action.payload
+                    const index = item.examples.findIndex((item:any) => item.id === id)
+                    item.examples.splice(index,1)
                 }
             })
         },
@@ -295,7 +295,7 @@ const getUsableSerial = (activeApis:API[])=>{
 
 const addApiSet = (data:IPayloadAddApiSet)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.post({url: apiUrl.api.setRes, data})
+        const result = await request.post({url: apiUrl.api.setRes, data})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -304,7 +304,7 @@ const addApiSet = (data:IPayloadAddApiSet)=>{
 
 const editApiSet = (data:IPayloadEditApiSet)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.put({url:apiUrl.api.setRes, data})
+        const result = await request.put({url:apiUrl.api.setRes, data})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -313,7 +313,7 @@ const editApiSet = (data:IPayloadEditApiSet)=>{
 
 const deleteApiSet = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.delete({url:apiUrl.api.setRes,params})
+        const result = await request.delete({url:apiUrl.api.setRes,params})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -323,7 +323,7 @@ const deleteApiSet = (params:IPayloadDelApiItem)=>{
 
 const withdrawDelApiTreeItem = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>) =>{
-        let result = await request.get({url:apiUrl.api.withdraw, params})
+        const result = await request.get({url:apiUrl.api.withdraw, params})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -333,7 +333,7 @@ const withdrawDelApiTreeItem = (params:IPayloadDelApiItem)=>{
 
 const addApiGroup = (data:IPayloadAddApiGroup)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.post({url:apiUrl.api.groupRes, data})
+        const result = await request.post({url:apiUrl.api.groupRes, data})
         if(result.isSuccess){
             dispatch((listApiTreeItems()))
         }
@@ -342,7 +342,7 @@ const addApiGroup = (data:IPayloadAddApiGroup)=>{
 
 const editApiGroup = (data:IPayloadEditApiGroup) =>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.put({url:apiUrl.api.groupRes, data})
+        const result = await request.put({url:apiUrl.api.groupRes, data})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -352,7 +352,7 @@ const editApiGroup = (data:IPayloadEditApiGroup) =>{
 
 const deleteApiGroup = (params:IPayloadDelApiItem)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.delete({url: apiUrl.api.groupRes, params})
+        const result = await request.delete({url: apiUrl.api.groupRes, params})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -362,7 +362,7 @@ const deleteApiGroup = (params:IPayloadDelApiItem)=>{
 
 const addApiTreeItem = (data:IPayloadAddApiTreeItem)=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result =await request.post({url:apiUrl.api.apiTreeItemRes, data})
+        const result =await request.post({url:apiUrl.api.apiTreeItemRes, data})
         if(result.isSuccess){
             dispatch(listApiTreeItems())
         }
@@ -372,7 +372,7 @@ const addApiTreeItem = (data:IPayloadAddApiTreeItem)=>{
 ///删除API
 const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
     return async (dispatch: Dispatch<any>)=>{
-        let result = await  request.delete({url:apiUrl.api.apiTreeItemRes, params})
+        const result = await  request.delete({url:apiUrl.api.apiTreeItemRes, params})
         if(result.isSuccess){
             dispatch(listApiTreeItems());
         }
@@ -382,7 +382,7 @@ const delApiTreeItem = (params:IPayloadDelApiTreeItem)=>{
 
 const editApiTreeItem = (data:IPayloadEditApiTreeItem)=>{
      return async (dispatch: Dispatch<any>)=>{
-         let result = await request.put({url:apiUrl.api.apiTreeItemRes, data})
+         const result = await request.put({url:apiUrl.api.apiTreeItemRes, data})
          if(result.isSuccess){
              dispatch(listApiTreeItems());
          }
@@ -391,7 +391,7 @@ const editApiTreeItem = (data:IPayloadEditApiTreeItem)=>{
 
 const listApiTreeItems = ()=>{
     return async (dispatch:Dispatch<any>)=>{
-        let result = await request.get({url:apiUrl.api.treeItemRes})
+        const result = await request.get({url:apiUrl.api.treeItemRes})
         if(result.isSuccess){
             dispatch(apiActions.setApiTreeItems(result.data))
         }
@@ -401,12 +401,12 @@ const listApiTreeItems = ()=>{
 
 const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void = (apiItem)=>{
     return async (dispatch:Dispatch<any>,getState:any)=>{
-        let currentApiSerial = getState().api.currentApiSerial
-        let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-        let params = currentApi.params? JSON.stringify(currentApi.params):undefined
-        let headers = currentApi.headers? JSON.stringify(currentApi.headers):undefined
-        let pathVars = currentApi.pathVars? JSON.stringify(currentApi.pathVars):undefined
-        let payload = {
+        const currentApiSerial = getState().api.currentApiSerial
+        const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+        const params = currentApi.params? JSON.stringify(currentApi.params):undefined
+        const headers = currentApi.headers? JSON.stringify(currentApi.headers):undefined
+        const pathVars = currentApi.pathVars? JSON.stringify(currentApi.pathVars):undefined
+        const payload = {
             parentId:apiItem.parentId,
             name:apiItem.name,
             method:currentApi.method.toUpperCase(),
@@ -421,7 +421,7 @@ const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void
             headers,
             pathVars,
         }
-        let result = await _addApi(payload)
+        const result = await _addApi(payload)
         if(result.isSuccess){
             dispatch(listApiTreeItems())
             dispatch(apiActions.updateCurrentApi({name:apiItem.name, id:result.data.id, treeItemId:result.data.treeItemId}))
@@ -433,19 +433,20 @@ const addApi:(apiItem:{parentId:number, name:string, description?:string})=>void
 
 const editApi:()=>void  = ()=>{
     return async (dispatch:Dispatch<any>, getState:any) =>{
-        let currentApiSerial = getState().api.currentApiSerial
-        let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-        let {id, url, method, name, params, headers, bodyJson, bodyType, testsCode, pathVars, authType, authToken, description} = currentApi
+        const currentApiSerial = getState().api.currentApiSerial
+        const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+        const {id, url, name,  bodyJson, bodyType, testsCode, authType, authToken, description} = currentApi
+        let {params,headers,pathVars,method} = currentApi
         params = params? JSON.stringify(params):params
         headers = headers? JSON.stringify(headers):headers
         pathVars = pathVars? JSON.stringify(pathVars):pathVars
         method = method.toUpperCase()
-        let payload = {id, url, method, name, params, headers, bodyJson, bodyType, testsCode, pathVars, authType, authToken, description}
+        const payload = {id, url, method, name, params, headers, bodyJson, bodyType, testsCode, pathVars, authType, authToken, description}
         if(payload.pathVars && payload.pathVars.length === 0){
            delete  payload.pathVars
         }
 
-        let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
+        const result = await  request.put({url:apiUrl.api.apiRes, data:payload})
         if(result.isSuccess){
             dispatch(apiActions.setCurrentApiSaved())
             dispatch(listApiTreeItems());
@@ -470,26 +471,26 @@ const _addApi:(apiItem:{parentId:number,
     pathVars?:string,
     description?:string,
 })=>any = async (apiItem)=>{
-    let result = await request.post({url:apiUrl.api.apiRes, data:apiItem})
+    const result = await request.post({url:apiUrl.api.apiRes, data:apiItem})
     return result
 }
 
 
 const apiSelected = (id:number)=>{
     return async (dispatch:Dispatch<any>, getState:any)=>{
-        let activeApis = getState().api.activeApis;
-        let activeApi = activeApis.filter((item:API)=>item.treeItemId===id)[0]
+        const activeApis = getState().api.activeApis;
+        const activeApi = activeApis.filter((item:API)=>item.treeItemId===id)[0]
         if(activeApi){
             //如果当前tree item id在激活API内，则直接激活
             dispatch(apiActions.setCurrentApiSerial(activeApi.serial))
         }else{
             //如果指定 tree item id不在激活API内， 则获取API详情，并激活
 
-            let result = await request.get({url:apiUrl.api.apiViaTreeItem, params:{treeItemId:id}})
+            const result = await request.get({url:apiUrl.api.apiViaTreeItem, params:{treeItemId:id}})
             if(result.isSuccess){
-                let apiData = result.data
-                let serial = getUsableSerial(activeApis)
-                let theApi = Object.assign({}, apiData, {serial,dirty:false})
+                const apiData = result.data
+                const serial = getUsableSerial(activeApis)
+                const theApi = Object.assign({}, apiData, {serial,dirty:false})
                 theApi.params = theApi.params? JSON.parse(theApi.params):[{key:0}];
                 theApi.headers = theApi.headers? JSON.parse(theApi.headers):[{key:0}];
                 if(theApi.pathVars){
@@ -506,10 +507,10 @@ const apiSelected = (id:number)=>{
 export const apiThunks = {
     saveApiExample: () => {
         return async (dispatch:Dispatch<any>, getState:any)=>{
-            let currentApiSerial = getState().api.currentApiSerial
-            let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-            let {url, bodyType, bodyJson, method} = currentApi
-            let apiExample = {url, bodyType, bodyJson, method,
+            const currentApiSerial = getState().api.currentApiSerial
+            const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+            const {url, bodyType, bodyJson, method} = currentApi
+            const apiExample = {url, bodyType, bodyJson, method,
                 name:currentApi.exampleName,
                 response:currentApi.responseBody? JSON.stringify(currentApi.responseBody):null,
                 params:currentApi.params? JSON.stringify(currentApi.params):null,
@@ -518,7 +519,7 @@ export const apiThunks = {
                 id:undefined,
                 apiId: undefined
             }
-            let isSaved = !!currentApi.id
+            const isSaved = !!currentApi.id
             let result;
             if(isSaved){
                 apiExample.id = currentApi.id
@@ -535,13 +536,13 @@ export const apiThunks = {
     },
     editApiName: (name:string)=>{
        return async (dispatch:Dispatch<any>, getState:any) => {
-           let currentApiSerial = getState().api.currentApiSerial
-           let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-           let payload = {
+           const currentApiSerial = getState().api.currentApiSerial
+           const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+           const payload = {
                id:currentApi.id,
                name,
            }
-           let result = await  request.put({url:apiUrl.api.apiRes, data:payload})
+           const result = await  request.put({url:apiUrl.api.apiRes, data:payload})
            if(result.isSuccess){
                dispatch(listApiTreeItems())
                dispatch(apiSlice.actions.setCurrentApiName(name))
@@ -550,13 +551,13 @@ export const apiThunks = {
     },
     editApiDescription: (description:string|undefined)=>{
         return async (dispatch:Dispatch<any>, getState:any) => {
-            let currentApiSerial = getState().api.currentApiSerial
-            let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
-            let payload = {
+            const currentApiSerial = getState().api.currentApiSerial
+            const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+            const payload = {
                 id:currentApi.id,
                 description,
             }
-            let result = await  request.put({url:apiUrl.api.apiDescription, data:payload})
+            const result = await  request.put({url:apiUrl.api.apiDescription, data:payload})
             if(result.isSuccess){
                 dispatch(listApiTreeItems())
                 dispatch(apiSlice.actions.setCurrentApiDes(description))
@@ -564,8 +565,8 @@ export const apiThunks = {
         }
     },
     delApiExample: (id:number)=>{
-        return async (dispatch:Dispatch<any>, getState:any)=>{
-            let result = await request.delete({url: apiUrl.apiExample.apiExampleRes, params:{id}})
+        return async (dispatch:Dispatch<any>)=>{
+            const result = await request.delete({url: apiUrl.apiExample.apiExampleRes, params:{id}})
             if(result.isSuccess){
                 dispatch(apiActions.delApiExample(id))
             }
@@ -574,11 +575,11 @@ export const apiThunks = {
     },
     withdrawDelApiExample: (id:number)=>{
         return async (dispatch:Dispatch<any>, getState:any)=>{
-            let result = await request.get({url:apiUrl.apiExample.withdrawDel, params:{id}})
-            let currentApiSerial = getState().api.currentApiSerial
-            let currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
+            const result = await request.get({url:apiUrl.apiExample.withdrawDel, params:{id}})
+            const currentApiSerial = getState().api.currentApiSerial
+            const currentApi = getState().api.activeApis.filter((item:API)=>item.serial === currentApiSerial)[0]
             if(result.isSuccess){
-                let exampleResult = await request.get({url: apiUrl.apiExample.apiExampleRes, params:{apiId:currentApi.id}})
+                const exampleResult = await request.get({url: apiUrl.apiExample.apiExampleRes, params:{apiId:currentApi.id}})
                 if(exampleResult.isSuccess){
                     dispatch(apiActions.setCurrentApiExample(exampleResult.data))
                 }
@@ -588,15 +589,15 @@ export const apiThunks = {
     },
     listApiEnvs: ()=>{
         return async (dispatch:Dispatch<any>)=>{
-            let result = await request.get({url:apiUrl.apiEnv.apiEnvRes})
+            const result = await request.get({url:apiUrl.apiEnv.apiEnvRes})
             if(result.isSuccess){
                 dispatch(apiActions.setEnvs(result.data))
             }
         }
     },
     addApiEnv:(name:string, items:IApiEnv[])=>{
-        return async (dispatch:Dispatch<any>, getState:any)=>{
-            let result = await request.post({url: apiUrl.apiEnv.apiEnvRes, data:{name,items}})
+        return async (dispatch:Dispatch<any>)=>{
+            const result = await request.post({url: apiUrl.apiEnv.apiEnvRes, data:{name,items}})
             if(result.isSuccess){
                 dispatch(apiThunks.listApiEnvs())
             }
@@ -604,7 +605,7 @@ export const apiThunks = {
     },
     editApiEnv:(name:string, items:IApiEnv[], id:number)=>{
       return async (dispatch:Dispatch<any>)=>{
-          let result = await request.put({url:apiUrl.apiEnv.apiEnvRes, data:{name,items,id}})
+          const result = await request.put({url:apiUrl.apiEnv.apiEnvRes, data:{name,items,id}})
           if(result.isSuccess){
               dispatch(apiThunks.listApiEnvs())
           }
@@ -612,7 +613,7 @@ export const apiThunks = {
     },
     delApiEnv:(id:number)=>{
         return async(dispatch:Dispatch<any>)=>{
-            let result = await request.delete({url:apiUrl.apiEnv.apiEnvRes, params:{id}})
+            const result = await request.delete({url:apiUrl.apiEnv.apiEnvRes, params:{id}})
             if(result.isSuccess){
                 dispatch(apiThunks.listApiEnvs())
             }

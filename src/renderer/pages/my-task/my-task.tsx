@@ -42,7 +42,7 @@ export default function MyTask(){
 
     const response = {
         handleDelTask: async (id:number)=>{
-            let result:any =await dispatch(taskThunks.deleteTask(id))
+            const result:any =await dispatch(taskThunks.deleteTask(id))
             if(result as boolean){
                 effToast.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id))
                 dispatch(taskThunks.listMyTasks())
@@ -53,7 +53,7 @@ export default function MyTask(){
 
         },
         handleWithdrawDelTask: async (id:number)=>{
-            let result:any = await dispatch(taskThunks.withdrawDelTask(id))
+            const result:any = await dispatch(taskThunks.withdrawDelTask(id))
             if(result as boolean){
                 effToast.success("撤销成功")
                 dispatch(taskThunks.listMyTasks())

@@ -5,7 +5,6 @@ import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import EffEditor from "../../components/common/eff-editor/eff-editor";
 import EffButton from "../../components/eff-button/eff-button";
-import requirement from "./requirement";
 import {CaretDownOutlined} from '@ant-design/icons'
 
 
@@ -26,7 +25,7 @@ interface IAddReqFormProps{
     reqSources: any[],
     reqVersions: any[],
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(requirement:Requirement)=>void
 }
 
@@ -73,13 +72,13 @@ export  default  function AddReqForm(props:IAddReqFormProps){
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
             data.requirement.tagIds = tagIds
-            let selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
+            const selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
         },
         //响应标签删除
         onDelTag: (id:number)=>{
-            let currentIds = Object.assign([], selectedTagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], selectedTagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.handleTagsChanged(currentIds)
 

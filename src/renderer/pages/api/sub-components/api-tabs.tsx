@@ -1,14 +1,14 @@
 /**
  * 组件： 用于描述内容区Tab 区域
  */
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./api-wrapper.less"
 import {PlusOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {Select} from "antd";
 import {useDispatch} from "react-redux";
-import {API, apiActions, apiThunks} from '@slice/apiSlice'
+import {apiActions, apiThunks} from '@slice/apiSlice'
 import ApiTab from "./api-tab";
 import IconSetting from '@imgs/setting.png'
 import ApiEnvsDlg from "../dialogs/api-envs-dialog";
@@ -24,7 +24,7 @@ export default function ApiTabs(props:IApiTabsProps){
     const dispatch = useDispatch()
     const [apiEnvDlgVisible, setApiEnvDlgVisible] = useState(false)
     const envs = useSelector((state:RootState)=>state.api.envs)
-    let activeApis = useSelector((state:RootState) => state.api.activeApis)
+    const activeApis = useSelector((state:RootState) => state.api.activeApis)
     const activeTabs = activeApis.map(item=>{
         return <ApiTab api={item} key={item.serial}/>
     })
@@ -48,8 +48,8 @@ export default function ApiTabs(props:IApiTabsProps){
 
     const ui = {
         envOptions: ()=>{
-            let defaultOption = <Option key={-1} value={-1}>未指定环境</Option>
-            let envOptions = envs.map((env:any)=> <Option key={env.id} value={env.id}>{env.name}</Option>)
+            const defaultOption = <Option key={-1} value={-1}>未指定环境</Option>
+            const envOptions = envs.map((env:any)=> <Option key={env.id} value={env.id}>{env.name}</Option>)
             envOptions.splice(0, 0, defaultOption)
             return envOptions
         }

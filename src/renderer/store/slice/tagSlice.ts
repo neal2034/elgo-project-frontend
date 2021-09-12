@@ -21,7 +21,7 @@ const tagActions = tagSlice.actions
 const tagThunks = {
     listTags : (name?:string)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.get({url:apiUrl.tags.index, params:{name}})
+                const result = await  request.get({url:apiUrl.tags.index, params:{name}})
                 if(result.isSuccess){
                     dispatch(tagActions.setTags(result.data))
                 }

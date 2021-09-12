@@ -17,9 +17,9 @@ export default function OrganizationHome (){
     useEffect(()=>{dispatch(getOrganizationDetail())},[dispatch])
     useEffect(()=>{dispatch(listProjects())},[dispatch])
 
-    let departments = useSelector((state:RootState) => state.organization.departments)
-    let projects = useSelector((state:RootState)=>state.organization.projects)
-    let organization:any = useSelector((state:RootState)=>state.organization.organization)
+    const departments = useSelector((state:RootState) => state.organization.departments)
+    const projects = useSelector((state:RootState)=>state.organization.projects)
+    const organization:any = useSelector((state:RootState)=>state.organization.organization)
     const departmentList = departments.map((item:any)=>{
         return   <EffProject key={item.serial} project={item} />
     })

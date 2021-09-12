@@ -26,6 +26,9 @@ export default function ApiResponse(props:IApiProps){
     const handler = {
         goAddApiExample:()=>{
             dispatch(apiActions.addApiExample())
+        },
+        occupy: ()=>{
+            //TODO 替换该函数
         }
     }
 
@@ -43,7 +46,7 @@ export default function ApiResponse(props:IApiProps){
                 </div>:
             <Tabs tabBarExtraContent={saveAction}>
                 <TabPane tab="Body" key="1" >
-                    <EffCodeEditor readonly={true} value={responseText} mode={"json"} onChange={()=>{}}/>
+                    <EffCodeEditor readonly={true} value={responseText} mode={"json"} onChange={handler.occupy}/>
                 </TabPane>
             </Tabs>}
         </div>

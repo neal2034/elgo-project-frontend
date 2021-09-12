@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import EffButton from "@components/eff-button/eff-button";
@@ -21,6 +21,11 @@ export default function MemberSetting(){
     const availableOrgMembers = useSelector((state:RootState)=>state.project.availableOrgMembers)
     const selectedMembers:number[] = []
 
+    useEffect(()=>{
+        const noAvailable = availableOrgMembers.length == 0
+        setNoAvailableMembers(noAvailable)
+    },[availableOrgMembers])
+
     const response = {
         handleRemoveMember:(member:any)=>{
             if(member.boolProjectOwner){
@@ -31,7 +36,7 @@ export default function MemberSetting(){
             setShowConfirmDlg(true)
         },
         handleConfirmDelMember: async ()=>{
-            let result:any = await dispatch(projectThunks.removeMember({projectMemberId:willDelMember.id}))
+            const result:any = await dispatch(projectThunks.removeMember({projectMemberId:willDelMember.id}))
             setShowConfirmDlg(false)
             if(result){
                effToast.success('移除项目成员成功');
@@ -47,7 +52,7 @@ export default function MemberSetting(){
                 effToast.warning('请至少选择一个项目成员')
                 return
             }
-            let result:any = await dispatch(projectThunks.addMember({memberIds:selectedMembers}))
+            const result:any = await dispatch(projectThunks.addMember({memberIds:selectedMembers}))
             setShowAddDlg(false)
             if(result as boolean){
                 dispatch(projectThunks.getProjectDetail())
@@ -57,7 +62,7 @@ export default function MemberSetting(){
             if(checked){
                 selectedMembers.push(id)
             }else{
-                let index = selectedMembers.indexOf(id)
+                const index = selectedMembers.indexOf(id)
                 selectedMembers.splice(index,1)
             }
         }

@@ -34,7 +34,7 @@ function ProjectHeader(){
 
 
 
-export default function ProjectHome (props:any){
+export default function ProjectHome (){
     //设置项目serial
     const {serial} = useParams()
     if(serial){
@@ -65,7 +65,7 @@ export default function ProjectHome (props:any){
 
     const response = {
         menuClick: (e:any)=>{
-            let key = e.key
+            const key = e.key
             proMenuProps.forEach(menu=>{
                 if(menu.key==key){
                     history.push(menu.path)

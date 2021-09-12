@@ -1,6 +1,5 @@
 import React from "react";
 import {PRIORITY} from "@config/sysConstant";
-import Login from "../../../pages/account/login";
 
 interface IProps{
     value:string,

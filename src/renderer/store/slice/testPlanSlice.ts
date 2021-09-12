@@ -48,7 +48,7 @@ const testPlanActions = testPlanSlice.actions
 const testPlanThunks = {
     listTestPlan : (params?:{page?:number,key?:string, status?:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.testPlan.index, params})
+                const result = await request.get({url:apiUrl.testPlan.index, params})
                 const page = params && params.page? params.page : 0
                 if(result.isSuccess){
                     dispatch(testPlanActions.setTotal(result.data.total))
@@ -59,48 +59,48 @@ const testPlanThunks = {
             }
         },
     addTestPlan : (data:{name:string,functionIds?:number[]})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                  await request.post({url:apiUrl.testPlan.index, data})
             }
         },
     delTestPlan : (id:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.delete({url:apiUrl.testPlan.index, params:{id}})
+            return async ()=>{
+                const result = await  request.delete({url:apiUrl.testPlan.index, params:{id}})
                 return result.isSuccess
             }
         },
     withdrawDelTestPlan : (params:{id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result  =  await  request.put({url:apiUrl.testPlan.withdrawDel, params})
+            return async ()=>{
+                const result  =  await  request.put({url:apiUrl.testPlan.withdrawDel, params})
                 return result.isSuccess
             }
         },
     getTestPlanDetail : (params:{id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.testPlan.detail, params})
+                const result = await request.get({url:apiUrl.testPlan.detail, params})
                 if(result.isSuccess){
                     dispatch(testPlanActions.setCurrentTestPlan(result.data))
                 }
             }
         },
     editName : (data:{name:string, id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.testPlan.editName, data})
             }
         },
     editFunztions : (data:{funztionIds?:number[], id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.testPlan.editFunztion, data})
             }
         },
     editStatus : (data:{id:number, status:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
+            return async ()=>{
                 await request.put({url:apiUrl.testPlan.editStatus, data})
             }
         },
     listPlanCase : (params:{planId:number, page?:number, caseName?:string,status?:string, funztionId?:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.testPlan.planCase, params})
+                const result = await request.get({url:apiUrl.testPlan.planCase, params})
                 if(result.isSuccess){
                     dispatch(testPlanActions.setPlanCases(result.data.data))
                     dispatch(testPlanActions.setTotalCaseNum(result.data.total))

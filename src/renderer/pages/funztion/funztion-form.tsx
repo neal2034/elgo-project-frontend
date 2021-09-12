@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Col,Select, Form, Input} from "antd";
+import {Select, Form, Input} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,7 +12,7 @@ import EffEditor from "../../components/common/eff-editor/eff-editor";
 
 interface IProps{
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(funztionData:IFunztionData)=>void
 }
 
@@ -45,7 +45,9 @@ export default function FunztionForm(props:IProps){
     }, [data.filteredReqs])
 
     const response = {
-        occupy: ()=>{},
+        occupy: ()=>{
+            //TODO 替换函数
+        },
         searchReqs: async (value:string)=>{
             if(value){
                 await dispatch(reqThunks.listPageRequirement({page:0, name:value}))
@@ -58,20 +60,20 @@ export default function FunztionForm(props:IProps){
         },
         handleConfirmAdd: ()=>{
             funztionForm.validateFields().then(values=>{
-                let funztionData:IFunztionData = Object.assign({},values)
+                const funztionData:IFunztionData = Object.assign({},values)
                 funztionData.tagIds = selectedTagIds
                 onConfirm(funztionData)
             })
         },
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
-            let selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
+            const selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
         },
         //响应标签删除
         onDelTag: (id:number)=>{
-            let currentIds = Object.assign([], selectedTagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], selectedTagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.handleTagsChanged(currentIds)
 

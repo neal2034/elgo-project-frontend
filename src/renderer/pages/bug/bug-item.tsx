@@ -1,6 +1,4 @@
 import React from "react";
-import {Tag} from "antd";
-import EffPriority from "../../components/business/eff-priority/eff-priority";
 import './bug.less'
 import {BUG_SEVERITY, BUG_STATUS} from "@config/sysConstant";
 import EffStatus from "@components/business/eff-status/eff-status";

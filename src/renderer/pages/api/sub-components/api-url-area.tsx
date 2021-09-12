@@ -3,7 +3,7 @@ import {Select,Input,Button} from "antd";
 import ApiDialog from "../dialogs/api-dialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {API, ApiEnv, ApiEnvItem,editApi, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
+import {API, ApiEnv, editApi, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
 
 // import {ipcRenderer} from 'electron'
 
@@ -35,10 +35,10 @@ export default function ApiUrlArea(props:IApiProps){
      * @returns {[]}
      */
     const getApiCollections = (items:any)=>{
-        let result:any = [];
+        const result:any = [];
         items.forEach((item:any)=>{
             if(item.type!=='API'){
-                let tempItem = {...item};
+                const tempItem = {...item};
                 tempItem.children = [];
                 if(item.children && item.children.length>0){
                     tempItem.children = getApiCollections(item.children);
@@ -58,13 +58,13 @@ export default function ApiUrlArea(props:IApiProps){
 
     //解析出指定URL里的query  parameters
     const getParams = (url:string)=>{
-        let params:ApiParams[] = [];
-        let index = url? url.indexOf("?"):-1;
+        const params:ApiParams[] = [];
+        const index = url? url.indexOf("?"):-1;
         if(index>=0){
-            let paramStr = url.substring(index+1);
-            let paramPairs = paramStr.split("&");
-            paramPairs.forEach((pair,index)=>{
-                let tempParam = pair.split("=")
+            const paramStr = url.substring(index+1);
+            const paramPairs = paramStr.split("&");
+            paramPairs.forEach((pair)=>{
+                const tempParam = pair.split("=")
                 params.push({selected:true, paramKey:tempParam[0],paramValue:tempParam[1], key:-1});
             })
         }
@@ -72,17 +72,17 @@ export default function ApiUrlArea(props:IApiProps){
     }
 
     const parseParamsFromUrl = (url:string)=>{
-        let tmpParams:ApiParams[] = Object.assign([], api.params)
+        const tmpParams:ApiParams[] = Object.assign([], api.params)
         //从URL 当中解析参数
-        let activeParams  = getParams(url)
+        const activeParams  = getParams(url)
         //给解析出的参数赋key， description
         let maxKey = -1
         tmpParams.map(item=>{
             if(item.key>maxKey) maxKey=item.key
         })
-        let usedKeys:number[] = []
+        const usedKeys:number[] = []
         activeParams.forEach(param=>{
-            let existParam = tmpParams.filter(item=>item.selected && item.paramKey===param.paramKey && usedKeys.indexOf(item.key)>-1)[0]
+            const existParam = tmpParams.filter(item=>item.selected && item.paramKey===param.paramKey && usedKeys.indexOf(item.key)>-1)[0]
             if(existParam) {
                 param.description = existParam.description
                 param.key = existParam.key
@@ -92,8 +92,8 @@ export default function ApiUrlArea(props:IApiProps){
             }
         })
         //过滤出当前params 当中处于未选中的参数并与url计算所得参数进行整合
-        let filterParams = tmpParams.filter(item=>item.selected===false)
-        let params = [...filterParams, ...activeParams]
+        const filterParams = tmpParams.filter(item=>item.selected===false)
+        const params = [...filterParams, ...activeParams]
         //按照key进行排序
         params.sort((a,b)=>a.key - b.key)
         //添加空白参数
@@ -104,12 +104,12 @@ export default function ApiUrlArea(props:IApiProps){
 
     //获取指定URL的path variables
     const getPathVariables = (url:string)=>{
-        let vars:string[] = [];
-        let regex = new RegExp("/:[a-z0-9A-Z]+","g");
-        let result = url.match(regex);
+        const vars:string[] = [];
+        const regex = new RegExp("/:[a-z0-9A-Z]+","g");
+        const result = url.match(regex);
         if(result){
             result.forEach(item=>{
-                let varName = item.substr(2);
+                const varName = item.substr(2);
                 if(vars.indexOf(varName) === -1){
                     vars.push(varName);
                 }
@@ -124,12 +124,12 @@ export default function ApiUrlArea(props:IApiProps){
      * @param url       当前URL
      */
     const getMergedPathVariables = (pathVars:ApiPathVar[], url:string) =>{
-        let vars = getPathVariables(url);
-        let resultPathVars:any = [];
+        const vars = getPathVariables(url);
+        const resultPathVars:any = [];
         let maxKey = -1
         pathVars.map(item=>maxKey=maxKey>item.key?maxKey:item.key)
         vars.forEach(item=>{
-            let foundVars = pathVars.filter((oneVar:any)=>oneVar.varKey === item)[0];
+            const foundVars = pathVars.filter((oneVar:any)=>oneVar.varKey === item)[0];
             resultPathVars.push(foundVars? foundVars: {varKey:item, key:++maxKey});
         })
 
@@ -143,7 +143,7 @@ export default function ApiUrlArea(props:IApiProps){
      * @returns {ActiveX.IXMLDOMElement | HTMLAnchorElement | any | HTMLElement}
      */
     const getLocation = (url:string) =>{
-        let a = document.createElement("a");
+        const a = document.createElement("a");
         a.href = url;
         return a;
     }
@@ -153,7 +153,7 @@ export default function ApiUrlArea(props:IApiProps){
         let result = false;
 
         if(candidate.children && candidate.children.length>0){
-            let item = candidate.children.filter((treeItem:any) => treeItem.id === itemId);
+            const item = candidate.children.filter((treeItem:any) => treeItem.id === itemId);
             if(item.length>0) {
                 result = true;
             }
@@ -162,16 +162,16 @@ export default function ApiUrlArea(props:IApiProps){
     }
 
     //在指定的树形items中获得指定itemId 的父级元素
-   // @ts-ignore
-    const findParent = (treeItems:any, itemId:any) =>{
+
+    const findParent = (treeItems:any, itemId:any):any =>{
         if(!itemId) return;
 
         let parent = null;
 
         for(let i=0; i<treeItems.length; i++){
-            let item = treeItems[i];
-            let itemIsParent = isParent(item, itemId);
-            let hasChildren = item.children && item.children.length>0;
+            const item = treeItems[i];
+            const itemIsParent = isParent(item, itemId);
+            const hasChildren = item.children && item.children.length>0;
             if(itemIsParent){
                 parent = item;
                 break;
@@ -207,15 +207,15 @@ export default function ApiUrlArea(props:IApiProps){
                 dispatch(editApi());
             }else{
                 setApiDlgVisible(true)
-                let collections = mapTreeData(getApiCollections(apiItems));
+                const collections = mapTreeData(getApiCollections(apiItems));
                 setApiCollections(collections)
             }
 
         },
         handleUrlChange:(e:any)=>{
-            let url = e.target.value
-            let params = parseParamsFromUrl(url)
-            let mergedPathVars = getMergedPathVariables(api.pathVars? api.pathVars:[], url);
+            const url = e.target.value
+            const params = parseParamsFromUrl(url)
+            const mergedPathVars = getMergedPathVariables(api.pathVars? api.pathVars:[], url);
             dispatch(apiActions.updateCurrentApi({url, params, pathVars:mergedPathVars}))
         },
 
@@ -228,13 +228,13 @@ export default function ApiUrlArea(props:IApiProps){
                 return;
             }
 
-            let envItems = currentEnv && currentEnv.envItems ? currentEnv.envItems:[];
+            const envItems = currentEnv && currentEnv.envItems ? currentEnv.envItems:[];
 
             //替换URL 当中的变量
             envItems!.forEach(envItem=>{
                 if(envItem.name){
-                    let target = `{{${envItem.name}}}`;
-                    let value = envItem.value? envItem.value:'';
+                    const target = `{{${envItem.name}}}`;
+                    const value = envItem.value? envItem.value:'';
                     url = url?.replace(new RegExp(target,"g") ,value)
                 }
 
@@ -247,8 +247,8 @@ export default function ApiUrlArea(props:IApiProps){
                     if(!item.varValue){
                         pathVarValueSettled = false;
                     }else{
-                        let target = `:${item.varKey}`;
-                        let value = item.varValue;
+                        const target = `:${item.varKey}`;
+                        const value = item.varValue;
                         url = url!.replace(new RegExp(target, "g"), value!);
                     }
 
@@ -262,8 +262,8 @@ export default function ApiUrlArea(props:IApiProps){
             }
 
             //不能与当前应用同源
-            let host = getLocation(url).host;
-            let oriHost  = location.host;
+            const host = getLocation(url).host;
+            const oriHost  = location.host;
             if(host === oriHost||!host){
                alert("请填写正确的请求地址")
                 return;
@@ -281,13 +281,14 @@ export default function ApiUrlArea(props:IApiProps){
                 })
             }
 
-            let [authType, token] =  getApiAuthInfo();
-            if(authType==='BEARER' && !!token){
+            const authInfo = getApiAuthInfo()
+            let token = authInfo[1];
+            if(authInfo[0]==='BEARER' && !!token){
                 if(headers === null) headers = {};
                 envItems.forEach(envItem=>{
                     if(envItem.name){
-                        let target = `{{${envItem.name}}}`;
-                        let value = envItem.value? envItem.value:'';
+                        const target = `{{${envItem.name}}}`;
+                        const value = envItem.value? envItem.value:'';
                         token = token!.replace(new RegExp(target,"g") ,value)
 
                     }
@@ -296,12 +297,13 @@ export default function ApiUrlArea(props:IApiProps){
             }
 
             //body
-            let body = api.bodyType === 'JSON'? api.bodyJson:null;
-            let method = api.method.toLocaleLowerCase()
+            const body = api.bodyType === 'JSON'? api.bodyJson:null;
+            const method = api.method.toLocaleLowerCase()
             const { ipcRenderer } = window.require('electron');
             ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then((data:any)=>{
-                let testsCode = api.testsCode
-                let responseBody =  JSON.stringify(data);  //该变量可被测试使用
+                const testsCode = api.testsCode
+                //TODO 需要处理responseBody
+                // const responseBody =  JSON.stringify(data);  //该变量可被测试使用
                 if(testsCode){
                     try {
                         eval(testsCode);

@@ -1,17 +1,14 @@
 import React, {useEffect, useState} from "react";
 import EffSearchResult from "../../components/business/eff-search-result/eff-search-result";
-import FunztionAdvanceSearch from "../funztion/funztion-advance-search";
 import EffSearchArea from "../../components/business/eff-search-area/eff-search-area";
 import EffButton from "../../components/eff-button/eff-button";
 import {useDispatch, useSelector} from "react-redux";
 import EffTaskContent from "./eff-task-content";
-import EffTaskGroupHeader from "./eff-task-group-head";
 import {taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import {tagThunks} from "@slice/tagSlice";
 import TaskAdvanceSearch from "./task-advance-search";
 import {UserAddOutlined, FieldTimeOutlined} from '@ant-design/icons'
-import {funztionThunks} from "@slice/funztionSlice";
 
 
 export default function Task(){
@@ -36,7 +33,6 @@ export default function Task(){
     },[])
 
     const response = {
-        occupy :()=>{},
         handleAddNewTaskGroup:async ()=>{
             await dispatch(taskThunks.addTaskGroup())
             dispatch(taskThunks.listTaskGroup())
@@ -58,7 +54,7 @@ export default function Task(){
             }
         },
         handleAdvanceSearch: async (searchKeys:any)=>{
-            for(let item of data.taskGroups){
+            for(const item of data.taskGroups){
                 dispatch(taskThunks.listTask(item.id, searchKeys.name, searchKeys.handlerId, searchKeys.priority,searchKeys.tagIds))
             }
             setIsAdvanceSearch(false)
@@ -66,14 +62,14 @@ export default function Task(){
 
         },
         handleSearch: async (name:string)=>{
-            for(let item of data.taskGroups){
+            for(const item of data.taskGroups){
                 dispatch(taskThunks.listTask(item.id, name))
             }
             setIsAdvanceSearch(false)
             setIsShowSearchResult(true)
         },
         handleClearSearchResult: ()=>{
-            for(let item of data.taskGroups){
+            for(const item of data.taskGroups){
                 dispatch(taskThunks.listTask(item.id))
             }
             setIsShowSearchResult(false)

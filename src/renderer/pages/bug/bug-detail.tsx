@@ -38,8 +38,8 @@ export default function BugDetail(props:IProps){
     })
 
     useEffect(()=>{
-        let tagIds = currentBug.tagIds? currentBug.tagIds:[]
-        let selectTags = allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
+        const tagIds = currentBug.tagIds? currentBug.tagIds:[]
+        const selectTags = allTags.filter((item:any)=>tagIds.indexOf(item.id)>-1)
         setSelectedTags(selectTags)
     }, [currentBug.tagIds])
 
@@ -65,8 +65,8 @@ export default function BugDetail(props:IProps){
         },
         //tags area 标签删除响应
         delTag: (id:number)=>{
-            let currentIds = Object.assign([], currentBug.tagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], currentBug.tagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.onTagsChanged(currentIds)
         },
@@ -95,7 +95,7 @@ export default function BugDetail(props:IProps){
             availableMembers =  members? members:[]
         }
 
-        let options:any[] = []
+        const options:any[] = []
         availableMembers.forEach(item=>{
             options.push({
                 id:item.orgMemberId,

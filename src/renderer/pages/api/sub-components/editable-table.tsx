@@ -93,8 +93,8 @@ export default function EditableTable(props:any){
     return (
         <Table bordered onRow={record=>{
             return {
-                onMouseEnter: event => {setHoverRowKey(record.key)},
-                onMouseLeave: event => {setHoverRowKey(-1)},
+                onMouseEnter: () => {setHoverRowKey(record.key)},
+                onMouseLeave: () => {setHoverRowKey(-1)},
             }
         }} components={components} dataSource={dataSource} columns={tableCols} pagination={false}/>
     )

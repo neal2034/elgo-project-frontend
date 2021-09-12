@@ -16,11 +16,11 @@ import VersionSetting from "./version-setting/version-setting";
 
 export default function ProjectSetting(){
 
-    const {url, path} = useRouteMatch()
+    const {path} = useRouteMatch()
     const {serial} = useParams()
     const history = useHistory()
     const [activeKey, setActiveKey] = useState('members')
-    let basePath = path.replace(':serial', serial)
+    const basePath = path.replace(':serial', serial)
 
     const menus = [
         {key:'members', name:'项目成员'},
@@ -30,7 +30,7 @@ export default function ProjectSetting(){
     ]
 
     useEffect(()=>{
-        let defaultPath = `${basePath}/members`
+        const defaultPath = `${basePath}/members`
         history.push(defaultPath)
     },[])
 

@@ -1,6 +1,5 @@
 import React from "react";
 import {Button} from "antd";
-import Colors from '@config/globalColor';
 import globalColor from "@config/globalColor";
 
 interface IEffButtonProps {
@@ -25,9 +24,9 @@ interface IBtnStyle {
 
 export default function EffButton(props:IEffButtonProps){
     const {text, round, width='100', type="normal", disabled=false, ...restProps} = props
-    let btnShape: 'round'|'circle'| undefined = round? 'round': undefined
+    const btnShape: 'round'|'circle'| undefined = round? 'round': undefined
 
-    let btnStyle:IBtnStyle  = {}
+    const btnStyle:IBtnStyle  = {}
     btnStyle.width =  width
     switch (type){
         case "line":

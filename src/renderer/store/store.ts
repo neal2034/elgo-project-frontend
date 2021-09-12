@@ -15,7 +15,7 @@ import bugSlice from './slice/bugSlice'
 
 
 
-let store = configureStore({
+const store = configureStore({
     reducer:{
         account:accountReducer,
         organization:orgReducer,

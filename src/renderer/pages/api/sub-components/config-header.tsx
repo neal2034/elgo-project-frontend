@@ -1,5 +1,5 @@
 import React from "react";
-import {API, ApiHeaderItem, ApiParams, apiActions} from "@slice/apiSlice";
+import {API, ApiHeaderItem, apiActions} from "@slice/apiSlice";
 import EditableTable from "./editable-table";
 import {useDispatch} from "react-redux";
 
@@ -52,7 +52,7 @@ export default function ConfigHeader(props:IApiProps){
             }
             //如果编辑的是最后一行，则添加新的空白行
             if(index === api.headers.length-1){
-                let lastKey = api.headers[api.headers.length-1].key
+                const lastKey = api.headers[api.headers.length-1].key
                 tmpHeaders.push({key:lastKey+1})
             }
 

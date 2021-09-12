@@ -31,14 +31,14 @@ export default function FunztionContent(props:IProps){
             setShowDetail(true)
         },
         handleDelFunztion: async (id:number)=>{
-            let result:any = await dispatch(funztionThunks.delFunztion(id))
+            const result:any = await dispatch(funztionThunks.delFunztion(id))
             if(result){
                 setShowDetail(false)
                 effToast.success_withdraw('功能放入回收站成功', ()=>response.handleWithdrawDelFunztion(id))
             }
         },
         handleWithdrawDelFunztion: async (id:number)=>{
-           let result:any = await dispatch(funztionThunks.withdrawDelFunztion(id))
+           const result:any = await dispatch(funztionThunks.withdrawDelFunztion(id))
             if(result){
                 effToast.success('撤销成功')
             }

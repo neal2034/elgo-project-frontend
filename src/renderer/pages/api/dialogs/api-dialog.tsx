@@ -54,22 +54,22 @@ export default function ApiDialog(props: IApiDlgProps){
             if(hasError) return;
             if(mode=='add'){
 
-                let payload = {
+                const payload = {
                     name:name!,
                     description,
                     parentId:parentId!,
                 }
                 dispatch(addApiTreeItem(payload))
             }else if(mode==='edit'){
-                let payload = {
+                const payload = {
                     name:name!,
                     description,
                     id:editItem.id
                 }
                 dispatch(editApiTreeItem(payload))
             }else if(mode==='add-api'){
-                let parentId = selectedKeys![0]
-                let payload = {
+                const parentId = selectedKeys![0]
+                const payload = {
                     parentId,
                     name:name!,
                     description,

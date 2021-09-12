@@ -3,8 +3,12 @@ import React from "react";
 
 class EffToast{
     #snackBar = {
-        enqueueSnackbar: (msg:string, rest:any)=>{},
-        closeSnackbar: (key?:any) => {},
+        enqueueSnackbar: (msg:string, rest:any)=>{
+            //somecode
+        },
+        closeSnackbar: (key?:any) => {
+            //some code
+        },
     };
 
     setSnackBar(enqueueSnackbar:any, closeSnackbar:any) {

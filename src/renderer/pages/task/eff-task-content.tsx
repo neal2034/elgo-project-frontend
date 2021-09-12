@@ -31,8 +31,8 @@ export default function EffTaskContent(){
             setShowAddTaskForm(true)
         },
         handleAddTask: async (task:any)=>{
-            let deadline = task.deadline? task.deadline.format('YYYY-MM-DD 00:00:00'):undefined
-            let payload = Object.assign({taskListId:activeGroupId}, task, {deadline})
+            const deadline = task.deadline? task.deadline.format('YYYY-MM-DD 00:00:00'):undefined
+            const payload = Object.assign({taskListId:activeGroupId}, task, {deadline})
             await dispatch(taskThunks.addTask(payload))
             dispatch(taskThunks.listTask(activeGroupId))
             setShowAddTaskForm(false)
@@ -48,7 +48,7 @@ export default function EffTaskContent(){
 
         },
         handleDelTask: async (id:number, taskGroupId:number)=>{
-            let result:any =await dispatch(taskThunks.deleteTask(id))
+            const result:any =await dispatch(taskThunks.deleteTask(id))
             if(result as boolean){
                 effToast.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id, taskGroupId))
                 dispatch(taskThunks.listTask(taskGroupId))
@@ -59,7 +59,7 @@ export default function EffTaskContent(){
 
         },
         handleWithdrawDelTask: async (id:number, taskGroupId:number)=>{
-            let result:any = await dispatch(taskThunks.withdrawDelTask(id))
+            const result:any = await dispatch(taskThunks.withdrawDelTask(id))
             if(result as boolean){
                 effToast.success("撤销成功")
                 dispatch(taskThunks.listTask(taskGroupId))

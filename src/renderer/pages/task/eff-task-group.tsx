@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import OneTask from "./one-task";
-import {on} from "cluster";
 
 interface IProps{
     name:string,
@@ -18,9 +17,8 @@ export default function EffTaskGroup(props:IProps){
     const dispatch = useDispatch()
     const {id, name, isNew=false, onAdd,onTaskSelected} = props
 
-    // @ts-ignore
     const taskItems = useSelector((state:RootState)=>state.task.tasks[id])
-    let usableTaskItems = taskItems? taskItems:[]
+    const usableTaskItems = taskItems? taskItems:[]
 
 
     useEffect(()=>{
@@ -34,7 +32,7 @@ export default function EffTaskGroup(props:IProps){
 
     const response = {
         handleEditName: async (name?:string)=>{
-            let finalName = name? name:'未命名分组'
+            const finalName = name? name:'未命名分组'
             await dispatch(taskThunks.editTaskGroup(id,finalName))
             dispatch(taskThunks.listTaskGroup())
         }

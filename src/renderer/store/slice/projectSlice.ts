@@ -2,7 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 import request from "../../utils/request";
 import apiUrl from "@config/apiUrl";
 import {Dispatch} from "react";
-import {apiActions} from "@slice/apiSlice";
 
 
 interface IProjectDetail{
@@ -35,7 +34,7 @@ const projectSlice = createSlice({
 const projectThunks = {
     addProject: (name:string)=>{
         return async ()=>{
-            let payload = {
+            const payload = {
                 name,
                 type:'PROJECT'
             }
@@ -44,7 +43,7 @@ const projectThunks = {
     },
     listProject:()=>{
         return async (dispatch:Dispatch<any>)=>{
-            let result = await request.get({url:apiUrl.project.projectRes})
+            const result = await request.get({url:apiUrl.project.projectRes})
             if(result.isSuccess){
                 dispatch(projectActions.setProjects(result.data))
             }
@@ -53,27 +52,27 @@ const projectThunks = {
     getProjectDetail: ()=>{
         return async (dispatch:Dispatch<any>)=>{
             console.log('will get project detail ')
-            let result = await request.get({url:apiUrl.project.detail})
+            const result = await request.get({url:apiUrl.project.detail})
             if(result.isSuccess){
                 dispatch(projectActions.setProjectDetail(result.data))
             }
         }
     },
     removeMember : (params:{projectMemberId:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.delete({url:apiUrl.project.members, params})
+            return async ()=>{
+                const result = await  request.delete({url:apiUrl.project.members, params})
                 return result.isSuccess
             }
         },
     addMember : (data:{memberIds:number[]})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                 let result = await request.post({url:apiUrl.project.members, data})
+            return async ()=>{
+                 const result = await request.post({url:apiUrl.project.members, data})
                 return result.isSuccess
             }
         },
     listAvailableMember : ()=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.orgMember.available})
+                const result = await request.get({url:apiUrl.orgMember.available})
                 console.log('result is ', result)
                 if(result.isSuccess){
                     dispatch(projectActions.setAvailableOrgMembers(result.data.members))

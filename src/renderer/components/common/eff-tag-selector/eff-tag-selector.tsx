@@ -1,16 +1,14 @@
 import React, {useState} from "react";
 import {Input, Popover} from "antd";
-import {SearchOutlined, PlusCircleOutlined} from '@ant-design/icons'
+import {SearchOutlined} from '@ant-design/icons'
 import IconTagCheck from '@imgs/tag-check.png'
 
-import EffButton from "../../eff-button/eff-button";
 import './eff-tag-selector.less'
-import globalColor from "@config/globalColor";
 
 interface IEffTagSelectorProps{
     tags: any[],
     chosen: number[],   //选中的tag id 数组
-    onChange:Function,  //选择改变响应
+    onChange:(value:any)=>void,  //选择改变响应
     [x:string]:any
 }
 
@@ -32,7 +30,7 @@ function TagSelectDlg(props: IEffTagSelectorProps){
     const [availableTags, setAvailableTags] = useState(tags)
     const response = {
         handleTagStatusChange: (id:number, isSelected:boolean)=>{
-            let tempChosen = Object.assign([], chosen)
+            const tempChosen = Object.assign([], chosen)
             if(isSelected){
                 tempChosen.push(id)
             }else{
@@ -44,7 +42,7 @@ function TagSelectDlg(props: IEffTagSelectorProps){
 
         handleSearchKeyChange: (value:string|undefined)=>{
             if(value){
-                    let filterTags = tags.filter(item=>item.name.indexOf(value)>-1)
+                    const filterTags = tags.filter(item=>item.name.indexOf(value)>-1)
                 setAvailableTags(filterTags)
             }else{
                 setAvailableTags(tags)

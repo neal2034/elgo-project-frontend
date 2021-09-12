@@ -1,12 +1,11 @@
 import React from "react";
 import {Form, Input, Select, Tag} from "antd";
 import EffButton from "@components/eff-button/eff-button";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {CaretDownOutlined} from '@ant-design/icons'
 import {RootState} from "../../store/store";
 import {BUG_SEVERITY, BUG_STATUS} from "@config/sysConstant";
 import './bug.less'
-import {IBugSearchParams} from "@slice/bugSlice";
 
 
 interface IProps{
@@ -19,20 +18,19 @@ interface IProps{
 
 
 export default function BugAdvanceSearch(props:IProps){
-    const dispatch = useDispatch()
+
     const [searchForm] = Form.useForm()
     const members = useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[])
     const memberOptions = members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>)
 
 
-    let tagOptions:any = []
+    const tagOptions:any = []
     props.tags.forEach(item=>{
         tagOptions.push({value:[item.color, item.id], label:item.name, color:item.color})
     })
 
 
     const response = {
-        occupy: ()=>{},
         handleSearch:(values:any)=>{
             let tagIds:any;
             if(values.tags){
@@ -41,7 +39,7 @@ export default function BugAdvanceSearch(props:IProps){
                     tagIds.push(item[1])
                 })
             }
-            let params = Object.assign({}, values)
+            const params = Object.assign({}, values)
             delete params.tags
             params.tagIds = tagIds
             props.onSearch(params)

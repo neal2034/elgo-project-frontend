@@ -11,7 +11,7 @@ interface PrivateRouteProps extends RouteProps{
 
 export default function PrivateRoute(props:PrivateRouteProps){
     const {component: Component, ...rest} = props;
-    let hasToken = !! umbrella.getLocalStorage('token')
+    const hasToken = !! umbrella.getLocalStorage('token')
     return (
         <Route {...rest} render={(routeProps) => (
             hasToken ? <Component {...routeProps} />

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import EditableTable from "./editable-table";
 import {API, ApiParams, ApiPathVar, apiActions} from "@slice/apiSlice";
 import {useDispatch} from "react-redux";
@@ -9,7 +9,7 @@ interface ApiProps{
 
 export default function ConfigParams(props:ApiProps){
     const dispatch = useDispatch();
-    let {api} = props
+    const {api} = props
     const columns = [
         {
             title:'',
@@ -66,11 +66,11 @@ export default function ConfigParams(props:ApiProps){
         }
         //如果编辑的是最后一行，则添加新的空白行
         if(index === api.params.length-1){
-            let lastKey = api.params[api.params.length-1].key
+            const lastKey = api.params[api.params.length-1].key
             tmpParams.push({key:lastKey+1})
         }
 
-        let url = getQueryUrl(tmpParams)
+        const url = getQueryUrl(tmpParams)
 
         dispatch(apiActions.updateCurrentApi({params:tmpParams, url}))
 
@@ -90,7 +90,7 @@ export default function ConfigParams(props:ApiProps){
         const index = api.params.findIndex((item:ApiParams)=>item.key === record.key)
         const tmpParams = Object.assign([], api.params)
         tmpParams.splice(index, 1)
-        let url = getQueryUrl(tmpParams)
+        const url = getQueryUrl(tmpParams)
         dispatch(apiActions.updateCurrentApi({params:tmpParams, url}))
     }
 
@@ -100,13 +100,13 @@ export default function ConfigParams(props:ApiProps){
          params.forEach((param:any)=>{
             if(param.selected){
                 query = query === ""? query: query+"&";
-                let key = param.paramKey? param.paramKey : "" ;
-                let value = param.paramValue? param.paramValue : "";
+                const key = param.paramKey? param.paramKey : "" ;
+                const value = param.paramValue? param.paramValue : "";
                 query += key + "="  + value;
             }
         });
-        let url = api.url? api.url:"";
-        let index = url.indexOf("?");
+        const url = api.url? api.url:"";
+        const index = url.indexOf("?");
         let queryUrl = index > -1 ? url.substring(0, index) : url;
         if(query){
             queryUrl +=   "?" + query;

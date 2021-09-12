@@ -66,7 +66,7 @@ const reqThunks = {
     //列出所有需求分类
     listAllReqClasses: () => {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.get({url: apiUrl.requirementsClass.index})
+            const result = await request.get({url: apiUrl.requirementsClass.index})
             if (result.isSuccess) {
                 dispatch(reqActions.setReqClasses(result.data))
             }
@@ -76,7 +76,7 @@ const reqThunks = {
     //列出所有需求来源
     listAllReqSource: () => {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.get({url: apiUrl.requirementsSources.index})
+            const result = await request.get({url: apiUrl.requirementsSources.index})
             if (result.isSuccess) {
                 dispatch(reqActions.setReqSources(result.data))
             }
@@ -86,7 +86,7 @@ const reqThunks = {
     //列出所有版本信息
     listAllReqVersions: () => {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.get({url: apiUrl.versions.index})
+            const result = await request.get({url: apiUrl.versions.index})
             if (result.isSuccess) {
                 dispatch(reqActions.setReqVersions(result.data))
             }
@@ -96,7 +96,7 @@ const reqThunks = {
     //添加需求
     addRequirement: (requirement: IRequirement) => {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.post({url:apiUrl.requirements.index, data:requirement})
+            const result = await request.post({url:apiUrl.requirements.index, data:requirement})
             if(result.isSuccess){
                 dispatch(reqThunks.listPageRequirement({page:0}))
             }
@@ -106,8 +106,8 @@ const reqThunks = {
     //删除需求
     delRequirement : (id:number)=>{
             return async (dispatch:Dispatch<any>, getState:any)=>{
-                let page = getState().requirement.page
-                let result = await request.delete({url:`${apiUrl.requirements.index}/${id}/trash`})
+                const page = getState().requirement.page
+                const result = await request.delete({url:`${apiUrl.requirements.index}/${id}/trash`})
                 if(result.isSuccess){
                     dispatch(reqThunks.listPageRequirement({page}))
 
@@ -118,8 +118,8 @@ const reqThunks = {
     //撤销删除需求
     withdrawDelRequirement : (id: number)=>{
             return async (dispatch:Dispatch<any>, getState:any)=>{
-                let page = getState().requirement.page
-                let result = await request.post({url:`${apiUrl.requirements.index}/${id}/revert`})
+                const page = getState().requirement.page
+                const result = await request.post({url:`${apiUrl.requirements.index}/${id}/revert`})
                 if(result.isSuccess){
                     dispatch(reqThunks.listPageRequirement({page}))
                 }
@@ -131,7 +131,7 @@ const reqThunks = {
     listPageRequirement: (params: IRequirementListParams) => {
         return async (dispatch: Dispatch<any>) => {
             const {page = 0} = params
-            let result = await request.get({url: apiUrl.requirements.index, params})
+            const result = await request.get({url: apiUrl.requirements.index, params})
             if (result.isSuccess) {
                 dispatch(reqActions.setPage(page))
                 dispatch(reqActions.setRequirements(result.data.data))
@@ -144,7 +144,7 @@ const reqThunks = {
     getReqDetail : (id:number)=>{
             return async (dispatch:Dispatch<any>)=>{
                 // get detail
-                let result = await request.get({url:apiUrl.requirements.detail, params:{id}})
+                const result = await request.get({url:apiUrl.requirements.detail, params:{id}})
                 if(result.isSuccess){
                     dispatch(reqActions.setCurrentReq(result.data))
                 }
@@ -154,7 +154,7 @@ const reqThunks = {
     //需求修改
     editRequirement : (payload:IReqEdit)=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.put({url:apiUrl.requirements.index, data:payload})
+                const result = await request.put({url:apiUrl.requirements.index, data:payload})
                 if(result.isSuccess){
                     dispatch(reqThunks.getReqDetail(payload.id))
                 }
@@ -163,8 +163,8 @@ const reqThunks = {
     //添加需求分类
     addReqClazz: (name: string) => {
         return async (dispatch: Dispatch<any>) => {
-            let data = {name}
-            let result = await request.post({url: apiUrl.requirementsClass.index, data})
+            const data = {name}
+            const result = await request.post({url: apiUrl.requirementsClass.index, data})
             if (result.isSuccess) {
                 dispatch(reqThunks.listAllReqClasses())
             }
@@ -174,7 +174,7 @@ const reqThunks = {
 
     delReqClazz: (id:number) => {
         return async (dispatch: Dispatch<any>) => {
-            let result = await request.delete({url:`${apiUrl.requirementsClass.index}/${id}`})
+            const result = await request.delete({url:`${apiUrl.requirementsClass.index}/${id}`})
             if(result.isSuccess){
                 dispatch(reqThunks.listAllReqClasses())
             }
@@ -183,7 +183,7 @@ const reqThunks = {
 
     editReqClazz : (id:number,name:string)=>{
             return async (dispatch:Dispatch<any>)=>{
-                 let result = await request.put({url:apiUrl.requirementsClass.index,data:{name,id}})
+                 const result = await request.put({url:apiUrl.requirementsClass.index,data:{name,id}})
                 if(result.isSuccess){
                     dispatch(reqThunks.listAllReqClasses())
                 }

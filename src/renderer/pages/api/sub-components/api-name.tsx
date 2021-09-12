@@ -45,7 +45,7 @@ export default function ApiName(props:ApiProps){
         },
 
         nameInputOnBlur: ()=>{
-            if(!!apiName){
+            if(apiName){
                 if(apiName!==name){
                     dispatch(apiThunks.editApiName(apiName))
                 }

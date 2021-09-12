@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {DatePicker, Form} from "antd";
+import {DatePicker} from "antd";
 import moment from "moment";
 import './eff-editable-date-picker.less'
 
 interface IProps{
     value?:string,
     placeholder?:string
-    onChange:(value?:object)=>void
+    onChange:(value?:any)=>void
 }
 
 export default function EffEditableDatePicker(props:IProps){
@@ -15,7 +15,7 @@ export default function EffEditableDatePicker(props:IProps){
 
 
     const [isHover, setIsHover] = useState(false);
-    const [isEditing, setIsEditing] = useState(false)
+
 
     const response = {
         handleDateChange: (value:any)=>{
@@ -24,7 +24,7 @@ export default function EffEditableDatePicker(props:IProps){
     }
 
     return (
-        <div   className={`${isHover||isEditing? 'show-status':'eff-editable-date-picker'}`}
+        <div   className={`${isHover? 'show-status':'eff-editable-date-picker'}`}
                onMouseEnter={()=>setIsHover(true)}
                onMouseLeave={()=>setIsHover(false)}>
             <DatePicker value={value? moment(value):undefined}

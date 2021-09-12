@@ -4,7 +4,7 @@ import globalConfig from "@config/global.config";
 
 
 ipcMain.handle('api-call', async(event,method, {url, data, params, config})=>{
-    let result =  await request({method, url, data, params, config})
+    const result =  await request({method, url, data, params, config})
     return  result.data
 })
 
@@ -14,9 +14,9 @@ ipcMain.handle('api-call', async(event,method, {url, data, params, config})=>{
 type METHODS = 'get' | 'post' | 'put' | 'delete';
 interface IFRequestParam {
     url: string;
-    params?:object;
-    data?: object;
-    config?: object;
+    params?:{[x:string]:any};
+    data?: {[x:string]:any};
+    config?: {[x:string]:any};
 }
 
 interface IFRequestConfig extends IFRequestParam{

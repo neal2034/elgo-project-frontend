@@ -1,5 +1,4 @@
 import React from "react";
-import {Avatar} from "antd";
 import EffUser from "../eff-user/effUser";
 import './effOrganization.less'
 import {useSelector} from "react-redux";
@@ -8,7 +7,7 @@ import {RootState} from "../../store/store";
 
 export default function EffOrganization(){
 
-    // @ts-ignore
+
     const members = useSelector((state:RootState) => state.organization.organization && state.organization.organization.members)
     const users = members? members as any:[]
     const userItems = users.map((user:any, index:number)=>{

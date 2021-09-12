@@ -14,9 +14,9 @@ function getOssSignature() {
  */
 export function uploadFileToOss(theFile:any, fileName:any) {
     return getOssSignature().then(result=>{
-        let data = result.data;
-        let host =   result.data.host
-        let fileData = new FormData()
+        const data = result.data;
+        const host =   result.data.host
+        const fileData = new FormData()
         fileData.append('OSSAccessKeyId', data.accessId)
         fileData.append('signature', data.signature)
         fileData.append('policy', data.policy)

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import './eff-tasks.less'
-import {Col, DatePicker, Form, Input, Row, Select, Space} from "antd";
+import {DatePicker, Form, Input, Select} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import EffEditor from "../../components/common/eff-editor/eff-editor";
@@ -17,7 +17,7 @@ interface ITask{
 
 interface IProps{
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(task:ITask)=>void
 }
 
@@ -45,28 +45,28 @@ export default function AddTaskForm(props:IProps){
         memberOptions: data.members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>),
         priorityOptions: [] as any[]
     }
-    for(let item in PRIORITY){
+    for(const item in PRIORITY){
         ui.priorityOptions.push(<Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)
     }
 
 
     const response = {
         handleAddTask: async ()=>{
-            let values = await taskForm.validateFields()
-            let taskData:ITaskData = Object.assign({},values)
+            const values = await taskForm.validateFields()
+            const taskData:ITaskData = Object.assign({},values)
             taskData.tagIds = selectedTagIds
             onConfirm(taskData)
 
         },
         handleTagsChanged: (tagIds:number[])=>{
             setSelectedTagIds(tagIds)
-            let selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
+            const selectTags = tags.filter(item=>tagIds.indexOf(item.id)>-1)
             setSelectedTags(selectTags)
         },
         //响应标签删除
         onDelTag: (id:number)=>{
-            let currentIds = Object.assign([], selectedTagIds)
-            let index = currentIds.indexOf(id)
+            const currentIds = Object.assign([], selectedTagIds)
+            const index = currentIds.indexOf(id)
             currentIds.splice(index, 1)
             response.handleTagsChanged(currentIds)
 

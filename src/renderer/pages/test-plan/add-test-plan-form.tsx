@@ -14,7 +14,7 @@ import EffLabel from "../../components/business/eff-label/EffLabel";
 
 interface IProps{
     tags:any[],
-    onCancel:Function,
+    onCancel:()=>void,
     onConfirm:(testPlanData:ITestPlanData)=>void
 }
 
@@ -45,7 +45,7 @@ export default function AddTestPlanForm(props:IProps){
     },[])
     useEffect(()=>{
             let selectAll = true
-            for(let funztion of funztions){
+            for(const funztion of funztions){
                 if(selectedFunztionIds.indexOf(funztion.id)===-1){
                     selectAll = false
                 }
@@ -55,18 +55,18 @@ export default function AddTestPlanForm(props:IProps){
         [funztions, selectedFunztionIds])
     const response = {
         handleFunztionSelected:(id:number, selected:boolean)=>{
-            let tempIds = Object.assign([], selectedFunztionIds)
+            const tempIds = Object.assign([], selectedFunztionIds)
             if(selected){
                 tempIds.push(id)
             }else {
-                let index = tempIds.indexOf(id)
+                const index = tempIds.indexOf(id)
                 tempIds.splice(index, 1)
             }
             setSelectedFunztionIds(tempIds)
         },
         handleSave: async ()=>{
-            let values = await testPlanForm.validateFields()
-            let data = {name:values.name, functionIds:selectedFunztionIds}
+            const values = await testPlanForm.validateFields()
+            const data = {name:values.name, functionIds:selectedFunztionIds}
             onConfirm(data)
         },
         handlePageChange:async (pageId:number)=>{
@@ -94,27 +94,27 @@ export default function AddTestPlanForm(props:IProps){
             setIsAdvanceSearch(false)
         },
         handleAdvanceSearch: async (searchKeys:any)=>{
-            let params = Object.assign({page:0}, searchKeys)
+            const params = Object.assign({page:0}, searchKeys)
             await dispatch(funztionThunks.listFunztion(params))
             setIsAdvanceSearch(false)
             setIsShowSearchResult(true)
         },
         handleSelectAll: (e:any)=>{
-            let selected = e.target.checked
+            const selected = e.target.checked
             setIsSelectAll(selected)
             if(selected){
-                let notSelectIds = []
-                for(let funztion of funztions){
+                const notSelectIds = []
+                for(const funztion of funztions){
                     if(selectedFunztionIds.indexOf(funztion.id)===-1){
                         notSelectIds.push(funztion.id)
                     }
                 }
-                let tempIds = notSelectIds.concat(selectedFunztionIds)
+                const tempIds = notSelectIds.concat(selectedFunztionIds)
                 setSelectedFunztionIds(tempIds)
             }else{
-                let tempIds = Object.assign([], selectedFunztionIds)
-                for(let funztion of funztions){
-                    let index = tempIds.indexOf(funztion.id)
+                const tempIds = Object.assign([], selectedFunztionIds)
+                for(const funztion of funztions){
+                    const index = tempIds.indexOf(funztion.id)
                     if(index>-1){
                         tempIds.splice(index, 1)
                     }
@@ -188,7 +188,7 @@ interface IFunztionSelectItemProps{
 
 export function FunztionSelectItem(props:IFunztionSelectItemProps){
     const {id,showBg,serial,name,status,statusId,onSelected,selected=false, showCheck=true} = props
-    let theStatus:{name:string, color:string} = status.filter((item:any)=>item.id === statusId)[0]
+    const theStatus:{name:string, color:string} = status.filter((item:any)=>item.id === statusId)[0]
 
     const response = {
         handleChange:(event:any)=>{

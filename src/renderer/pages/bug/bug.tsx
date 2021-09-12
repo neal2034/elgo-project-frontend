@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import EffSearchResult from "@components/business/eff-search-result/eff-search-result";
-import TestCaseAdvanceSearch from "../case/test-case-advance-search";
 import EffSearchArea from "@components/business/eff-search-area/eff-search-area";
 import EffButton from "@components/eff-button/eff-button";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,7 +14,6 @@ import BugItem from "./bug-item";
 import BugDetail from "./bug-detail";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import BugAdvanceSearch from "./bug-advance-search";
-import {taskThunks} from "@slice/taskSlice";
 
 
 export default function Bug(){
@@ -48,7 +46,7 @@ export default function Bug(){
             setShowAddForm(false)
         },
         handleAddBug: async (bug:IAddBugDto)=>{
-            let result:any = await dispatch(bugThunks.addBug(bug))
+            const result:any = await dispatch(bugThunks.addBug(bug))
             if(result){
                 dispatch(bugThunks.listBugs())
                 setShowAddForm(false)
@@ -62,7 +60,7 @@ export default function Bug(){
             setShowDetail(true)
         },
         handleDelBug: async (id:number)=>{
-            let result:any = await dispatch(bugThunks.deleteBug({id}))
+            const result:any = await dispatch(bugThunks.deleteBug({id}))
             if(result){
                 effToast.success_withdraw('Bug成功放入回收站', ()=>response.withdrawDelBug(id))
                 dispatch(bugThunks.listBugs({page}))
@@ -70,7 +68,7 @@ export default function Bug(){
             }
         },
         withdrawDelBug: async (id:number)=>{
-            let result:any = await dispatch(bugThunks.withdrawDelBug({id}))
+            const result:any = await dispatch(bugThunks.withdrawDelBug({id}))
             if(result){
                 effToast.success('撤销成功');
                 dispatch(bugThunks.listBugs({page}))
