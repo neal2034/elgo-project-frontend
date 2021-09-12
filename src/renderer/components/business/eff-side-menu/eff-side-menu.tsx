@@ -57,7 +57,10 @@ export default function EffSideMenu (){
     }
 
     const mainMenuItems = mainMenus.map(item=>{
-        return <MenuItem key={item.key} onClick={()=>handleClick(item.key)} className="mt20" name={item.name} icon={item.icon} activeIcon={item.activeIcon} isActive={activeMenu==item.key}/>
+        return <MenuItem key={item.key}
+                         onClick={()=>handleClick(item.key)}
+                         className="mt20" name={item.name}
+                         icon={item.icon} activeIcon={item.activeIcon} isActive={activeMenu==item.key}/>
     })
 
     return (
