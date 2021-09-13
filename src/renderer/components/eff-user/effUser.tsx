@@ -1,6 +1,6 @@
 import React from "react";
 import {Avatar} from "antd";
-import {colors} from '@config/sysConstants'
+import {colors} from '@config/sysConstant'
 import './eff-user.less'
 
 interface User{

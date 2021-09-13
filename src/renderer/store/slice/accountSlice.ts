@@ -1,13 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 import request from "../../utils/request";
-import apiUrl from '../../config/apiUrl'
+import apiUrl from '@config/apiUrl'
 import {ThunkAction} from "redux-thunk";
 import {AnyAction} from 'redux'
-import {RootState} from "../../store/store";
+import {RootState} from "../store";
 import umbrella from 'umbrella-storage';
-import {setName} from '../organizationHome/orgSlice'
-import globalConfig from '../../config/global.config'
+import {setName} from './orgSlice'
+import globalConfig from '@config/global.config'
 import {Dispatch} from "react";
 
 

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import accountReducer from '../pages/account/accountSlice'
-import orgReducer from '../pages/organizationHome/orgSlice'
+import accountReducer from '@slice/accountSlice'
+import orgReducer from '@slice/orgSlice'
 import breadcrumbReducer from '@slice/breadcrumbSlice'
 import apiReducer from  './slice/apiSlice'
 import menuReducer from './slice/menuSlice'

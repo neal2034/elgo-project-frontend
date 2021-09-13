@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import EffButton from "@components/eff-button/eff-button";
 import {RootState} from "../../store/store";
-import {getOrganizationDetail, orgThunks} from "../organizationHome/orgSlice";
+import {getOrganizationDetail, orgThunks} from "@slice/orgSlice";
 import {Input, Modal} from "antd";
 import {DeleteOutlined} from '@ant-design/icons'
 import './org-members.less'

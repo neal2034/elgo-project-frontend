@@ -3,7 +3,7 @@ import  './login.less'
 import { Form, Input, Button} from 'antd';
 import EffLogo from '@imgs/logo.png'
 import {useDispatch} from "react-redux";
-import {login} from './accountSlice'
+import {login} from '@slice/accountSlice'
 import md5 from 'md5'
 import {useHistory} from "react-router";
 import {effToast} from "@components/common/eff-toast/eff-toast";

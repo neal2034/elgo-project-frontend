@@ -3,7 +3,7 @@ import './project-setting.less'
 import SettingMenus from "./setting-menus";
 import {useParams, useRouteMatch} from "react-router-dom";
 import {Switch} from "react-router-dom";
-import PrivateRoute from "../../routes/privateRoute";
+import PrivateRoute from "@components/common/private-route/private-route";
 import {useHistory} from "react-router";
 import MemberSetting from "./member-setting/member-setting";
 import TagSetting from "./tag-setting/tag-setting";

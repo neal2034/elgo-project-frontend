@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import request from "../../utils/request";
-import apiUrl from '../../config/apiUrl'
+import apiUrl from '@config/apiUrl'
 import {Dispatch} from "react";
 
 

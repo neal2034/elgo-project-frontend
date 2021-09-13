@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Dropdown, Layout, Menu} from "antd";
-import PrivateRoute from "./routes/privateRoute";
+import PrivateRoute from "@components/common/private-route/private-route";
 import ProjectHome from "./pages/projectHome/projectHome";
 import {Switch} from "react-router-dom";
 import EffSideMenu from "./components/business/eff-side-menu/eff-side-menu";
@@ -13,7 +13,7 @@ import ProjectCenter from "./pages/project-center/project-center";
 import EffUser from "./components/eff-user/effUser"
 import './assets/css/app.less'
 import {useHistory} from "react-router";
-import {accountThunks} from "./pages/account/accountSlice";
+import {accountThunks} from "@slice/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import {useSnackbar} from "notistack";

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useHistory} from "react-router";
 import {Switch,useParams} from "react-router-dom";
-import PrivateRoute from "../../routes/privateRoute";
+import PrivateRoute from "@components/common/private-route/private-route";
 import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import './project-home.less'

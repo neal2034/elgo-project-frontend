@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {orgThunks} from "../organizationHome/orgSlice";
+import {orgThunks} from "@slice/orgSlice";
 import {RootState} from "../../store/store";
 import './orgSwitch.less'
 import umbrella from 'umbrella-storage';
