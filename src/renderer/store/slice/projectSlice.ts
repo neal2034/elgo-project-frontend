@@ -17,6 +17,7 @@ const projectSlice = createSlice({
         projectDetail:{} as IProjectDetail,   //当前的项目详情
         projectMembers:[],                     //用于在组织环境下选择某个项目的成员
         availableOrgMembers:[],                 //可用于添加到组织的成员
+        activeMenuKey:undefined,                //当前激活的项目菜单key
     },
     reducers:{
         setProjects:(state, action)=>{
@@ -27,6 +28,7 @@ const projectSlice = createSlice({
         },
         setProjectMembers: (state, action) => { state.projectMembers = action.payload },
         setAvailableOrgMembers: (state, action) => { state.availableOrgMembers = action.payload },
+        setActiveMenuKey: (state, action) => { state.activeMenuKey = action.payload },
     }
 })
 

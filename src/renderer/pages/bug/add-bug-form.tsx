@@ -36,7 +36,6 @@ export default function AddBugForm(props:IProps){
             const values = await addForm.validateFields()
             const bugData:IBugData = Object.assign({},values)
             bugData.tagIds = selectedTagIds
-            console.log('here is the bug data ', bugData)
             props.onConfirm(bugData)
 
         },

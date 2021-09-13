@@ -10,9 +10,11 @@ import {testPlanThunks} from "@slice/testPlanSlice";
 import PlanCaseItem from "./plan-case-item";
 import {Pagination} from "antd";
 import PlanCaseAdvanceSearch from "./plan-case-advance-search";
+import {useParams} from "react-router";
 
 
 export default function ExecuteTestPlan(){
+
     const dispatch  = useDispatch()
     const currentTestPlan = useSelector((state:RootState)=>state.testPlan.currentTestPlan)
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false)
@@ -21,6 +23,11 @@ export default function ExecuteTestPlan(){
     const planCases = useSelector((state:RootState)=>state.testPlan.planCases)
     const casePage = useSelector((state:RootState)=>state.testPlan.casePage)
     const totalCaseNum = useSelector((state:RootState)=>state.testPlan.totalCaseNum)
+
+    const {id} = useParams()
+    useEffect(()=>{
+        dispatch(testPlanThunks.getTestPlanDetail({id}))
+    },[])
 
 
     useEffect(()=>{

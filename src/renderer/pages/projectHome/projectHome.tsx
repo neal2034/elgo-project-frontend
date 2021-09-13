@@ -10,9 +10,8 @@ import {menuActions} from "@slice/menuSlice";
 import umbrella from "umbrella-storage";
 import {RootState} from "../../store/store";
 import IconMusic from '@imgs/music.png'
-import {projectThunks} from "@slice/projectSlice";
-import {projectMenus} from "@config/projectMenus";
-
+import {projectActions, projectThunks} from "@slice/projectSlice";
+import {projectMenuRoutes, IMenuRoute} from "@config/projectMenus";
 
 
 export default function ProjectHome (){
@@ -28,23 +27,20 @@ export default function ProjectHome (){
     //TODO 对面包屑应该想办法统一处理
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     useEffect(()=>{dispatch(projectThunks.getProjectDetail())}, [dispatch])
-    const [menuKey, setMenuKey] = useState<string>()
+
     const {path} = useRouteMatch()
 
-    /**
-     * 根据当前URL， 获取末尾 hash key, 设置当前激活的菜单
-     */
+
     useEffect(()=>{
-        let hrefs = window.location.href.split('/')
-        let activeKey = hrefs[hrefs.length -1]
-        let menu = projectMenus.filter((item:any)=>item.key==activeKey)
-        if(menu.length == 0){
-            //默认进入第一个项目菜单
-            history.push(`${path.replace(':serial', serial)}/${projectMenus[0].key}`)
+        let hrefs = window.location.href
+        let menu = projectMenuRoutes.filter(item=>hrefs.indexOf(item.path.replace(':serial',serial))>-1)
+        if(menu.length>0){
+            dispatch(projectActions.setActiveMenuKey(menu[0].menuKey))
+        }else{
+            history.push(projectMenuRoutes[0].path.replace(':serial', serial))
+            dispatch(projectActions.setActiveMenuKey(projectMenuRoutes[0].menuKey))
         }
-        //设置当前激活menu
-        setMenuKey(activeKey)
-    },[])
+    })
 
 
 
@@ -52,10 +48,10 @@ export default function ProjectHome (){
     return (
         <div className="d-flex-column flex-grow-1">
             <ProjectHeader/>
-            <EffMenu defaultSelectedKey={menuKey}/>
+            <EffMenu/>
             <div className="d-flex-column flex-grow-1">
                 <Switch>
-                    {projectMenus.map((item:any)=><PrivateRoute key={item.key} component={item.component} path={`${path}/${item.key}`}/>)}
+                    {projectMenuRoutes.map((item:IMenuRoute)=><PrivateRoute key={item.path} component={item.component} path={item.path}/>)}
                 </Switch>
             </div>
 

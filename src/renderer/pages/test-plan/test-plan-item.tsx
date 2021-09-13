@@ -2,7 +2,7 @@ import React from "react";
 import './test-plan.less'
 import {RightOutlined} from '@ant-design/icons'
 import TestPlanStatus from "./TestPlanStatus";
-import {useHistory} from "react-router";
+import {useHistory, useRouteMatch} from "react-router";
 import {testPlanThunks} from "@slice/testPlanSlice";
 import {useDispatch} from "react-redux";
 
@@ -26,13 +26,14 @@ export default function TestPlanItem(props:IProps){
     const dispatch = useDispatch()
     const {testPlan, showBg, ...rest} = props
     const history = useHistory()
-
-
+    let {url, path} = useRouteMatch()
     const response = {
         handleExecute:(e:any)=>{
             e.stopPropagation()
-            dispatch(testPlanThunks.getTestPlanDetail({id:testPlan.id}))
-            history.push(`./test-plan-execute`)
+            // dispatch(testPlanThunks.getTestPlanDetail({id:testPlan.id}))
+            // let urlPath = url.split()
+            console.log('will go to the path')
+            history.push(`${url.replace('test-plan','test-plan-execute')}/${testPlan.id}`)
         }
     }
 

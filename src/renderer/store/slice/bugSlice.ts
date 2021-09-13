@@ -79,7 +79,6 @@ const bugThunks = {
     listBugs : (params?:IBugListParams)=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.get({url: apiUrl.bug.index, params})
-                console.log('here is the data ', result, params)
                 if(result.isSuccess){
                     dispatch(bugActions.setBugs(result.data.data))
                     dispatch(bugActions.setTotal(result.data.total))

@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import './eff-menu.less'
-import {projectMenus} from "@config/projectMenus";
-import {useHistory, useRouteMatch} from "react-router";
+import {projectMenuRoutes,IMenuRoute} from "@config/projectMenus";
+import {useHistory, useParams, useRouteMatch} from "react-router";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store/store";
 
 interface IEffMenuItem{
     children?:JSX.Element | string
@@ -11,30 +13,27 @@ interface IEffMenuItem{
     [propNames:string]:any
 }
 
-interface IEffMenu{
-    defaultSelectedKey?:string,
-}
 
 
 // 基础Menu组件
-export default function EffMenu(props:IEffMenu){
-    const {defaultSelectedKey} = props
-    const [selectMenuKey, setSelectMenuKey] = useState<string>()
+export default function EffMenu(){
+
+    const activeMenuKey = useSelector((state:RootState)=>state.project.activeMenuKey)
     const {url} = useRouteMatch()
     const history = useHistory()
+    const {serial} = useParams()
 
-    useEffect(()=>{setSelectMenuKey(defaultSelectedKey)},[defaultSelectedKey])
+
     const response = {
-        menuSelected: (key:string)=>{
-            let href = `${url}/${key}`;
-            history.push(href)
-            setSelectMenuKey(key)
+        menuSelected: (key:string,path:string)=>{
+            history.push(path.replace(':serial', serial))
+
         }
     }
     const ui = {
-        menuItems : projectMenus.map((menu:any)=><EffMenuItem key={menu.key}
-                                                              handleClick={response.menuSelected}
-                                                              selectedKey={selectMenuKey} value={menu.key}>{menu.name}</EffMenuItem>)
+        menuItems : projectMenuRoutes.map((menu:IMenuRoute)=>!menu.noMenu && <EffMenuItem key={menu.path}
+                                                              handleClick={()=>response.menuSelected(menu.menuKey, menu.path)}
+                                                              selectedKey={activeMenuKey} value={menu.menuKey}>{menu.name}</EffMenuItem>)
     }
 
     return (
