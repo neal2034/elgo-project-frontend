@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import './eff-menu.less'
 import {projectMenuRoutes,IMenuRoute} from "@config/projectMenus";
-import {useHistory, useParams, useRouteMatch} from "react-router";
+import {useHistory, useParams} from "react-router";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 
@@ -19,7 +19,6 @@ interface IEffMenuItem{
 export default function EffMenu(){
 
     const activeMenuKey = useSelector((state:RootState)=>state.project.activeMenuKey)
-    const {url} = useRouteMatch()
     const history = useHistory()
     const {serial} = useParams()
 

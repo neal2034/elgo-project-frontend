@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useHistory} from "react-router";
-import {Switch,useParams, useRouteMatch} from "react-router-dom";
+import {Switch,useParams} from "react-router-dom";
 import PrivateRoute from "../../routes/privateRoute";
 import {setBreadcrumbs} from "../../store/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import {RootState} from "../../store/store";
 import IconMusic from '@imgs/music.png'
 import {projectActions, projectThunks} from "@slice/projectSlice";
 import {projectMenuRoutes, IMenuRoute} from "@config/projectMenus";
+
 
 
 export default function ProjectHome (){
@@ -28,12 +29,10 @@ export default function ProjectHome (){
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     useEffect(()=>{dispatch(projectThunks.getProjectDetail())}, [dispatch])
 
-    const {path} = useRouteMatch()
-
 
     useEffect(()=>{
-        let hrefs = window.location.href
-        let menu = projectMenuRoutes.filter(item=>hrefs.indexOf(item.path.replace(':serial',serial))>-1)
+        const hrefs = window.location.href
+        const menu = projectMenuRoutes.filter(item=>hrefs.indexOf(item.path.replace(':serial',serial))>-1)
         if(menu.length>0){
             dispatch(projectActions.setActiveMenuKey(menu[0].menuKey))
         }else{
