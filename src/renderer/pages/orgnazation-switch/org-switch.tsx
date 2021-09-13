@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {orgThunks} from "@slice/orgSlice";
 import {RootState} from "../../store/store";
-import './orgSwitch.less'
+import './org-switch.less'
 import umbrella from 'umbrella-storage';
 import {useHistory} from "react-router";
 import {setBreadcrumbs} from '@slice/breadcrumbSlice'

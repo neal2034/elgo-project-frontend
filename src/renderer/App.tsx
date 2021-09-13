@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Dropdown, Layout, Menu} from "antd";
 import PrivateRoute from "@components/common/private-route/private-route";
-import ProjectHome from "./pages/projectHome/projectHome";
+import ProjectHome from "./pages/project-home/project-home";
 import {Switch} from "react-router-dom";
 import EffSideMenu from "./components/business/eff-side-menu/eff-side-menu";
 import Api from "./pages/api/api";
-import OrgSwitch from "./pages/orgSwitch/orgSwitch";
+import OrgSwitch from "./pages/orgnazation-switch/org-switch";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/store";
 import EffBreadCrumb from "./components/eff-breadcrumb/eff-breadcrumb";
