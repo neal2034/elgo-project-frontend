@@ -152,6 +152,6 @@ const bugThunks = {
 
 
 
-export {bugActions, bugThunks, IAddBugDto}
+export {bugActions, bugThunks, IAddBugDto,IBugDetail}
 
 export default bugSlice.reducer

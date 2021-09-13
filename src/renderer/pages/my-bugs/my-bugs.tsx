@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setBreadcrumbs} from "../../store/breadcrumbSlice";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {bugThunks} from "@slice/bugSlice";
 import {RootState} from "../../store/store";
 import {Drawer} from "antd";

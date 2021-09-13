@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setBreadcrumbs} from "../../store/breadcrumbSlice";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import EffButton from "@components/eff-button/eff-button";
 import {RootState} from "../../store/store";
 import {getOrganizationDetail, orgThunks} from "../organizationHome/orgSlice";

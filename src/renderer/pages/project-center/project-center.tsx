@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {setBreadcrumbs} from "../../store/breadcrumbSlice";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectItem from "./project-item";
 import './project-center.less'

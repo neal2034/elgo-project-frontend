@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {setBreadcrumbs} from "../../store/breadcrumbSlice";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
 import {RootState} from "../../store/store";

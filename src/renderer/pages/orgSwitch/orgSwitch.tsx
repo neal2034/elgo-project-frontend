@@ -5,7 +5,7 @@ import {RootState} from "../../store/store";
 import './orgSwitch.less'
 import umbrella from 'umbrella-storage';
 import {useHistory} from "react-router";
-import {setBreadcrumbs} from '../../store/breadcrumbSlice'
+import {setBreadcrumbs} from '@slice/breadcrumbSlice'
 
 export default function OrgSwitch(){
 

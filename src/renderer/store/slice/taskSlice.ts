@@ -208,6 +208,6 @@ const taskThunks = {
 }
 
 
-export {taskActions, taskThunks,ITaskDetailInfo,ITaskGroup}
+export {taskActions, taskThunks,ITaskDetailInfo,ITaskGroup,ITasks}
 
 export default taskSlice.reducer

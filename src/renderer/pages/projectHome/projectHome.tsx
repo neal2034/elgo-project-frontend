@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useHistory} from "react-router";
 import {Switch,useParams} from "react-router-dom";
 import PrivateRoute from "../../routes/privateRoute";
-import {setBreadcrumbs} from "../../store/breadcrumbSlice";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import './project-home.less'
 import EffMenu from "../../components/common/eff-menu/eff-menu";
