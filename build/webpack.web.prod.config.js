@@ -212,6 +212,7 @@ module.exports = merge.smart(webpackBaseConfig, {
     // webpack服务
     devServer: {
         port,
+        disableHostCheck:true,
         compress: true,
         noInfo: false,
         stats: 'errors-only',
@@ -228,21 +229,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         historyApiFallback: {
             verbose: true,
             disableDotRule: false
-        },
-        proxy: {
-            '/effwork/api': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
-            },
-            '/effwork/login': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
-            }
-
         },
     }
 });
