@@ -2,7 +2,7 @@ import React from "react";
 import './bug.less'
 import {BUG_SEVERITY, BUG_STATUS} from "@config/sysConstant";
 import EffStatus from "@components/business/eff-status/eff-status";
-import EffUser from "@components/eff-user/effUser";
+import EffUser from "@components/eff-user/eff-user";
 
 
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './eff-tasks.less'
 import {Checkbox} from "antd";
 import EffPriority from "../../components/business/eff-priority/eff-priority";
-import EffUser from "../../components/eff-user/effUser";
+import EffUser from "@components/eff-user/eff-user";
 import EffTaskStatus from "../../components/business/eff-task-status/eff-task-status";
 import {useDispatch} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";

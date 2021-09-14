@@ -1,6 +1,6 @@
 import React from "react";
 import './effProject.less'
-import EffUser from "../eff-user/effUser";
+import EffUser from "../eff-user/eff-user";
 import {useHistory} from "react-router";
 import umbrella from "umbrella-storage";
 

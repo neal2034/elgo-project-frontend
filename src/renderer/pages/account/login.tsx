@@ -19,13 +19,12 @@ export default function Login(){
     const handleSubmit = async (values: any) => {
         const username = values.username
         const password = md5(values.password)
-
-        const result:any =  dispatch(login({username,password}))
-            if(result){
-                history.push("/app/project-center")
-            }else{
-                effToast.error('用户名或密码有误')
-            }
+        const result:any = await dispatch(login({username,password}))
+        if(result){
+            history.push("/app/project-center")
+        }else{
+            effToast.error('用户名或密码有误')
+        }
     };
 
         return (

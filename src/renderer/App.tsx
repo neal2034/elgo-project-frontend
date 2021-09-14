@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store/store";
 import EffBreadCrumb from "./components/eff-breadcrumb/eff-breadcrumb";
 import ProjectCenter from "./pages/project-center/project-center";
-import EffUser from "./components/eff-user/effUser"
+import EffUser from "@components/eff-user/eff-user"
 import './assets/css/app.less'
 import {useHistory} from "react-router";
 import {accountThunks} from "@slice/accountSlice";

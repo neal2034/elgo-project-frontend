@@ -1,5 +1,5 @@
 import React from "react";
-import EffUser from "@components/eff-user/effUser";
+import EffUser from "@components/eff-user/eff-user";
 import './eff-member-item.less'
 import {Checkbox} from "antd";
 

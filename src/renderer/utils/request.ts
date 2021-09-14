@@ -1,5 +1,5 @@
 import axios from "axios";
-import globalConfig from '../config/global.config'
+import globalConfig from "../config/global.config"
 import umbrella from 'umbrella-storage';
 
 interface Map {

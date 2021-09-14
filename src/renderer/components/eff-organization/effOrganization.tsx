@@ -1,5 +1,5 @@
 import React from "react";
-import EffUser from "../eff-user/effUser";
+import EffUser from "../eff-user/eff-user";
 import './effOrganization.less'
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
