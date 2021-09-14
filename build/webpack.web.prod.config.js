@@ -208,27 +208,5 @@ module.exports = merge.smart(webpackBaseConfig, {
             debug: true
         }),
         ...htmlWebpackPlugin
-    ],
-    // webpack服务
-    devServer: {
-        port,
-        disableHostCheck:true,
-        compress: true,
-        noInfo: false,
-        stats: 'errors-only',
-        inline: true,
-        lazy: false,
-        hot: true,
-        headers: {'Access-Control-Allow-Origin': '*'},
-        contentBase: path.join(__dirname, 'dist'),
-        watchOptions: {
-            aggregateTimeout: 300,
-            ignored: /node_modules/,
-            poll: 100
-        },
-        historyApiFallback: {
-            verbose: true,
-            disableDotRule: false
-        },
-    }
+    ]
 });
