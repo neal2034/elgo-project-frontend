@@ -98,7 +98,7 @@ export default function FunztionForm(props:IProps){
                 </Form.Item>
 
 
-                <Form.Item name="req"  label={'所属需求'} >
+                <Form.Item name="requirementId"  label={'所属需求'} >
                     <Select showSearch
                             allowClear
                             onSearch={response.searchReqs}
