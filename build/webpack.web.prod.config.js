@@ -200,5 +200,41 @@ module.exports = merge.smart(webpackBaseConfig, {
             debug: true
         }),
         ...htmlWebpackPlugin
-    ]
+    ],
+    // webpack服务
+    devServer: {
+        port,
+        compress: true,
+        noInfo: false,
+        stats: 'errors-only',
+        inline: true,
+        lazy: false,
+        hot: true,
+        headers: {'Access-Control-Allow-Origin': '*'},
+        contentBase: path.join(__dirname, 'dist'),
+        watchOptions: {
+            aggregateTimeout: 300,
+            ignored: /node_modules/,
+            poll: 100
+        },
+        historyApiFallback: {
+            verbose: true,
+            disableDotRule: false
+        },
+        proxy: {
+            '/effwork/api': {
+                target: 'http://localhost:8070',
+                // target: 'http://www.dev.effwork.net',
+                ws: false, //是否代理 websocket
+                changeOrigin: true
+            },
+            '/effwork/login': {
+                target: 'http://localhost:8070',
+                // target: 'http://www.dev.effwork.net',
+                ws: false, //是否代理 websocket
+                changeOrigin: true
+            }
+
+        },
+    }
 });
