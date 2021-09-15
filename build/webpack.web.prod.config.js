@@ -6,14 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
 
 
-const port = process.env.PORT || 8080;
-const publicPath = `http://localhost:${port}/dist`;
-
-const hot = [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-];
+const hot = [];
 
 const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
@@ -30,7 +23,7 @@ const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'none',
-    mode: 'development',
+    mode: 'production',
 
     entry,
     resolve: {
@@ -202,7 +195,7 @@ module.exports = merge.smart(webpackBaseConfig, {
             multiStep: false
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
+            NODE_ENV: 'production'
         }),
         new webpack.LoaderOptionsPlugin({
             debug: true
