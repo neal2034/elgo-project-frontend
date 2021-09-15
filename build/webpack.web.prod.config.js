@@ -28,7 +28,6 @@ module.exports = merge.smart(webpackBaseConfig, {
     entry,
     resolve: {
         alias: {
-            'react-dom': '@hot-loader/react-dom' // 开发模式下
         }
     },
 
