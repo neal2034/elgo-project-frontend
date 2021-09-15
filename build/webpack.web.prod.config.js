@@ -9,11 +9,7 @@ const webpackBaseConfig = require('./webpack.base.config');
 const port = process.env.PORT || 8080;
 const publicPath = `http://localhost:${port}/dist`;
 
-const hot = [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-];
+const hot = [];
 
 const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
@@ -35,7 +31,7 @@ module.exports = merge.smart(webpackBaseConfig, {
     entry,
     resolve: {
         alias: {
-            'react-dom': '@hot-loader/react-dom' // 开发模式下
+
         }
     },
 
@@ -228,21 +224,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         historyApiFallback: {
             verbose: true,
             disableDotRule: false
-        },
-        proxy: {
-            '/effwork/api': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
-            },
-            '/effwork/login': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
-            }
-
         },
     }
 });
