@@ -6,7 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
 
 
-const hot = [];
+const port = process.env.PORT || 8080;
+const publicPath = `http://localhost:${port}/dist`;
+
+const hot = [
+    'react-hot-loader/patch',
+    `webpack-dev-server/client?http://localhost:${port}/`,
+    'webpack/hot/only-dev-server',
+];
 
 const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
@@ -23,11 +30,12 @@ const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'none',
-    mode: 'production',
+    mode: 'development',
 
     entry,
     resolve: {
         alias: {
+            'react-dom': '@hot-loader/react-dom' // 开发模式下
         }
     },
 
@@ -194,7 +202,7 @@ module.exports = merge.smart(webpackBaseConfig, {
             multiStep: false
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'production'
+            NODE_ENV: 'development'
         }),
         new webpack.LoaderOptionsPlugin({
             debug: true
