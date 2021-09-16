@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
 import {RootState} from "../../store/store";
@@ -36,7 +35,6 @@ export default function MyTask(){
     const myTasks = useSelector((state:RootState)=>state.task.myTasks)
     const [showTaskDetail, setShowTaskDetail] = useState(false);      //是否显示任务详情
     useEffect(()=>{
-        dispatch(setBreadcrumbs(['我的任务']))
         dispatch(taskThunks.listMyTasks())
     }, [])
 

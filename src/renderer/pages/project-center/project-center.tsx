@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {useDispatch, useSelector} from "react-redux";
 import ProjectItem from "./project-item";
 import './project-center.less'
@@ -16,7 +15,6 @@ export default function ProjectCenter(){
     const [showAddDlg, setShowAddDlg] = useState(false)
     const [showNameError, setShowNameError] = useState(false)
     const nameInputRef = useRef<Input>(null)
-    useEffect(()=>{dispatch(setBreadcrumbs(['项目中心']))}, [dispatch])
     useEffect(()=>{dispatch(projectThunks.listProject())},[dispatch])
 
     const openAddProjectDlg = function (){

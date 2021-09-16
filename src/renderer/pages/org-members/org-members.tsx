@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import EffButton from "@components/eff-button/eff-button";
 import {RootState} from "../../store/store";
 import {getOrganizationDetail, orgThunks} from "@slice/orgSlice";
@@ -22,7 +21,6 @@ export default function OrgMembers(){
 
     useEffect(()=>{
         dispatch(getOrganizationDetail())
-        dispatch(setBreadcrumbs(['组织成员']))
     },[])
 
     const response = {

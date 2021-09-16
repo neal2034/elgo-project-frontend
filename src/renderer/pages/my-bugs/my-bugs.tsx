@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 import {bugThunks} from "@slice/bugSlice";
 import {RootState} from "../../store/store";
 import {Drawer} from "antd";
@@ -38,7 +37,6 @@ export default function MyBugs(){
     const [showDetail, setShowDetail] = useState(false);      //是否显示任务详情
 
     useEffect(()=>{
-        dispatch(setBreadcrumbs(['我的Bug']))
         dispatch(bugThunks.listMyBugs())
     }, [dispatch])
 

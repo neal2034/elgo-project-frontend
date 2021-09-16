@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import {menuActions} from "@slice/menuSlice";
 import {useHistory} from "react-router";
+import {setBreadcrumbs} from "@slice/breadcrumbSlice";
 
 export default function EffSideMenu (){
     const dispatch = useDispatch();
@@ -50,10 +51,19 @@ export default function EffSideMenu (){
     useEffect(()=>{
         //根据当前路由设置当前激活菜单
         let path = window.location.hash
-        let activeMenu = mainMenus.filter(item=>path.endsWith(item.path))[0]
-        let activeMenuKey = activeMenu? activeMenu.key:null
-        dispatch(menuActions.setActiveMenu(activeMenuKey))
+        let menu = mainMenus.filter(item=>path.endsWith(item.path))[0]
+        if(menu && (menu.key != activeMenu)){
+            let activeMenuKey = menu? menu.key:null
+            let activeMenuName = menu? menu.name:null
+            dispatch(menuActions.setActiveMenu(activeMenuKey))
+            dispatch(setBreadcrumbs([activeMenuName]))
+        }
+        if(!menu){
+            dispatch(menuActions.setActiveMenu(null))
+        }
     })
+
+
 
     return (
         <Sider width="180" className="side-menu">

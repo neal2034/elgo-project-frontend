@@ -25,7 +25,6 @@ export default function ProjectHome (){
     const dispatch = useDispatch()
     const history = useHistory()
     useEffect(()=>{dispatch(menuActions.setActiveMenu(''))},[dispatch])
-    //TODO 对面包屑应该想办法统一处理
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     useEffect(()=>{dispatch(projectThunks.getProjectDetail())}, [dispatch])
 
