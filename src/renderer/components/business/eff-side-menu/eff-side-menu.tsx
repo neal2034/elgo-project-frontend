@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Layout} from "antd";
 const {Sider} = Layout
 import SideHeader from "./side-header";
@@ -47,27 +47,22 @@ export default function EffSideMenu (){
 
     ]
 
-    const  handleClick = (key:string)=>{
-        dispatch(menuActions.setActiveMenu(key))
-        mainMenus.forEach(item=>{
-            if(item.key==key && item.path){
-                history.push(item.path)
-            }
-        })
-    }
-
-    const mainMenuItems = mainMenus.map(item=>{
-        return <MenuItem key={item.key}
-                         onClick={()=>handleClick(item.key)}
-                         className="mt20" name={item.name}
-                         icon={item.icon} activeIcon={item.activeIcon} isActive={activeMenu==item.key}/>
+    useEffect(()=>{
+        //根据当前路由设置当前激活菜单
+        let path = window.location.hash
+        let activeMenu = mainMenus.filter(item=>path.endsWith(item.path))[0]
+        let activeMenuKey = activeMenu? activeMenu.key:null
+        dispatch(menuActions.setActiveMenu(activeMenuKey))
     })
 
     return (
         <Sider width="180" className="side-menu">
             <SideHeader />
             <div className="mt40 menus">
-                {mainMenuItems}
+                {mainMenus.map(item=> <MenuItem key={item.key}
+                                                onClick={()=>history.push(item.path)}
+                                                className="mt20" name={item.name}
+                                                icon={item.icon} activeIcon={item.activeIcon} isActive={activeMenu==item.key}/>)}
             </div>
         </Sider>
     )
