@@ -1,5 +1,5 @@
 {
-  "name": "effwork-pc",
+  "name": "Elgo",
   "version": "1.0.3",
   "description": "",
   "main": "dist/main/main.prod.js",
@@ -29,7 +29,7 @@
   "author": "",
   "license": "ISC",
   "build": {
-    "productName": "EffWork",
+    "productName": "Elgo",
     "appId": "electron.app",
     "files": [
       "dist/",
@@ -47,7 +47,7 @@
       "backgroundColor": "#ffffff",
       "icon": "./resources/icons/app.icns",
       "iconSize": 80,
-      "title": "EffWork"
+      "title": "Elgo"
     },
     "win": {
       "target": [
