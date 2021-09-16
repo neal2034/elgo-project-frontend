@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './eff-tasks.less'
 import {DatePicker, Form, Input, Select} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
@@ -6,9 +6,10 @@ import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-sel
 import EffEditor from "../../components/common/eff-editor/eff-editor";
 import EffButton from "../../components/eff-button/eff-button";
 import {CaretDownOutlined} from '@ant-design/icons'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {PRIORITY} from "@config/sysConstant";
+import {taskThunks} from "@slice/taskSlice";
 
 
 interface ITask{
@@ -17,6 +18,7 @@ interface ITask{
 
 interface IProps{
     tags:any[],
+    funztion?:any,
     onCancel:()=>void,
     onConfirm:(task:ITask)=>void
 }
@@ -28,26 +30,47 @@ interface ITaskData{
     description?:string,
     deadline?:Date,
     priority:string,
+    taskListId?:number
 }
 
 
 export default function AddTaskForm(props:IProps){
-    const {tags, onConfirm, onCancel } = props
-
+    const dispatch = useDispatch()
+    const {tags, onConfirm, onCancel,funztion} = props
     const [taskForm] = Form.useForm()
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
-    const data = {
-        members: useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[])
-    }
+    const taskGroups = useSelector((state:RootState)=>state.task.groups)
+    const members = useSelector((state:RootState)=>state.project.projectDetail.members?state.project.projectDetail.members:[])
+
+
+    useEffect(()=>{
+        if(funztion){
+            dispatch(taskThunks.listTaskGroup())
+            taskForm.setFieldsValue({
+                'name': '完成功能:' + funztion.name
+            })
+        }
+    },[])
 
     const ui = {
-        memberOptions: data.members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>),
-        priorityOptions: [] as any[]
+        memberOptions: members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>),
+        priorityOptions: [] as any[],
     }
     for(const item in PRIORITY){
         ui.priorityOptions.push(<Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)
     }
+
+    useEffect(()=>{
+        if(taskGroups && taskGroups.length>0){
+            //更新任务分组
+            taskForm.setFieldsValue({
+                'taskListId':taskGroups[0].id
+            })
+        }
+    },[taskGroups])
+
+
 
 
     const response = {
@@ -81,7 +104,7 @@ export default function AddTaskForm(props:IProps){
             <div className="title  pb10 mb20">
                 <span>新增任务</span>
             </div>
-            <Form initialValues={{priority:'NONE'}} colon={false}  form={taskForm}  requiredMark={false} >
+            <Form initialValues={{priority:'NONE' }} colon={false}  form={taskForm}  requiredMark={false} >
                 <Form.Item name="name"  label={'任务名称'} rules={[{ required: true, message: '请输入任务名称' }]}>
                     <Input size={"large"}/>
                 </Form.Item>
@@ -114,6 +137,20 @@ export default function AddTaskForm(props:IProps){
                     </Form.Item>
 
                 </div>
+
+
+
+                {funztion &&  <div className="d-flex justify-between mt20">
+                    <Form.Item  name="taskListId" style={{width:'50%'}}  label={'任务分组'}>
+                        <Select size={"large"}  suffixIcon={<CaretDownOutlined />}>
+                            {taskGroups.map((item:any)=><Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+                        </Select>
+                    </Form.Item>
+
+                    <Form.Item  style={{width:'50%', marginLeft:'30px'}}>
+                    {/*仅用来layout 占位*/}
+                    </Form.Item>
+                </div>}
 
 
                 <Form.Item  name="description" className="mt20 d-flex align-start" label={'任务描述'}>

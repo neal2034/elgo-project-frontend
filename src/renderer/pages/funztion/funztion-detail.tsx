@@ -14,6 +14,13 @@ import {reqActions, reqThunks} from "@slice/reqSlice";
 import {funztionThunks} from "@slice/funztionSlice";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
+import {PlusSquareOutlined} from '@ant-design/icons'
+import globalColor from "@config/globalColor";
+import {Drawer} from "antd";
+import AddTaskForm from "../task/add-task-form";
+import {taskThunks} from "@slice/taskSlice";
+import EffTaskStatus from "@components/business/eff-task-status/eff-task-status";
+import './funztion.less'
 
 
 interface IProps{
@@ -25,6 +32,7 @@ export default function FunztionDetail(props:IProps){
     const {onDel} = props
     const dispatch = useDispatch()
     const [selectedTags, setSelectedTags] = useState<any[]>([])
+    const [showAddTaskForm, setShowAddTaskForm] = useState(false)
 
 
     const data = {
@@ -100,6 +108,17 @@ export default function FunztionDetail(props:IProps){
             if(key=='delete'){
                 onDel(data.currentFunztion.id as number)
             }
+        },
+        addTaskOfFunztion: async (task:any)=>{
+
+            const deadline = task.deadline? task.deadline.format('YYYY-MM-DD 00:00:00'):undefined
+            const payload = Object.assign({}, task, {deadline,funztionId:data.currentFunztion.id})
+            await dispatch(taskThunks.addTask(payload))
+            dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id))
+            setShowAddTaskForm(false)
+        },
+        cancelAddTask: ()=>{
+            setShowAddTaskForm(false)
         }
     }
 
@@ -132,11 +151,22 @@ export default function FunztionDetail(props:IProps){
                         <EffTagSelector onChange={response.onTagsChanged}
                                         chosen={data.currentFunztion.tagIds? data.currentFunztion.tagIds:[]}
                                         tags={data.allTags}/>
-
-
                     </div>
                 </div>
             </div>
+
+
+            <div className="d-flex align-end">
+                <EffInfoSep className="mt40 ml10" name={'对应任务'} />
+                <PlusSquareOutlined onClick={()=>setShowAddTaskForm(true)} className="cursor-pointer ml10" style={{color:globalColor.mainYellowDark, fontSize:'20px'}} />
+            </div>
+            <div className="ml20 mt20 pr40"  style={{marginLeft:'60px'}}>
+                {data.currentFunztion && data.currentFunztion.tasks && data.currentFunztion.tasks.map((item:any)=><FunztionTask key={item.id}
+                                                                                                                                handlerName={item.handlerName}
+                                                                                                                                status={item.status} name={item.name}/>)}
+            </div>
+
+
 
             <EffInfoSep className="mt40 ml10" name={'功能描述'} />
             <div className="ml20 mt20 pr40" >
@@ -145,7 +175,43 @@ export default function FunztionDetail(props:IProps){
 
 
 
+
+            <Drawer
+                title={null}
+                width={'60%'}
+                placement="right"
+                closable={false}
+                visible={showAddTaskForm}
+                onClose={()=>setShowAddTaskForm(false)}
+            >
+                 <AddTaskForm tags={data.allTags} onCancel={response.cancelAddTask} funztion={data.currentFunztion} onConfirm={response.addTaskOfFunztion}/>
+            </Drawer>
+
+
+
+
         </div>
     )
 
+}
+
+
+
+interface IFunztionTaskProps{
+    name:string,
+    status:string,
+    handlerName?:string
+}
+
+function FunztionTask(props:IFunztionTaskProps){
+    const {name,status,handlerName} = props
+    return (
+        <div className="d-flex mt10 justify-between funztion-task" style={{maxWidth:'500px'}}>
+            <div>{name}</div>
+            <div className="d-flex">
+                <span>{handlerName}</span>
+                <EffTaskStatus value={status}  className="ml10"/>
+            </div>
+        </div>
+    )
 }

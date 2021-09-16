@@ -31,6 +31,10 @@ interface ITaskDetailInfo{
     deadline?:string,
     tagIds?:number[],
     description?:string,
+    funztion?:{
+        id:number,
+        name:string
+    }
     handlerDto?:{
         id:number
     }

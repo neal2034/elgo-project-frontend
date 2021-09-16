@@ -15,6 +15,10 @@ import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
 import {tagThunks} from "@slice/tagSlice";
 import EffEditableDoc from "../../components/common/eff-editable-doc/eff-editable-doc";
+import './eff-tasks.less'
+import FunztionDetail from "../funztion/funztion-detail";
+import {Drawer} from "antd";
+import {funztionThunks} from "@slice/funztionSlice";
 
 
 interface IProps{
@@ -28,6 +32,8 @@ export default function TaskDetail(props:IProps){
     const dispatch = useDispatch()
     const [memberOptions, setMemberOptions] = useState<any[]>([])
     const [selectedTags, setSelectedTags] = useState<any[]>([])
+    const [showFunztionDetail, setShowFunztionDetail] = useState(false)
+
 
     const data = {
         menuItems:[{key:'delete', name:'删除任务', icon:<DeleteOutlined style={{fontSize:'14px'}}/>}],
@@ -37,6 +43,7 @@ export default function TaskDetail(props:IProps){
         currentTask: useSelector((state:RootState)=>state.task.currentTask)
     }
 
+    console.log('here is current TAsk', data.currentTask)
 
 
     const priorityOptions = []
@@ -80,6 +87,7 @@ export default function TaskDetail(props:IProps){
 
 
     const response = {
+        occupy: ()=>{},
         handleHandlerChange:(handlerId?:number|string)=>{
             dispatch(taskThunks.editTaskHandler(data.currentTask.id, handlerId as (number|undefined)))
             dispatch(taskThunks.listTask(data.currentTask.taskListId))
@@ -125,6 +133,10 @@ export default function TaskDetail(props:IProps){
             if(key=='delete'){
                 onDel(data.currentTask.id, data.currentTask.taskListId)
             }
+        },
+        showTaskFunztion: async()=>{
+            await dispatch(funztionThunks.getFunztionDetail(data.currentTask.funztion!.id))
+            setShowFunztionDetail(true)
         }
 
 
@@ -132,7 +144,7 @@ export default function TaskDetail(props:IProps){
 
 
     return (
-        <div className="pt40 pl40 pr40 pb40">
+        <div className="pt40 pl40 pr40 pb40 task-detail">
             <div className="d-flex justify-between align-center">
                 <EffEditableInput errMsg={'请输入任务名称'} className="flex-grow-1" isRequired={true} onChange={response.handleEditTaskName} value={data.currentTask.name} placeholder={'请输入任务名称'} />
                 <EffActions onSelect={response.menuSelected} menus={data.menuItems} className="ml40"  width={'30px'}/>
@@ -175,10 +187,28 @@ export default function TaskDetail(props:IProps){
 
             </div>
 
+            <EffInfoSep className="mt20 ml10" name={'关联功能'} />
+            <div className="ml20 mt20 pr40" style={{marginLeft:'60px'}}>
+                <span className="funztion-name" onClick={response.showTaskFunztion}>{data.currentTask.funztion && data.currentTask.funztion.name}</span>
+            </div>
+
             <EffInfoSep className="mt40 ml10" name={'任务描述'} />
             <div className="ml20 mt20 pr40" >
                 <EffEditableDoc onSave={response.handleDesChange} height={'400px'} className="ml40 mt20" content={data.currentTask.description}/>
             </div>
+
+            <Drawer
+                title={null}
+                width={'60%'}
+                placement="right"
+                closable={false}
+                visible={showFunztionDetail}
+                onClose={()=>setShowFunztionDetail(false)}
+            >
+                <FunztionDetail onDel={response.occupy} />
+            </Drawer>
+
+
         </div>
     )
 
