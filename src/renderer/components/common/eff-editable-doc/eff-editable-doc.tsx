@@ -28,11 +28,14 @@ export default function EffEditableDoc(props:IProps){
                 let images:string[] = []
                 let imgReg = /<img.*?(?:>|\/>)/gi
                 let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
+
+                let clickImg =  event.target.src
+                images.push(clickImg)
                 let arr = content.match(imgReg)
                 if(arr){
                     arr.forEach(item=>{
                         let src = item.match(srcReg)
-                        if(src){
+                        if(src && src[1]!=clickImg){
                             images.push(src[1])
                         }
 
