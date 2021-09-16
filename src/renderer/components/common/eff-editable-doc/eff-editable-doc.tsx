@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import EffEditor from "../eff-editor/eff-editor";
 import './eff-editable-doc.less'
 import EffButton from "../../eff-button/eff-button";
+import {Image} from "antd";
 
 
 interface IProps{
@@ -15,11 +16,31 @@ interface IProps{
 export default function EffEditableDoc(props:IProps){
     const {content='', className, width='100%', height='100%', onSave} = props
     const [isEditing, setIsEditing] = useState(false)
-    let currentContent:string;
+    const [showImg, setShowImg] = useState(false)
+    const [contentImages, setContentImages] = useState<string[]>([])
+
+
+    let currentContent:any = undefined
+
     const response = {
         contentClick: (event:any)=>{
             if(event.target.nodeName == 'IMG'){
-                console.log(event.target.nodeName)
+                let images:string[] = []
+                let imgReg = /<img.*?(?:>|\/>)/gi
+                let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
+                let arr = content.match(imgReg)
+                if(arr){
+                    arr.forEach(item=>{
+                        let src = item.match(srcReg)
+                        if(src){
+                            images.push(src[1])
+                        }
+
+                    })
+                }
+                setContentImages(images)
+                setShowImg(true)
+
             }else{
                 setIsEditing(true)
             }
@@ -29,7 +50,7 @@ export default function EffEditableDoc(props:IProps){
         cancelEditing: ()=>{
             setIsEditing(false)
         },
-        contentChanged: (value:string)=>{
+        contentChanged: (value?:string)=>{
             currentContent = value
         },
         saveContent: ()=>{
@@ -50,6 +71,14 @@ export default function EffEditableDoc(props:IProps){
             </div>
             :
             <div onClick={response.contentClick} className="doc-content cursor-pointer" dangerouslySetInnerHTML={{__html: content}}/>}
+
+            <div style={{ display: 'none' }}>
+            <Image.PreviewGroup preview={{ visible:showImg, onVisibleChange: vis=>setShowImg(vis)}}>
+                {
+                    contentImages.map((img,index)=><Image key={index} src={img}/>)
+                }
+            </Image.PreviewGroup>
+        </div>
 
 
     </div>

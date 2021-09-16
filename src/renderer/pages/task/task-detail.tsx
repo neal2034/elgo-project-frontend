@@ -43,8 +43,6 @@ export default function TaskDetail(props:IProps){
         currentTask: useSelector((state:RootState)=>state.task.currentTask)
     }
 
-    console.log('here is current TAsk', data.currentTask)
-
 
     const priorityOptions = []
     for(const item in PRIORITY){
