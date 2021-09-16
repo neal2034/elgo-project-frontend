@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, {ReactElement, useState} from "react";
 import './menu-item.less'
 
 interface IMenuItemProps{
@@ -13,10 +13,11 @@ interface IMenuItemProps{
 
 export default function MenuItem(props: IMenuItemProps){
     const {name, icon, isActive, activeIcon, className, ...rest} = props
+    const [isHover, setIsHover] = useState(false)
 
     return (
-        <div className={`"d-flex align-center cursor-pointer ${className}`} {...rest}  >
-            {isActive? activeIcon:icon}
+        <div onMouseEnter={()=>setIsHover(true)} onMouseLeave={()=>setIsHover(false)} className={`"d-flex elgo-menu-item align-center cursor-pointer ${className}`} {...rest}  >
+            {isActive||isHover? activeIcon:icon}
             <span className={`ml5 ${isActive?'active':''}`}>{name}</span>
         </div>
     )
