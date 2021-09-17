@@ -50,11 +50,11 @@ export default function EffSideMenu (){
 
     useEffect(()=>{
         //根据当前路由设置当前激活菜单
-        let path = window.location.hash
-        let menu = mainMenus.filter(item=>path.endsWith(item.path))[0]
+        const path = window.location.hash
+        const menu = mainMenus.filter(item=>path.endsWith(item.path))[0]
         if(menu && (menu.key != activeMenu)){
-            let activeMenuKey = menu? menu.key:null
-            let activeMenuName = menu? menu.name:null
+            const activeMenuKey = menu? menu.key:null
+            const activeMenuName = menu? menu.name:null
             dispatch(menuActions.setActiveMenu(activeMenuKey))
             dispatch(setBreadcrumbs([activeMenuName]))
         }

@@ -30,7 +30,7 @@ export default function ProjectSetting(){
     ]
 
     useEffect(()=>{
-        const defaultPath = `${basePath}/members`
+        const defaultPath = `${basePath}/sources`
         history.push(defaultPath)
     },[])
 

@@ -65,6 +65,7 @@ const  apiUrl = {
     },
     requirementsSources: {
         index: "/requirements-source",
+        withdraw: "/requirements-source/withdraw",
         delete: "/requirements-source/:id"
     },
     funztion:{

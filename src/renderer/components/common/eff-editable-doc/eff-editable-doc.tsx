@@ -25,16 +25,16 @@ export default function EffEditableDoc(props:IProps){
     const response = {
         contentClick: (event:any)=>{
             if(event.target.nodeName == 'IMG'){
-                let images:string[] = []
-                let imgReg = /<img.*?(?:>|\/>)/gi
-                let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
+                const images:string[] = []
+                const imgReg = /<img.*?(?:>|\/>)/gi
+                const srcReg = /src=['"]?([^'"]*)['"]?/i
 
-                let clickImg =  event.target.src
+                const clickImg =  event.target.src
                 images.push(clickImg)
-                let arr = content.match(imgReg)
+                const arr = content.match(imgReg)
                 if(arr){
                     arr.forEach(item=>{
-                        let src = item.match(srcReg)
+                        const src = item.match(srcReg)
                         if(src && src[1]!=clickImg){
                             images.push(src[1])
                         }

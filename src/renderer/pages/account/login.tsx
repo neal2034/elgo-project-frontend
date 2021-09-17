@@ -41,7 +41,7 @@ export default function Login(){
                             <Input.Password placeholder="请输入密码" />
                         </Form.Item>
 
-                        <Button shape="round"   htmlType="submit" block type="primary" style={{ background: "#FAB04F", borderColor: "#FAB04F" }}>登录</Button>
+                        <Button shape="round"   htmlType="submit" block type="primary" style={{ background: "#FAB04F", height:'40px', fontWeight:'bold', fontSize:'16px', borderColor: "#FAB04F" }}>登录</Button>
                     </Form>
                 </div>
             </div>

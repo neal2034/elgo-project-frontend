@@ -189,6 +189,31 @@ const reqThunks = {
                 }
             }
         },
+    //添加需求来源
+    addReqSource : (data:{name:string})=>{
+            return async ()=>{
+                const result = await  request.post({url: apiUrl.requirementsSources.index, data})
+                return result.isSuccess
+            }
+        },
+    delReqSource : (id:number)=>{
+            return async ()=>{
+                const result = await request.delete({url: `${apiUrl.requirementsSources.index}/${id}`,})
+                return result.isSuccess
+            }
+        },
+    withdrawReqSource : (params:{id:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.put({url:apiUrl.requirementsSources.withdraw, params})
+                return result.isSuccess
+            }
+        },
+    editReqSource : (data:{id:number, name:string})=>{
+            return async ()=>{
+                const result = await request.put({url:apiUrl.requirementsSources.index, data})
+                return result.isSuccess
+            }
+        }
 }
 
 

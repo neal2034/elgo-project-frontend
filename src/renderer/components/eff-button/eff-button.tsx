@@ -5,7 +5,7 @@ import globalColor from "@config/globalColor";
 interface IEffButtonProps {
     text: string,
     round?: boolean,
-    key: string,
+    key?: string,
     width?: number,
     type?: "filled" | "normal" | "line",
     className?:string,
