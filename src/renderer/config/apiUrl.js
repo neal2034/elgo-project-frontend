@@ -88,7 +88,7 @@ const  apiUrl = {
     },
     tags: {
         index: "/tags",
-        delete: "/tags/:id"
+        withdrawDel: '/tags/withdraw',          //撤销删除
     },
     taskList: {
         index: '/task-list',

@@ -4,12 +4,13 @@ import './pro-req-souce-setting.less'
 import {CloseCircleOutlined} from '@ant-design/icons'
 import globalColor from "@config/globalColor";
 import {PlusCircleOutlined} from '@ant-design/icons'
-import AddReqSourceDlg from "./add-req-source-dlg";
 import {useDispatch, useSelector} from "react-redux";
+import AddReqSourceDlg from "./add-req-source-dlg";
 import {reqThunks} from "@slice/reqSlice";
 import {RootState} from "../../../store/store";
 import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import ElgoTag from "@components/business/elgo-tag/elgo-tag";
 
 export default function ReqSourceSetting(){
     const dispatch = useDispatch()
@@ -67,8 +68,8 @@ export default function ReqSourceSetting(){
                 <h1>需求来源可用于标记需求的提出方</h1>
             </div>
             <div className="d-flex align-center mt20">
-                {reqSources.map((item:any)=><ReqSource onEdit={()=>response.goEditResource(item)} onDel={()=>response.goDelResource(item)} name={item.name} key={item.id}/>)}
-                 <PlusCircleOutlined onClick={()=>setShowAddDlg(true)} className="ml20 cursor-pointer" style={{color:globalColor.fontWeak, fontWeight:200, fontSize:'30px'}} />
+                {reqSources.map((source:any)=><ElgoTag className="ml10" onEdit={()=>response.goEditResource(source)} onDel={()=>response.goDelResource(source)} name={source.name} key={source.id} editable={true} delAble={true}/>)}
+                <PlusCircleOutlined onClick={()=>setShowAddDlg(true)} className="ml20 cursor-pointer" style={{color:globalColor.fontWeak, fontWeight:200, fontSize:'20px'}} />
             </div>
             <AddReqSourceDlg onEdit={response.editReqSource} reqSource={willEditResource} onAdd={response.addReqSource} visible={showAddDlg} onClose={()=>setShowAddDlg(false)}/>
             <EffConfirmDlg className="mt40"  visible={confirmDelDlgVisible}>

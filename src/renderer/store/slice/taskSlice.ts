@@ -70,6 +70,7 @@ const taskSlice = createSlice({
             setTasks: (state, action) => {
                 const groupId = action.payload.taskGroupId
                 state.tasks[groupId] = action.payload.tasks
+                console.log('will set groupid ', groupId, action.payload.tasks)
                 let total = 0
                 for(const key in state.tasks){
                     const num = state.tasks[key].length
@@ -87,6 +88,13 @@ const taskSlice = createSlice({
 const taskActions = taskSlice.actions
 
 const taskThunks = {
+    //重置store 数据
+    resetStore : ()=>{
+            return async (dispatch:Dispatch<any>)=>{
+                dispatch(taskActions.setGroups([]))
+                dispatch(taskActions.setTasks({}))
+            }
+        },
     listMyTasks : ()=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.get({url: apiUrl.task.mine})

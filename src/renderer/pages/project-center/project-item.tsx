@@ -2,6 +2,8 @@ import React from "react";
 import './project-item.less'
 import IconMusic from '@imgs/music.png'
 import {useHistory} from "react-router";
+import {useDispatch} from "react-redux";
+import {taskThunks} from "@slice/taskSlice";
 
 interface IProjectItemProps{
     name:string,
@@ -9,11 +11,14 @@ interface IProjectItemProps{
 }
 
 export default function ProjectItem(props: IProjectItemProps){
+    const dispatch = useDispatch()
     const {name, serial} = props
     const history = useHistory()
 
     const response = {
         goToProject:()=>{
+            //clean store
+            dispatch(taskThunks.resetStore())
             history.push({pathname:`/app/project/${serial}`})
         }
     }
