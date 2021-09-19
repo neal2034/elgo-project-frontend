@@ -84,7 +84,7 @@ const  apiUrl = {
     },
     versions:{
         index: "/versions",
-        delete: "/versions/:id"
+        withdraw: "/versions/withdraw"
     },
     tags: {
         index: "/tags",

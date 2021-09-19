@@ -5,12 +5,10 @@ import {tagThunks} from "@slice/tagSlice";
 import globalColor from "@config/globalColor";
 import {PlusCircleOutlined} from '@ant-design/icons'
 import TagDialog from "./tag-dialog";
-import {taskThunks} from "@slice/taskSlice";
-import EffStatus from "@components/business/eff-status/eff-status";
-import ElgoTag from "@components/business/elgo-tag/elgo-tag";
 import EffButton from "@components/eff-button/eff-button";
 import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import ElgoTag from "@components/business/elgo-tag/elgo-tag";
 
 
 export default function TagSetting(){

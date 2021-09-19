@@ -69,6 +69,9 @@ export default function MemberSetting(){
     }
     return (
         <div className="d-flex-column">
+            <div className="d-flex justify-start mt40">
+                <h1>管理可对当前项目访问的组织成员</h1>
+            </div>
             <EffButton onClick={response.goAddProjectMember} round={true} className="align-self-end" text={'+ 添加成员'} key={'add'} type={"line"} />
             <div className="mt20 d-flex flex-wrap align-center">
                 {project.members &&  project.members.map(item=><EffMemberItem onDel={()=>response.handleRemoveMember(item)} member={item} key={item.id}/>)}
