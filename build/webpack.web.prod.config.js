@@ -13,6 +13,7 @@ const hot = [];
 
 const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
+    home: hot.concat(require.resolve('../src/home/home.tsx')),
 };
 
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
@@ -37,7 +38,7 @@ module.exports = merge.smart(webpackBaseConfig, {
 
     output: {
         publicPath: './',
-        filename: 'index.js'
+        filename: '[name].js'
     },
 
     module: {

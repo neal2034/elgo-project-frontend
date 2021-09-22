@@ -7,7 +7,7 @@ const webpackBaseConfig = require('./webpack.base.config');
 
 
 const port = process.env.PORT || 8080;
-const publicPath = `http://localhost:${port}/dist`;
+const publicPath = `http://localhost:${port}/dist/`;
 
 const hot = [
     'react-hot-loader/patch',
@@ -16,7 +16,8 @@ const hot = [
 ];
 
 const entry = {
-    index: hot.concat(require.resolve('../src/renderer/index.tsx')),
+    app: hot.concat(require.resolve('../src/renderer/index.tsx')),
+    index: hot.concat(require.resolve('../src/home/home.tsx')),
 };
 
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({

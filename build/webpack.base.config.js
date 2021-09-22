@@ -27,6 +27,7 @@ module.exports = {
             '@config': path.resolve(__dirname,"/src/renderer/config/"),
             '@slice' : path.resolve(__dirname, '/src/renderer/store/slice'),
             '@components':path.resolve(__dirname, '/src/renderer/components/'),
+            '@home': path.resolve(__dirname, '/src/home/')
         }
     },
     devtool: 'source-map',
