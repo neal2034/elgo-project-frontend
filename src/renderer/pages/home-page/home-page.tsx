@@ -1,5 +1,5 @@
 import React from "react";
-import HomeLogo from '@imgs/home-page/home-logo.png'
+import HomeLogo from '@imgs/elgo-logo.png'
 import Process from '@imgs/home-page/process.png'
 import Statistics from '@imgs/home-page/statistics.png'
 import TeamWork from '@imgs/home-page/team-work.png'

@@ -1,7 +1,7 @@
 import React from 'react'
 import  './login.less'
 import { Form, Input, Button} from 'antd';
-import EffLogo from '@imgs/logo.png'
+import HomeLogo from '@imgs/elgo-logo.png'
 import {useDispatch} from "react-redux";
 import {login} from '@slice/accountSlice'
 import md5 from 'md5'
@@ -30,7 +30,7 @@ export default function Login(){
         return (
             <div className="login">
                 <div className="content">
-                    <img src={EffLogo} className="logo" />
+                    <img src={HomeLogo} className="logo" />
                     <Form onFinish={handleSubmit}  className="login-form mt20">
                         <span className="title">登录</span>
                         <Form.Item name="username"  className="mt20" rules={[{ required: true, message: '请输入账号' }]}>

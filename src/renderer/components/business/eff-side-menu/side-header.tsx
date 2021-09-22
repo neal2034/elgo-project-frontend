@@ -1,5 +1,6 @@
 import React from "react";
-import ImgLogo from '@imgs/logo.png'
+import ImgLogo from '@imgs/elgo-logo.png'
+
 
 
 export default function SideHeader(){
