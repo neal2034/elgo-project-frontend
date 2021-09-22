@@ -3,7 +3,7 @@ import HomeLogo from '@imgs/home-page/home-logo.png'
 import Process from '@imgs/home-page/process.png'
 import Statistics from '@imgs/home-page/statistics.png'
 import TeamWork from '@imgs/home-page/team-work.png'
-import SingleCommunication from "@home/assets/single-comunication.png";
+import SingleCommunication from  '@imgs/home-page/single-comunication.png'
 import './home-page.less'
 import {useHistory} from "react-router";
 
