@@ -12,8 +12,8 @@ const publicPath = `http://localhost:${port}/dist`;
 const hot = [];
 
 const entry = {
-    index: hot.concat(require.resolve('../src/renderer/index.tsx')),
-    home: hot.concat(require.resolve('../src/home/home.tsx')),
+    app: hot.concat(require.resolve('../src/renderer/index.tsx')),
+    index: hot.concat(require.resolve('../src/home/home.tsx')),
 };
 
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
