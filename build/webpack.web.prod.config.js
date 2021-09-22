@@ -7,7 +7,7 @@ const webpackBaseConfig = require('./webpack.base.config');
 
 
 const port = process.env.PORT || 8080;
-const publicPath = `http://localhost:${port}/dist`;
+
 
 const hot = [];
 
@@ -27,7 +27,7 @@ const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'none',
-    mode: 'development',
+    mode: 'production',
 
     entry,
     resolve: {
@@ -193,13 +193,14 @@ module.exports = merge.smart(webpackBaseConfig, {
         ]
     },
 
+
     plugins: [
         // webpack 模块热重载
         new webpack.HotModuleReplacementPlugin({
             multiStep: false
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
+            NODE_ENV: 'production'
         }),
         new webpack.LoaderOptionsPlugin({
             debug: true
