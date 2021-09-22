@@ -37,7 +37,6 @@
   ],
   "include": [
     "src/main",
-    "src/home",
     "src/renderer"
   ]
 }

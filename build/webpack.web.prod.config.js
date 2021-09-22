@@ -12,8 +12,7 @@ const port = process.env.PORT || 8080;
 const hot = [];
 
 const entry = {
-    app: hot.concat(require.resolve('../src/renderer/index.tsx')),
-    index: hot.concat(require.resolve('../src/home/home.tsx')),
+    index: hot.concat(require.resolve('../src/renderer/index.tsx')),
 };
 
 const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
