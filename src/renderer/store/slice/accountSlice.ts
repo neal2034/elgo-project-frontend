@@ -24,6 +24,8 @@ const accountSlice = createSlice({
         memberName:null,
         memberEmail:null,
         currentMember: {},
+        signupUserExist: false,  // 注册的用户是否已存在
+        signupEmailSent: false, // 注册邮件是否已发送
     },
     reducers:{
         setMemberName:(state, action)=>{
@@ -34,7 +36,9 @@ const accountSlice = createSlice({
         },
         setCurrentMember:(state, action)=>{
             state.currentMember = action.payload
-        }
+        },
+        setSignupUserExist: (state, action) => { state.signupUserExist = action.payload },
+        setSignupEmailSent: (state, action) => { state.signupEmailSent = action.payload },
     }
 })
 
@@ -56,20 +60,39 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
     }
 }
 
-
-export const accountThunks = {
-    getCurrentMember: ()=>{
-        return async (dispatch:Dispatch<any>)=>{
+const accountThunks = {
+    getCurrentMember: () => {
+        return async (dispatch: Dispatch<any>) => {
             const result = await request.get({url: apiUrl.orgMember.currentMember})
-            if(result.isSuccess){
+            if (result.isSuccess) {
                 dispatch(accountSlice.actions.setMemberName(result.data.name))
                 dispatch(accountSlice.actions.setMemberEmail(result.data.email))
                 dispatch(accountSlice.actions.setCurrentMember(result.data))
             }
         }
-    }
+    },
+    signup : (data:{email:string, code:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.post({url: apiUrl.user.signup, data})
+                if(result.isSuccess){
+                    dispatch(accountActions.setSignupUserExist(result.data.userExist))
+                    dispatch(accountActions.setSignupEmailSent(result.data.emailSent))
+                }
+                return result.isSuccess
+            }
+        },
+    resentSignUp : (data:{email:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await  request.post({url:apiUrl.user.resent, data})
+                return result.isSuccess
+            }
+        },
 }
 
+const accountActions = accountSlice.actions
+
+
+export {accountActions, accountThunks}
 
 
 

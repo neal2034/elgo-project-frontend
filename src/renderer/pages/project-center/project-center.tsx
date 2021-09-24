@@ -7,6 +7,7 @@ import {Col, Input, Modal, Row} from "antd";
 import EffButton from "../../components/eff-button/eff-button";
 import {projectThunks} from "@slice/projectSlice";
 import {RootState} from "../../store/store";
+import {orgThunks} from "@slice/orgSlice";
 
 
 export default function ProjectCenter(){
@@ -15,7 +16,10 @@ export default function ProjectCenter(){
     const [showAddDlg, setShowAddDlg] = useState(false)
     const [showNameError, setShowNameError] = useState(false)
     const nameInputRef = useRef<Input>(null)
-    useEffect(()=>{dispatch(projectThunks.listProject())},[dispatch])
+    useEffect(()=>{
+        dispatch(orgThunks.setLastLoginOrg())
+        dispatch(projectThunks.listProject())
+    },[])
 
     const openAddProjectDlg = function (){
         setShowAddDlg(true)

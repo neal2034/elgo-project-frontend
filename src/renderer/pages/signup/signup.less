@@ -1,0 +1,50 @@
+
+
+.signup{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: @color-bg;
+
+  .content{
+    display: flex;
+    flex-direction: column;
+
+    .title-des{
+      color: @color-font-weak;
+      line-height: 24px;
+    }
+
+    .signup-form{
+      border: 1px solid @color-board;
+      width: 370px;
+      background-color: white;
+      padding: 20px;
+    }
+
+    .success-msg{
+      color: @color-font-weak;
+      line-height: 30px;
+    }
+
+    .resent{
+      color: @color-font-weak;
+
+      .resent-btn{
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover{
+          color:@color-main-yellow-dark;
+
+        }
+      }
+    }
+  }
+}
+
+
+
+

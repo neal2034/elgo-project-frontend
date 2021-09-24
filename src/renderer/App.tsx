@@ -16,8 +16,6 @@ import {useHistory} from "react-router";
 import {accountThunks} from "@slice/accountSlice";
 import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
-import {useSnackbar} from "notistack";
-import {effToast} from '@components/common/eff-toast/eff-toast'
 import OrgMembers from "./pages/org-members/org-members";
 const {Content} = Layout
 
@@ -29,10 +27,7 @@ const App = () => {
     const breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
     const currentMember:any = useSelector((state:RootState)=>state.account.currentMember)
     useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
-
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar()
-    effToast.setSnackBar(enqueueSnackbar,closeSnackbar)
-
+     
     const [orgMenuVisible, setOrgMenuVisible] = useState(false);
     const response = {
         userClick: ()=>{

@@ -84,7 +84,19 @@ export const orgThunks = {
                 const result = await request.post({url: apiUrl.organization.addMember, data})
                 return result.isSuccess
             }
-        }
+        },
+    addOrganization : (data:{name:string, password:string, token:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.post({url: apiUrl.organization.addOrg, data})
+                return result.isSuccess
+            }
+        },
+    addAnotherOrganization : (data:{name:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.post({url: apiUrl.organization.orgRes, data})
+                return result.isSuccess
+            }
+        },
 }
 
 

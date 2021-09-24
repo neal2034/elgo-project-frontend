@@ -66,11 +66,11 @@ export default function HomePage(){
                     <img className="des-img" src={SingleCommunication}/>
                     <div className="d-flex-column right-text-part">
                         <span className="title">智能协同，解耦沟通</span>
-                        <span className="description mt40">更适合远程工作，多种方式流程同步，信息触达，生活工作更容易平衡</span>
+                        <span className="description mt40">更适合远程工作，多种方式同步流程，信息触达，生活工作更容易平衡</span>
                     </div>
                 </div>
 
-                <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved     粤ICP备B2-20090059-69</div>
+                <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved   陕ICP备17005318号-2</div>
             </div>
 
         </div>
