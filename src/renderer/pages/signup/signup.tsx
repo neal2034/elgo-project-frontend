@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import HomeLogo from "@imgs/elgo-logo.png";
 import {Form, Input} from "antd";
 import EffButton from "@components/eff-button/eff-button";
@@ -10,6 +10,7 @@ import {effToast} from "@components/common/eff-toast/eff-toast";
 import {RootState} from "../../store/store";
 import {login} from "@slice/accountSlice";
 import md5 from "md5";
+import umbrella from "umbrella-storage";
 
 
 export default function Signup(){
@@ -21,9 +22,15 @@ export default function Signup(){
     const [isResent, setIsResent] = useState(false)
 
 
-
     const [signupForm] = Form.useForm()
     const [newOrgForm] = Form.useForm()
+
+
+    useEffect(()=>{
+        umbrella.setLocalStorage('token', null);
+        umbrella.setLocalStorage('oserial', null);
+        umbrella.setLocalStorage('pserial', null);
+    },[])
 
     const response = {
         nextStep: async ()=>{
