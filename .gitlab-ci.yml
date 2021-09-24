@@ -37,7 +37,7 @@ build:
   script:
     - echo "===========Build==========="
     - git clone http://gitlab+deploy-token-20:-3ziAm63EZyETZiXWa1n@www.repo.effwork.net:8025/eff-work/effwork-pc.git -b $CI_COMMIT_REF_NAME $FRONTEND_SRC
-    - cd $FRONTEND_SRC; cnpm i;  cnpm run $BUILD_COMMAND
+    - cd $FRONTEND_SRC; cnpm i;  cnpm run $BUILD_COMMAND ;
 
 
 deploy:
