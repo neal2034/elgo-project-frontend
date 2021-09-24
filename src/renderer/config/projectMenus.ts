@@ -21,9 +21,9 @@ interface IMenuRoute{
 const basePath = '/app/project/:serial'
 
 const  projectMenuRoutes:IMenuRoute[] = [
+    {menuKey:'task', path:`${basePath}/task`,  name:'任务', component:Task},
     {menuKey:'requirement', path: `${basePath}/requirement`,  name:'需求', component:Requirement},
     {menuKey:'funztion', path:`${basePath}/funztion`, name:'功能', component:Funztion},
-    {menuKey:'task', path:`${basePath}/task`,  name:'任务', component:Task},
     {menuKey:'api',  path:`${basePath}/api`, name:'API', component:Api},
     {menuKey:'test-case', path:`${basePath}/test-case`, name:'测试用例',component:TestCase},
     {menuKey:'test-plan',  path:`${basePath}/test-plan`, name:'测试计划', component:TestPlan},
