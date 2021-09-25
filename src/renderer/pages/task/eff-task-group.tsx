@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";
 import {RootState} from "../../store/store";
 import OneTask from "./one-task";
+import {UNDONE_TASK} from "@config/sysConstant";
 
 interface IProps{
     name:string,
@@ -22,7 +23,7 @@ export default function EffTaskGroup(props:IProps){
 
 
     useEffect(()=>{
-        dispatch(taskThunks.listTask(id))
+        dispatch(taskThunks.listTasks({taskListId:id, status:UNDONE_TASK}))
     },[])
 
     const ui = {

@@ -96,6 +96,10 @@ export const colors = ["#4e89a3", "#43658b", "#00b7c2", "#ed6663", "#b52b65", "#
     "#ffa372", "#e48532", "#4f8a8b", "#96bb7c", "#78bf73"];
 
 
+//未完成的任务
+export const UNDONE_TASK = ['UNSTART', 'START', 'DEPEND']
+
+
 
 
 

@@ -9,7 +9,7 @@ import {RootState} from "../../store/store";
 import EffLabel from "../../components/business/eff-label/EffLabel";
 import EffEditableSelector from "../../components/common/eff-editable-selector/eff-editable-selector";
 import {taskThunks} from "@slice/taskSlice";
-import {PRIORITY, TASK_STATUS} from "@config/sysConstant";
+import {PRIORITY, TASK_STATUS, UNDONE_TASK} from "@config/sysConstant";
 import EffEditableDatePicker from "../../components/common/eff-editable-date-picker/eff-editable-date-picker";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
@@ -86,29 +86,32 @@ export default function TaskDetail(props:IProps){
 
     const response = {
         occupy: ()=>{},
-        handleHandlerChange:(handlerId?:number|string)=>{
-            dispatch(taskThunks.editTaskHandler(data.currentTask.id, handlerId as (number|undefined)))
-            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+        detailTaskChanged: ()=>{
+            dispatch(taskThunks.listTasks({taskListId:data.currentTask.taskListId, status:UNDONE_TASK}))
+        },
+        handleHandlerChange: async (handlerId?:number|string)=>{
+            await  dispatch(taskThunks.editTaskHandler(data.currentTask.id, handlerId as (number|undefined)))
+            response.detailTaskChanged();
         },
         handleEditTaskName: async (name?:string)=>{
             await dispatch(taskThunks.editTaskName(data.currentTask.id, name!))
-            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+            response.detailTaskChanged()
         },
         handleEditTaskPriority: async (priority?: number|string)=>{
             await dispatch(taskThunks.editTaskPriority(data.currentTask.id, priority as string))
-            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+            response.detailTaskChanged();
         },
 
         handleEditTaskStatus: async (status?:number|string)=>{
             await dispatch(taskThunks.editTaskStatus(data.currentTask.id, status as string))
-            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+            response.detailTaskChanged()
         },
 
         handleEditDeadline: async (deadline?:any)=>{
             const value = deadline? deadline.format('YYYY-MM-DD 00:00:00'):undefined
             await  dispatch(taskThunks.editTaskDeadline(data.currentTask.id, value))
             dispatch(taskThunks.getTaskDetail(data.currentTask.id))
-            dispatch(taskThunks.listTask(data.currentTask.taskListId))
+            response.detailTaskChanged()
 
         },
         onTagsChanged: async (ids:any)=>{

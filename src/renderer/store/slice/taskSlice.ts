@@ -70,7 +70,6 @@ const taskSlice = createSlice({
             setTasks: (state, action) => {
                 const groupId = action.payload.taskGroupId
                 state.tasks[groupId] = action.payload.tasks
-                console.log('will set groupid ', groupId, action.payload.tasks)
                 let total = 0
                 for(const key in state.tasks){
                     const num = state.tasks[key].length
@@ -127,6 +126,7 @@ const taskThunks = {
                 await  request.post({url:apiUrl.task.index, data:task})
             }
         },
+    //deprecated
     listTask : (taskGroupId:number, name?:string, handlerId?:number, priority?:string, tagIds?:string)=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.get({url:apiUrl.task.index, params:{size:2000, taskListId:taskGroupId,
@@ -139,6 +139,18 @@ const taskThunks = {
                     dispatch(taskActions.setTasks(payload))
                 }
 
+            }
+        },
+    listTasks : (params:{taskListId:number, name?:string, handlerId?:number, priority?:string, tadIds?:number[],status?:string[]})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.get({url:apiUrl.task.index, params})
+                if(result.isSuccess){
+                    const payload = {
+                        taskGroupId:params.taskListId,
+                        tasks:result.data.data
+                    }
+                    dispatch(taskActions.setTasks(payload))
+                }
             }
         },
     markTaskDone : (id:number)=>{

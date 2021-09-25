@@ -19,6 +19,7 @@ export default function Pages(){
 
   return ( <Router>
         <Switch>
+            {/*<Route exact path="/" render={() => <Redirect to='/login' push/>}/>*/}
             <Route exact path="/" component={HomePage} />
             <Route path={"/signup"} component={Signup} />
             <Route path={"/new-org/:token"} component={NewOrg} />
