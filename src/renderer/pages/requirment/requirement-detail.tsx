@@ -60,7 +60,7 @@ export default function RequirementDetail(props:IProps){
     const response = {
         handleAddFunztion: async (funztion:any)=>{
             await dispatch(funztionThunks.addFunztion(funztion))
-            dispatch(funztionThunks.listReqFunztions({reqId:data.currentRequirement.id}))
+            dispatch(funztionThunks.listReqFunztions({reqId:data.currentRequirement.id!}))
             setShowAddFunztionForm(false)
         },
         onNameChange: async (name?:string)=>{

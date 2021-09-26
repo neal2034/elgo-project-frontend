@@ -7,6 +7,7 @@ import {useSnackbar} from "notistack";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import NewOrg from "./pages/signup/new-org";
 import Signup from "./pages/signup/signup";
+import HomePage from "./pages/home-page/home-page";
 
 
 export default function Pages(){
@@ -16,8 +17,8 @@ export default function Pages(){
 
   return ( <Router>
         <Switch>
-            <Route exact path="/" render={() => <Redirect to='/login' push/>}/>
-            {/*<Route exact path="/" component={HomePage} />*/}
+            {/*<Route exact path="/" render={() => <Redirect to='/login' push/>}/>*/}
+            <Route exact path="/" component={HomePage} />
             <Route path={"/signup"} component={Signup} />
             <Route path={"/new-org/:token"} component={NewOrg} />
             <Route path="/app" component={App}/>
