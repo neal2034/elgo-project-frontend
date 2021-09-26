@@ -15,6 +15,7 @@ import {PRIORITY} from "@config/sysConstant";
 
 interface IProps{
     tags:any[],
+    funztionId?:number,         // 对应功能ID
     onCancel:()=>void,
     onConfirm:(testCaseData:ITestCaseData)=>void
 }
@@ -29,7 +30,7 @@ interface ITestCaseData{
 
 
 export default function AddTestCaseForm(props:IProps){
-    const {tags, onConfirm, onCancel } = props
+    const {tags, onConfirm, onCancel, funztionId} = props
     const dispatch = useDispatch()
     const [testCaseForm] = Form.useForm()
     const [funztionOptions, setFunztionOptions] = useState<any>();
@@ -45,7 +46,7 @@ export default function AddTestCaseForm(props:IProps){
     const response = {
         handleAddTask: async ()=>{
             const values = await testCaseForm.validateFields()
-            const testCaseData:ITestCaseData = Object.assign({},values)
+            const testCaseData:ITestCaseData = Object.assign({}, {funztionId}, values)
             testCaseData.tagIds = selectedTagIds
             onConfirm(testCaseData)
 
@@ -96,7 +97,7 @@ export default function AddTestCaseForm(props:IProps){
             </Form.Item>
 
 
-            <Form.Item name="funztionId"  label={'所属功能'} >
+            {!funztionId &&  <Form.Item name="funztionId"  label={'所属功能'} >
                 <Select showSearch
                         allowClear
                         onSearch={response.searchFunztions}
@@ -108,7 +109,7 @@ export default function AddTestCaseForm(props:IProps){
                 >
                     {funztionOptions}
                 </Select>
-            </Form.Item>
+            </Form.Item>}
 
             <div className="d-flex justify-between mt20">
                 <Form.Item  name="priority" style={{width:'50%'}}  label={'优先级'}>

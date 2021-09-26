@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {Dispatch} from "react";
 import request from "../../utils/request";
 import apiUrl from "@config/apiUrl";
+import api from "../../pages/api/api";
 
 
 interface ITestCaseDetail{
@@ -22,6 +23,7 @@ const testCaseSlice = createSlice({
     name:'testCase',
     initialState:{
         testCases:[],
+        funztionCases: [],      //具体功能对应的测试用例
         page:0,
         total:0,
         currentTestCase: {} as ITestCaseDetail,
@@ -31,6 +33,7 @@ const testCaseSlice = createSlice({
         setPage: (state, action) => { state.page = action.payload },
         setTotal: (state, action) => { state.total = action.payload },
         setCurrentTestCase: (state, action) => { state.currentTestCase = action.payload },
+        setFunztionCases: (state, action) => { state.funztionCases = action.payload },
     }
 })
 
@@ -46,6 +49,14 @@ const testCaseThunks = {
                     dispatch(testCaseActions.setPage(params.page))
                     dispatch(testCaseActions.setTotal(result.data.total))
                     dispatch(testCaseActions.setTestCases(result.data.data))
+                }
+            }
+        },
+    listFunztionCases : (params:{page:number, funztionId:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.get({url: apiUrl.testCase.index, params})
+                if(result.isSuccess){
+                    dispatch(testCaseActions.setFunztionCases(result.data.data))
                 }
             }
         },

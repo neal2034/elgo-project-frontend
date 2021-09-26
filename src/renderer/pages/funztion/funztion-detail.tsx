@@ -21,6 +21,8 @@ import AddTaskForm from "../task/add-task-form";
 import {taskThunks} from "@slice/taskSlice";
 import EffTaskStatus from "@components/business/eff-task-status/eff-task-status";
 import './funztion.less'
+import AddTestCaseForm from "../case/add-test-case-form";
+import {testCaseThunks} from "@slice/testCaseSlice";
 
 
 interface IProps{
@@ -33,10 +35,12 @@ export default function FunztionDetail(props:IProps){
     const dispatch = useDispatch()
     const [selectedTags, setSelectedTags] = useState<any[]>([])
     const [showAddTaskForm, setShowAddTaskForm] = useState(false)
+    const [showAddCaseForm, setShowAddCaseForm] = useState(false)
 
 
     const data = {
         currentFunztion: useSelector((state:RootState)=>state.funztion.currentFunztion),
+        funztionCases: useSelector( (state:RootState) => state.testCase.funztionCases),
         allTags: useSelector((state:RootState)=>state.tag.tags),
         funztionStatus: useSelector((state:RootState)=>state.funztion.funztionStatus),
         filteredReqs: useSelector((state:RootState)=>state.requirement.requirements),
@@ -61,7 +65,11 @@ export default function FunztionDetail(props:IProps){
         setSelectedTags(selectTags)
     }, [data.currentFunztion.tagIds])
 
+    useEffect(()=>{
+        dispatch(testCaseThunks.listFunztionCases({page:0, funztionId:data.currentFunztion.id}))
+    }, [data.currentFunztion.id])
 
+    console.log('case are ', data.funztionCases)
 
     const response = {
         occupy: ()=>{
@@ -119,6 +127,13 @@ export default function FunztionDetail(props:IProps){
         },
         cancelAddTask: ()=>{
             setShowAddTaskForm(false)
+        },
+        addCaseOfFunztion: async (testcase:any)=>{
+            console.log('will add tstca se to ', testcase)
+            await dispatch(testCaseThunks.addTestCase(testcase))
+            dispatch(testCaseThunks.listFunztionCases({page:0, funztionId:data.currentFunztion.id}))
+            setShowAddCaseForm(false)
+
         }
     }
 
@@ -166,6 +181,14 @@ export default function FunztionDetail(props:IProps){
                                                                                                                                 status={item.status} name={item.name}/>)}
             </div>
 
+            <div className="d-flex align-end">
+                <EffInfoSep className="mt40 ml10" name={'对应用例'} />
+                <PlusSquareOutlined onClick={()=>setShowAddCaseForm(true)} className="cursor-pointer ml10" style={{color:globalColor.mainYellowDark, fontSize:'20px'}} />
+            </div>
+            <div className="ml20 mt20 pr40"  style={{marginLeft:'60px'}}>
+                {data.funztionCases.map((item:any)=><FunztionCase key={item.id}  name={item.name}/>)}
+            </div>
+
 
 
             <EffInfoSep className="mt40 ml10" name={'功能描述'} />
@@ -187,6 +210,18 @@ export default function FunztionDetail(props:IProps){
                  <AddTaskForm tags={data.allTags} onCancel={response.cancelAddTask} funztion={data.currentFunztion} onConfirm={response.addTaskOfFunztion}/>
             </Drawer>
 
+
+            <Drawer
+                title={null}
+                width={'60%'}
+                placement="right"
+                closable={false}
+                visible={showAddCaseForm}
+                onClose={()=>setShowAddCaseForm(false)}
+            >
+                <AddTestCaseForm funztionId={data.currentFunztion && data.currentFunztion.id}
+                                 tags={data.allTags} onCancel={()=>setShowAddCaseForm(false)} onConfirm={response.addCaseOfFunztion}/>
+             </Drawer>
 
 
 
@@ -215,3 +250,19 @@ function FunztionTask(props:IFunztionTaskProps){
         </div>
     )
 }
+
+
+interface IFunztionCaseProps{
+    name:string,
+}
+
+function FunztionCase(props:IFunztionCaseProps){
+    const {name} = props
+    return (
+        <div className="d-flex mt10 justify-between funztion-task" style={{maxWidth:'500px'}}>
+            <div>{name}</div>
+        </div>
+    )
+}
+
+
