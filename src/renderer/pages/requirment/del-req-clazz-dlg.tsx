@@ -4,7 +4,7 @@ import './requirment.less'
 
 interface IDelReqClazzDlgProps{
     name:string,
-    onCancel:()=>void,
+    onCancel:(e:any)=>void,
     onConfirm:()=>void
 }
 
