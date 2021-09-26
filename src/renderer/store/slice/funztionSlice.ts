@@ -28,6 +28,7 @@ const funztionSlice = createSlice({
         funzTotal:0,        //功能总数
         funztionStatus:[],  //功能状态
         currentFunztion: {} as IFunztion,
+        reqFunztions: [],        //需求所对应的功能
 
     },
     reducers:{
@@ -36,6 +37,7 @@ const funztionSlice = createSlice({
         setFunzTotal: (state, action) => { state.funzTotal = action.payload },
         setFunztionStatus: (state, action) => { state.funztionStatus = action.payload },
         setCurrentFunztion: (state, action) => { state.currentFunztion = action.payload },
+        setReqFunztions: (state, action) => { state.reqFunztions = action.payload },
     }
 })
 
@@ -70,6 +72,16 @@ const funztionThunks = {
                         dispatch(funztionActions.setFunztions(result.data.data))
                         dispatch(funztionActions.setFunzTotal(result.data.total))
                     }
+                    return result.isSuccess
+            }
+        },
+    //列出指定需求所对应的功能
+    listReqFunztions : (params:{reqId:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result =  await request.get({url: apiUrl.funztion.index, params:{page:0, reqId:params.reqId}})
+                if(result.isSuccess){
+                    dispatch(funztionActions.setReqFunztions(result.data.data))
+                }
             }
         },
     listFunztionStatus : ()=>{

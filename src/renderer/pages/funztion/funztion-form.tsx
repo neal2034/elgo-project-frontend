@@ -12,6 +12,7 @@ import EffEditor from "../../components/common/eff-editor/eff-editor";
 
 interface IProps{
     tags:any[],
+    reqId?:number,          //需求 id
     onCancel:()=>void,
     onConfirm:(funztionData:IFunztionData)=>void
 }
@@ -27,7 +28,7 @@ interface IFunztionData{
 
 export default function FunztionForm(props:IProps){
 
-    const {tags, onCancel, onConfirm} = props
+    const {tags, onCancel, onConfirm, reqId} = props
 
     const dispatch = useDispatch()
     const [funztionForm] = Form.useForm()
@@ -60,7 +61,7 @@ export default function FunztionForm(props:IProps){
         },
         handleConfirmAdd: ()=>{
             funztionForm.validateFields().then(values=>{
-                const funztionData:IFunztionData = Object.assign({},values)
+                const funztionData:IFunztionData = Object.assign({}, {requirementId:reqId}, values)
                 funztionData.tagIds = selectedTagIds
                 onConfirm(funztionData)
             })
@@ -98,7 +99,7 @@ export default function FunztionForm(props:IProps){
                 </Form.Item>
 
 
-                <Form.Item name="requirementId"  label={'所属需求'} >
+                { !reqId &&  <Form.Item name="requirementId"  label={'所属需求'} >
                     <Select showSearch
                             allowClear
                             onSearch={response.searchReqs}
@@ -110,7 +111,7 @@ export default function FunztionForm(props:IProps){
                     >
                         {reqOptions}
                     </Select>
-                </Form.Item>
+                </Form.Item> }
 
                 <Form.Item className="mt20"   label={'标签'}>
                     <div className="d-flex ml40">

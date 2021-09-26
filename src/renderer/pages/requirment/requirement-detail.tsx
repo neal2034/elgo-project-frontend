@@ -16,7 +16,13 @@ import {DeleteOutlined} from '@ant-design/icons'
 import EffItemInfo from "../../components/business/eff-item-info/eff-item-info";
 import EffInfoSep from "../../components/business/eff-info-sep/eff-info-sep";
 import EffLabel from "../../components/business/eff-label/EffLabel";
-
+import globalColor from "@config/globalColor";
+import {PlusSquareOutlined} from '@ant-design/icons'
+import {Drawer, Tag} from "antd";
+import AddTaskForm from "../task/add-task-form";
+import FunztionForm from "../funztion/funztion-form";
+import {funztionActions, funztionThunks} from "@slice/funztionSlice";
+import EffTaskStatus from "@components/business/eff-task-status/eff-task-status";
 
 
 interface IProps{
@@ -27,6 +33,8 @@ export default function RequirementDetail(props:IProps){
     const {onDel} = props
     const dispatch = useDispatch()
     const [selectedTags, setSelectedTags] = useState<any[]>([])
+    const [showAddFunztionForm, setShowAddFunztionForm] = useState(false)
+    const funztionStatus = useSelector((state:RootState)=>state.funztion.funztionStatus)
 
     //需求状态options
     const reqStatusOptions = []
@@ -41,6 +49,7 @@ export default function RequirementDetail(props:IProps){
         reqClasses: useSelector((state:RootState)=>state.requirement.reqClasses),
         rqeSources: useSelector( (state:RootState) => state.requirement.reqSources),
         reqVersions: useSelector((state:RootState)=>state.requirement.reqVersions),
+        reqFunztions: useSelector( (state:RootState) => state.funztion.reqFunztions),
         allTags: useSelector((state:RootState)=>state.tag.tags),
         currentReqPage: useSelector((state:RootState)=>state.requirement.page),
         currentRequirement : useSelector((state:RootState)=>state.requirement.currentReq),
@@ -49,6 +58,11 @@ export default function RequirementDetail(props:IProps){
         ]
     }
     const response = {
+        handleAddFunztion: async (funztion:any)=>{
+            await dispatch(funztionThunks.addFunztion(funztion))
+            dispatch(funztionThunks.listReqFunztions({reqId:data.currentRequirement.id}))
+            setShowAddFunztionForm(false)
+        },
         onNameChange: async (name?:string)=>{
            await dispatch(reqThunks.editRequirement({
                 id:data.currentRequirement.id!,
@@ -123,6 +137,10 @@ export default function RequirementDetail(props:IProps){
             if(key=='delete'){
                 onDel(data.currentRequirement.id as number)
             }
+        },
+        getFunztionStatus: (statusId:number)=>{
+            let status:{name:string, color:string} = funztionStatus.filter((item:any)=>item.id === statusId)[0]
+            return status
         }
     }
 
@@ -136,7 +154,13 @@ export default function RequirementDetail(props:IProps){
         dispatch(reqThunks.listAllReqSource())
         dispatch(reqThunks.listAllReqVersions())
         dispatch(tagThunks.listTags())
+        dispatch(funztionActions.setReqFunztions([])) //清空历史需求所对应功能
+        dispatch(funztionThunks.listFunztionStatus())
     },[])
+
+    useEffect(()=>{
+        dispatch(funztionThunks.listReqFunztions({reqId:data.currentRequirement.id!}))
+    }, [data.currentRequirement.id])
 
     useEffect(()=>{
         const tagIds = data.currentRequirement.tagIds? data.currentRequirement.tagIds:[]
@@ -205,14 +229,56 @@ export default function RequirementDetail(props:IProps){
                 </div>
             </div>
 
+            <div className="d-flex align-end">
+                <EffInfoSep className="mt40 ml10" name={'对应功能'} />
+                <PlusSquareOutlined onClick={()=>setShowAddFunztionForm(true)} className="cursor-pointer ml10" style={{color:globalColor.mainYellowDark, fontSize:'20px'}} />
+            </div>
+            <div className="ml20 mt20 pr40"  style={{marginLeft:'60px'}}>
+                {data.reqFunztions.map((item:any)=><ReqFunztion key={item.id} name={item.name} status={response.getFunztionStatus(item.statusId)}/>)}
+            </div>
+
             <EffInfoSep className="mt40 ml10" name={'需求描述'} />
             <div className="ml20 mt20 pr40" >
                 <EffEditableDoc onSave={response.onDescriptionChanged} height={'400px'} className="ml40 mt20" content={data.currentRequirement.description}/>
             </div>
 
+            <Drawer
+                title={null}
+                width={'60%'}
+                placement="right"
+                closable={false}
+                visible={showAddFunztionForm}
+                onClose={()=>setShowAddFunztionForm(false)}>
+                <FunztionForm reqId={data.currentRequirement.id} tags={data.allTags} onCancel={()=>setShowAddFunztionForm(false)} onConfirm={response.handleAddFunztion}/>
+            </Drawer>
+
         </div>
     )
 }
+
+
+
+interface IFunztionProps{
+    name:string,
+    status?:{
+        name:string,
+        color:string,
+    }
+
+}
+
+function ReqFunztion(props:IFunztionProps){
+    const {name,status} = props
+    return (
+        <div className="d-flex mt10 justify-between funztion-task" style={{maxWidth:'500px'}}>
+            <div>{name}</div>
+            <div className="d-flex">
+                <Tag className="ml10" color={status && status.color}>{status && status.name}</Tag>
+            </div>
+        </div>
+    )
+}
+
 
 
 

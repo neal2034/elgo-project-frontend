@@ -11,7 +11,7 @@ import {CaretDownOutlined} from '@ant-design/icons'
 
 type Requirement = {
     name:string|null,
-    description:string|null,
+    description?:string,
     classId:number|null,
     versionId:number|null,
     sourceId: number|null,
@@ -34,7 +34,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
     const data:{requirement:Requirement, [x:string]:any} = {
         requirement:{
             name:null,
-            description:null,
+            description:undefined,
             classId: null,
             versionId: null,
             sourceId:  null,
@@ -56,7 +56,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
         handleCancelBtn: ()=>{
             props.onCancel()
         },
-        handleDescriptionChange: (html:string)=>{
+        handleDescriptionChange: (html?:string)=>{
             data.requirement.description = html
         },
 
