@@ -12,6 +12,7 @@ const orgSlice = createSlice({
         departments:[],
         organization: {} as any,          //当前组织
         orgList:[],
+        activeUserStatus: -2,           // 当前待激活用户状态 1=当前激活token无效 -1=User已存在输入密码即可 0=表示没有对应User, -2=无效初始态
     },
     reducers:{
         setName:  (state, action) => {
@@ -29,7 +30,8 @@ const orgSlice = createSlice({
         },
         setOrganizationList: (state,action)=>{
             state.orgList = action.payload
-        }
+        },
+        setActiveUserStatus: (state, action) => { state.activeUserStatus = action.payload },
     }
 })
 
@@ -97,6 +99,35 @@ export const orgThunks = {
                 return result.isSuccess
             }
         },
+    removeOrgMember : (params:{id:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.delete({url:apiUrl.organization.addMember, params})
+                return result.isSuccess
+            }
+        },
+    //检测成员邀请token 的有效性
+    checkInviteToken : (params:{token:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await request.get({url:apiUrl.organization.checkOrgUserToken, params})
+                let status = -2;
+                if(result.status === 100005){
+                   //token 不存在或已被使用
+                    status =  1
+                }else if(result.status === 100001){
+                    status =  -1
+                }else{
+                    status = 0
+                }
+                dispatch(orgActions.setActiveUserStatus(status))
+            }
+        },
+    //激活用户
+    activeUser : (data: {token:string, password:string, boolNew:boolean})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                let result = await  request.post({url:apiUrl.organization.activeMember, data})
+                return result.isSuccess
+            }
+        }
 }
 
 

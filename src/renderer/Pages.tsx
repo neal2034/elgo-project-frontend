@@ -8,6 +8,7 @@ import {effToast} from "@components/common/eff-toast/eff-toast";
 import NewOrg from "./pages/signup/new-org";
 import Signup from "./pages/signup/signup";
 import HomePage from "./pages/home-page/home-page";
+import ActiveUser from "./pages/signup/active-user";
 
 
 export default function Pages(){
@@ -25,6 +26,7 @@ export default function Pages(){
             <Route path="/home" component={HomePage} />
             <Route path={"/signup"} component={Signup} />
             <Route path={"/new-org/:token"} component={NewOrg} />
+            <Route path={"/active/:token"} component={ActiveUser} />
             <Route path="/app" component={App}/>
             <Route exact path="/not" component={PageNotFound}/>
             <Route path="/login" component={Login}/>

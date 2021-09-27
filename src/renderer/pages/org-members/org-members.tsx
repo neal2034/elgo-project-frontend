@@ -9,15 +9,20 @@ import './org-members.less'
 import globalColor from "@config/globalColor";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import EffMemberItem from "@components/business/eff-member-item/eff-member-item";
+import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
+import {projectThunks} from "@slice/projectSlice";
 
 
 export default function OrgMembers(){
 
     const dispatch = useDispatch()
     const organization:any = useSelector((state:RootState)=>state.organization.organization)
+    const currentMember:any = useSelector((state:RootState)=>state.account.currentMember)
     const [newMembers, setNewMembers] = useState([{show:true}])
     const [inputNum, setInputNum] = useState(1)
     const [showInviteDlg, setShowInviteDlg] = useState(false)
+    const [showConfirmDlg, setShowConfirmDlg] = useState(false)
+    const [willDelMember, setWillDelMember] = useState<any>()
 
     useEffect(()=>{
         dispatch(getOrganizationDetail())
@@ -104,12 +109,37 @@ export default function OrgMembers(){
         },
 
         removeOrgMember: (member:any)=>{
-            console.log('will remove ',member)
+            if(!currentMember.boolOwner){
+                effToast.error("没有权限，仅超级管理员可操作");
+                return;
+            }
+            if(member.boolOwner){
+                effToast.error('不可以移除超级管理员')
+                return
+            }
+            setWillDelMember(member)
+            setShowConfirmDlg(true)
+        },
+
+        handleConfirmDelMember: async ()=>{
+            const result:any = await dispatch(orgThunks.removeOrgMember({id:willDelMember.id}))
+            setShowConfirmDlg(false)
+            if(result){
+                effToast.success('移除组织成员成功');
+                dispatch(orgThunks.getOrganizationDetail())
+            }
+        },
+        openInviteDlg: ()=>{
+            if(!currentMember.boolOwner){
+                effToast.error("没有权限，仅超级管理员可操作");
+                return;
+            }
+            setShowInviteDlg(true)
         }
     }
 
     return (<div className="pt40 pl40 pr40 d-flex-column">
-         <EffButton onClick={()=>setShowInviteDlg(true)} className="align-self-end" text={'+ 邀请成员'} key={'invite'} type={"line"} round={true}/>
+         <EffButton onClick={response.openInviteDlg} className="align-self-end" text={'+ 邀请成员'} key={'invite'} type={"line"} round={true}/>
         <div className="d-flex justify-start flex-wrap mt20">
             {organization && organization.members && organization.members.map((item:any)=><EffMemberItem onDel={()=>response.removeOrgMember(item)} member={item} key={item.id}/>)}
         </div>
@@ -132,6 +162,19 @@ export default function OrgMembers(){
                  </div>
              </div>
          </Modal>
+
+        <EffConfirmDlg  title={'确认移除'} visible={showConfirmDlg}>
+            <div>
+                <div className="d-flex-column" style={{color:globalColor.fontWeak,fontSize:'14px'}}>
+                    <span>确定将成员“{willDelMember && willDelMember!.name}”从组织中移除？</span>
+                </div>
+                <div className="mt20 d-flex justify-end">
+                    <EffButton type={"line"} onClick={()=>setShowConfirmDlg(false)} round={true} key={"cancel"} text={"取消"}/>
+                    <EffButton onClick={response.handleConfirmDelMember} className="mr20 ml10" type={"filled"} key={"confirm"} text={"确定"} round={true}/>
+                </div>
+            </div>
+
+        </EffConfirmDlg>
 
     </div>)
 }
