@@ -13,7 +13,7 @@ export default function Api(){
     const currentEnvId = useSelector((state:RootState)=>state.api.currentEnvId)
     const currentEnv:ApiEnv = useSelector((state:RootState)=>state.api.envs.filter((item:ApiEnv)=>item.id === state.api.currentEnvId)[0])
     useEffect(()=>{
-        window.effwork = {
+        window.elgo = {
             //设置环境变量
             setEnvironmentVariable(key:string, value:string){
                 //获取当前环境，如果没有环境则返回

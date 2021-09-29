@@ -13,8 +13,8 @@
     "dev-renderer": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.renderer.dev.config.js",
     "dev": "npm run dev-renderer",
     "dev-web": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.web.local.config.js",
-    "build-web": "cross-env NODE_ENV=production webpack --config build/webpack.web.prod.config.js",
-    "build-web-dev": "cross-env NODE_ENV=development webpack --config build/webpack.web.dev.config.js",
+    "build-web-master": "cross-env NODE_ENV=production webpack --config build/webpack.web.prod.config.js",
+    "build-web-develop": "cross-env NODE_ENV=development webpack --config build/webpack.web.dev.config.js",
     "package": "npm run build && electron-builder build --publish never",
     "package-win": "npm run build && electron-builder build --win --x64",
     "package-linux": "npm run build && electron-builder build --linux",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://www.repo.effwork.net:8025/eff-work/effwork-pc.git"
+    "url": "http://www.repo.elgo.cc/elgo/elgo-frontend.git"
   },
   "keywords": [],
   "author": "",
