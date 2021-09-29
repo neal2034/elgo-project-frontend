@@ -231,15 +231,15 @@ module.exports = merge.smart(webpackBaseConfig, {
             disableDotRule: false
         },
         proxy: {
-            '/effwork/api': {
+            '/elgo/api': {
                 target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
+                // target: 'http://www.dev.elgo.cc',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             },
-            '/effwork/login': {
+            '/elgo/login': {
                 target: 'http://localhost:8070',
-                // target: 'http://www.dev.effwork.net',
+                // target: 'http://www.dev.elgo.cc',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             }

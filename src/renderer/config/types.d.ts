@@ -2,6 +2,6 @@ export {};
 
 declare global {
     interface Window {
-        effwork:any
+        elgo:any
     }
 }
