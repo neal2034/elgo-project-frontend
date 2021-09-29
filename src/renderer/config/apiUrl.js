@@ -153,7 +153,10 @@ const  apiUrl = {
         withdrawDel: '/defect/withdraw',        //撤销删除
         mine:'/my/defect',                        //我的任务
 
-    }
+    },
+    elgoVersion:{
+        index: '/elgo-version/public/list',     //列出elgo 的版本信息
+    },
 }
 
 

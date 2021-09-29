@@ -50,7 +50,7 @@ export default function HomePage(){
                 <div className="d-flex align-center">
                     <img className="cursor-pointer" onClick={response.goHome} style={{height:'36px'}} src={HomeLogo}/>
                     <div className="d-flex align-center menus">
-                        {menus.map(item=> <span onClick={()=>response.menuClick(item)} className={`menu-item ${homeKey==item.menuKey?'active':''}`}>{item.name}</span>)}
+                        {menus.map(item=> <span key={item.menuKey} onClick={()=>response.menuClick(item)} className={`menu-item ${homeKey==item.menuKey?'active':''}`}>{item.name}</span>)}
                     </div>
                 </div>
                 <div className="btn-group d-flex align-center">
@@ -63,7 +63,7 @@ export default function HomePage(){
                 <Route path="/home/content" component={HomeContent} />
                 <Route path={'/home/download'} component={AppDownload} />
             </Switch>
-            <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved   陕ICP备17005318号-2</div>
+            <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved  <a className="ml20" target={'_blank'} href={'https://beian.miit.gov.cn'}>陕ICP备17005318号-4</a> </div>
 
         </div>
     )

@@ -19,7 +19,7 @@ export default function HomeContent(){
     }
 
     return (
-        <div className="content">
+        <div className="home-content">
             <div style={{marginTop:'40px'}} className="d-flex justify-between align-center">
                 <div className="d-flex-column text-part">
                     <span className="title">高效组织软件研发流程</span>
