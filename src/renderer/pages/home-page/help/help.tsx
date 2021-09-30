@@ -12,7 +12,7 @@ export default function ElgoHelp(){
                  <span style={{
                      fontSize:'40px',
                      color:globalColor.fontWeak
-                 }}>帮助页面建设中 。。。</span>
+                 }}>页面建设中 。。。</span>
              </div>
         </div>
     )

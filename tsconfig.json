@@ -6,6 +6,7 @@
     "module": "CommonJS",
     "paths" : {
       "@config/*" : ["./src/renderer/config/*"],
+      "@pages/*" : ["./src/renderer/pages/*"],
       "@imgs/*" : ["./src/renderer/assets/imgs/*"],
       "@components/*" : ["./src/renderer/components/*"],
       "@slice/*" : ["./src/renderer/store/slice/*"],
