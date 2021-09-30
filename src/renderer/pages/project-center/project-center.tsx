@@ -8,6 +8,7 @@ import EffButton from "../../components/eff-button/eff-button";
 import {projectThunks} from "@slice/projectSlice";
 import {RootState} from "../../store/store";
 import {orgThunks} from "@slice/orgSlice";
+import {PROJECT_COLOR, PROJECT_ICON} from "@config/sysConstant";
 
 
 export default function ProjectCenter(){
@@ -20,7 +21,7 @@ export default function ProjectCenter(){
         dispatch(orgThunks.setLastLoginOrg())
         dispatch(projectThunks.listProject())
     },[])
-
+    console.log(projects)
     const openAddProjectDlg = function (){
         setShowAddDlg(true)
     }
@@ -32,7 +33,11 @@ export default function ProjectCenter(){
             setShowNameError(true)
             return
         }
-        await dispatch(projectThunks.addProject(name))
+        await dispatch(projectThunks.addProject({
+            name,
+            color:PROJECT_COLOR[0],
+            icon:`w${PROJECT_ICON[0]}`,
+        }))
         setShowAddDlg(false)
         await dispatch(projectThunks.listProject());
     }
@@ -42,7 +47,7 @@ export default function ProjectCenter(){
     }
 
 
-    const uiProjects = projects.filter((pro:any)=>pro.type==='PROJECT').map((pro:any)=><ProjectItem serial={pro.serial}  key={pro.serial} name={pro.name}/>)
+    const uiProjects = projects.map((pro:any)=><ProjectItem project={pro} key={pro.serial}  />)
 
 
     return (
@@ -61,9 +66,6 @@ export default function ProjectCenter(){
                         <EffButton onClick={handleAddProject} round={true} type={'filled'} text={'确定'} key={'ok'}/>
                     </Col>
                 </Row>
-
-
-
             </Modal>
             {uiProjects}
             <div onClick={openAddProjectDlg} className='new-project-btn  d-flex align-center justify-center cursor-pointer'>

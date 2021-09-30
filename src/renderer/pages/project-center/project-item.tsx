@@ -1,34 +1,39 @@
 import React from "react";
-import './project-item.less'
-import IconMusic from '@imgs/music.png'
 import {useHistory} from "react-router";
 import {useDispatch} from "react-redux";
 import {taskThunks} from "@slice/taskSlice";
+import getProjectImgByKey from "@pages/project-center/project-img";
+import {IProject} from "@slice/projectSlice";
+import {PROJECT_COLOR} from "@config/sysConstant";
 
-interface IProjectItemProps{
-    name:string,
-    serial:string,
+interface IProps{
+    project:IProject,
 }
 
-export default function ProjectItem(props: IProjectItemProps){
+export default function ProjectItem(props: IProps){
     const dispatch = useDispatch()
-    const {name, serial} = props
+    const {project} = props
+    const bgColor = project.color? project.color : PROJECT_COLOR[0]
     const history = useHistory()
+    //设置图标样式
+    const width = '120px'
+    const height =  '120px'
+    const imgWidth = '50px'
+    const borderRadius = '10px'
 
     const response = {
         goToProject:()=>{
-            //clean store
             dispatch(taskThunks.resetStore())
-            history.push({pathname:`/app/project/${serial}`})
+            history.push({pathname:`/app/project/${project.serial}`})
         }
     }
 
     return (
-        <div onClick={response.goToProject} className='project-item d-flex-column align-center cursor-pointer mr40 mb40'>
-            <div className="item-pic d-flex justify-center align-center">
-                <img src={IconMusic} width="50px"/>
+        <div onClick={response.goToProject} style={{width}} className="d-flex-column align-center cursor-pointer mr40 mb40">
+            <div style={{backgroundColor: bgColor, width, height, borderRadius}} className="d-flex justify-center align-center">
+                <img src={getProjectImgByKey(project.icon)} width={imgWidth}/>
             </div>
-            <span className="project-name mt10">{name}</span>
+            <span style={{fontSize:'14px', fontWeight:'bold'}} className="mt10">{project.name}</span>
         </div>
     )
 }

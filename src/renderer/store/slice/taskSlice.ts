@@ -72,7 +72,7 @@ const taskSlice = createSlice({
                 state.tasks[groupId] = action.payload.tasks
                 let total = 0
                 for(const key in state.tasks){
-                    const num = state.tasks[key].length
+                    const num = state.tasks[key]? state.tasks[key].length : 0
                     total = total + num
                 }
                 state.totalTasks = total

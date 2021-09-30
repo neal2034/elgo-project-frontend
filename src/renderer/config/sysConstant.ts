@@ -99,6 +99,10 @@ export const colors = ["#4e89a3", "#43658b", "#00b7c2", "#ed6663", "#b52b65", "#
 //未完成的任务
 export const UNDONE_TASK = ['UNSTART', 'START', 'DEPEND']
 
+//项目颜色
+export const PROJECT_COLOR = ['#78BF73', '#4E89A3', '#00B7C2', '#ED6663', '#B52B65', '#F4545C', '#F8BD7F', '#FFA372', '#E48532', '#2167C0']
+export const PROJECT_ICON = ['music', 'statistics', 'prize', 'plane', 'fly', 'earth', 'crown', 'medal']
+
 
 
 
