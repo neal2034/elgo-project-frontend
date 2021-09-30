@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from "react";
 import HomeLogo from '@imgs/elgo-logo.png'
-import Process from '@imgs/home-page/process.png'
-import Statistics from '@imgs/home-page/statistics.png'
-import TeamWork from '@imgs/home-page/team-work.png'
-import SingleCommunication from  '@imgs/home-page/single-comunication.png'
 import './home-page.less'
 import {Route, useHistory} from "react-router";
 import {Switch, useRouteMatch} from "react-router-dom";
 import HomeContent from "./home-conetnt/home-content";
 import AppDownload from "./app-download/app-download";
+import {useDispatch} from "react-redux";
+import {accountThunks} from "@slice/accountSlice";
+import ElgoHelp from "./help/help";
+import ElgoAbout from "./about/about";
+import ElgoBlog from "./blog/blog";
 
 
 export default function HomePage(){
+    const dispatch = useDispatch()
     const history = useHistory()
     const {path} = useRouteMatch()
     const [homeKey, setHomeKey] = useState('home')
@@ -38,6 +40,7 @@ export default function HomePage(){
     }
 
     useEffect(()=>{
+        dispatch(accountThunks.clearLocalStorage())
         const defaultPath = `${path}/content`
         history.push(defaultPath)
     },[])
@@ -62,8 +65,11 @@ export default function HomePage(){
             <Switch>
                 <Route path="/home/content" component={HomeContent} />
                 <Route path={'/home/download'} component={AppDownload} />
+                <Route path={'/home/help'} component={ElgoHelp} />
+                <Route path={'/home/about'} component={ElgoAbout} />
+                <Route path={'/home/blog'} component={ElgoBlog} />
             </Switch>
-            <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved  <a className="ml20" target={'_blank'} href={'https://beian.miit.gov.cn'}>陕ICP备17005318号-4</a> </div>
+            <div className="copyright justify-center align-center d-flex">Copyright ©1998-2021 Elgo All Rights Reserved  <a rel={'noreferrer'} className="ml20" target={'_blank'} href={'https://beian.miit.gov.cn'}>陕ICP备17005318号-4</a> </div>
 
         </div>
     )

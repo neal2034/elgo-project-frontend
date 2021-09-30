@@ -61,6 +61,13 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
 }
 
 const accountThunks = {
+    clearLocalStorage : ()=>{
+            return async ()=>{
+                umbrella.setLocalStorage('token', null);
+                umbrella.setLocalStorage('oserial', null);
+                umbrella.setLocalStorage('pserial', null);
+            }
+        },
     getCurrentMember: () => {
         return async (dispatch: Dispatch<any>) => {
             const result = await request.get({url: apiUrl.orgMember.currentMember})
@@ -73,7 +80,7 @@ const accountThunks = {
     },
     signup : (data:{email:string, code:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url: apiUrl.user.signup, data})
+                const result = await request.post({url: apiUrl.user.signup, data})
                 if(result.isSuccess){
                     dispatch(accountActions.setSignupUserExist(result.data.userExist))
                     dispatch(accountActions.setSignupEmailSent(result.data.emailSent))
