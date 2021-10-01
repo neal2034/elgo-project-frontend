@@ -59,6 +59,12 @@ const projectThunks = {
                 return result.isSuccess
             }
         },
+    editProject : (data:{name:string, icon:string, color:string, serial:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await  request.doPut(apiUrl.project.projectRes, data)
+                return result.isSuccess
+            }
+        },
     withdrawDelProject : (params:{serial:number})=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.doPut(apiUrl.project.withdraw,undefined, params)

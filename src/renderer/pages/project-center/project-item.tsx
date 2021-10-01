@@ -12,7 +12,8 @@ import {FormOutlined, DeleteOutlined} from '@ant-design/icons'
 
 interface IProps{
     project:IProject,
-    onDel: (project:IProject)=>void
+    onDel: (project:IProject)=>void,
+    onEdit: (project:IProject)=>void,
 }
 
 export default function ProjectItem(props: IProps){
@@ -40,13 +41,16 @@ export default function ProjectItem(props: IProps){
                     response.delProject()
                     break
                 case 'edit':
-                    response.delProject()
+                    response.editProject()
                     break
             }
 
         },
         delProject: ()=>{
             props.onDel(props.project)
+        },
+        editProject: ()=>{
+            props.onEdit(props.project)
         }
 
     }

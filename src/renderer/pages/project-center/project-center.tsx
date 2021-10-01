@@ -11,6 +11,7 @@ import {orgThunks} from "@slice/orgSlice";
 import {PROJECT_COLOR, PROJECT_ICON} from "@config/sysConstant";
 import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import ProjectEditDlg from "@pages/project-center/project-edit-dlg";
 
 
 export default function ProjectCenter(){
@@ -18,8 +19,10 @@ export default function ProjectCenter(){
     const projects = useSelector((state:RootState)=> state.project.projects)
     const currentMember:any = useSelector( (state:RootState) => state.account.currentMember)
     const [showAddDlg, setShowAddDlg] = useState(false)
+    const [showEditDlg, setShowEditDlg] = useState(false)
     const [showNameError, setShowNameError] = useState(false)
     const [willDelProject, setWillDelProject] = useState<IProject>()
+    const [willEditProject, setWillEditProject] = useState<IProject>()
     const [confirmDelDlgVisible, setConfirmDelDlgVisible] = useState(false)
     const nameInputRef = useRef<Input>(null)
     useEffect(()=>{
@@ -84,11 +87,23 @@ export default function ProjectCenter(){
                 effToast.success('撤销成功')
                 dispatch(projectThunks.listProject())
             }
+        },
+        handleEditProject:(project:IProject) => {
+            setWillEditProject(project)
+            setShowEditDlg(true)
+        },
+        confirmEditProject: async (data:{name:string, color:string, icon:string, serial:number})=>{
+            const result: any = await dispatch(projectThunks.editProject(data))
+            setShowEditDlg(false)
+            if(result){
+                dispatch(projectThunks.listProject())
+            }
+
         }
     }
 
 
-    const uiProjects = projects.map((pro:any)=><ProjectItem onDel={response.handleDelProject} project={pro} key={pro.serial}  />)
+    const uiProjects = projects.map((pro:any)=><ProjectItem onEdit={response.handleEditProject} onDel={response.handleDelProject} project={pro} key={pro.serial}  />)
 
 
     return (
@@ -108,6 +123,11 @@ export default function ProjectCenter(){
                     </Col>
                 </Row>
             </Modal>
+            <ProjectEditDlg onCancel={()=>setShowEditDlg(false)}
+                            onEdit={response.confirmEditProject}
+                            project={willEditProject!}
+
+                            visible={showEditDlg}/>
             {uiProjects}
             <div onClick={openAddProjectDlg} className='new-project-btn  d-flex align-center justify-center cursor-pointer'>
                 <PlusOutlined style={{fontSize:'60px', color:'#999999'}}/>
