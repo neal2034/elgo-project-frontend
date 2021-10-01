@@ -34,6 +34,7 @@ const  apiUrl = {
     project:{
         projectRes: '/project',        //项目资源,
         recycle: '/project/recycle',   //回收项目
+        withdraw: '/project/withdraw',  //撤销删除
         rename: '/project/rename',     //修改名称
         members: '/project/member',    //项目成员资源
         detail: '/project/detail',     //获取项目详情

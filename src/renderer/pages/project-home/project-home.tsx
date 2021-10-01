@@ -9,11 +9,10 @@ import EffMenu from "../../components/common/eff-menu/eff-menu";
 import {menuActions} from "@slice/menuSlice";
 import umbrella from "umbrella-storage";
 import {RootState} from "../../store/store";
-import IconMusic from '@imgs/music.png'
 import {IProject, projectActions, projectThunks} from "@slice/projectSlice";
 import {projectMenuRoutes, IMenuRoute} from "@config/projectMenus";
 import getProjectImgByKey from "@pages/project-center/project-img";
-import {PROJECT_COLOR} from "@config/sysConstant";
+
 
 
 

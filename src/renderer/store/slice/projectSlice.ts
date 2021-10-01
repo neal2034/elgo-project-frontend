@@ -53,6 +53,18 @@ const projectThunks = {
             await request.post({url:apiUrl.project.projectRes, data})
         }
     },
+    delProject : (params:{serial:number})=>{
+            return async ()=>{
+                const result = await  request.doDel(apiUrl.project.projectRes, params)
+                return result.isSuccess
+            }
+        },
+    withdrawDelProject : (params:{serial:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.doPut(apiUrl.project.withdraw,undefined, params)
+                return result.isSuccess
+            }
+        },
     listProject:()=>{
         return async (dispatch:Dispatch<any>)=>{
             const result = await request.get({url:apiUrl.project.projectRes})
@@ -85,7 +97,6 @@ const projectThunks = {
     listAvailableMember : ()=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.get({url:apiUrl.orgMember.available})
-                console.log('result is ', result)
                 if(result.isSuccess){
                     dispatch(projectActions.setAvailableOrgMembers(result.data.members))
                 }

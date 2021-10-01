@@ -79,7 +79,23 @@ const post =   ({url, data, params, config}:IFRequestParam)=>{
     return    request({method:'post', url, data, params, config})
 }
 
+const doPost = (url:string,  data?: {[x:string]:any}, params?:Map, config?: {[x:string]:any}) => {
+    return    request({method:'post', url, data, params, config})
+}
+
+
 const get = ({url, params, config}:IFRequestParam) => {
+    //将get 参数当中的数组转成字符串拼接
+    for(const x in params){
+        if(Object.prototype.hasOwnProperty.call(params,x)&& Array.isArray(params[x])){
+            params[x] = params[x].join(',')
+        }
+    }
+    return request({method:'get', url, params, config})
+}
+
+
+const doGet = (url:string, params?:Map, config?: {[x:string]:any}) =>{
     //将get 参数当中的数组转成字符串拼接
     for(const x in params){
         if(Object.prototype.hasOwnProperty.call(params,x)&& Array.isArray(params[x])){
@@ -91,6 +107,14 @@ const get = ({url, params, config}:IFRequestParam) => {
 
 const del = ({url, params, config}:IFRequestParam)=>{
     return request({method:'delete', url, params,config})
+}
+
+const doDel = (url:string, params?:Map, config?:{[x:string]:any})=>{
+    return request({method:'delete', url, params,config})
+}
+
+const doPut = (url:string,  data?: {[x:string]:any}, params?:Map, config?: {[x:string]:any}) => {
+    return request({method: 'put', url, data, params, config})
 }
 
 const put = ({url, data, params, config}: IFRequestParam) => {
@@ -131,5 +155,9 @@ export default {
     delete:del,
     put,
     get,
+    doGet,
+    doDel,
+    doPut,
+    doPost,
     request
 };
