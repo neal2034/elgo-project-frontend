@@ -102,7 +102,7 @@ const  apiUrl = {
     },
     // 文件API
     fileApi:{
-        getOssSignature: '/file/oss-signature'
+        index: '/file',
     },
     task:{
         index: '/task',

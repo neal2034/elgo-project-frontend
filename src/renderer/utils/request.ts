@@ -69,7 +69,7 @@ axios.interceptors.response.use(response =>{
 }, responseErrorHandler)
 
 
-interface ApiResult {
+export interface ApiResult {
     status:number,
     isSuccess:boolean,
     data?:any
@@ -159,5 +159,5 @@ export default {
     doDel,
     doPut,
     doPost,
-    request
+    request,
 };
