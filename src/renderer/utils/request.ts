@@ -41,14 +41,6 @@ axios.interceptors.request.use(config => {
     if(token){
         config.headers[ 'Authorization' ] = "Bearer " + token;
     }
-
-    // if (config.url.includes('pur/contract/export')) {
-    //     config.headers['responseType'] = 'blob'
-    // }
-    // // 我这里是文件上传，发送的是二进制流，所以需要设置请求头的'Content-Type'
-    // if (config.url.includes('pur/contract/upload')) {
-    //     config.headers['Content-Type'] = 'multipart/form-data'
-    // }
     return config
 }, error => {
 

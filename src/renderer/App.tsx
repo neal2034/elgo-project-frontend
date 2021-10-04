@@ -77,7 +77,7 @@ const App = () => {
              <Content className="app_content">
                      <EffBreadCrumb breads={breads}/>
                      <Dropdown   overlay={menu}  trigger={['click']} placement="bottomRight" >
-                         <EffUser   id={currentUser.id} name={currentUser.name} size={24} className="current-user cursor-pointer"/>
+                         <EffUser img={currentUser.avatar}   id={currentUser.id} name={currentUser.name} size={24} className="current-user cursor-pointer"/>
                      </Dropdown>
                      <ElgoProfile onClose={()=>setShowProfile(false)} visible={showProfile}/>
                      <Switch>
@@ -90,7 +90,7 @@ const App = () => {
                          <PrivateRoute component={ProjectHome} path='/app/project/:serial'/>
 
                      </Switch>
-                 </Content>
+             </Content>
          </Layout>
     )
 }

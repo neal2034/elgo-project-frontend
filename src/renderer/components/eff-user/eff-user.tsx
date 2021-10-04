@@ -7,6 +7,7 @@ interface User{
     id:number,
     name:string|number,
     size:number,
+    img?:string,            //头像地址
     style?:any,
     [x:string]:any
 }
@@ -21,6 +22,6 @@ export default function EffUser(props:User){
         userStyle = {...style, ...userStyle}
     }
     return (
-        <Avatar {...rest}   style={userStyle} size={avatarSize}>{key}</Avatar>
+        <Avatar {...rest}  src={props.img} style={userStyle} size={avatarSize}>{key}</Avatar>
     )
 }
