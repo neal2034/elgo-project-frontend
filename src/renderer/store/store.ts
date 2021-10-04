@@ -14,6 +14,7 @@ import testPlanSlice from './slice/testPlanSlice'
 import bugSlice from './slice/bugSlice'
 import versionSlice from './slice/versionSlice'
 import elgoVersionSlice from './slice/elgoVersionSlice'
+import userSlice from './slice/userSlice'
 
 
 
@@ -33,7 +34,8 @@ const store = configureStore({
         testPlan:testPlanSlice,
         bug:bugSlice,
         version:versionSlice,
-        elgoVersion:elgoVersionSlice
+        elgoVersion:elgoVersionSlice,
+        user: userSlice
 
 
     },

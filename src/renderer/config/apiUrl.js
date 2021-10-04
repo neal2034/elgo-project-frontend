@@ -10,7 +10,8 @@ const  apiUrl = {
         checkRetrievePwdToken: "/user/public/check-retrieve-pwd-token",  //校验找回密码token
         retrievePassword: "/user/public/retrieve-password",              //重设密码
         userRes: "/user",                                               //用户资源
-        avatar: "/user/avatar",                                         //修改用户头像
+        avatar: "/user/avatar",                                         //修改用户头像,
+        name: "/user/name",                                             //修改用户名称
     },
     organization:{
         orgRes: '/organization',            //组织资源,

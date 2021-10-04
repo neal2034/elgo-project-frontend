@@ -120,7 +120,7 @@ const accountThunks = {
 const accountActions = accountSlice.actions
 
 
-export {accountActions, accountThunks}
+export {accountActions, accountThunks, IUser}
 
 
 

@@ -29,6 +29,7 @@ export default function EffMemberItem(props:IProps){
     let title = member.boolProjectOwner?'项目拥有者':''
     title = member.boolOwner?'超级管理员':title
     const width = props.select? '260px':'380px';
+    console.log('here is the mbemre ', member)
 
     const response = {
         handleDel(){
