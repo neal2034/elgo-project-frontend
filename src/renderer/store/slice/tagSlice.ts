@@ -29,27 +29,27 @@ const tagThunks = {
         },
     addTag : (data:{name:string,color:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url:apiUrl.tags.index, data})
+                const result = await request.post({url:apiUrl.tags.index, data})
                 return result.isSuccess
             }
         },
     editTag : (data:{name:string, color:string, id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.put({url:apiUrl.tags.index, data})
+                const result = await request.put({url:apiUrl.tags.index, data})
                 return result.isSuccess
             }
         },
     //删除标签
     delTag : (params:{id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.delete({url:apiUrl.tags.index, params})
+                const result = await request.delete({url:apiUrl.tags.index, params})
                 return result.isSuccess
             }
         },
     //撤销删除标签
     withdrawTag : (params:{id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.put({url:apiUrl.tags.withdrawDel, params})
+                const result = await request.put({url:apiUrl.tags.withdrawDel, params})
                 return result.isSuccess
             }
         }

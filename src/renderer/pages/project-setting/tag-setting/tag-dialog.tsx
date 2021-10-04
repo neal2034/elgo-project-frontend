@@ -36,8 +36,8 @@ export default function TagDialog(props:IProps){
 
     const response = {
         saveTag: async ()=>{
-            let values = await tagForm.validateFields()
-            let name = values.name
+            const values = await tagForm.validateFields()
+            const name = values.name
             if(props.tag){
                 props.onEdit(name,selectColor,props.tag.id)
             }else{

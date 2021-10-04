@@ -39,14 +39,14 @@ export default function ActiveUser(){
 
     const response = {
         activeUser: async ()=>{
-            let values = await  activeForm.validateFields();
-            let password = md5(values.password)
-            let data = {
+            const values = await  activeForm.validateFields();
+            const password = md5(values.password)
+            const data = {
                 token,
                 password,
                 boolNew: activeUserStatus == 0
             }
-            let result:any = await  dispatch(orgThunks.activeUser(data))
+            const result:any = await  dispatch(orgThunks.activeUser(data))
             if(result){
                 effToast.success('用户激活成功')
                 history.push('/login')

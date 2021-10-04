@@ -89,26 +89,26 @@ export const orgThunks = {
         },
     addOrganization : (data:{name:string, password:string, token:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url: apiUrl.organization.addOrg, data})
+                const result = await request.post({url: apiUrl.organization.addOrg, data})
                 return result.isSuccess
             }
         },
     addAnotherOrganization : (data:{name:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url: apiUrl.organization.orgRes, data})
+                const result = await request.post({url: apiUrl.organization.orgRes, data})
                 return result.isSuccess
             }
         },
     removeOrgMember : (params:{id:number})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.delete({url:apiUrl.organization.addMember, params})
+                const result = await request.delete({url:apiUrl.organization.addMember, params})
                 return result.isSuccess
             }
         },
     //检测成员邀请token 的有效性
     checkInviteToken : (params:{token:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.get({url:apiUrl.organization.checkOrgUserToken, params})
+                const result = await request.get({url:apiUrl.organization.checkOrgUserToken, params})
                 let status = -2;
                 if(result.status === 100005){
                    //token 不存在或已被使用
@@ -124,7 +124,7 @@ export const orgThunks = {
     //激活用户
     activeUser : (data: {token:string, password:string, boolNew:boolean})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.post({url:apiUrl.organization.activeMember, data})
+                const result = await  request.post({url:apiUrl.organization.activeMember, data})
                 return result.isSuccess
             }
         }

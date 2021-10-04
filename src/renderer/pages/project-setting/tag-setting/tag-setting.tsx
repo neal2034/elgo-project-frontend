@@ -45,7 +45,7 @@ export default function TagSetting(){
             setConfirmDelDlgVisible(true)
         },
         confirmDelTag: async()=>{
-            let result:any = await dispatch(tagThunks.delTag({id:willDelTag.id}))
+            const result:any = await dispatch(tagThunks.delTag({id:willDelTag.id}))
             setConfirmDelDlgVisible(false)
             if(result){
                 dispatch(tagThunks.listTags())
@@ -54,7 +54,7 @@ export default function TagSetting(){
             console.log()
         },
         withdrawDelTag: async()=>{
-            let result: any = await dispatch(tagThunks.withdrawTag({id:willDelTag.id}))
+            const result: any = await dispatch(tagThunks.withdrawTag({id:willDelTag.id}))
             if(result){
                 dispatch(tagThunks.listTags())
                 effToast.success('撤销成功')

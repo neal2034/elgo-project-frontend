@@ -90,7 +90,7 @@ const accountThunks = {
         },
     resentSignUp : (data:{email:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.post({url:apiUrl.user.resent, data})
+                const result = await  request.post({url:apiUrl.user.resent, data})
                 return result.isSuccess
             }
         },

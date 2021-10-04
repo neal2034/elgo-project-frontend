@@ -21,13 +21,13 @@ export default function NewOrg(){
 
     const response = {
         newOrg: async ()=>{
-            let values = await newOrgForm.validateFields();
-            let name = values.name
+            const values = await newOrgForm.validateFields();
+            const name = values.name
 
 
             if(isNew){
-                let name = values.name;
-                let result:any = await dispatch(orgThunks.addAnotherOrganization({name}))
+                const name = values.name;
+                const result:any = await dispatch(orgThunks.addAnotherOrganization({name}))
                 if(result){
                     effToast.success('新组织创建成功')
                     history.push('/login')
@@ -35,8 +35,8 @@ export default function NewOrg(){
 
             }else{
                 //激活账号
-                let password = md5(values.password)
-                let result:any = await dispatch(orgThunks.addOrganization({name, password,token}))
+                const password = md5(values.password)
+                const result:any = await dispatch(orgThunks.addOrganization({name, password,token}))
                 if(result){
                     effToast.success('账号激活成功')
                     history.push('/login')
