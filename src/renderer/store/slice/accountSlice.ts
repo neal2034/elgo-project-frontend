@@ -17,6 +17,16 @@ interface PayloadLogin {
 }
 
 
+//描述返回的User
+interface IUser{
+    id:number,
+    username:string,
+    name:string,
+    avatar?:string,
+    boolEnable:boolean
+}
+
+
 
 const accountSlice = createSlice({
     name: 'account',
@@ -24,6 +34,7 @@ const accountSlice = createSlice({
         memberName:null,
         memberEmail:null,
         currentMember: {},
+        currentUser: {} as IUser,
         signupUserExist: false,  // 注册的用户是否已存在
         signupEmailSent: false, // 注册邮件是否已发送
     },
@@ -39,6 +50,7 @@ const accountSlice = createSlice({
         },
         setSignupUserExist: (state, action) => { state.signupUserExist = action.payload },
         setSignupEmailSent: (state, action) => { state.signupEmailSent = action.payload },
+        setCurrentUser: (state, action) => { state.currentUser = action.payload },
     }
 })
 
@@ -76,6 +88,15 @@ const accountThunks = {
                 dispatch(accountSlice.actions.setMemberEmail(result.data.email))
                 dispatch(accountSlice.actions.setCurrentMember(result.data))
             }
+        }
+    },
+    getCurrentUser : ()=> {
+        return async (dispatch: Dispatch<any>) => {
+            const result = await request.doGet(apiUrl.user.userRes);
+            if(result.isSuccess){
+                dispatch(accountActions.setCurrentUser(result.data))
+            }
+            return result.isSuccess
         }
     },
     signup : (data:{email:string, code:string})=>{

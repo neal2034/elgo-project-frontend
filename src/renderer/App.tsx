@@ -18,6 +18,7 @@ import MyTask from "./pages/my-task/my-task";
 import MyBugs from "./pages/my-bugs/my-bugs";
 import OrgMembers from "./pages/org-members/org-members";
 import {imgSwitch, imgQuit, imgProfile} from "@config/svgImg";
+import ElgoProfile from "@pages/profile/profile";
 
 const {Content} = Layout
 
@@ -26,9 +27,14 @@ const {Content} = Layout
 const App = () => {
     const history = useHistory()
     const dispatch = useDispatch()
+    const [showProfile, setShowProfile] = useState(false)
     const breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
-    const currentMember:any = useSelector((state:RootState)=>state.account.currentMember)
-    useEffect(()=>{dispatch(accountThunks.getCurrentMember())},[dispatch])
+    const currentUser = useSelector((state:RootState) => state.account.currentUser)
+
+    useEffect(()=>{
+        dispatch(accountThunks.getCurrentUser())
+    },[])
+
 
     const response = {
 
@@ -40,7 +46,7 @@ const App = () => {
                     history.push("/app/org-switch")
                     break;
                 case 'change-pwd':
-                    alert('修改密码功能开发中')
+                    setShowProfile(true)
                     break;
                 case 'log-out':
                     history.push("/login")
@@ -71,8 +77,9 @@ const App = () => {
              <Content className="app_content">
                      <EffBreadCrumb breads={breads}/>
                      <Dropdown   overlay={menu}  trigger={['click']} placement="bottomRight" >
-                         <EffUser   id={currentMember.id} name={currentMember.name} size={24} className="current-user cursor-pointer"/>
+                         <EffUser   id={currentUser.id} name={currentUser.name} size={24} className="current-user cursor-pointer"/>
                      </Dropdown>
+                     <ElgoProfile onClose={()=>setShowProfile(false)} visible={showProfile}/>
                      <Switch>
                          <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
                          <PrivateRoute component={Api} path="/app/api" />
