@@ -9,6 +9,7 @@ import {Dispatch} from "react";
 interface IProjectMember{
     id:number,
     orgMemberId:number,
+    userId:number,
     name:string,
     email:string,
     boolEnable:boolean,
