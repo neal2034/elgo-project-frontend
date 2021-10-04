@@ -31,9 +31,9 @@ export default function Api(){
                 const item = {name:key,value,used:true};
                 if(env.items){
                     let setted = false
-                    env.items.forEach((envItem:any)=>{
+                    env.items.forEach((envItem:any,index:number)=>{
                         if(envItem.name===key){
-                            envItem.value = value;
+                            env.items[index] = item
                             setted = true;
                         }
                     })
