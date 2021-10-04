@@ -113,12 +113,12 @@ export default function FunztionForm(props:IProps){
                     </Select>
                 </Form.Item> }
 
-                <Form.Item className="mt20"   label={'标签'}>
+                {false && <Form.Item className="mt20"   label={'标签'}>
                     <div className="d-flex ml40">
                         <EffTagArea onDel={response.onDelTag} tags={selectedTags}/>
                         <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds}  tags={tags}/>
                     </div>
-                </Form.Item>
+                </Form.Item>}
 
                 <Form.Item  name="description" className="mt20 d-flex align-start" label={'功能描述'}>
                     <EffEditor height={360} onChange={response.occupy}/>

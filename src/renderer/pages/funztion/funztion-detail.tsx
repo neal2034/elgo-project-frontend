@@ -159,7 +159,7 @@ export default function FunztionDetail(props:IProps){
 
                 </div>
 
-                <div className="d-flex align-center mt20">
+                {false && <div className="d-flex align-center mt20">
                     <EffLabel name={'标签'}/>
                     <div className="d-flex ml10">
                         <EffTagArea onDel={response.delTag} tags={selectedTags}/>
@@ -167,7 +167,7 @@ export default function FunztionDetail(props:IProps){
                                         chosen={data.currentFunztion.tagIds? data.currentFunztion.tagIds:[]}
                                         tags={data.allTags}/>
                     </div>
-                </div>
+                </div>}
             </div>
 
 

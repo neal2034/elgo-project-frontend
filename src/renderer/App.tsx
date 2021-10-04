@@ -27,7 +27,7 @@ const {Content} = Layout
 const App = () => {
     const history = useHistory()
     const dispatch = useDispatch()
-    const [showProfile, setShowProfile] = useState(true)
+    const [showProfile, setShowProfile] = useState(false)
     const breads = useSelector((state:RootState)=>state.breadcrumb.breadcrumbs)
     const currentUser = useSelector((state:RootState) => state.account.currentUser)
 
