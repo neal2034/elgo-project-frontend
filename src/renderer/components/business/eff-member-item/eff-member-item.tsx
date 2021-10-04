@@ -9,6 +9,7 @@ interface IMember{
     email:string,
     name:string,
     userId:number,
+    avatar?:string,
     boolEnable:boolean,
     boolOwner?:boolean,
     boolProjectOwner?:boolean,
@@ -47,7 +48,7 @@ export default function EffMemberItem(props:IProps){
         {props.select && <Checkbox onChange={response.handleSelect} className="mr20"/>}
         <div className="d-flex justify-between flex-grow-1 align-center">
             <div className="d-flex align-center">
-                <EffUser id={member.userId} name={member.name} size={35}/>
+                <EffUser img={member.avatar} id={member.userId} name={member.name} size={35}/>
                 <div className="d-flex-column ml10 detail">
                     <span className="name mb5">{member.name}</span>
                     <div className="d-flex align-end justify-between">
