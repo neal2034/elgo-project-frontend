@@ -4,3 +4,37 @@
   top:20px;
 }
 
+.user-menu{
+  .menu-item{
+    margin: 5px 10px !important;
+    color:  @color-font-weak !important;
+    span{
+      display: flex;
+      align-items: center;
+    }
+
+    .icon{
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+      path{
+        fill: @color-font-weak !important;
+      }
+    }
+
+    .icon-quit{
+      width: 18px;
+      height: 18px;
+    }
+
+
+    &:hover{
+      background-color:  rgba(250,176,79, .1) !important;
+      color: @color-main-yellow-dark !important;
+      .icon path{
+        fill: @color-main-yellow-dark !important;
+      }
+    }
+  }
+
+}
