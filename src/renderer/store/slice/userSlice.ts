@@ -18,7 +18,13 @@ const userThunks = {
                 const result = await request.doPut(apiUrl.user.name, data)
                 return result.isSuccess
             }
-        }
+        },
+    changePwd : (data: {oldPassword:string, newPassword:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.doPost(apiUrl.user.password, data)
+                return result.status
+            }
+        },
 }
 
 export {userActions, userThunks}

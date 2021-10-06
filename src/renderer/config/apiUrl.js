@@ -12,6 +12,7 @@ const  apiUrl = {
         userRes: "/user",                                               //用户资源
         avatar: "/user/avatar",                                         //修改用户头像,
         name: "/user/name",                                             //修改用户名称
+        password: "/user/change-pwd",                                   // 修改用户密码
     },
     organization:{
         orgRes: '/organization',            //组织资源,

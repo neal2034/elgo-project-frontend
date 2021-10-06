@@ -16,6 +16,7 @@ import {getOrganizationDetail} from "@slice/orgSlice";
 interface IProps{
     visible:boolean,
     onClose: ()=>void,
+    onOperation: (key:string) => void
 }
 
 
@@ -56,6 +57,12 @@ export default function ProfileDlg(props: IProps){
              }
 
              setIsEditingName(false)
+        },
+        goEditEmail: () => {
+            props.onOperation('email')
+        },
+        goEditPwd: () => {
+            props.onOperation('password')
         }
     }
 
@@ -101,7 +108,7 @@ export default function ProfileDlg(props: IProps){
                         <span>{currentUser.username}</span>
                     </Col>
                     <Col span={4}>
-                        <span className="modify">修改</span>
+                        <span onClick={response.goEditEmail} className="modify">修改</span>
                     </Col>
                 </Row>
 
@@ -113,7 +120,7 @@ export default function ProfileDlg(props: IProps){
                         <span className="password">******</span>
                     </Col>
                     <Col span={4}>
-                        <span className="modify">修改</span>
+                        <span onClick={response.goEditPwd} className="modify">修改</span>
                     </Col>
                 </Row>
             </div>
