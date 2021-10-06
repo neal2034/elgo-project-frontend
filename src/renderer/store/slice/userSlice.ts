@@ -25,6 +25,18 @@ const userThunks = {
                 return result.status
             }
         },
+    sendChangeEmailToken : (data:{password:string, email:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.doPost(apiUrl.user.sendChangeEmailToken, data)
+                return result.status
+            }
+        },
+    changeEmail : (data: {token:string, email:string})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await  request.doPost(apiUrl.user.changeEmail, data)
+                return result.status
+            }
+        }
 }
 
 export {userActions, userThunks}

@@ -32,6 +32,8 @@ export default function ProfileDlg(props: IProps){
     const orgSerial = umbrella.getLocalStorage('oserial')
     const [avatarName, setAvatarName] = useState("avatar.png");
 
+    console.log('heere is curernt ', currentUser)
+
     const response = {
         onUploadChange: (info:any)=>{
             if (info.file.status === 'done') {

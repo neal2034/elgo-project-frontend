@@ -13,6 +13,9 @@ const  apiUrl = {
         avatar: "/user/avatar",                                         //修改用户头像,
         name: "/user/name",                                             //修改用户名称
         password: "/user/change-pwd",                                   // 修改用户密码
+        sendChangeEmailToken: '/user/sent-change-email',                //发送邮箱修改邮件
+        changeEmail: '/user/change-email',                              //修改用户密码
+
     },
     organization:{
         orgRes: '/organization',            //组织资源,
