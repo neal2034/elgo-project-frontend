@@ -90,11 +90,11 @@ export default function BugAdvanceSearch(props:IProps){
                 </div>
 
 
-                <div className="d-flex" style={{width:'50%'}}>
+                {false && <div className="d-flex" style={{width:'50%'}}>
                     <Form.Item  name={'tags'}  className="flex-grow-1" label={'标签'} >
                         <Select suffixIcon={<CaretDownOutlined />} tagRender={tagRender} mode="multiple"  size={"large"} showArrow options={tagOptions}/>
                     </Form.Item>
-                </div>
+                </div>}
 
 
                 <div className="d-flex justify-end">

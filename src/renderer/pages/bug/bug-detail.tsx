@@ -134,7 +134,7 @@ export default function BugDetail(props:IProps){
                 <EffEditableSelector clear={false} id={currentBug.status} options={bugStatusOptions} onChange={response.editStatus}/>
             </div>
 
-            <div className="d-flex align-center mt20">
+            {false && <div className="d-flex align-center mt20">
                 <EffLabel name={'标签'}/>
                 <div className="d-flex ml10">
                     <EffTagArea onDel={response.delTag} tags={selectedTags}/>
@@ -142,7 +142,7 @@ export default function BugDetail(props:IProps){
                                     chosen={currentBug.tagIds? currentBug.tagIds:[]}
                                     tags={allTags}/>
                 </div>
-            </div>
+            </div>}
 
 
         </div>
