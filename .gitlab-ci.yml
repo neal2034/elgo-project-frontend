@@ -32,8 +32,9 @@ build:
   script:
     - echo "===========Build==========="
     - git clone http://oauth2:s5v43F2x3-jRVHH2VXtc@www.repo.elgo.cc/base-projects/elgo-editor.git -b develop $ELGO_EDITOR_SRC
+    - cd $ELGO_EDITOR_SRC; cnpm i; cnpm run build;
     - git clone http://oauth2:2vEyDbk7vypebA1FByUZ@www.repo.elgo.cc/elgo/elgo-frontend.git -b $CI_COMMIT_REF_NAME $FRONTEND_SRC
-    - cd $FRONTEND_SRC; cnpm i; cnpm i --save $ELGO_EDITOR_SRC;  cnpm run $BUILD_COMMAND ;
+    - cd $FRONTEND_SRC; cnpm i; cnpm i $ELGO_EDITOR_SRC;  cnpm run $BUILD_COMMAND ;
 
 
 deploy:
