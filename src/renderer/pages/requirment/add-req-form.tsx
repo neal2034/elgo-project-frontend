@@ -3,9 +3,9 @@ import './requirment.less'
 import {Col, Form, Input, Row, Select} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
-import EffEditor from "../../components/common/eff-editor/eff-editor";
 import EffButton from "../../components/eff-button/eff-button";
 import {CaretDownOutlined} from '@ant-design/icons'
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 
@@ -141,7 +141,7 @@ export  default  function AddReqForm(props:IAddReqFormProps){
 
                 </Row>
                 <Form.Item  name="description" className="mt20 d-flex align-start" label={'需求描述'}>
-                    <EffEditor height={360} onChange={response.handleDescriptionChange}/>
+                    <ReactElgoEditor height={360} onChange={response.handleDescriptionChange}/>
                 </Form.Item>
             </Form>
 

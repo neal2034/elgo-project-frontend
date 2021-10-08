@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import EffEditor from "../eff-editor/eff-editor";
 import './eff-editable-doc.less'
 import EffButton from "../../eff-button/eff-button";
 import {Image} from "antd";
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 interface IProps{
@@ -70,7 +70,7 @@ export default function EffEditableDoc(props:IProps){
                     <EffButton onClick={response.cancelEditing} text={'取消'} key={'cancel'} round={true} width={80} type={"line"}/>
                     <EffButton className="ml10" onClick={response.saveContent} text={'保存'} key={'save'} round={true} width={80} type={"filled"}/>
                 </div>
-                <EffEditor content={content} onChange={response.contentChanged}/>
+                <ReactElgoEditor defaultValue={content} onChange={response.contentChanged}/>
             </div>
             :
             <div onClick={response.contentClick} className="doc-content cursor-pointer" dangerouslySetInnerHTML={{__html: content}}/>}
