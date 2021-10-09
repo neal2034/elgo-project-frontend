@@ -18,7 +18,8 @@ export default function HomePage(){
     const {path} = useRouteMatch()
     const [homeKey, setHomeKey] = useState('home')
     const menus = [
-        {menuKey:'help', path:'/home/help', name:'帮助'},
+        //TODO 暂时不做帮助 待合适时机
+        // {menuKey:'help', path:'/home/help', name:'帮助'},
         {menuKey:'blog', path:'/home/blog', name:'社区'},
         {menuKey:'download', path:'/home/download', name:'下载'},
         {menuKey:'about', path:'/home/about', name:'关于'},
