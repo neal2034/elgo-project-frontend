@@ -2,13 +2,13 @@ import React, {useState} from "react";
 import {Col, Form, Input, Row, Select} from "antd";
 import EffTagArea from "@components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "@components/common/eff-tag-selector/eff-tag-selector";
-import EffEditor from "@components/common/eff-editor/eff-editor";
 import EffButton from "@components/eff-button/eff-button";
 import './bug.less'
 import {CaretDownOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {BUG_SEVERITY} from "@config/sysConstant";
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 interface IProps{
@@ -106,7 +106,7 @@ export default function AddBugForm(props:IProps){
             <Row className="mt20" gutter={48}>
                 <Col span={24}>
                     <Form.Item labelCol={{span:2}}  name="description" className="d-flex align-start" label={'Bug描述'}>
-                        <EffEditor height={360}/>
+                        <ReactElgoEditor height={360}/>
                     </Form.Item>
                 </Col>
 

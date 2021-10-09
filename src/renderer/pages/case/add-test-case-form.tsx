@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Form, Input, Select} from "antd";
 import EffTagArea from "../../components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "../../components/common/eff-tag-selector/eff-tag-selector";
-import EffEditor from "../../components/common/eff-editor/eff-editor";
 import EffButton from "../../components/eff-button/eff-button";
 import './test-case.less'
 import {useDispatch, useSelector} from "react-redux";
@@ -10,6 +9,7 @@ import {RootState} from "../../store/store";
 import {funztionActions, funztionThunks} from "@slice/funztionSlice";
 import {CaretDownOutlined} from '@ant-design/icons'
 import {PRIORITY} from "@config/sysConstant";
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 
@@ -128,7 +128,7 @@ export default function AddTestCaseForm(props:IProps){
             </div>
 
             <Form.Item  name="description" className="mt20 d-flex align-start" label={'用例描述'}>
-                <EffEditor height={360}/>
+                <ReactElgoEditor height={360}/>
             </Form.Item>
         </Form>
 
