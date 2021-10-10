@@ -219,6 +219,8 @@ module.exports = merge.smart(webpackBaseConfig, {
         inline: true,
         lazy: false,
         hot: true,
+        open:true,
+        openPage:'dist/#',
         headers: {'Access-Control-Allow-Origin': '*'},
         contentBase: path.join(__dirname, 'dist'),
         watchOptions: {

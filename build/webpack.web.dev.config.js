@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
 
 
-const port = process.env.PORT || 8080;
+
 
 
 const hot = [];
@@ -26,15 +26,8 @@ const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'none',
-    mode: 'development',
-
+    mode: 'production',
     entry,
-    resolve: {
-        alias: {
-
-        }
-    },
-
     output: {
         publicPath: './',
         filename: '[name].js'
@@ -104,32 +97,7 @@ module.exports = merge.smart(webpackBaseConfig, {
                     {loader: 'sass-loader'}
                 ]
             },
-            {
-                test: /\.less$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    // 'postcss-loader',
-                    {
-                        loader:'less-loader',
-                        options:{
-                            lessOptions: {
-                                javascriptEnabled: true
-                            }
-                        }
-                    },
-                    // 'less-loader',
-                    {
-                        loader: 'style-resources-loader',
-                        options: {
-                            patterns: [path.resolve(__dirname,'../resources/style/reset.global.less'),
-                                path.resolve(__dirname,'../resources/style/flex.global.less'),
-                                path.resolve(__dirname,'../resources/style/ant.design.global.less'),
-                                path.resolve(__dirname,'../resources/style/normal.global.less')]
-                        }
-                    }
-                ],
-            },
+
             // 处理图片
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
@@ -139,44 +107,6 @@ module.exports = merge.smart(webpackBaseConfig, {
                         limit: 5000
                     }
                 }
-            },
-            // 处理字体 WOFF
-            {
-                test: /\.woff(\?v=\d+\.\d+\/\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5000,
-                        mimetype: 'application/font-woff'
-                    }
-                }
-            },
-            // 处理字体 WOFF2
-            {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5000,
-                        mimetype: 'application/font-woff'
-                    }
-                }
-            },
-            // 处理字体 TTF
-            {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5000,
-                        mimetype: 'application/octet-stream'
-                    }
-                }
-            },
-            // 处理字体 EOT
-            {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'file-loader'
             },
             // 处理SVG
             {
@@ -194,37 +124,12 @@ module.exports = merge.smart(webpackBaseConfig, {
 
 
     plugins: [
-        // webpack 模块热重载
-        new webpack.HotModuleReplacementPlugin({
-            multiStep: false
-        }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
-        }),
+
+
         new webpack.LoaderOptionsPlugin({
             debug: true
         }),
         ...htmlWebpackPlugin
     ],
-    // webpack服务
-    devServer: {
-        port,
-        compress: true,
-        noInfo: false,
-        stats: 'errors-only',
-        inline: true,
-        lazy: false,
-        hot: true,
-        headers: {'Access-Control-Allow-Origin': '*'},
-        contentBase: path.join(__dirname, 'dist'),
-        watchOptions: {
-            aggregateTimeout: 300,
-            ignored: /node_modules/,
-            poll: 100
-        },
-        historyApiFallback: {
-            verbose: true,
-            disableDotRule: false
-        },
-    }
+
 });
