@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 
 
@@ -124,10 +125,9 @@ module.exports = merge.smart(webpackBaseConfig, {
 
 
     plugins: [
+        new OptimizeCSSAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
 
-
-        new webpack.LoaderOptionsPlugin({
-            debug: true
         }),
         ...htmlWebpackPlugin
     ],

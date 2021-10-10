@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 
 const hot = [];
@@ -124,11 +125,9 @@ module.exports = merge.smart(webpackBaseConfig, {
 
 
     plugins: [
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: 'production'
-        }),
-        new webpack.LoaderOptionsPlugin({
-            debug: true
+        new OptimizeCSSAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+
         }),
         ...htmlWebpackPlugin
     ],

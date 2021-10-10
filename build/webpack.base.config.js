@@ -67,8 +67,8 @@ module.exports = {
     devtool: 'source-map',
     plugins: [
         new MiniCssExtractPlugin({
-            filename: devMode? 'css/[name].css': 'css/[name].[hash].css',
-            chunkFilename: devMode? 'css/[id].css': 'css/[id].[hash].css'
+            filename: devMode? 'css/[name].css': 'css/[name].[hash:8].css',
+            chunkFilename: devMode? 'css/[id].css': 'css/[id].[hash:8].css'
         })
     ]
 };

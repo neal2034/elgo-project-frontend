@@ -1,6 +1,6 @@
 {
   "name": "Elgo",
-  "version": "1.0.3",
+  "version": "1.0",
   "description": "",
   "main": "dist/main/main.prod.js",
   "scripts": {
@@ -98,6 +98,7 @@
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
+    "cssnano": "^5.0.8",
     "devtron": "^1.4.0",
     "electron": "^9.0.5",
     "electron-builder": "^22.7.0",
@@ -113,6 +114,8 @@
     "node-addon-api": "^3.0.0",
     "node-loader": "^1.0.0",
     "node-sass": "^4.14.1",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "postcss": "^8.3.9",
     "resolve-url-loader": "^3.1.1",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",

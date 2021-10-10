@@ -201,9 +201,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         new webpack.HotModuleReplacementPlugin({
             multiStep: false
         }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
-        }),
         new webpack.LoaderOptionsPlugin({
             debug: true
         }),
