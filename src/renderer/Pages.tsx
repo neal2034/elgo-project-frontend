@@ -2,7 +2,6 @@ import React from 'react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PageNotFound from "./components/pages/PageNotFound";
 import Login from "./pages/account/login";
-import App from "./App";
 import {useSnackbar} from "notistack";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import NewOrg from "./pages/signup/new-org";
@@ -13,11 +12,16 @@ import ActiveUser from "./pages/signup/active-user";
 
 export default function Pages(){
 
+    const App = React.lazy(()=>import('./App'))
+
+    //全局设置 snack bar
     const {enqueueSnackbar, closeSnackbar} = useSnackbar()
     effToast.setSnackBar(enqueueSnackbar,closeSnackbar)
 
+    //若为桌面端则直接进入登录
     const isElectron = window && window.process && window.process.type == 'renderer'
     const homePath = isElectron ? '/login':'/home'
+
 
 
   return ( <Router>
