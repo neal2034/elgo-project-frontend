@@ -1,5 +1,5 @@
 import { AppContainer as ReactHotContainer } from 'react-hot-loader';
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store/store'
@@ -13,7 +13,10 @@ ReactDOM.render(
     <AppContainer>
         <Provider store={store}>
             <SnackbarProvider maxSnack={3} autoHideDuration={2000} anchorOrigin={{vertical: 'top', horizontal: 'center'}}>
-            <Pages />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Pages />
+                </Suspense>
+
             </SnackbarProvider>
         </Provider>
     </AppContainer>,
