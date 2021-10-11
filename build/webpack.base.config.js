@@ -12,7 +12,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader', // babel-loader处理jsx或tsx文件
                     options: {
-                        cacheDirectory: true
+                        cacheDirectory: true,
                     }
                 }
             },
@@ -52,8 +52,31 @@ module.exports = {
                     }
                 ],
             },
+            // 处理图片
+            {
+                test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 5000,
+                        name: 'assets/[name].[hash:8].[ext]'
+                    }
+                }
+            },
+            // 处理SVG
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 5000,
+                        mimetype: 'image/svg+xml'
+                    }
+                }
+            }
         ]
     },
+    stats: "minimal", //关闭 mini-css-extract log
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.node', '.png' ],
         alias: {

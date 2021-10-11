@@ -99,27 +99,7 @@ module.exports = merge.smart(webpackBaseConfig, {
                 ]
             },
 
-            // 处理图片
-            {
-                test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5000
-                    }
-                }
-            },
-            // 处理SVG
-            {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5000,
-                        mimetype: 'image/svg+xml'
-                    }
-                }
-            }
+
         ]
     },
 
