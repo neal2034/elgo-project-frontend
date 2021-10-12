@@ -302,8 +302,8 @@ export default function ApiUrlArea(props:IApiProps){
             const { ipcRenderer } = window.require('electron');
             ipcRenderer.invoke('api-call', method,{url, data:body, config:{headers}}).then((data:any)=>{
                 const testsCode = api.testsCode
-                //TODO 需要处理responseBody
-                // const responseBody =  JSON.stringify(data);  //该变量可被测试使用
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const responseBody =  JSON.stringify(data);  //该变量可被测试使用
                 if(testsCode){
                     try {
                         eval(testsCode);

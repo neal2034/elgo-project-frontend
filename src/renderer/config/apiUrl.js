@@ -3,8 +3,6 @@
 const  apiUrl = {
     user:{
         login: '/login',                //登录
-        lookup: "/user/public/lookup",  //查找用户
-        signon: "/user/public/signon",  //用户登录
         signup: "/user/public/signup",      //用户注册
         resent: '/user/public/resent',      //重新发送注册邮件
         checkCode: "/user/public/check-code",    //检测邀请码是否可用
@@ -12,6 +10,12 @@ const  apiUrl = {
         checkRetrievePwdToken: "/user/public/check-retrieve-pwd-token",  //校验找回密码token
         retrievePassword: "/user/public/retrieve-password",              //重设密码
         userRes: "/user",                                               //用户资源
+        avatar: "/user/avatar",                                         //修改用户头像,
+        name: "/user/name",                                             //修改用户名称
+        password: "/user/change-pwd",                                   // 修改用户密码
+        sendChangeEmailToken: '/user/sent-change-email',                //发送邮箱修改邮件
+        changeEmail: '/user/change-email',                              //修改用户密码
+
     },
     organization:{
         orgRes: '/organization',            //组织资源,
@@ -34,6 +38,7 @@ const  apiUrl = {
     project:{
         projectRes: '/project',        //项目资源,
         recycle: '/project/recycle',   //回收项目
+        withdraw: '/project/withdraw',  //撤销删除
         rename: '/project/rename',     //修改名称
         members: '/project/member',    //项目成员资源
         detail: '/project/detail',     //获取项目详情
@@ -101,7 +106,7 @@ const  apiUrl = {
     },
     // 文件API
     fileApi:{
-        getOssSignature: '/file/oss-signature'
+        index: '/file',
     },
     task:{
         index: '/task',
@@ -153,7 +158,10 @@ const  apiUrl = {
         withdrawDel: '/defect/withdraw',        //撤销删除
         mine:'/my/defect',                        //我的任务
 
-    }
+    },
+    elgoVersion:{
+        index: '/elgo-version/public/list',     //列出elgo 的版本信息
+    },
 }
 
 

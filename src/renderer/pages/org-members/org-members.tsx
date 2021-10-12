@@ -10,7 +10,7 @@ import globalColor from "@config/globalColor";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import EffMemberItem from "@components/business/eff-member-item/eff-member-item";
 import EffConfirmDlg from "@components/eff-confirm-dlg/eff-confirm-dlg";
-import {projectThunks} from "@slice/projectSlice";
+
 
 
 export default function OrgMembers(){

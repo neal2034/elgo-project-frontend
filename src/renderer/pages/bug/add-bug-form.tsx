@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import {Form, Input, Select} from "antd";
+import {Col, Form, Input, Row, Select} from "antd";
 import EffTagArea from "@components/common/eff-tag-area/eff-tag-area";
 import EffTagSelector from "@components/common/eff-tag-selector/eff-tag-selector";
-import EffEditor from "@components/common/eff-editor/eff-editor";
 import EffButton from "@components/eff-button/eff-button";
 import './bug.less'
 import {CaretDownOutlined} from '@ant-design/icons'
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {BUG_SEVERITY} from "@config/sysConstant";
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 interface IProps{
@@ -62,48 +62,56 @@ export default function AddBugForm(props:IProps){
         <div className="title  pb10 mb20">
             <span>新增Bug</span>
         </div>
-        <Form  initialValues={{severity:'NORMAL'}} colon={false}  form={addForm}  requiredMark={false} >
-            <Form.Item name="name"  label={'Bug名称'} rules={[{ required: true, message: '请输入Bug名称' }]}>
-                <Input size={"large"}/>
-            </Form.Item>
+        <Form   labelAlign={"right"}  initialValues={{severity:'NORMAL'}} colon={false}  form={addForm}  requiredMark={false} >
+            <Row>
+                <Col span={24}>
+                    <Form.Item labelCol={{span:2}} name="name" label={'Bug名称'} rules={[{ required: true, message: '请输入Bug名称' }]}>
+                        <Input size={"large"}/>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row className="mt20" gutter={48}>
+                <Col span={12}>
+                    <Form.Item labelCol={{span:4}}   name="testerId" label={'QA'}>
+                        <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
+                            {members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>)}
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col span={12}  >
+                    <Form.Item   name="handlerId"   label={'负责人'}>
+                        <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
+                            {members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>)}
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
+            <Row className="mt20" gutter={48}>
+                <Col span={12}>
+                    <Form.Item labelCol={{span:4}}  name="severity"  label={'严重程度'}>
+                        <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
+                            {Object.keys(BUG_SEVERITY).map((item:any)=><Select.Option key={BUG_SEVERITY[item].key} value={BUG_SEVERITY[item].key}>{BUG_SEVERITY[item].name}</Select.Option>)}
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    {false && <Form.Item  name="tagIds"  label={'标签'}>
+                        <div className="d-flex ml40">
+                            <EffTagArea onDel={response.onDelTag} tags={selectedTags}/>
+                            <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds}  tags={props.tags}/>
+                        </div>
+                    </Form.Item>}
+                </Col>
+            </Row>
+            <Row className="mt20" gutter={48}>
+                <Col span={24}>
+                    <Form.Item labelCol={{span:2}}  name="description" className="d-flex align-start" label={'Bug描述'}>
+                        <ReactElgoEditor height={360}/>
+                    </Form.Item>
+                </Col>
 
-            <div className="d-flex justify-between mt40">
-                <Form.Item labelCol={{span:3}}   name="testerId" style={{width:'50%'}}  label={'QA'}>
-                    <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
-                        {members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>)}
-                    </Select>
-                </Form.Item>
+            </Row>
 
-                <Form.Item labelCol={{span:3}} name="handlerId"  style={{width:'50%', marginLeft:'60px'}} label={'负责人'}>
-                    <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
-                        {members.map((item:any)=><Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>)}
-                    </Select>
-                </Form.Item>
-
-            </div>
-
-
-
-
-            <div className="d-flex justify-between mt20">
-                <Form.Item labelCol={{span:3}}  name="severity" style={{width:'50%'}}  label={'严重程度'}>
-                    <Select  className="ml10" size={"large"}  suffixIcon={<CaretDownOutlined />}>
-                        {Object.keys(BUG_SEVERITY).map((item:any)=><Select.Option key={BUG_SEVERITY[item].key} value={BUG_SEVERITY[item].key}>{BUG_SEVERITY[item].name}</Select.Option>)}
-                    </Select>
-                </Form.Item>
-
-                <Form.Item  labelCol={{span:3}} name="tagIds"  style={{width:'50%', marginLeft:'60px'}} label={'标签'}>
-                    <div className="d-flex ml40">
-                        <EffTagArea onDel={response.onDelTag} tags={selectedTags}/>
-                        <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds}  tags={props.tags}/>
-                    </div>
-                </Form.Item>
-
-            </div>
-
-            <Form.Item  name="description" className="mt20 d-flex align-start" label={'Bug描述'}>
-                <EffEditor height={360}/>
-            </Form.Item>
         </Form>
 
         <div className="btn-group d-flex mt40">

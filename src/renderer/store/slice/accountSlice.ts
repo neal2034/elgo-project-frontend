@@ -17,6 +17,16 @@ interface PayloadLogin {
 }
 
 
+//描述返回的User
+interface IUser{
+    id:number,
+    username:string,
+    name:string,
+    avatar?:string,
+    boolEnable:boolean
+}
+
+
 
 const accountSlice = createSlice({
     name: 'account',
@@ -24,6 +34,7 @@ const accountSlice = createSlice({
         memberName:null,
         memberEmail:null,
         currentMember: {},
+        currentUser: {} as IUser,
         signupUserExist: false,  // 注册的用户是否已存在
         signupEmailSent: false, // 注册邮件是否已发送
     },
@@ -39,6 +50,7 @@ const accountSlice = createSlice({
         },
         setSignupUserExist: (state, action) => { state.signupUserExist = action.payload },
         setSignupEmailSent: (state, action) => { state.signupEmailSent = action.payload },
+        setCurrentUser: (state, action) => { state.currentUser = action.payload },
     }
 })
 
@@ -61,6 +73,13 @@ export const login =  (data:PayloadLogin): ThunkAction<void, RootState, unknown,
 }
 
 const accountThunks = {
+    clearLocalStorage : ()=>{
+            return async ()=>{
+                umbrella.setLocalStorage('token', null);
+                umbrella.setLocalStorage('oserial', null);
+                umbrella.setLocalStorage('pserial', null);
+            }
+        },
     getCurrentMember: () => {
         return async (dispatch: Dispatch<any>) => {
             const result = await request.get({url: apiUrl.orgMember.currentMember})
@@ -71,9 +90,18 @@ const accountThunks = {
             }
         }
     },
+    getCurrentUser : ()=> {
+        return async (dispatch: Dispatch<any>) => {
+            const result = await request.doGet(apiUrl.user.userRes);
+            if(result.isSuccess){
+                dispatch(accountActions.setCurrentUser(result.data))
+            }
+            return result.isSuccess
+        }
+    },
     signup : (data:{email:string, code:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await request.post({url: apiUrl.user.signup, data})
+                const result = await request.post({url: apiUrl.user.signup, data})
                 if(result.isSuccess){
                     dispatch(accountActions.setSignupUserExist(result.data.userExist))
                     dispatch(accountActions.setSignupEmailSent(result.data.emailSent))
@@ -83,7 +111,7 @@ const accountThunks = {
         },
     resentSignUp : (data:{email:string})=>{
             return async (dispatch:Dispatch<any>)=>{
-                let result = await  request.post({url:apiUrl.user.resent, data})
+                const result = await  request.post({url:apiUrl.user.resent, data})
                 return result.isSuccess
             }
         },
@@ -92,7 +120,7 @@ const accountThunks = {
 const accountActions = accountSlice.actions
 
 
-export {accountActions, accountThunks}
+export {accountActions, accountThunks, IUser}
 
 
 

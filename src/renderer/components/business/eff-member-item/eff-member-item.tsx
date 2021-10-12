@@ -8,6 +8,8 @@ interface IMember{
     id:number,
     email:string,
     name:string,
+    userId:number,
+    avatar?:string,
     boolEnable:boolean,
     boolOwner?:boolean,
     boolProjectOwner?:boolean,
@@ -27,6 +29,7 @@ export default function EffMemberItem(props:IProps){
     let title = member.boolProjectOwner?'项目拥有者':''
     title = member.boolOwner?'超级管理员':title
     const width = props.select? '260px':'380px';
+    console.log('here is the mbemre ', member)
 
     const response = {
         handleDel(){
@@ -46,7 +49,7 @@ export default function EffMemberItem(props:IProps){
         {props.select && <Checkbox onChange={response.handleSelect} className="mr20"/>}
         <div className="d-flex justify-between flex-grow-1 align-center">
             <div className="d-flex align-center">
-                <EffUser id={member.id} name={member.name} size={35}/>
+                <EffUser img={member.avatar} id={member.userId} name={member.name} size={35}/>
                 <div className="d-flex-column ml10 detail">
                     <span className="name mb5">{member.name}</span>
                     <div className="d-flex align-end justify-between">

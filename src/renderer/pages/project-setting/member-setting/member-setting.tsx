@@ -74,7 +74,7 @@ export default function MemberSetting(){
             </div>
             <EffButton onClick={response.goAddProjectMember} round={true} className="align-self-end" text={'+ 添加成员'} key={'add'} type={"line"} />
             <div className="mt20 d-flex flex-wrap align-center">
-                {project.members &&  project.members.map(item=><EffMemberItem onDel={()=>response.handleRemoveMember(item)} member={item} key={item.id}/>)}
+                {project.members &&  project.members.map(item=><EffMemberItem onDel={()=>response.handleRemoveMember(item)} member={item} key={item.userId}/>)}
             </div>
             <EffConfirmDlg  title={'确认移除'} visible={showConfirmDlg}>
                 <div>

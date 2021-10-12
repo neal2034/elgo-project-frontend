@@ -21,7 +21,6 @@ export default function EffTaskContent(){
     }
 
     useEffect(()=>{
-        dispatch(taskThunks.getTaskDetail(50))
         dispatch(tagThunks.listTags())
     },[])
 

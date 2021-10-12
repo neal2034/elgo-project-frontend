@@ -45,7 +45,7 @@ export default function VersionSetting(){
         },
         confirmDelVersion: async()=>{
             setConfirmDelDlgVisible(false)
-            let result:any = await dispatch(versionThunks.delVersion(willDelVersion!.id))
+            const result:any = await dispatch(versionThunks.delVersion(willDelVersion!.id))
             if(result){
                 dispatch(versionThunks.listVersions())
                 effToast.success_withdraw('版本放入回收站成功', response.handleWithdrawDel)
@@ -53,7 +53,7 @@ export default function VersionSetting(){
 
         },
         handleWithdrawDel: async ()=>{
-            let result:any = await dispatch(versionThunks.withdrawDel({id:willDelVersion!.id}))
+            const result:any = await dispatch(versionThunks.withdrawDel({id:willDelVersion!.id}))
             if(result){
                 dispatch(versionThunks.listVersions())
                 effToast.success('撤销成功');

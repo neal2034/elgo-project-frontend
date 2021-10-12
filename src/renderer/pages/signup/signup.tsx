@@ -34,11 +34,11 @@ export default function Signup(){
 
     const response = {
         nextStep: async ()=>{
-            let values = await signupForm.validateFields()
-            let code = values.code
-            let email = values.email
+            const values = await signupForm.validateFields()
+            const code = values.code
+            const email = values.email
             setSentEmail(email)
-            let result:any = await dispatch(accountThunks.signup({code,email}))
+            const result:any = await dispatch(accountThunks.signup({code,email}))
             if(!result){
                 effToast.success('邀请码有误，请核实后重新输入')
             }
@@ -51,9 +51,9 @@ export default function Signup(){
 
         },
         goCreateNewOrg: async ()=>{
-            let values = await newOrgForm.validateFields();
-            let password = md5(values.password)
-            let result:any = await dispatch(login({username:sentEmail!, password}))
+            const values = await newOrgForm.validateFields();
+            const password = md5(values.password)
+            const result:any = await dispatch(login({username:sentEmail!, password}))
             if(result){
                 history.push('/new-org/new')
             }else{

@@ -1,0 +1,55 @@
+.profile-dlg{
+  position: relative;
+
+  .profile-item{
+    color: @color-font-weak;
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+    margin-left: 20px;
+
+    .password{
+      letter-spacing: 10px;
+    }
+
+    .modify{
+      font-size: 12px;
+      color: @color-main-yellow-dark;
+      cursor: pointer;
+      display: none;
+    }
+
+    &:hover{
+       .modify{
+         display: block;
+       }
+    }
+  }
+
+  .btn-upload{
+    font-size: 12px;
+    color: #7B828E;
+    align-self: flex-end;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover{
+      color: @color-main-yellow-dark;
+    }
+
+
+  }
+
+  .close{
+    position: absolute;
+    top:-10px;
+    right: -10px;
+    cursor: pointer;
+    color: @color-font-weak;
+    font-size: 14px;
+
+    &:hover{
+      color: @color-main-yellow-dark;
+    }
+  }
+}

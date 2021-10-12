@@ -139,7 +139,7 @@ export default function RequirementDetail(props:IProps){
             }
         },
         getFunztionStatus: (statusId:number)=>{
-            let status:{name:string, color:string} = funztionStatus.filter((item:any)=>item.id === statusId)[0]
+            const status:{name:string, color:string} = funztionStatus.filter((item:any)=>item.id === statusId)[0]
             return status
         }
     }

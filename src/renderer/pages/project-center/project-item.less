@@ -1,15 +1,26 @@
 .project-item{
-  width: 120px;
 
-  .item-pic{
-    background-color: #78bf73;
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
+  .icon{
+    position: relative;
   }
 
-  .project-name{
-    font-size: 14px;
+  .action{
+    position: absolute;
+    color: white;
+    font-size: 20px;
     font-weight: bold;
+    right: 10px;
+    top: 5px;
+  }
+}
+
+
+
+.menu-item{
+  margin: 5px 10px !important;
+  color:  @color-font-weak !important;
+  &:hover{
+    background-color:  rgba(250,176,79, .1) !important;
+    color: @color-main-yellow-dark !important;
   }
 }

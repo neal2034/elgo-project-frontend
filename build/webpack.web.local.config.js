@@ -201,9 +201,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         new webpack.HotModuleReplacementPlugin({
             multiStep: false
         }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
-        }),
         new webpack.LoaderOptionsPlugin({
             debug: true
         }),
@@ -219,6 +216,8 @@ module.exports = merge.smart(webpackBaseConfig, {
         inline: true,
         lazy: false,
         hot: true,
+        open:true,
+        openPage:'dist/#',
         headers: {'Access-Control-Allow-Origin': '*'},
         contentBase: path.join(__dirname, 'dist'),
         watchOptions: {
@@ -232,14 +231,14 @@ module.exports = merge.smart(webpackBaseConfig, {
         },
         proxy: {
             '/elgo/api': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.elgo.cc',
+                // target: 'http://localhost:8070',
+                target: 'http://www.dev.elgo.cc',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             },
             '/elgo/login': {
-                target: 'http://localhost:8070',
-                // target: 'http://www.dev.elgo.cc',
+                // target: 'http://localhost:8070',
+                target: 'http://www.dev.elgo.cc',
                 ws: false, //是否代理 websocket
                 changeOrigin: true
             }

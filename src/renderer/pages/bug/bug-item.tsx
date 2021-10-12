@@ -13,6 +13,7 @@ interface IBugItem{
     status:'NEW'|'OPEN'|'REJECT'|'ASSIGNED'|'FIXED'|'VERIFIED'|"WORK_AS_DESIGN"|'CAN_NOT_REPRODUCE',
     handler?:string,
     handlerId?:number,
+    handlerAvatar?:string,
     severity:'CRASH'|'SERIOUS'|'NORMAL'|'HINT'|'ADVICE',
     [x:string]:any
 }
@@ -39,7 +40,7 @@ export default function BugItem(props:IProps){
                 <span className="ml20">{bug.name}</span>
             </div>
             <div className="d-flex">
-                {bug.handler && bug.handlerId && <EffUser id={bug.handlerId} name={bug.handler} size={20} />}
+                {bug.handler && bug.handlerId && <EffUser img={bug.handlerAvatar} id={bug.handlerId} name={bug.handler} size={20} />}
                 <EffStatus className="ml20" name={severityName} color={severityColor}/>
                 <EffStatus className="ml20" name={bugStatusName} color={bugStatusColor}/>
             </div>

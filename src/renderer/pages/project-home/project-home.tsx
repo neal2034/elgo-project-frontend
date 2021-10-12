@@ -9,9 +9,11 @@ import EffMenu from "../../components/common/eff-menu/eff-menu";
 import {menuActions} from "@slice/menuSlice";
 import umbrella from "umbrella-storage";
 import {RootState} from "../../store/store";
-import IconMusic from '@imgs/music.png'
-import {projectActions, projectThunks} from "@slice/projectSlice";
+import {IProject, projectActions, projectThunks} from "@slice/projectSlice";
 import {projectMenuRoutes, IMenuRoute} from "@config/projectMenus";
+import getProjectImgByKey from "@pages/project-center/project-img";
+
+
 
 
 
@@ -24,6 +26,7 @@ export default function ProjectHome (){
 
     const dispatch = useDispatch()
     const history = useHistory()
+    const project:IProject = useSelector((state:RootState)=>state.project.projectDetail)
     useEffect(()=>{dispatch(menuActions.setActiveMenu(''))},[dispatch])
     useEffect(()=>{dispatch(setBreadcrumbs([]))}, [dispatch])
     useEffect(()=>{dispatch(projectThunks.getProjectDetail())}, [dispatch])
@@ -45,7 +48,7 @@ export default function ProjectHome (){
 
     return (
         <div className="d-flex-column flex-grow-1">
-            <ProjectHeader/>
+            <ProjectHeader project={project}/>
             <EffMenu/>
             <div className="d-flex-column flex-grow-1">
                 <Switch>
@@ -62,14 +65,16 @@ export default function ProjectHome (){
  * 项目头部图标&名称
  * @constructor
  */
-function ProjectHeader(){
-    const projectDetail:any = useSelector((state:RootState)=>state.project.projectDetail)
+function ProjectHeader(props:{project:IProject}){
+
+    const {project} = props
+    const bgColor = project && project.color
     return (
         <div className="project-head d-flex ml20">
-            <div className="project-icon d-flex align-center justify-center">
-                <img src={IconMusic} width={20} />
+            <div style={{backgroundColor: bgColor, }} className="project-icon d-flex align-center justify-center">
+                <img src={getProjectImgByKey(project.icon)} width={20} />
             </div>
-            <div className="ml20 name mt10">{projectDetail.name}</div>
+            <div className="ml20 name mt10">{project.name}</div>
         </div>
     )
 }

@@ -4,17 +4,32 @@ import apiUrl from "@config/apiUrl";
 import {Dispatch} from "react";
 
 
-interface IProjectDetail{
-    members:any [],
-    [x:string]:any
+
+//项目成员信息
+interface IProjectMember{
+    id:number,
+    orgMemberId:number,
+    userId:number,
+    name:string,
+    email:string,
+    boolEnable:boolean,
+    boolProjectOwner:boolean,
 }
 
+//项目信息
+interface IProject{
+    serial:number,
+    name:string,
+    color?:string,
+    icon?:string
+    members:IProjectMember [],
+}
 
 const projectSlice = createSlice({
     name:'project',
     initialState:{
         projects:[],
-        projectDetail:{} as IProjectDetail,   //当前的项目详情
+        projectDetail:{} as IProject,   //当前的项目详情
         projectMembers:[],                     //用于在组织环境下选择某个项目的成员
         availableOrgMembers:[],                 //可用于添加到组织的成员
         activeMenuKey:undefined,                //当前激活的项目菜单key
@@ -34,15 +49,29 @@ const projectSlice = createSlice({
 
 
 const projectThunks = {
-    addProject: (name:string)=>{
+    addProject: (data:{name:string, color:string, icon:string})=>{
         return async ()=>{
-            const payload = {
-                name,
-                type:'PROJECT'
-            }
-            await request.post({url:apiUrl.project.projectRes, data:payload})
+            await request.post({url:apiUrl.project.projectRes, data})
         }
     },
+    delProject : (params:{serial:number})=>{
+            return async ()=>{
+                const result = await  request.doDel(apiUrl.project.projectRes, params)
+                return result.isSuccess
+            }
+        },
+    editProject : (data:{name:string, icon:string, color:string, serial:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await  request.doPut(apiUrl.project.projectRes, data)
+                return result.isSuccess
+            }
+        },
+    withdrawDelProject : (params:{serial:number})=>{
+            return async (dispatch:Dispatch<any>)=>{
+                const result = await request.doPut(apiUrl.project.withdraw,undefined, params)
+                return result.isSuccess
+            }
+        },
     listProject:()=>{
         return async (dispatch:Dispatch<any>)=>{
             const result = await request.get({url:apiUrl.project.projectRes})
@@ -75,7 +104,6 @@ const projectThunks = {
     listAvailableMember : ()=>{
             return async (dispatch:Dispatch<any>)=>{
                 const result = await request.get({url:apiUrl.orgMember.available})
-                console.log('result is ', result)
                 if(result.isSuccess){
                     dispatch(projectActions.setAvailableOrgMembers(result.data.members))
                 }
@@ -84,5 +112,5 @@ const projectThunks = {
 }
 
 const projectActions = projectSlice.actions
-export {projectActions, projectThunks, IProjectDetail}
+export {projectActions, projectThunks, IProject}
 export default projectSlice.reducer

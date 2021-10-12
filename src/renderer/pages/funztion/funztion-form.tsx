@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {reqActions, reqThunks} from "@slice/reqSlice";
 import EffButton from "../../components/eff-button/eff-button";
-import EffEditor from "../../components/common/eff-editor/eff-editor";
+import ReactElgoEditor from "@components/common/react-elgo-editor/react-elgo-editor";
 
 
 
@@ -113,15 +113,15 @@ export default function FunztionForm(props:IProps){
                     </Select>
                 </Form.Item> }
 
-                <Form.Item className="mt20"   label={'标签'}>
+                {false && <Form.Item className="mt20"   label={'标签'}>
                     <div className="d-flex ml40">
                         <EffTagArea onDel={response.onDelTag} tags={selectedTags}/>
                         <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds}  tags={tags}/>
                     </div>
-                </Form.Item>
+                </Form.Item>}
 
                 <Form.Item  name="description" className="mt20 d-flex align-start" label={'功能描述'}>
-                    <EffEditor height={360} onChange={response.occupy}/>
+                    <ReactElgoEditor height={360} onChange={response.occupy}/>
                 </Form.Item>
             </Form>
 
