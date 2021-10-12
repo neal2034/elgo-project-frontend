@@ -1,6 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const devMode = process.env.NODE_ENV == 'development'
+const devMode = process.env.NODE_ENV === 'development'
 
 // 基础的webpack配置
 module.exports = {
