@@ -10,6 +10,13 @@
     color: @color-font-normal;
     font-weight: 400;
   }
+
+  .clazz-content{
+    overflow-x: hidden;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+
 }
 
 
@@ -66,7 +73,7 @@
   font-size: 14px;
   color: @color-font-weak;
   cursor: pointer;
-  padding-left: 30px;
+  //padding-left: 30px;
 
   .hide-menu{
     opacity: 0;
@@ -90,11 +97,21 @@
 
   &:hover{
     color: @color-main-yellow-dark;
-    //background-color:  rgba(241,147,23, .2);
   }
 
   .active{
     color: @color-main-yellow-dark;
+  }
+
+  .content{
+    max-width: 100%;
+  }
+
+  .clazz-name{
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 

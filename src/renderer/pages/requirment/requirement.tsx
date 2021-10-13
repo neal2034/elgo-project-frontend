@@ -23,7 +23,8 @@ interface IReqClassItemProps{
     num:number,
     className?:string,
     isActive:boolean,    //是否为当前选中
-    onClick:()=>{},     //响应点击事件
+    onClick:()=>void,     //响应点击事件,
+    hasMenu?:boolean,    //是否有编辑菜单
 }
 
 
@@ -188,7 +189,7 @@ function ReqClass(props:any){
     }
 
     const ui = {
-        reqClassItems: reqClasses.map((item:any)=><ReqClassItem isActive={activeClassId===item.id} onClick={()=>response.reqClazzSelected(item.id)} id={item.id} key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
+        reqClassItems: reqClasses.map((item:any)=><ReqClassItem isActive={activeClassId===item.id} onClick={()=>response.reqClazzSelected(item.id)} id={item.id} key={item.id} className="pl10 mt10" name={item.name} num={item.requirementNum}/>)
     }
 
 
@@ -202,8 +203,11 @@ function ReqClass(props:any){
                 </Popover>
 
             </div>
-            <ReqClassItem isActive={activeClassId===-2} onClick={response.allReqClassSelected} className="mt20" name={'所有的'} num={totalNum}  />
-            {ui.reqClassItems}
+            <div className="clazz-content">
+                <ReqClassItem hasMenu={false} isActive={activeClassId===-2} onClick={response.allReqClassSelected} className="mt20" name={'所有的'} num={totalNum}  />
+                {ui.reqClassItems}
+            </div>
+
         </div>
     )
 }
@@ -272,7 +276,7 @@ function ReqContent(props: IRequirementContentProps){
 
 
 function ReqClassItem(props:IReqClassItemProps){
-    const {name, num, className, id, onClick, isActive} = props
+    const {name, num, className, id=-1, onClick, isActive, hasMenu=true} = props
     const [showMenuTrigger,setShowMenuTrigger] = useState(false) //控制是否显示菜单触发器
     const [menuVisible, setMenuVisible] = useState(false) //控制是否显示菜单
     const response = {
@@ -283,14 +287,18 @@ function ReqClassItem(props:IReqClassItemProps){
     }
 
     return (
-        <div onClick={onClick} onMouseEnter={()=>setShowMenuTrigger(true)} onMouseLeave={response.handleMenuLave} className={`req-class-item pr20 align-center d-flex justify-between ${className}`}>
-            <div className={`pr40 flex-grow-1 d-flex justify-between ${isActive?'active':''}`}>
-                <span>{name}</span>
+        <div onClick={onClick} onMouseEnter={()=>setShowMenuTrigger(true)}
+             onMouseLeave={response.handleMenuLave} className={`req-class-item pr20 align-center d-flex justify-between ${className}`}>
+            <div className={`border-red2 content d-flex justify-between ${isActive?'active':''}`}>
+                <span className="clazz-name mr20">{name}</span>
                 <span>{num}</span>
             </div>
-            <Popover visible={menuVisible} className={`${showMenuTrigger && id && id!==-1? 'show-menu':'hide-menu'}`} content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />} placement={'bottom'} trigger={'click'}>
-                <span > <MoreOutlined   onClick={()=>setMenuVisible(true)} style={{fontSize:'14px', fontWeight:'bold'}} /></span>
-            </Popover>
+            {hasMenu && id!=-1 && <Popover visible={menuVisible} className={`${showMenuTrigger? 'show-menu':'hide-menu'}`}
+                      content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />}
+                     placement={'bottom'}
+                     trigger={'click'}>
+               <MoreOutlined   onClick={()=>setMenuVisible(true)} style={{fontSize:'20px', fontWeight:'bold'}} />
+            </Popover>}
         </div>
     )
 }
