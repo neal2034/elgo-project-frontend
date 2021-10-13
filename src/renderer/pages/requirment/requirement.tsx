@@ -22,6 +22,7 @@ interface IReqClassItemProps{
     name:string,
     num:number,
     className?:string,
+    isActive:boolean,    //是否为当前选中
     onClick:()=>{},     //响应点击事件
 }
 
@@ -65,6 +66,7 @@ export default function Requirement(){
 
         ]
     }
+
     useEffect(()=>{
         dispatch(reqThunks.listPageRequirement({page:0}))
         dispatch(reqThunks.listAllReqClasses())
@@ -157,26 +159,36 @@ function ReqClass(props:any){
     const dispatch = useDispatch()
     const {reqClasses} = props
     const [showReqClazzDlg, setShowReqClazzDlg] = useState(false)
-    let totalNum = 0
-    reqClasses.forEach((item:any)=>{
-        totalNum = totalNum + item.requirementNum
-    })
+    const [activeClassId, setActiveClassId] = useState(-2);
+    const [totalNum, setTotalNum] = useState(0)
+
+    useEffect(()=>{
+        let num = 0;
+        reqClasses.forEach((item:any)=>{
+            num = num + item.requirementNum
+        })
+        setTotalNum(num)
+    },[props.reqClasses])
+
+
     const response = {
         handleAddReqClazz: async (name:string)=>{
             await  dispatch(reqThunks.addReqClazz(name))
             setShowReqClazzDlg(false)
         },
         reqClazzSelected: async (classId:number)=>{
-            console.log('list requments')
+            setActiveClassId(classId)
+
             dispatch(reqThunks.listPageRequirement({page:0, clazzId:classId}))
         },
         allReqClassSelected: async ()=>{
+            setActiveClassId(-2)
             dispatch(reqThunks.listPageRequirement({page:0}))
         }
     }
 
     const ui = {
-        reqClassItems: reqClasses.map((item:any)=><ReqClassItem onClick={()=>response.reqClazzSelected(item.id)} id={item.id} key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
+        reqClassItems: reqClasses.map((item:any)=><ReqClassItem isActive={activeClassId===item.id} onClick={()=>response.reqClazzSelected(item.id)} id={item.id} key={item.id} className="pl40 mt10" name={item.name} num={item.requirementNum}/>)
     }
 
 
@@ -190,7 +202,7 @@ function ReqClass(props:any){
                 </Popover>
 
             </div>
-            <ReqClassItem onClick={response.allReqClassSelected} className="mt20" name={'所有的'} num={totalNum}  />
+            <ReqClassItem isActive={activeClassId===-2} onClick={response.allReqClassSelected} className="mt20" name={'所有的'} num={totalNum}  />
             {ui.reqClassItems}
         </div>
     )
@@ -260,7 +272,7 @@ function ReqContent(props: IRequirementContentProps){
 
 
 function ReqClassItem(props:IReqClassItemProps){
-    const {name, num, className, id, onClick} = props
+    const {name, num, className, id, onClick, isActive} = props
     const [showMenuTrigger,setShowMenuTrigger] = useState(false) //控制是否显示菜单触发器
     const [menuVisible, setMenuVisible] = useState(false) //控制是否显示菜单
     const response = {
@@ -272,7 +284,7 @@ function ReqClassItem(props:IReqClassItemProps){
 
     return (
         <div onClick={onClick} onMouseEnter={()=>setShowMenuTrigger(true)} onMouseLeave={response.handleMenuLave} className={`req-class-item pr20 align-center d-flex justify-between ${className}`}>
-            <div className="pr40 flex-grow-1 d-flex justify-between">
+            <div className={`pr40 flex-grow-1 d-flex justify-between ${isActive?'active':''}`}>
                 <span>{name}</span>
                 <span>{num}</span>
             </div>

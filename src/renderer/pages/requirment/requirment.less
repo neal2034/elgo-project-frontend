@@ -7,8 +7,8 @@
 
   .title{
     font-size: 16px;
-    color: @color-font-strong;
-    font-weight: bold;
+    color: @color-font-normal;
+    font-weight: 400;
   }
 }
 
@@ -64,6 +64,7 @@
 .req-class-item{
   height: 30px;
   font-size: 14px;
+  color: @color-font-weak;
   cursor: pointer;
   padding-left: 30px;
 
@@ -88,8 +89,15 @@
   }
 
   &:hover{
-    background-color: rgba(243,244,246, .6);
+    color: @color-main-yellow-dark;
+    //background-color:  rgba(241,147,23, .2);
   }
+
+  .active{
+    color: @color-main-yellow-dark;
+  }
+
+
 
 
 }

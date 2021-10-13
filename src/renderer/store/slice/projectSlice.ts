@@ -82,7 +82,6 @@ const projectThunks = {
     },
     getProjectDetail: ()=>{
         return async (dispatch:Dispatch<any>)=>{
-            console.log('will get project detail ')
             const result = await request.get({url:apiUrl.project.detail})
             if(result.isSuccess){
                 dispatch(projectActions.setProjectDetail(result.data))
