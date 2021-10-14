@@ -9,6 +9,7 @@ import AddTaskForm from "./add-task-form";
 import {tagThunks} from "@slice/tagSlice";
 import TaskDetail from "./task-detail";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import {UNDONE_TASK} from "@config/sysConstant";
 
 export default function EffTaskContent(){
     const dispatch = useDispatch()
@@ -34,7 +35,7 @@ export default function EffTaskContent(){
             const deadline = task.deadline? task.deadline.format('YYYY-MM-DD 00:00:00'):undefined
             const payload = Object.assign({taskListId:activeGroupId}, task, {deadline})
             await dispatch(taskThunks.addTask(payload))
-            dispatch(taskThunks.listTask(activeGroupId))
+            dispatch(taskThunks.listTasks({taskListId:activeGroupId, status:UNDONE_TASK}))
 
 
         },
