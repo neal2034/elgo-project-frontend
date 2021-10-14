@@ -105,7 +105,7 @@ export default function AddTaskForm(props:IProps){
             <div className="title  pb10 mb20">
                 <span>新增任务</span>
             </div>
-            <Form initialValues={{priority:'NONE' }} colon={false}  form={taskForm}  requiredMark={false} >
+            <Form colon={false}  form={taskForm}  requiredMark={false} >
                 <Form.Item name="name"  label={'任务名称'} rules={[{ required: true, message: '请输入任务名称' }]}>
                     <Input size={"large"}/>
                 </Form.Item>

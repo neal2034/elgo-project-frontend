@@ -69,7 +69,7 @@ export default function OneTask(props:IProps){
             <div className="d-flex align-center">
                 {deadline && <span className="ml10">{deadline.substr(0,10)}</span>}
                 {handlerDto && <EffUser img={handlerDto.avatar} className="ml10" id={handlerDto.id} name={handlerDto.name} size={20}/>}
-                <EffPriority className="ml10" value={priority}/>
+                {priority && <EffPriority className="ml10" value={priority}/>}
                 <EffTaskStatus value={status}  className="ml10"/>
             </div>
         </div>

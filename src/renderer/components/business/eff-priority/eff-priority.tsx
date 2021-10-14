@@ -9,8 +9,8 @@ interface IProps{
 export default function EffPriority(props:IProps){
 
     const {value, className} = props
-    const name = PRIORITY[value].name
-    const color = PRIORITY[value].color
+    const name = PRIORITY[value] && PRIORITY[value].name
+    const color = PRIORITY[value] &&  PRIORITY[value].color
 
     return (
         <div style={{

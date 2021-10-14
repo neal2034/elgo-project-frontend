@@ -160,7 +160,7 @@ export default function TaskDetail(props:IProps){
 
                 <div className="d-flex align-center mt20">
                     <EffLabel name={'优先级'}/>
-                    <EffEditableSelector clear={false} id={data.currentTask.priority} options={priorityOptions} onChange={response.handleEditTaskPriority}/>
+                    <EffEditableSelector clear={true} id={data.currentTask.priority} options={priorityOptions} onChange={response.handleEditTaskPriority}/>
                 </div>
 
                 <div className="d-flex align-center mt20">
