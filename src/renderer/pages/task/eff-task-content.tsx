@@ -30,11 +30,12 @@ export default function EffTaskContent(){
             setShowAddTaskForm(true)
         },
         handleAddTask: async (task:any)=>{
+            setShowAddTaskForm(false)
             const deadline = task.deadline? task.deadline.format('YYYY-MM-DD 00:00:00'):undefined
             const payload = Object.assign({taskListId:activeGroupId}, task, {deadline})
             await dispatch(taskThunks.addTask(payload))
             dispatch(taskThunks.listTask(activeGroupId))
-            setShowAddTaskForm(false)
+
 
         },
         handleCancelAdd: ()=>{

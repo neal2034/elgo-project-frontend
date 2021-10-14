@@ -79,6 +79,7 @@ export default function AddTaskForm(props:IProps){
             const taskData:ITaskData = Object.assign({},values)
             taskData.tagIds = selectedTagIds
             onConfirm(taskData)
+            taskForm.resetFields();
 
         },
         handleTagsChanged: (tagIds:number[])=>{
