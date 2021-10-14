@@ -25,7 +25,7 @@ module.exports = merge.smart(webpackBaseConfig, {
 
     mode: 'production',
 
-    target: 'electron-preload',
+    target: 'electron-renderer',
 
     entry,
 
@@ -123,32 +123,6 @@ module.exports = merge.smart(webpackBaseConfig, {
                     }
                 ]
             },
-            {
-                test: /\.less$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    // 'postcss-loader',
-                    {
-                        loader:'less-loader',
-                        options:{
-                            lessOptions: {
-                                javascriptEnabled: true
-                            }
-                        }
-                    },
-                    // 'less-loader',
-                    {
-                        loader: 'style-resources-loader',
-                        options: {
-                            patterns: [path.resolve(__dirname,'../resources/style/reset.global.less'),
-                                path.resolve(__dirname,'../resources/style/flex.global.less'),
-                                path.resolve(__dirname,'../resources/style/ant.design.global.less'),
-                                path.resolve(__dirname,'../resources/style/normal.global.less')]
-                        }
-                    }
-                ],
-            },
             // 处理字体文件 WOFF
             {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -211,6 +185,12 @@ module.exports = merge.smart(webpackBaseConfig, {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'RUN_ENV':JSON.stringify('pc')
+            }
+        }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'production'
         }),

@@ -109,32 +109,6 @@ module.exports = merge.smart(webpackBaseConfig, {
                     {loader: 'sass-loader'}
                 ]
             },
-            {
-                test: /\.less$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    // 'postcss-loader',
-                    {
-                        loader:'less-loader',
-                        options:{
-                            lessOptions: {
-                                javascriptEnabled: true
-                            }
-                        }
-                    },
-                    // 'less-loader',
-                    {
-                        loader: 'style-resources-loader',
-                        options: {
-                            patterns: [path.resolve(__dirname,'../resources/style/reset.global.less'),
-                                path.resolve(__dirname,'../resources/style/flex.global.less'),
-                                path.resolve(__dirname,'../resources/style/ant.design.global.less'),
-                                path.resolve(__dirname,'../resources/style/normal.global.less')]
-                        }
-                    }
-                ],
-            },
             // 处理图片
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
@@ -198,6 +172,13 @@ module.exports = merge.smart(webpackBaseConfig, {
     },
 
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'RUN_ENV':JSON.stringify('pc'),
+
+            }
+        }),
         // webpack 模块热重载
         new webpack.HotModuleReplacementPlugin({
             multiStep: false

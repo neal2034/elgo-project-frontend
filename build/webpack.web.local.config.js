@@ -112,6 +112,12 @@ module.exports = merge.smart(webpackBaseConfig, {
     },
 
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env':{
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'RUN_ENV':JSON.stringify('browser')
+            }
+        }),
         // webpack 模块热重载
         new webpack.HotModuleReplacementPlugin({
             multiStep: false

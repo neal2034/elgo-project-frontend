@@ -19,7 +19,7 @@ export default function Pages(){
     effToast.setSnackBar(enqueueSnackbar,closeSnackbar)
 
     //若为桌面端则直接进入登录
-    const isElectron = window && window.process && window.process.type == 'renderer'
+    const isElectron = process.env.RUN_ENV === 'pc'
     const homePath = isElectron ? '/login':'/home'
 
 
