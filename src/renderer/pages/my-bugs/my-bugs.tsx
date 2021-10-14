@@ -8,6 +8,8 @@ import {projectActions} from "@slice/projectSlice";
 import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
 import BugItem from "../bug/bug-item";
 import {effToast} from "@components/common/eff-toast/eff-toast";
+import ImgSmile from "@imgs/smile.png";
+import './my-bugs.less'
 
 
 
@@ -64,8 +66,11 @@ export default function MyBugs(){
     }
     const bugList = myBugs.map((item:any)=><MyProjectBug key={item.projectId} onBugSelected={response.handleTaskSelected} item={item}/>)
     return (
-        <div>
-            {bugList}
+        <div className="my-bugs">
+            {myBugs.length === 0? <div className="empty-bugs d-flex-column align-center justify-center">
+                <img src={ImgSmile} width={80}  />
+                <span className="mt20 desc">太棒了,没有需要解决的Bug耶</span>
+            </div> : bugList}
             <Drawer
                 title={null}
                 width={'60%'}

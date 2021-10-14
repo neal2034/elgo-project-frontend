@@ -8,6 +8,8 @@ import TaskDetail from "../task/task-detail";
 import {Drawer} from "antd";
 import {effToast} from "@components/common/eff-toast/eff-toast";
 import {projectActions} from "@slice/projectSlice";
+import ImgSmile from '@imgs/smile.png'
+import './my-task.less'
 
 
 interface IGroupTasks{
@@ -68,8 +70,11 @@ export default function MyTask(){
 
 
     return (
-        <div>
-            {taskList}
+        <div className="my-tasks">
+            {myTasks.length === 0? <div className=" empty-task d-flex-column align-center justify-center">
+                <img src={ImgSmile} width={80}  />
+                <span className="mt20 desc">太棒了,没有需要完成的任务哦</span>
+            </div> : taskList}
             <Drawer
                 title={null}
                 width={'60%'}
