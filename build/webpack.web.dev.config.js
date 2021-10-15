@@ -111,5 +111,16 @@ module.exports = merge.smart(webpackBaseConfig, {
         }),
         ...htmlWebpackPlugin
     ],
+    optimization:{
+        splitChunks:{
+            cacheGroups:{
+                commons: {
+                    test: /(react|react-dom)/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
 
 });
