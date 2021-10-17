@@ -41,10 +41,10 @@ export default function Task() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-task':
-                console.log('搜索我创建的');
+                // TODO fulfill this
                 break;
             case 'unstart':
-                console.log('搜索未开始的');
+                // TODO fulfill this
                 break;
             default:
                 setIsAdvanceSearch(true);

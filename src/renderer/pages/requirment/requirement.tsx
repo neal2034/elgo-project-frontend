@@ -356,10 +356,10 @@ export default function Requirement() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-create':
-                console.log('搜索我创建的');
+                // TODO fulfill this
                 break;
             case 'on-plan':
-                console.log('搜索未完成的');
+                // TODO fulfill this
                 break;
             default:
                 setIsAdvanceSearch(true);

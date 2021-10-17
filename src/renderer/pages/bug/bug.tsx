@@ -78,7 +78,7 @@ export default function Bug() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-task':
-                console.log('搜索我创建的');
+                // TODO fulfill this
                 break;
             default:
                 setIsAdvanceSearch(true);
