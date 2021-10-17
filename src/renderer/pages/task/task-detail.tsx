@@ -39,8 +39,8 @@ export default function TaskDetail(props:IProps) {
         currentTask: useSelector((state:RootState) => state.task.currentTask),
     };
 
-    const priorityOptions = PRIORITY.map((item:any) => ({ id: PRIORITY[item].key, name: PRIORITY[item].name }));
-    const taskStatusOptions = TASK_STATUS.map((item:any) => ({ id: TASK_STATUS[item].key, name: TASK_STATUS[item].name }));
+    const priorityOptions = Object.keys(PRIORITY).map((item:any) => ({ id: PRIORITY[item].key, name: PRIORITY[item].name }));
+    const taskStatusOptions = Object.keys(TASK_STATUS).map((item:any) => ({ id: TASK_STATUS[item].key, name: TASK_STATUS[item].name }));
 
     useEffect(() => {
         let members = [];

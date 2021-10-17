@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './login.less';
 import { Form, Input, Button } from 'antd';
 import HomeLogo from '@imgs/elgo-logo.png';
@@ -7,10 +7,17 @@ import { login } from '@slice/accountSlice';
 import md5 from 'md5';
 import { useHistory } from 'react-router';
 import { effToast } from '@components/common/eff-toast/eff-toast';
+import umbrella from 'umbrella-storage';
 
 export default function Login() {
     const dispatch = useDispatch();
     const history = useHistory();
+    useEffect(() => {
+        const token = umbrella.getLocalStorage('token');
+        if (token) {
+            history.push('/app/project-center');
+        }
+    }, []);
 
     const handleSubmit = async (values: any) => {
         const { username } = values;

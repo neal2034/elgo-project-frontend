@@ -74,7 +74,7 @@ export default function AddTestCaseForm(props:IProps) {
     };
 
     const ui = {
-        priorityOptions: PRIORITY.map((item:any) => (
+        priorityOptions: Object.keys(PRIORITY).map((item:any) => (
             <Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>
         )),
     };

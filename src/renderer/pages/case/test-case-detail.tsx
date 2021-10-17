@@ -31,7 +31,7 @@ export default function TestCaseDetail(props:IProps) {
     const menuItems = [
         { key: 'delete', name: '删除测试用例', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> },
     ];
-    const priorityOptions = PRIORITY.map((item:any) => ({ id: PRIORITY[item].key, name: PRIORITY[item].name }));
+    const priorityOptions = Object.keys(PRIORITY).map((item:any) => ({ id: PRIORITY[item].key, name: PRIORITY[item].name }));
     useEffect(() => {
         // 如果有所属功能，列出对应功能
         if (currentTestCase.funztionId) {

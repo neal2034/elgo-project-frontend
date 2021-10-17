@@ -3,8 +3,6 @@ import HomeLogo from '@imgs/elgo-logo.png';
 import './home-page.less';
 import { Route, useHistory } from 'react-router';
 import { Switch, useRouteMatch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { accountThunks } from '@slice/accountSlice';
 import HomeContent from './home-conetnt/home-content';
 import AppDownload from './app-download/app-download';
 import ElgoHelp from './help/help';
@@ -12,7 +10,6 @@ import ElgoAbout from './about/about';
 import ElgoBlog from './blog/blog';
 
 export default function HomePage() {
-    const dispatch = useDispatch();
     const history = useHistory();
     const { path } = useRouteMatch();
     const [homeKey, setHomeKey] = useState('home');
@@ -40,7 +37,6 @@ export default function HomePage() {
     };
 
     useEffect(() => {
-        dispatch(accountThunks.clearLocalStorage());
         const defaultPath = `${path}/content`;
         history.push(defaultPath);
     }, []);

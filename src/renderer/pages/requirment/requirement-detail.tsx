@@ -54,7 +54,8 @@ export default function RequirementDetail(props:IProps) {
     const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
 
     // 需求状态options
-    const reqStatusOptions = REQUIREMENT_STATUS.map((opt:any) => ({ id: REQUIREMENT_STATUS[opt].key, name: REQUIREMENT_STATUS[opt].name }));
+    const reqStatusOptions = Object.keys(REQUIREMENT_STATUS).map((opt:any) => (
+        { id: REQUIREMENT_STATUS[opt].key, name: REQUIREMENT_STATUS[opt].name }));
     const data = {
         reqClasses: useSelector((state:RootState) => state.requirement.reqClasses),
         rqeSources: useSelector((state:RootState) => state.requirement.reqSources),

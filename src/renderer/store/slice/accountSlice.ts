@@ -55,6 +55,7 @@ export const login = (data:PayloadLogin): ThunkAction<void, unknown, unknown, An
     const result = await request.post({ url: apiUrl.user.login, data, config: { baseURL } });
     if (result.isSuccess) {
         umbrella.setLocalStorage('token', result.data.token);
+        umbrella.setLocalStorage('refreshToken', result.data.refreshToken);
         // 获取组织列表
         const loginOrg = await request.get({ url: apiUrl.organization.getLogin });
         if (loginOrg.isSuccess) {
@@ -67,6 +68,7 @@ export const login = (data:PayloadLogin): ThunkAction<void, unknown, unknown, An
 
 const accountThunks = {
     clearLocalStorage: () => async () => {
+        umbrella.setLocalStorage('refreshToken', null);
         umbrella.setLocalStorage('token', null);
         umbrella.setLocalStorage('oserial', null);
         umbrella.setLocalStorage('pserial', null);

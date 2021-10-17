@@ -46,6 +46,7 @@ const App = () => {
                 setShowProfile(true);
                 break;
             case 'log-out':
+                dispatch(accountThunks.clearLocalStorage());
                 history.push('/login');
                 break;
             default:

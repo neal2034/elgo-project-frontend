@@ -45,7 +45,7 @@ export default function TaskAdvanceSearch(props:IProps) {
 
     const ui = {
         memberOptions: data.members.map((item:any) => <Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>),
-        priorityOptions: PRIORITY.map((item:any) => (
+        priorityOptions: Object.keys(PRIORITY).map((item:any) => (
             <Select.Option key={PRIORITY[item].key} value={PRIORITY[item].key}>{PRIORITY[item].name}</Select.Option>)),
     };
     const tagOptions:any = [];
