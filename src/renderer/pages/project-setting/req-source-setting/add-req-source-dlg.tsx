@@ -1,8 +1,7 @@
-import React from "react";
-import {Form, Input, Modal} from "antd";
-import {CloseOutlined} from '@ant-design/icons'
-import EffButton from "@components/eff-button/eff-button";
-
+import React from 'react';
+import { Form, Input, Modal } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import EffButton from '@components/eff-button/eff-button';
 
 interface IProps{
     visible:boolean,
@@ -15,47 +14,47 @@ interface IProps{
     }
 }
 
-
-export default function AddReqSourceDlg(props:IProps){
-    const title =  props.reqSource?  '编辑需求来源':'添加需求来源'
-    const [addForm] = Form.useForm()
-
-    if(props.reqSource){
+export default function AddReqSourceDlg(props:IProps) {
+    const { reqSource, onClose, visible } = props;
+    const title = reqSource ? '编辑需求来源' : '添加需求来源';
+    const [addForm] = Form.useForm();
+    if (reqSource) {
         addForm.setFieldsValue({
-            name:props.reqSource.name
-        })
+            name: reqSource.name,
+        });
     }
 
-    const titleArea = <div  className="dlg-head font-title d-flex justify-between">
-        {title}
-        <CloseOutlined className="cursor-pointer" onClick={props.onClose} />
-    </div>
+    const titleArea = (
+        <div className="dlg-head font-title d-flex justify-between">
+            {title}
+            <CloseOutlined className="cursor-pointer" onClick={onClose} />
+        </div>
+    );
 
     const response = {
-        saveReqSource:async ()=>{
-            const values = await addForm.validateFields()
-            if(props.reqSource){
-                props.onEdit(values.name, props.reqSource.id)
-            }else{
-                props.onAdd(values.name)
+        saveReqSource: async () => {
+            const values = await addForm.validateFields();
+            if (props.reqSource) {
+                props.onEdit(values.name, props.reqSource.id);
+            } else {
+                props.onAdd(values.name);
             }
+        },
 
-        }
-
-    }
+    };
 
     return (
-        <Modal width={500} className="api-envs-dialog" title={titleArea} footer={null}   destroyOnClose={true} closable = {false} visible={props.visible}>
-            <Form form={addForm} hideRequiredMark={true}>
-                <Form.Item name="name"  label={'需求来源'} rules={[{ required: true, message: '请输入需求来源' }]}>
-                    <Input size={"large"}/>
+        <Modal width={500} className="api-envs-dialog" title={titleArea} footer={null} destroyOnClose closable={false} visible={visible}>
+            <Form form={addForm} hideRequiredMark>
+                <Form.Item name="name" label="需求来源" rules={[{ required: true, message: '请输入需求来源' }]}>
+                    <Input size="large" />
                 </Form.Item>
 
                 <div className="btn-group d-flex justify-end mt40">
-                    <EffButton type={"line"} round={true} className="mr20" onClick={props.onClose} text={'取消'} key={'cancel'}/>
-                    <EffButton type={'filled'} round={true} onClick={response.saveReqSource} text={'保存'} key={'confirm'}/>
+                    <EffButton type="line" round className="mr20" onClick={onClose} text="取消" key="cancel" />
+                    <EffButton type="filled" round onClick={response.saveReqSource} text="保存" key="confirm" />
                 </div>
             </Form>
         </Modal>
-    )
+    );
 }

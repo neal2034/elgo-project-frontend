@@ -1,11 +1,13 @@
 // 渲染进程dev环境下的webpack配置
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const merge = require('webpack-merge');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {spawn} = require('child_process');
+const { spawn } = require('child_process');
 const webpackBaseConfig = require('./webpack.base.config');
-
 
 const port = process.env.PORT || 8080;
 const publicPath = `http://localhost:${port}/dist`;
@@ -20,13 +22,13 @@ const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
 };
 
-const htmlWebpackPlugin = Object.keys(entry).map(name => new HtmlWebpackPlugin({
+const htmlWebpackPlugin = Object.keys(entry).map((name) => new HtmlWebpackPlugin({
     inject: 'body',
     scriptLoading: 'defer',
     template: path.join(__dirname, '../resources/template/template.html'),
     minify: false,
     filename: `${name}.html`,
-    chunks: [name]
+    chunks: [name],
 }));
 
 module.exports = merge.smart(webpackBaseConfig, {
@@ -36,13 +38,13 @@ module.exports = merge.smart(webpackBaseConfig, {
     entry,
     resolve: {
         alias: {
-            'react-dom': '@hot-loader/react-dom' // 开发模式下
-        }
+            'react-dom': '@hot-loader/react-dom', // 开发模式下
+        },
     },
 
     output: {
         publicPath,
-        filename: '[name].dev.js'
+        filename: '[name].dev.js',
     },
 
     module: {
@@ -51,63 +53,63 @@ module.exports = merge.smart(webpackBaseConfig, {
             {
                 test: /\.global\.css$/,
                 use: [
-                    {loader: 'style-loader'},
+                    { loader: 'style-loader' },
                     {
                         loader: 'css-loader',
-                        options: {sourceMap: true}
+                        options: { sourceMap: true },
                     },
-                    {loader: 'resolve-url-loader'},
-                ]
+                    { loader: 'resolve-url-loader' },
+                ],
             },
             // 处理css样式，使用css模块
             {
                 test: /^((?!\.global).)*\.css$/,
                 use: [
-                    {loader: 'style-loader'},
+                    { loader: 'style-loader' },
                     {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                localIdentName: '[name]__[local]__[hash:base64:5]'
+                                localIdentName: '[name]__[local]__[hash:base64:5]',
                             },
                             sourceMap: true,
-                            importLoaders: 1
-                        }
+                            importLoaders: 1,
+                        },
                     },
-                    {loader: 'resolve-url-loader'}
-                ]
+                    { loader: 'resolve-url-loader' },
+                ],
             },
             // 处理全局scss样式
             {
                 test: /\.global\.(scss|sass)$/,
                 use: [
-                    {loader: 'style-loader'},
+                    { loader: 'style-loader' },
                     {
                         loader: 'css-loader',
-                        options: {sourceMap: true}
+                        options: { sourceMap: true },
                     },
-                    {loader: 'resolve-url-loader'},
-                    {loader: 'sass-loader'}
-                ]
+                    { loader: 'resolve-url-loader' },
+                    { loader: 'sass-loader' },
+                ],
             },
             // 处理scss样式，使用css模块
             {
                 test: /^((?!\.global).)*\.(scss|sass)$/,
                 use: [
-                    {loader: 'style-loader'},
+                    { loader: 'style-loader' },
                     {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                localIdentName: '[name]__[local]__[hash:base64:5]'
+                                localIdentName: '[name]__[local]__[hash:base64:5]',
                             },
                             sourceMap: true,
-                            importLoaders: 1
-                        }
+                            importLoaders: 1,
+                        },
                     },
-                    {loader: 'resolve-url-loader'},
-                    {loader: 'sass-loader'}
-                ]
+                    { loader: 'resolve-url-loader' },
+                    { loader: 'sass-loader' },
+                ],
             },
             // 处理图片
             {
@@ -115,9 +117,9 @@ module.exports = merge.smart(webpackBaseConfig, {
                 use: {
                     loader: 'url-loader',
                     options: {
-                        limit: 5000
-                    }
-                }
+                        limit: 5000,
+                    },
+                },
             },
             // 处理字体 WOFF
             {
@@ -126,9 +128,9 @@ module.exports = merge.smart(webpackBaseConfig, {
                     loader: 'url-loader',
                     options: {
                         limit: 5000,
-                        mimetype: 'application/font-woff'
-                    }
-                }
+                        mimetype: 'application/font-woff',
+                    },
+                },
             },
             // 处理字体 WOFF2
             {
@@ -137,9 +139,9 @@ module.exports = merge.smart(webpackBaseConfig, {
                     loader: 'url-loader',
                     options: {
                         limit: 5000,
-                        mimetype: 'application/font-woff'
-                    }
-                }
+                        mimetype: 'application/font-woff',
+                    },
+                },
             },
             // 处理字体 TTF
             {
@@ -148,14 +150,14 @@ module.exports = merge.smart(webpackBaseConfig, {
                     loader: 'url-loader',
                     options: {
                         limit: 5000,
-                        mimetype: 'application/octet-stream'
-                    }
-                }
+                        mimetype: 'application/octet-stream',
+                    },
+                },
             },
             // 处理字体 EOT
             {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                use: 'file-loader'
+                use: 'file-loader',
             },
             // 处理SVG
             {
@@ -164,32 +166,32 @@ module.exports = merge.smart(webpackBaseConfig, {
                     loader: 'url-loader',
                     options: {
                         limit: 5000,
-                        mimetype: 'image/svg+xml'
-                    }
-                }
-            }
-        ]
+                        mimetype: 'image/svg+xml',
+                    },
+                },
+            },
+        ],
     },
 
     plugins: [
         new webpack.DefinePlugin({
-            'process.env':{
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-                'RUN_ENV':JSON.stringify('pc'),
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                RUN_ENV: JSON.stringify('pc'),
 
-            }
+            },
         }),
         // webpack 模块热重载
         new webpack.HotModuleReplacementPlugin({
-            multiStep: false
+            multiStep: false,
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
+            NODE_ENV: 'development',
         }),
         new webpack.LoaderOptionsPlugin({
-            debug: true
+            debug: true,
         }),
-        ...htmlWebpackPlugin
+        ...htmlWebpackPlugin,
     ],
     // webpack服务
     devServer: {
@@ -201,16 +203,16 @@ module.exports = merge.smart(webpackBaseConfig, {
         inline: true,
         lazy: false,
         hot: true,
-        headers: {'Access-Control-Allow-Origin': '*'},
+        headers: { 'Access-Control-Allow-Origin': '*' },
         contentBase: path.join(__dirname, 'dist'),
         watchOptions: {
             aggregateTimeout: 300,
             ignored: /node_modules/,
-            poll: 100
+            poll: 100,
         },
         historyApiFallback: {
             verbose: true,
-            disableDotRule: false
+            disableDotRule: false,
         },
         before() {
             // 启动渲染进程后执行主进程打包
@@ -218,24 +220,24 @@ module.exports = merge.smart(webpackBaseConfig, {
             spawn('npm', ['run', 'dev-main'], {
                 shell: true,
                 env: process.env,
-                stdio: 'inherit'
-            }).on('close', code => process.exit(code))
-                .on('error', spawnError => console.error(spawnError));
+                stdio: 'inherit',
+            }).on('close', (code) => process.exit(code))
+                .on('error', (spawnError) => console.error(spawnError));
         },
         proxy: {
             '/elgo/api': {
                 target: 'http://localhost:8070',
                 // target: 'http://www.dev.elgo.cc',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
+                ws: false, // 是否代理 websocket
+                changeOrigin: true,
             },
             '/elgo/login': {
                 target: 'http://localhost:8070',
                 // target: 'http://www.dev.elgo.cc',
-                ws: false, //是否代理 websocket
-                changeOrigin: true
-            }
+                ws: false, // 是否代理 websocket
+                changeOrigin: true,
+            },
 
         },
-    }
+    },
 });

@@ -1,13 +1,13 @@
-import EffWithdraw from "../../business/eff-withdraw/eff-withdraw";
-import React from "react";
+import React from 'react';
+import EffWithdraw from '../../business/eff-withdraw/eff-withdraw';
 
-class EffToast{
+class EffToast {
     #snackBar = {
-        enqueueSnackbar: (msg:string, rest:any)=>{
-            //somecode
+        enqueueSnackbar: (msg:string, rest:any) => {
+            // somecode
         },
         closeSnackbar: (key?:any) => {
-            //some code
+            // some code
         },
     };
 
@@ -17,45 +17,45 @@ class EffToast{
     }
 
     success(msg:string, options = {}) {
-        return this.toast(msg, { ...options, variant: "success" });
+        return this.toast(msg, { ...options, variant: 'success' });
     }
 
-    success_withdraw(msg:string,  callback:()=>void) {
-        const withdraw = ()=>{
+    // eslint-disable-next-line camelcase
+    success_withdraw(msg:string, callback:()=>void) {
+        const withdraw = () => {
             this.#snackBar.closeSnackbar();
-            callback()
-        }
+            callback();
+        };
         return this.toast(msg, {
-            action:<EffWithdraw onWithDraw={withdraw}/>,
-            variant: "success" });
+            action: <EffWithdraw onWithDraw={withdraw} />,
+            variant: 'success',
+        });
     }
-
-
 
     warning(msg:string, options = {}) {
-        return this.toast(msg, { ...options, variant: "warning" });
+        return this.toast(msg, { ...options, variant: 'warning' });
     }
+
     info(msg:string, options = {}) {
-        return this.toast(msg, { ...options, variant: "info" });
+        return this.toast(msg, { ...options, variant: 'info' });
     }
 
     error(msg:string, options = {}) {
-        return this.toast(msg, { ...options, variant: "error" });
+        return this.toast(msg, { ...options, variant: 'error' });
     }
 
     toast(msg:string, options = {}) {
         const finalOptions = {
-            variant: "default",
+            variant: 'default',
             ...options,
         };
         return this.#snackBar.enqueueSnackbar(msg, { ...finalOptions });
     }
+
     closeSnackbar(key?:any) {
         this.#snackBar.closeSnackbar(key);
     }
-
-
 }
 
-const effToast = new EffToast()
-export  {effToast}
+const effToast = new EffToast();
+export { effToast };

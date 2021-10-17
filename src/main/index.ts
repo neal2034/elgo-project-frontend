@@ -1,8 +1,7 @@
-import { BrowserWindow, app} from 'electron';
-import path from "path";
+import { BrowserWindow, app } from 'electron';
+import path from 'path';
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, REACT_PERF } from 'electron-devtools-installer';
-import './apiHandler'
-
+import './apiHandler';
 
 function loadHtml(window: BrowserWindow, name: string) {
     if (process.env.NODE_ENV === 'production') {
@@ -15,15 +14,11 @@ function loadHtml(window: BrowserWindow, name: string) {
 
 let mainWindow: BrowserWindow | null = null;
 
-
-
-
-
 function createMainWindow() {
     if (mainWindow) return;
     mainWindow = new BrowserWindow({
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
         },
         frame: true,
         backgroundColor: 'white',
@@ -31,9 +26,8 @@ function createMainWindow() {
         minHeight: 350,
         height: 600,
         width: 1200,
-        titleBarStyle: 'hidden', //https://www.electronjs.org/docs/api/frameless-window
+        titleBarStyle: 'hidden', // https://www.electronjs.org/docs/api/frameless-window
     });
-
 
     loadHtml(mainWindow, 'index');
     mainWindow.on('close', () => mainWindow = null);
@@ -42,8 +36,6 @@ function createMainWindow() {
     // mainWindow.setMenuBarVisibility(false)
     // require('devtron').install();
 }
-
-
 
 app.on('ready', () => {
     createMainWindow();
@@ -61,7 +53,6 @@ app.on('activate', () => {
 
 app.whenReady().then(() => {
     installExtension([REACT_PERF, REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS]).then(() => {
-        //TODO should add handler
+        // TODO should add handler
     });
 });
-

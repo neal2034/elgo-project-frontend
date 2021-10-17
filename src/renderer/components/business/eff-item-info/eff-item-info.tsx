@@ -1,5 +1,5 @@
-import React from "react";
-import globalColor from "@config/globalColor";
+import React from 'react';
+import globalColor from '@config/globalColor';
 
 /**
  * 该组件用于表达需求，功能，bug 等ITEM 的基础信息，包括创建人，创建时间，以及编号
@@ -12,17 +12,27 @@ interface IProps{
     createDate?:string,
     className?:string
 }
-export default function EffItemInfo(props:IProps){
-    const {serial, creator, createDate, className} = props
+export default function EffItemInfo(props:IProps) {
+    const {
+        serial, creator, createDate, className,
+    } = props;
     const style = {
-        item:{
+        item: {
             fontSize: '12px',
-            color: globalColor.fontWeak
-        }
-    }
+            color: globalColor.fontWeak,
+        },
+    };
 
-    return <div className={className} style={style.item}>编号 {serial}, {creator} {createDate} 创建</div>
-
-
-
+    return (
+        <div className={className} style={style.item}>
+            编号
+            {serial}
+            ,
+            {creator}
+            {' '}
+            {createDate}
+            {' '}
+            创建
+        </div>
+    );
 }

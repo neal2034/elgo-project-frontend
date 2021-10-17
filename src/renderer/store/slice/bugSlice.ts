@@ -1,8 +1,7 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Dispatch} from "react";
-import request from "../../utils/request";
-import apiUrl from "@config/apiUrl";
-
+import { createSlice } from '@reduxjs/toolkit';
+import { Dispatch } from 'react';
+import apiUrl from '@config/apiUrl';
+import request from '../../utils/request';
 
 interface IAddBugDto{
     name:string,
@@ -39,119 +38,89 @@ export interface IBugSearchParams{
 
 }
 
-
 export interface IBugListParams extends IBugSearchParams{
     page?:number
 }
 
 const bugSlice = createSlice({
-    name:'bug',
-    initialState:{
-        bugs:[],
-        myBugs:[],
-        page:0,
-        total:0,
-        currentBug:{} as IBugDetail
+    name: 'bug',
+    initialState: {
+        bugs: [],
+        myBugs: [],
+        page: 0,
+        total: 0,
+        currentBug: {} as IBugDetail,
     },
-    reducers:{
-        setBugs: (state, action) => { state.bugs = action.payload },
-        setPage: (state, action) => { state.page = action.payload },
-        setTotal: (state, action) => { state.total = action.payload },
-        setCurrentBug: (state, action) => { state.currentBug = action.payload },
-        setMyBugs: (state, action) => { state.myBugs = action.payload },
+    reducers: {
+        setBugs: (state, action) => { state.bugs = action.payload; },
+        setPage: (state, action) => { state.page = action.payload; },
+        setTotal: (state, action) => { state.total = action.payload; },
+        setCurrentBug: (state, action) => { state.currentBug = action.payload; },
+        setMyBugs: (state, action) => { state.myBugs = action.payload; },
 
-    }
-})
+    },
+});
 
-
-
-
-const  bugActions = bugSlice.actions
+const bugActions = bugSlice.actions;
 const bugThunks = {
-    listMyBugs : ()=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.get({url:apiUrl.bug.mine})
-                if(result.isSuccess){
-                    dispatch(bugActions.setMyBugs(result.data))
-                }
-            }
-        },
-    listBugs : (params?:IBugListParams)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.get({url: apiUrl.bug.index, params})
-                if(result.isSuccess){
-                    dispatch(bugActions.setBugs(result.data.data))
-                    dispatch(bugActions.setTotal(result.data.total))
-                    const page = params && params.page? params.page : 0
-                    dispatch(bugActions.setPage(page))
-                }
-            }
-        },
-    addBug : (data:IAddBugDto)=>{
-            return async ()=>{
-                const result = await  request.post({url:apiUrl.bug.index, data})
-                return result.isSuccess
-            }
-        },
-    getBugDetail : (id:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.get({url: apiUrl.bug.detail, params:{id}})
-                if(result.isSuccess){
-                    dispatch(bugActions.setCurrentBug(result.data))
-                }
-            }
-        },
-    editName : (data:{id:number, name:string})=>{
-            return async ()=>{
-                await request.put({url:apiUrl.bug.editName, data})
-            }
-        },
-    editQa : (data:{id:number, testerId?:number})=>{
-            return async ()=>{
-                await request.put({url:apiUrl.bug.editTester, data})
-            }
-        },
-    editHandler : (data:{id:number, handlerId?:number})=>{
-            return async ()=>{
-                await  request.put({url:apiUrl.bug.editHandler, data})
-            }
-        },
-    editStatus : (data:{id:number, status:string})=>{
-            return async ()=>{
-                await  request.put({url:apiUrl.bug.editStatus, data})
-            }
-        },
-    editSeverity : (data:{id:number, severity:string})=>{
-            return async ()=>{
-                await request.put({url:apiUrl.bug.editSeverity, data})
-            }
-        },
-    editTags : (data:{id:number, tagIds?:number[]})=>{
-            return async ()=>{
-                await  request.put({url:apiUrl.bug.editTags, data})
-            }
-        },
-    editDescription : (data:{id:number, description?:string})=>{
-            return async ()=>{
-                await request.put({url:apiUrl.bug.editDescription, data})
-            }
-        },
-    deleteBug : (params:{id:number})=>{
-            return async ()=>{
-                const result = await  request.delete({url:apiUrl.bug.index, params})
-                return result.isSuccess
-            }
-        },
-    withdrawDelBug : (params:{id:number})=>{
-            return async ()=>{
-                const result = await  request.put({url: apiUrl.bug.withdrawDel, params})
-                return result.isSuccess
-            }
+    listMyBugs: () => async (dispatch:Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.bug.mine });
+        if (result.isSuccess) {
+            dispatch(bugActions.setMyBugs(result.data));
         }
-}
+    },
+    listBugs: (params?:IBugListParams) => async (dispatch:Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.bug.index, params });
+        if (result.isSuccess) {
+            dispatch(bugActions.setBugs(result.data.data));
+            dispatch(bugActions.setTotal(result.data.total));
+            const page = params && params.page ? params.page : 0;
+            dispatch(bugActions.setPage(page));
+        }
+    },
+    addBug: (data:IAddBugDto) => async () => {
+        const result = await request.post({ url: apiUrl.bug.index, data });
+        return result.isSuccess;
+    },
+    getBugDetail: (id:number) => async (dispatch:Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.bug.detail, params: { id } });
+        if (result.isSuccess) {
+            dispatch(bugActions.setCurrentBug(result.data));
+        }
+    },
+    editName: (data:{id:number, name:string}) => async () => {
+        await request.put({ url: apiUrl.bug.editName, data });
+    },
+    editQa: (data:{id:number, testerId?:number}) => async () => {
+        await request.put({ url: apiUrl.bug.editTester, data });
+    },
+    editHandler: (data:{id:number, handlerId?:number}) => async () => {
+        await request.put({ url: apiUrl.bug.editHandler, data });
+    },
+    editStatus: (data:{id:number, status:string}) => async () => {
+        await request.put({ url: apiUrl.bug.editStatus, data });
+    },
+    editSeverity: (data:{id:number, severity:string}) => async () => {
+        await request.put({ url: apiUrl.bug.editSeverity, data });
+    },
+    editTags: (data:{id:number, tagIds?:number[]}) => async () => {
+        await request.put({ url: apiUrl.bug.editTags, data });
+    },
+    editDescription: (data:{id:number, description?:string}) => async () => {
+        await request.put({ url: apiUrl.bug.editDescription, data });
+    },
+    deleteBug: (params:{id:number}) => async () => {
+        const result = await request.delete({ url: apiUrl.bug.index, params });
+        return result.isSuccess;
+    },
+    withdrawDelBug: (params:{id:number}) => async () => {
+        const result = await request.put({ url: apiUrl.bug.withdrawDel, params });
+        return result.isSuccess;
+    },
+};
 
+export {
+    bugActions, bugThunks, IAddBugDto, IBugDetail,
+};
 
-
-export {bugActions, bugThunks, IAddBugDto,IBugDetail}
-
-export default bugSlice.reducer
+export default bugSlice.reducer;

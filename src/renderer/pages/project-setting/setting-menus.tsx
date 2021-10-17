@@ -1,5 +1,4 @@
-import React from "react";
-
+import React from 'react';
 
 interface IProps{
 
@@ -14,26 +13,32 @@ interface IMenuItemProps{
     isActive:boolean,
 }
 
-export default function SettingMenus(props:IProps){
+function MenuItem(props:IMenuItemProps) {
+    const { onChosen, name, isActive } = props;
+    return (
+        <div onClick={onChosen} className={`align-center d-flex justify-center setting-menu-item ${isActive ? 'setting-menu-item-active' : ''}`}>
+            {name}
+        </div>
+    );
+}
 
-
+export default function SettingMenus(props:IProps) {
+    const { menus } = props;
     return (
         <div className="setting-menus">
             <div className="ml20 mt20 mb20 d-flex justify-between">
                 <span className="title">项目设置</span>
             </div>
             <div>
-                {props.menus.map((item:any)=><MenuItem isActive={props.activeKey==item.key} onChosen={()=>props.menuSelected(item.key)} key={item.key} name={item.name}/>)}
+                {menus.map((item:any) => (
+                    <MenuItem
+                        isActive={props.activeKey === item.key}
+                        onChosen={() => props.menuSelected(item.key)}
+                        key={item.key}
+                        name={item.name}
+                    />
+                ))}
             </div>
         </div>
-    )
-}
-
-
-
-function MenuItem(props:IMenuItemProps){
-
-    return <div onClick={props.onChosen} className={`align-center d-flex justify-center setting-menu-item ${props.isActive? 'setting-menu-item-active':''}`}>
-        {props.name}
-    </div>
+    );
 }

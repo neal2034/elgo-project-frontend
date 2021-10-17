@@ -1,16 +1,15 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import EffInfoSep from "@components/business/eff-info-sep/eff-info-sep";
-import {RootState} from "../../store/store";
-import {taskThunks} from "@slice/taskSlice";
-import OneTask from "../task/one-task";
-import TaskDetail from "../task/task-detail";
-import {Drawer} from "antd";
-import {effToast} from "@components/common/eff-toast/eff-toast";
-import {projectActions} from "@slice/projectSlice";
-import ImgSmile from '@imgs/smile.png'
-import './my-task.less'
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import EffInfoSep from '@components/business/eff-info-sep/eff-info-sep';
+import { taskThunks } from '@slice/taskSlice';
+import { Drawer } from 'antd';
+import { effToast } from '@components/common/eff-toast/eff-toast';
+import { projectActions } from '@slice/projectSlice';
+import ImgSmile from '@imgs/smile.png';
+import TaskDetail from '../task/task-detail';
+import OneTask from '../task/one-task';
+import { RootState } from '../../store/store';
+import './my-task.less';
 
 interface IGroupTasks{
     id:number,
@@ -30,96 +29,94 @@ interface IPropProjectTasks{
     onTaskSelected:(id:number)=>void,
 }
 
-
-
-export default function MyTask(){
-    const dispatch = useDispatch()
-    const myTasks = useSelector((state:RootState)=>state.task.myTasks)
-    const [showTaskDetail, setShowTaskDetail] = useState(false);      //是否显示任务详情
-    useEffect(()=>{
-        dispatch(taskThunks.listMyTasks())
-    }, [])
+function MyProjectTask(props:IPropProjectTasks) {
+    const dispatch = useDispatch();
+    const { item } = props;
+    const [tasks, setTasks] = useState([]);
 
     const response = {
-        handleDelTask: async (id:number)=>{
-            const result:any =await dispatch(taskThunks.deleteTask(id))
-            if(result as boolean){
-                effToast.success_withdraw('任务放入回收站成功',()=>response.handleWithdrawDelTask(id))
-                dispatch(taskThunks.listMyTasks())
-                setShowTaskDetail(false)
+        handleSelected: (id:number) => {
+            dispatch(projectActions.setProjectMembers(item.members));
+            props.onTaskSelected(id);
+        },
+    };
+
+    useEffect(() => {
+        const tempTasks:any = [];
+        item.taskList.forEach((listItem) => {
+            listItem.tasks.forEach((onItem) => {
+                tempTasks.push(onItem);
+            });
+        });
+        setTasks(tempTasks);
+    }, [item]);
+
+    const taskItems = tasks.map((taskItem:any) => (
+        <OneTask
+            key={taskItem.id}
+            task={taskItem}
+            onSelect={() => response.handleSelected(taskItem.id)}
+        />
+    ));
+
+    return (
+        <>
+            <EffInfoSep className="ml40 mt40" name={item.projectName} />
+            {taskItems}
+        </>
+    );
+}
+
+export default function MyTask() {
+    const dispatch = useDispatch();
+    const myTasks = useSelector((state:RootState) => state.task.myTasks);
+    const [showTaskDetail, setShowTaskDetail] = useState(false); // 是否显示任务详情
+    useEffect(() => {
+        dispatch(taskThunks.listMyTasks());
+    }, []);
+
+    const response = {
+        handleDelTask: async (id:number) => {
+            const result:any = await dispatch(taskThunks.deleteTask(id));
+            if (result as boolean) {
+                effToast.success_withdraw('任务放入回收站成功', () => response.handleWithdrawDelTask(id));
+                dispatch(taskThunks.listMyTasks());
+                setShowTaskDetail(false);
             }
-
-
-
         },
-        handleWithdrawDelTask: async (id:number)=>{
-            const result:any = await dispatch(taskThunks.withdrawDelTask(id))
-            if(result as boolean){
-                effToast.success("撤销成功")
-                dispatch(taskThunks.listMyTasks())
+        handleWithdrawDelTask: async (id:number) => {
+            const result:any = await dispatch(taskThunks.withdrawDelTask(id));
+            if (result as boolean) {
+                effToast.success('撤销成功');
+                dispatch(taskThunks.listMyTasks());
             }
         },
-        handleTaskSelected: async (id:number)=>{
-            await dispatch(taskThunks.getTaskDetail(id))
-            setShowTaskDetail(true)
-
+        handleTaskSelected: async (id:number) => {
+            await dispatch(taskThunks.getTaskDetail(id));
+            setShowTaskDetail(true);
         },
-    }
+    };
 
-    const taskList = myTasks.map((item:any)=> <MyProjectTask onTaskSelected={response.handleTaskSelected} key={item.projectId} item={item}/>)
-
+    const taskList = myTasks.map((item:any) => <MyProjectTask onTaskSelected={response.handleTaskSelected} key={item.projectId} item={item} />);
 
     return (
         <div className="my-tasks">
-            {myTasks.length === 0? <div className=" empty-task d-flex-column align-center justify-center">
-                <img src={ImgSmile} width={80}  />
-                <span className="mt20 desc">太棒了,没有需要完成的任务哦</span>
-            </div> : taskList}
+            {myTasks.length === 0 ? (
+                <div className=" empty-task d-flex-column align-center justify-center">
+                    <img alt="empty" src={ImgSmile} width={80} />
+                    <span className="mt20 desc">太棒了,没有需要完成的任务哦</span>
+                </div>
+            ) : taskList}
             <Drawer
                 title={null}
-                width={'60%'}
+                width="60%"
                 placement="right"
                 closable={false}
-                onClose={()=>setShowTaskDetail(false)}
+                onClose={() => setShowTaskDetail(false)}
                 visible={showTaskDetail}
             >
-                <TaskDetail onDel={response.handleDelTask}/>
+                <TaskDetail onDel={response.handleDelTask} />
             </Drawer>
         </div>
-    )
-}
-
-
-
-
-function MyProjectTask(props:IPropProjectTasks){
-    const dispatch = useDispatch()
-    const {item} = props;
-    const [tasks, setTasks] = useState([])
-
-    const response = {
-        handleSelected: (id:number)=>{
-            dispatch(projectActions.setProjectMembers(item.members))
-            props.onTaskSelected(id)
-        }
-    }
-
-    useEffect(()=>{
-        const tempTasks:any = []
-        item.taskList.forEach(listItem=>{
-            listItem.tasks.forEach(onItem=>{
-                tempTasks.push(onItem)
-            })
-        })
-        setTasks(tempTasks)
-    }, [item])
-
-    const taskItems = tasks.map((item:any)=><OneTask key={item.id} task={item} onSelect={()=>response.handleSelected(item.id)}/>)
-
-    return(
-         <React.Fragment>
-             <EffInfoSep  className="ml40 mt40" name={item.projectName}/>
-             {taskItems}
-         </React.Fragment>
-    )
+    );
 }

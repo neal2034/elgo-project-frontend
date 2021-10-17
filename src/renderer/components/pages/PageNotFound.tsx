@@ -1,13 +1,11 @@
-import React from "react";
-import Img404 from "@imgs/404.png"
+import React from 'react';
+import Img404 from '@imgs/404.png';
 
-
-
-class PageNotFound extends React.Component{
+// eslint-disable-next-line react/prefer-stateless-function
+class PageNotFound extends React.Component {
     render() {
-        return <img src={Img404} />
+        return <img alt="not found" src={Img404} />;
     }
 }
 
-
-export default PageNotFound
+export default PageNotFound;

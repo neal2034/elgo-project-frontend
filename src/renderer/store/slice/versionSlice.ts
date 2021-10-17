@@ -1,57 +1,44 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Dispatch} from "react";
-import request from "../../utils/request";
-import apiUrl from "@config/apiUrl";
-
+import { createSlice } from '@reduxjs/toolkit';
+import { Dispatch } from 'react';
+import apiUrl from '@config/apiUrl';
+import request from '../../utils/request';
 
 const versionSlice = createSlice({
     name: 'version',
-    initialState:{
-        versions: []
+    initialState: {
+        versions: [],
     },
-    reducers:{
-        setVersions: (state, action) => { state.versions = action.payload },
-    }
-})
+    reducers: {
+        setVersions: (state, action) => { state.versions = action.payload; },
+    },
+});
 
-
-
-const versionAction = versionSlice.actions
+const versionAction = versionSlice.actions;
 const versionThunks = {
-    listVersions : ()=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.get({url: apiUrl.versions.index})
-                if(result.isSuccess){
-                    dispatch(versionAction.setVersions(result.data))
-                }
-            }
-        },
-    addVersion : (data:{name:string})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await  request.post({url:apiUrl.versions.index, data})
-                return result.isSuccess
-            }
-        },
-    editVersion : (data:{name:string, id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.put({url:apiUrl.versions.index, data})
-                return result.isSuccess
-            }
-        },
-    delVersion : (id:number)=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.delete({url:`${apiUrl.versions.index}/${id}`})
-                return result.isSuccess
-            }
-        },
-    withdrawDel : (params:{id:number})=>{
-            return async (dispatch:Dispatch<any>)=>{
-                const result = await request.put({url:apiUrl.versions.withdraw, params})
-                return result.isSuccess
-            }
+    listVersions: () => async (dispatch:Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.versions.index });
+        if (result.isSuccess) {
+            dispatch(versionAction.setVersions(result.data));
         }
+    },
+    addVersion: (data:{name:string}) => async (dispatch:Dispatch<any>) => {
+        const result = await request.post({ url: apiUrl.versions.index, data });
+        return result.isSuccess;
+    },
+    editVersion: (data:{name:string, id:number}) => async (dispatch:Dispatch<any>) => {
+        const result = await request.put({ url: apiUrl.versions.index, data });
+        return result.isSuccess;
+    },
+    delVersion: (id:number) => async (dispatch:Dispatch<any>) => {
+        const result = await request.delete({ url: `${apiUrl.versions.index}/${id}` });
+        return result.isSuccess;
+    },
+    withdrawDel: (params:{id:number}) => async (dispatch:Dispatch<any>) => {
+        const result = await request.put({ url: apiUrl.versions.withdraw, params });
+        return result.isSuccess;
+    },
 
-}
+};
 
-export {versionAction, versionThunks}
-export default versionSlice.reducer
+export { versionAction, versionThunks };
+export default versionSlice.reducer;

@@ -1,17 +1,16 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from '@reduxjs/toolkit';
 
 const breadcrumbSlice = createSlice({
     name: 'breadcrumb',
-    initialState:{
-        breadcrumbs:[]
+    initialState: {
+        breadcrumbs: [],
     },
-    reducers:{
-        setBreadcrumbs: (state, action)=>{
-            state.breadcrumbs = action.payload
-        }
-    }
-})
+    reducers: {
+        setBreadcrumbs: (state, action) => {
+            state.breadcrumbs = action.payload;
+        },
+    },
+});
 
-export const {setBreadcrumbs} = breadcrumbSlice.actions
-export default breadcrumbSlice.reducer
+export const { setBreadcrumbs } = breadcrumbSlice.actions;
+export default breadcrumbSlice.reducer;

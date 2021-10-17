@@ -1,6 +1,5 @@
-import React from "react";
-import {Modal} from "antd";
-
+import React from 'react';
+import { Modal } from 'antd';
 
 interface IConfirmDlgProps{
     visible:boolean,
@@ -9,11 +8,13 @@ interface IConfirmDlgProps{
     title?:string
 }
 
-export default function EffConfirmDlg(props:IConfirmDlgProps){
-    const {children, visible,title='确认删除'} = props
+export default function EffConfirmDlg(props:IConfirmDlgProps) {
+    const {
+        children, visible, className, title = '确认删除',
+    } = props;
     return (
-        <Modal  className={props.className} closable={false} footer={false} width={400} title={title} visible={visible}>
+        <Modal className={className} closable={false} footer={false} width={400} title={title} visible={visible}>
             {children}
         </Modal>
-    )
+    );
 }
