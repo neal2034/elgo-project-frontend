@@ -351,8 +351,8 @@ export default function Requirement() {
         },
 
         handleRequirementAdd: async (requirement:any) => {
-            await dispatch(reqThunks.addRequirement(requirement));
             setShowAddForm(false);
+            await dispatch(reqThunks.addRequirement(requirement));
         },
 
         handleSearchMenu: (key:string) => {

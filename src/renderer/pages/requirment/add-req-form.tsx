@@ -63,6 +63,7 @@ export default function AddReqForm(props:IAddReqFormProps) {
                 Object.assign(data.requirement, values);
                 data.requirement.tagIds = selectedTagIds;
                 onConfirm(data.requirement);
+                reqForm.resetFields();
             });
         },
         handleTagsChanged: (tagIds:number[]) => {
