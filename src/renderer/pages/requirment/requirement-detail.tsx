@@ -160,7 +160,6 @@ export default function RequirementDetail(props:IProps) {
         dispatch(reqThunks.listAllReqSource());
         dispatch(reqThunks.listAllReqVersions());
         dispatch(tagThunks.listTags());
-        dispatch(funztionActions.setReqFunztions([])); // 清空历史需求所对应功能
         dispatch(funztionThunks.listFunztionStatus());
     }, []);
 

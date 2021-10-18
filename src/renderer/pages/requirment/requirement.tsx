@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reqThunks } from '@slice/reqSlice';
 import { tagThunks } from '@slice/tagSlice';
 import { effToast } from '@components/common/eff-toast/eff-toast';
+import { funztionActions } from '@slice/funztionSlice';
 import EffButton from '../../components/eff-button/eff-button';
 import { RootState } from '../../store/store';
 import AddReqClazzDlg from './add-req-clazz-dlg';
@@ -251,6 +252,7 @@ function ReqContent(props: IRequirementContentProps) {
             setCurrentPage(page);
         },
         onReqChosen: (id:number) => {
+            dispatch(funztionActions.setReqFunztions([])); // 清空历史需求所对应功能
             dispatch(reqThunks.getReqDetail(id));
             setShowDetail(true);
         },
