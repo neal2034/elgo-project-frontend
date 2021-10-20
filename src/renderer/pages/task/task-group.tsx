@@ -14,7 +14,7 @@ interface IProps{
     onTaskSelected:(id:number)=>void,
 }
 
-export default function EffTaskGroup(props:IProps) {
+export default function TaskGroup(props:IProps) {
     const dispatch = useDispatch();
     const {
         id, name, isNew = false, onAdd, onTaskSelected,

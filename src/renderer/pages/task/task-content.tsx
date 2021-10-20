@@ -9,9 +9,9 @@ import { UNDONE_TASK } from '@config/sysConstant';
 import TaskDetail from './task-detail';
 import AddTaskForm from './add-task-form';
 import { RootState } from '../../store/store';
-import EffTaskGroup from './eff-task-group';
+import TaskGroup from './task-group';
 
-export default function EffTaskContent() {
+export default function TaskContent() {
     const dispatch = useDispatch();
     const [activeGroupId, setActiveGroupId] = useState(-1); // 当前用于添加任务的分组ID
     const [showAddTaskFrom, setShowAddTaskForm] = useState(false); // 是否打开添加任务对话框
@@ -60,11 +60,15 @@ export default function EffTaskContent() {
                 dispatch(taskThunks.listTask(taskGroupId));
             }
         },
+        taskUpdated: (taskId:number, taskGroupId: number) => {
+            dispatch(taskThunks.getTaskDetail(taskId));
+            dispatch(taskThunks.listTasks({ taskListId: taskGroupId, status: UNDONE_TASK }));
+        },
     };
 
     const ui = {
         taskGroups: data.groups.map((item:any, index) => (
-            <EffTaskGroup
+            <TaskGroup
                 onTaskSelected={response.handleTaskSelected}
                 onAdd={response.goAddTask}
                 isNew={!item.name && index === data.groups.length - 1}
@@ -97,7 +101,7 @@ export default function EffTaskContent() {
                 onClose={() => setShowTaskDetail(false)}
                 visible={showTaskDetail}
             >
-                <TaskDetail onDel={response.handleDelTask} />
+                <TaskDetail onDel={response.handleDelTask} onChange={response.taskUpdated} />
             </Drawer>
         </div>
     );

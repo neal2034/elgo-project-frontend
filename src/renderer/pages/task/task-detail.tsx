@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskThunks } from '@slice/taskSlice';
-import { PRIORITY, TASK_STATUS, UNDONE_TASK } from '@config/sysConstant';
+import { PRIORITY, TASK_STATUS } from '@config/sysConstant';
 import { tagThunks } from '@slice/tagSlice';
 import { Drawer } from 'antd';
 import { funztionThunks } from '@slice/funztionSlice';
@@ -22,10 +22,11 @@ import FunztionDetail from '../funztion/funztion-detail';
 
 interface IProps{
     onDel:(id:number, taskGroupId:number)=>void,
+    onChange?:(id:number, taskGroupId:number)=>void,
 }
 
 export default function TaskDetail(props:IProps) {
-    const { onDel } = props;
+    const { onDel, onChange } = props;
     const dispatch = useDispatch();
     const [memberOptions, setMemberOptions] = useState<any[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
@@ -75,7 +76,9 @@ export default function TaskDetail(props:IProps) {
             console.log('will done');
         },
         detailTaskChanged: () => {
-            dispatch(taskThunks.listTasks({ taskListId: data.currentTask.taskListId, status: UNDONE_TASK }));
+            if (onChange) {
+                onChange(data.currentTask.id, data.currentTask.taskListId);
+            }
         },
         handleHandlerChange: async (handlerId?:number|string) => {
             await dispatch(taskThunks.editTaskHandler(data.currentTask.id, handlerId as (number|undefined)));

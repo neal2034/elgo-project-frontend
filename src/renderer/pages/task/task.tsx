@@ -6,7 +6,7 @@ import { UserAddOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import EffSearchResult from '../../components/business/eff-search-result/eff-search-result';
 import EffSearchArea from '../../components/business/eff-search-area/eff-search-area';
 import EffButton from '../../components/eff-button/eff-button';
-import EffTaskContent from './eff-task-content';
+import TaskContent from './task-content';
 import { RootState } from '../../store/store';
 import TaskAdvanceSearch from './task-advance-search';
 
@@ -81,7 +81,7 @@ export default function Task() {
                     : <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus} />}
                 <EffButton width={100} onClick={response.handleAddNewTaskGroup} type="line" round className="ml10 mr20" text="+ 新增分组" key="add" />
             </div>
-            <EffTaskContent />
+            <TaskContent />
         </div>
     );
 }

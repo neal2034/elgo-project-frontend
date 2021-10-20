@@ -95,6 +95,10 @@ export default function MyTask() {
             await dispatch(taskThunks.getTaskDetail(id));
             setShowTaskDetail(true);
         },
+        taskUpdated: (taskId:number, taskGroupId: number) => {
+            dispatch(taskThunks.getTaskDetail(taskId));
+            dispatch(taskThunks.listMyTasks());
+        },
     };
 
     const taskList = myTasks.map((item:any) => <MyProjectTask onTaskSelected={response.handleTaskSelected} key={item.projectId} item={item} />);
@@ -115,7 +119,7 @@ export default function MyTask() {
                 onClose={() => setShowTaskDetail(false)}
                 visible={showTaskDetail}
             >
-                <TaskDetail onDel={response.handleDelTask} />
+                <TaskDetail onDel={response.handleDelTask} onChange={response.taskUpdated} />
             </Drawer>
         </div>
     );
