@@ -83,7 +83,7 @@ export default function AddTestCaseForm(props:IProps) {
             <div className="title  pb10 mb20">
                 <span>新增用例</span>
             </div>
-            <Form initialValues={{ priority: 'NONE' }} colon={false} form={testCaseForm} requiredMark={false}>
+            <Form colon={false} form={testCaseForm} requiredMark={false}>
                 <Form.Item name="name" label="用例名称" rules={[{ required: true, message: '请输入用例名称' }]}>
                     <Input size="large" />
                 </Form.Item>
@@ -112,12 +112,14 @@ export default function AddTestCaseForm(props:IProps) {
                         </Select>
                     </Form.Item>
 
-                    <Form.Item name="tagIds" style={{ width: '50%', marginLeft: '60px' }} label="标签">
-                        <div className="d-flex ml40">
-                            <EffTagArea onDel={response.onDelTag} tags={selectedTags} />
-                            <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds} tags={tags} />
-                        </div>
-                    </Form.Item>
+                    { false && (
+                        <Form.Item name="tagIds" style={{ width: '50%', marginLeft: '60px' }} label="标签">
+                            <div className="d-flex ml40">
+                                <EffTagArea onDel={response.onDelTag} tags={selectedTags} />
+                                <EffTagSelector onChange={response.handleTagsChanged} chosen={selectedTagIds} tags={tags} />
+                            </div>
+                        </Form.Item>
+                    ) }
 
                 </div>
 
