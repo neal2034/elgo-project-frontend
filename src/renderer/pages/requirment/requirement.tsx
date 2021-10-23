@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reqThunks } from '@slice/reqSlice';
 import { tagThunks } from '@slice/tagSlice';
 import { effToast } from '@components/common/eff-toast/eff-toast';
-import { funztionActions } from '@slice/funztionSlice';
+import { funztionActions, funztionThunks } from '@slice/funztionSlice';
 import EffButton from '../../components/eff-button/eff-button';
 import { RootState } from '../../store/store';
 import AddReqClazzDlg from './add-req-clazz-dlg';
@@ -149,7 +149,13 @@ function ReqClassItem(props:IReqClassItemProps) {
                     placement="bottom"
                     trigger="click"
                 >
-                    <MoreOutlined onClick={() => setMenuVisible(true)} style={{ fontSize: '20px', fontWeight: 'bold' }} />
+                    <MoreOutlined
+                        onClick={() => setMenuVisible(true)}
+                        style={{
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                        }}
+                    />
                 </Popover>
             )}
         </div>
@@ -253,6 +259,7 @@ function ReqContent(props: IRequirementContentProps) {
         },
         onReqChosen: (id:number) => {
             dispatch(funztionActions.setReqFunztions([])); // 清空历史需求所对应功能
+            dispatch(funztionThunks.listReqFunztions({ reqId: id }));
             dispatch(reqThunks.getReqDetail(id));
             setShowDetail(true);
         },

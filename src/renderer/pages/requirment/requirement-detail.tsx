@@ -7,7 +7,7 @@ import { REQUIREMENT_STATUS } from '@config/sysConstant';
 import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import globalColor from '@config/globalColor';
 import { Drawer, Tag } from 'antd';
-import { funztionThunks } from '@slice/funztionSlice';
+import {funztionThunks } from '@slice/funztionSlice';
 import EffEditableInput from '../../components/common/eff-editable-input/eff-editable-input';
 import EffEditableSelector from '../../components/common/eff-editable-selector/eff-editable-selector';
 import { RootState } from '../../store/store';
@@ -164,12 +164,6 @@ export default function RequirementDetail(props:IProps) {
     }, []);
 
     useEffect(() => {
-        if (data.currentRequirement.id) {
-            dispatch(funztionThunks.listReqFunztions({ reqId: data.currentRequirement.id}));
-        }
-    }, [data.currentRequirement.id]);
-
-    useEffect(() => {
         const tagIds = data.currentRequirement.tagIds ? data.currentRequirement.tagIds : [];
         const selectTags = data.allTags.filter((item:any) => tagIds.indexOf(item.id) > -1);
         setSelectedTags(selectTags);
@@ -259,7 +253,10 @@ export default function RequirementDetail(props:IProps) {
                 <PlusSquareOutlined
                     onClick={() => setShowAddFunztionForm(true)}
                     className="cursor-pointer ml10"
-                    style={{ color: globalColor.mainYellowDark, fontSize: '20px' }}
+                    style={{
+                        color: globalColor.mainYellowDark,
+                        fontSize: '20px',
+                    }}
                 />
             </div>
             <div className="ml20 mt20 pr40" style={{ marginLeft: '60px' }}>
