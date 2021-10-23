@@ -164,7 +164,9 @@ export default function RequirementDetail(props:IProps) {
     }, []);
 
     useEffect(() => {
-        dispatch(funztionThunks.listReqFunztions({ reqId: data.currentRequirement.id! }));
+        if (data.currentRequirement.id) {
+            dispatch(funztionThunks.listReqFunztions({ reqId: data.currentRequirement.id}));
+        }
     }, [data.currentRequirement.id]);
 
     useEffect(() => {
