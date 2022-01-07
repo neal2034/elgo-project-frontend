@@ -15,7 +15,7 @@ interface IProps{
 
 export default function ChangePwdDlg(props:IProps) {
     const dispatch = useDispatch();
-    const { visible } = props;
+    const { visible, onClose } = props;
     const [pwdForm] = Form.useForm();
     const [confirmValidate, setConfirmValidate] = useState<any>();
     const [confirmHelpMsg, setConfirmHelpMsg] = useState<string>();
@@ -54,7 +54,7 @@ export default function ChangePwdDlg(props:IProps) {
         },
         closeDlg: () => {
             pwdForm.resetFields();
-            props.onClose();
+            onClose();
         },
     };
 

@@ -100,6 +100,15 @@ const accountThunks = {
         const result = await request.post({ url: apiUrl.user.resent, data });
         return result.isSuccess;
     },
+    // 发送密码找回邮件
+    sentForgetPwdEmail: (data:{email: string}) => async () => {
+        const result = await request.doPost(apiUrl.user.retrievePwdEmail, data);
+        return result
+    },
+    // 重设密码
+    resetPassword: (data:{token:string, password:string}) => async () => request.doPost(apiUrl.user.resetPassword, data),
+    // 检查找回密码token 有效性
+    checkRetrievePwdToken: (data:{token:string}) => async () => request.doPost(apiUrl.user.checkRetrievePwdToken, data),
 };
 
 export { accountActions, accountThunks, IUser };

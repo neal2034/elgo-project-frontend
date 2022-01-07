@@ -47,7 +47,7 @@ const App = () => {
                 break;
             case 'log-out':
                 dispatch(accountThunks.clearLocalStorage());
-                history.push('/login');
+                history.push('/account');
                 break;
             default:
                 break;

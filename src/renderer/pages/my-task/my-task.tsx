@@ -31,13 +31,13 @@ interface IPropProjectTasks{
 
 function MyProjectTask(props:IPropProjectTasks) {
     const dispatch = useDispatch();
-    const { item } = props;
+    const { item, onTaskSelected } = props;
     const [tasks, setTasks] = useState([]);
 
     const response = {
         handleSelected: (id:number) => {
             dispatch(projectActions.setProjectMembers(item.members));
-            props.onTaskSelected(id);
+            onTaskSelected(id);
         },
     };
 

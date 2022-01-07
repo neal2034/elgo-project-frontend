@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-    HashRouter as Router, Route, Switch, Redirect,
+    HashRouter as Router, Redirect, Route, Switch,
 } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { effToast } from '@components/common/eff-toast/eff-toast';
+import Account, { AccountPageStatus } from '@pages/account/account';
 import PageNotFound from './components/pages/PageNotFound';
-import Login from './pages/account/login';
 import NewOrg from './pages/signup/new-org';
 import Signup from './pages/signup/signup';
 import HomePage from './pages/home-page/home-page';
@@ -20,7 +20,7 @@ export default function Pages() {
 
     // 若为桌面端则直接进入登录
     const isElectron = process.env.RUN_ENV === 'pc';
-    const homePath = isElectron ? '/login' : '/home';
+    const homePath = isElectron ? '/account' : '/home';
 
     return (
         <Router>
@@ -32,7 +32,8 @@ export default function Pages() {
                 <Route path="/active/:token" component={ActiveUser} />
                 <Route path="/app" component={App} />
                 <Route exact path="/not" component={PageNotFound} />
-                <Route path="/login" component={Login} />
+                <Route path="/account" render={() => <Account status={AccountPageStatus.LOGIN} />} />
+                <Route path="/reset-pwd/:token" render={() => <Account status={AccountPageStatus.RESET_PWD} />} />
             </Switch>
         </Router>
     );

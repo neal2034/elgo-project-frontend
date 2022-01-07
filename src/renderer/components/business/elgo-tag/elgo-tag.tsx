@@ -14,17 +14,17 @@ interface IProps{
 }
 export default function ElgoTag(props:IProps) {
     const {
-        className, name, color = '#6F7782', editable = false, delAble = false,
+        className, name, color = '#6F7782', editable = false, delAble = false, onEdit, onDel,
     } = props;
     const response = {
         onEdit: () => {
-            if (props.onEdit) {
-                props.onEdit();
+            if (onEdit) {
+                onEdit();
             }
         },
         onDel: () => {
-            if (props.onDel) {
-                props.onDel();
+            if (onDel) {
+                onDel();
             }
         },
     };

@@ -150,7 +150,7 @@ export default function ApiSideBar() {
     const renderTreeNodes = (data:any) => {
         const isSelected = expandedKeys.indexOf(data.key) > -1;
         // eslint-disable-next-line no-shadow
-        const response = {
+        const handlers = {
             apiSelected: () => {
                 dispatch(apiSelected(data.id));
             },
@@ -163,16 +163,16 @@ export default function ApiSideBar() {
                 setVisibleApiMenuSetId(-1);
                 switch (key) {
                 case 'add-group':
-                    response.goAddApiGroup();
+                    handlers.goAddApiGroup();
                     break;
                 case 'add-api':
-                    response.goAddApi();
+                    handlers.goAddApi();
                     break;
                 case 'del-set':
-                    response.goDelApiItem();
+                    handlers.goDelApiItem();
                     break;
                 case 'edit-item':
-                    response.goEditItem();
+                    handlers.goEditItem();
                     break;
                 default:
                     break;
@@ -207,7 +207,7 @@ export default function ApiSideBar() {
         };
         const ui = {
             apiSetMenu: (
-                <Menu onClick={response.menuSelected}>
+                <Menu onClick={handlers.menuSelected}>
                     <Menu.Item key="add-group">
                         <img alt="add-api-group" src={ImgAddApiGroup} width={14} />
                         <span className="ml5">添加分组</span>
@@ -226,7 +226,7 @@ export default function ApiSideBar() {
                     </Menu.Item>
                 </Menu>),
             apiItemMenu: (
-                <Menu onClick={response.menuSelected}>
+                <Menu onClick={handlers.menuSelected}>
                     <Menu.Item key="open-item">
                         <img alt="open-item-in-new" src={ImgOpenInNew} width={14} />
                         <span className="ml5">在新标签页打开</span>
@@ -244,7 +244,7 @@ export default function ApiSideBar() {
         };
         if (data.type === 'SET') {
             return (
-                <div className="api-set" onMouseEnter={response.showMenu}>
+                <div className="api-set" onMouseEnter={handlers.showMenu}>
                     <RightOutlined className={`ml10 ${isSelected ? 'selected' : ''}`} />
                     <img alt="api-set" src={ImgApiSet} width="16" className="ml10 mr10" />
                     {data.name}
@@ -261,7 +261,7 @@ export default function ApiSideBar() {
             );
         } if (data.type === 'GROUP') {
             return (
-                <div className="api-group" onMouseEnter={response.showMenu}>
+                <div className="api-group" onMouseEnter={handlers.showMenu}>
                     <RightOutlined className={`ml10 ${isSelected ? 'selected' : ''}`} />
                     <img alt="api-group" src={ImgApiFolder} className="ml10 mr10" width="14" />
                     {data.name}
@@ -280,7 +280,7 @@ export default function ApiSideBar() {
             method = method === 'DELETE' ? 'DEL' : method;
             const methodClassName = method.toLowerCase();
             return (
-                <div className="api-item" onClick={response.apiSelected} onMouseEnter={response.showMenu}>
+                <div className="api-item" onClick={handlers.apiSelected} onMouseEnter={handlers.showMenu}>
                     <span className={`mr10 ml10 api-method ${methodClassName}`}>{method}</span>
                     <span className="name-area">{data.name}</span>
                     <Dropdown className={visibleApiMenuSetId === data.id ? 'd-flex' : 'hide-menu'} overlay={ui.apiItemMenu} placement="bottomCenter">

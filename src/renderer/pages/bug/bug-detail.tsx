@@ -20,6 +20,7 @@ interface IProps{
 
 export default function BugDetail(props:IProps) {
     const dispatch = useDispatch();
+    const { onDel } = props
     const currentBug = useSelector((state:RootState) => state.bug.currentBug);
     const menuItems = [{ key: 'delete', name: '删除Bug', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> }];
     const [memberOptions, setMemberOptions] = useState<any[]>([]);
@@ -76,7 +77,7 @@ export default function BugDetail(props:IProps) {
         // 菜单选择响应
         menuSelected: (key:string) => {
             if (key === 'delete') {
-                props.onDel(currentBug.id as number);
+                onDel(currentBug.id as number);
             }
         },
     };

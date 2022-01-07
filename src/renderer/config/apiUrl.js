@@ -8,13 +8,13 @@ const apiUrl = {
         checkCode: '/user/public/check-code', // 检测邀请码是否可用
         retrievePwdEmail: '/user/public/retrieve-password-email', // 发送找回密码邮件
         checkRetrievePwdToken: '/user/public/check-retrieve-pwd-token', // 校验找回密码token
-        retrievePassword: '/user/public/retrieve-password', // 重设密码
+        resetPassword: '/user/public/reset-password', // 重设密码
         userRes: '/user', // 用户资源
         avatar: '/user/avatar', // 修改用户头像,
         name: '/user/name', // 修改用户名称
         password: '/user/change-pwd', // 修改用户密码
         sendChangeEmailToken: '/user/sent-change-email', // 发送邮箱修改邮件
-        changeEmail: '/user/change-email', // 修改用户密码
+        changeEmail: '/user/change-email', // 修改用户密码,
 
     },
     organization: {

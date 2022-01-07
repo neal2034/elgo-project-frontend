@@ -15,7 +15,9 @@ interface IProps{
 }
 
 export default function AddVersionDlg(props:IProps) {
-    const { version, onClose, visible } = props;
+    const {
+        version, onClose, visible, onEdit, onAdd,
+    } = props;
     const title = version ? '编辑版本' : '添加版本';
     const [addForm] = Form.useForm();
 
@@ -35,10 +37,10 @@ export default function AddVersionDlg(props:IProps) {
     const response = {
         saveReqSource: async () => {
             const values = await addForm.validateFields();
-            if (props.version) {
-                props.onEdit(values.name, props.version.id);
+            if (version) {
+                onEdit(values.name, version.id);
             } else {
-                props.onAdd(values.name);
+                onAdd(values.name);
             }
         },
 

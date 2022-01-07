@@ -30,15 +30,17 @@ function TagColor(props:{color:string, selected:boolean, onChosen:()=>void}) {
 }
 
 export default function TagDialog(props:IProps) {
-    const { tag, onClose, visible } = props;
+    const {
+        tag, onClose, visible, onEdit, onAdd,
+    } = props;
     const title = tag ? '编辑标签' : '添加标签';
     const [tagForm] = Form.useForm();
     const [selectColor, setSelectColor] = useState(colors[0]);
 
     useEffect(() => {
-        if (props.tag) {
-            setSelectColor(props.tag.color);
-            tagForm.setFieldsValue({ name: props.tag.name });
+        if (tag) {
+            setSelectColor(tag.color);
+            tagForm.setFieldsValue({ name: tag.name });
         }
     }, [tag]);
 
@@ -53,10 +55,10 @@ export default function TagDialog(props:IProps) {
         saveTag: async () => {
             const values = await tagForm.validateFields();
             const { name } = values;
-            if (props.tag) {
-                props.onEdit(name, selectColor, props.tag.id);
+            if (tag) {
+                onEdit(name, selectColor, tag.id);
             } else {
-                props.onAdd(name, selectColor);
+                onAdd(name, selectColor);
             }
         },
     };

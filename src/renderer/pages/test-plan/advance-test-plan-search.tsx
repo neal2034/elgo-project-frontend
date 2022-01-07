@@ -11,9 +11,10 @@ interface IProps{
 
 export default function AdvanceTestPlanSearch(props:IProps) {
     const [searchForm] = Form.useForm();
+    const { onSearch, onCancel } = props;
     const response = {
         handleSearch: (values:any) => {
-            props.onSearch(values);
+            onSearch(values);
         },
     };
     const testPlanStatusOptions = TEST_PLAN_STATUS.map((item:any) => (
@@ -36,7 +37,7 @@ export default function AdvanceTestPlanSearch(props:IProps) {
                 </Form.Item>
 
                 <div className="d-flex justify-end mb20">
-                    <EffButton onClick={() => props.onCancel()} text="取消" key="cancel" round width={80} type="line" />
+                    <EffButton onClick={() => onCancel()} text="取消" key="cancel" round width={80} type="line" />
                     <EffButton htmlType="submit" className="ml10" text="搜索" key="search" round width={80} type="filled" />
                 </div>
             </Form>

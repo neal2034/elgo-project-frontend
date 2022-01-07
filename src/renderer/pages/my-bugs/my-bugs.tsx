@@ -29,12 +29,12 @@ interface IPropProjectBugs{
 
 function MyProjectBug(props:IPropProjectBugs) {
     const dispatch = useDispatch();
-    const { item } = props;
+    const { item, onBugSelected } = props;
 
     const response = {
         handleSelected: (id:number) => {
             dispatch(projectActions.setProjectMembers(item.members));
-            props.onBugSelected(id);
+            onBugSelected(id);
         },
     };
 

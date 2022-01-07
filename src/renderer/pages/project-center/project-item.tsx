@@ -17,7 +17,7 @@ interface IProps{
 
 export default function ProjectItem(props: IProps) {
     const dispatch = useDispatch();
-    const { project } = props;
+    const { project, onEdit, onDel } = props;
     const bgColor = project.color ? project.color : PROJECT_COLOR[0];
     const [showProjectMenu, setShowProjectMenu] = useState(false);
     const history = useHistory();
@@ -47,10 +47,10 @@ export default function ProjectItem(props: IProps) {
             }
         },
         delProject: () => {
-            props.onDel(props.project);
+            onDel(project);
         },
         editProject: () => {
-            props.onEdit(props.project);
+            onEdit(project);
         },
 
     };

@@ -28,7 +28,7 @@ interface IBugData{
 }
 
 export default function AddBugForm(props:IProps) {
-    const { tags } = props;
+    const { tags, onCancel, onConfirm } = props;
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedTags, setSelectedTags] = useState<any>([]);
     const members = useSelector((state:RootState) => (state.project.projectDetail.members ? state.project.projectDetail.members : []));
@@ -38,11 +38,11 @@ export default function AddBugForm(props:IProps) {
             const values = await addForm.validateFields();
             const bugData:IBugData = { ...values };
             bugData.tagIds = selectedTagIds;
-            props.onConfirm(bugData);
+            onConfirm(bugData);
         },
         handleTagsChanged: (tagIds:number[]) => {
             setSelectedTagIds(tagIds);
-            const selectTags = props.tags.filter((item) => tagIds.indexOf(item.id) > -1);
+            const selectTags = tags.filter((item) => tagIds.indexOf(item.id) > -1);
             setSelectedTags(selectTags);
         },
         // 响应标签删除
@@ -53,7 +53,7 @@ export default function AddBugForm(props:IProps) {
             response.handleTagsChanged(currentIds);
         },
         handleCancelAdd: () => {
-            props.onCancel();
+            onCancel();
         },
     };
 

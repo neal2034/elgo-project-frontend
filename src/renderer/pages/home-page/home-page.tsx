@@ -22,7 +22,7 @@ export default function HomePage() {
     ];
     const response = {
         goLogin: () => {
-            history.push('/login');
+            history.push('/account');
         },
         goSignup: () => {
             history.push('/signup');

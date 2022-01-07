@@ -15,7 +15,7 @@ export default function ChangeEmailDlg(props: {
     onClose: ()=>void
 }) {
     const dispatch = useDispatch();
-    const { visible } = props;
+    const { visible, onClose } = props;
     const [emailForm] = Form.useForm();
     const [passwordErrMsg, setPasswordErrMsg] = useState<string>();
     const [passwordValidate, setPasswordValidate] = useState<any>();
@@ -28,7 +28,7 @@ export default function ChangeEmailDlg(props: {
     const response = {
         closeDlg: () => {
             emailForm.resetFields();
-            props.onClose();
+            onClose();
         },
         handleSubmit: async () => {
             const values = await emailForm.validateFields();

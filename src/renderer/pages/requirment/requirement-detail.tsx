@@ -7,7 +7,7 @@ import { REQUIREMENT_STATUS } from '@config/sysConstant';
 import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import globalColor from '@config/globalColor';
 import { Drawer, Tag } from 'antd';
-import {funztionThunks } from '@slice/funztionSlice';
+import { funztionThunks } from '@slice/funztionSlice';
 import EffEditableInput from '../../components/common/eff-editable-input/eff-editable-input';
 import EffEditableSelector from '../../components/common/eff-editable-selector/eff-editable-selector';
 import { RootState } from '../../store/store';

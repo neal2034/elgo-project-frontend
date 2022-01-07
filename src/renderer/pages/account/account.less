@@ -1,0 +1,97 @@
+@import '~antd/dist/antd.css';
+
+.account{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: @color-bg;
+
+  label{
+    color: @color-font-weak;
+  }
+
+
+  .logo{
+    width: 200px;
+  }
+
+  .content{
+    position: relative;
+    border: 1px solid @color-board;
+    width: 370px;
+    height: 250px;
+    background-color: white;
+    padding: 20px;
+  }
+
+  .spin{
+    position: absolute;
+    top: 40%;
+    left:0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
+  .ant-spin-dot-item {
+    background-color: @color-main-yellow-dark;
+  }
+
+  .title{
+    font-size: 14px;
+    font-weight: 400;
+    color: @color-font-normal;
+  }
+
+}
+
+.login{
+  .text-forget-pwd{
+    margin-top: 10px;
+    float: right;
+    color: @color-main-blue;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+.form-forget-pwd{
+  .text-go-back{
+    margin-top: 10px;
+    float: right;
+    color: @color-main-blue;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+.forget-mail-sent{
+  display: flex;
+  flex-direction: column;
+  color: @color-font-weak;
+}
+
+.invalid-reset{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: @color-font-weak;
+  margin-top: 40px;
+
+
+  .back-login{
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      color: @color-main-blue;
+      cursor: pointer;
+  }
+}

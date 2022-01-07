@@ -15,7 +15,9 @@ interface IProps{
 }
 
 export default function AddReqSourceDlg(props:IProps) {
-    const { reqSource, onClose, visible } = props;
+    const {
+        reqSource, onClose, visible, onEdit, onAdd,
+    } = props;
     const title = reqSource ? '编辑需求来源' : '添加需求来源';
     const [addForm] = Form.useForm();
     if (reqSource) {
@@ -34,10 +36,10 @@ export default function AddReqSourceDlg(props:IProps) {
     const response = {
         saveReqSource: async () => {
             const values = await addForm.validateFields();
-            if (props.reqSource) {
-                props.onEdit(values.name, props.reqSource.id);
+            if (reqSource) {
+                onEdit(values.name, reqSource.id);
             } else {
-                props.onAdd(values.name);
+                onAdd(values.name);
             }
         },
 

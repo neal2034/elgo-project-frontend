@@ -42,7 +42,9 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': ['off'],
         '@typescript-eslint/no-var-requires': 'off',
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
+        '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
         'no-tabs': 'off',
         'no-plusplus': 'off',
         indent: ['error', 4],
@@ -71,6 +73,7 @@ module.exports = {
         'no-param-reassign': 'off',
         'no-nested-ternary': 'off',
         'react/jsx-props-no-spreading': 'off',
+        semi: 'off',
 
     },
 };

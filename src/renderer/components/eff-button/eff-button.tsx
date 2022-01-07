@@ -6,7 +6,7 @@ interface IEffButtonProps {
     text: string,
     round?: boolean,
     key?: string,
-    width?: number,
+    width?: number|string,
     type?: 'filled' | 'normal' | 'line',
     className?:string,
     disabled?:boolean,

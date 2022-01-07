@@ -14,6 +14,7 @@ interface IProps{
 
 export default function PlanCaseAdvanceSearch(props:IProps) {
     const dispatch = useDispatch();
+    const { onSearch, onCancel } = props
     const [searchForm] = Form.useForm();
     const [funztionOptions, setFunztionOptions] = useState<any>([]);
     const filterFunztions = useSelector((state:RootState) => state.funztion.funztions);
@@ -26,7 +27,7 @@ export default function PlanCaseAdvanceSearch(props:IProps) {
             }
         },
         handleSearch: (values:any) => {
-            props.onSearch(values);
+            onSearch(values);
         },
     };
     const statusOptions = PLAN_CASE_STATUS.map((item:any) => (
@@ -72,7 +73,7 @@ export default function PlanCaseAdvanceSearch(props:IProps) {
                 </div>
 
                 <div className="d-flex justify-end">
-                    <EffButton onClick={() => props.onCancel()} text="取消" key="cancel" round width={80} type="line" />
+                    <EffButton onClick={() => onCancel()} text="取消" key="cancel" round width={80} type="line" />
                     <EffButton htmlType="submit" className="ml10" text="搜索" key="search" round width={80} type="filled" />
                 </div>
             </Form>

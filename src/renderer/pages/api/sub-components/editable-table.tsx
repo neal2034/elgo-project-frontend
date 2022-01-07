@@ -6,6 +6,7 @@ import ImgClose from '@imgs/close.png';
 
 const EditableCell = (props:any) => {
     const [editing, setEditing] = useState(false);
+    const { lastkey } = props
     const inputRef = useRef<Input>(null);
     const {
         children, record, editable, dataIndex, handleSave, handleDel, selectable, delAction, hoverRowKey, ...restProps
@@ -22,28 +23,28 @@ const EditableCell = (props:any) => {
     };
 
     const valueChanged = (e:any) => {
-        handleSave(props.record, props.dataIndex, e.target.value);
+        handleSave(record, dataIndex, e.target.value);
     };
 
     const selectChanged = (e:any) => {
-        handleSave(props.record, props.dataIndex, e.target.checked);
+        handleSave(record, dataIndex, e.target.checked);
     };
 
     const delParams = (e:any) => {
         e.stopPropagation();
-        handleDel(props.record);
+        handleDel(record);
     };
 
     let childNode = children;
     if (editable) {
         childNode = editing ? (
             <div>
-                <Input onChange={valueChanged} value={props.record[dataIndex]} ref={inputRef} onPressEnter={toggleEdit} onBlur={toggleEdit} />
+                <Input onChange={valueChanged} value={record[dataIndex]} ref={inputRef} onPressEnter={toggleEdit} onBlur={toggleEdit} />
             </div>
         ) : (
             <div className="editable-cell-value-wrap" onClick={toggleEdit}>
                 {children}
-                {delAction && hoverRowKey === props.record.key && hoverRowKey !== props.lastkey && (
+                {delAction && hoverRowKey === record.key && hoverRowKey !== lastkey && (
                     <div className="action-area" onClick={delParams}>
                         <img alt="删除" width={14} src={ImgClose} />
                     </div>
@@ -53,7 +54,7 @@ const EditableCell = (props:any) => {
         );
     }
     if (selectable && record.selected !== undefined) {
-        childNode = <div><Checkbox onChange={selectChanged} checked={props.record[dataIndex]} /></div>;
+        childNode = <div><Checkbox onChange={selectChanged} checked={record[dataIndex]} /></div>;
     }
 
     return <td {...restProps}>{childNode}</td>;

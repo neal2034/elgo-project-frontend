@@ -16,10 +16,10 @@ interface IProps{
 }
 
 export default function PlanCaseItem(props:IProps) {
-    const { planCase, showBg } = props;
+    const { planCase, showBg, onChosen } = props;
     return (
         <div
-            onClick={() => props.onChosen(planCase.id)}
+            onClick={() => onChosen(planCase.id)}
             className={`one-plan-case d-flex align-center pr20 justify-between pl20 ${showBg ? 'shadowed' : ''}`}
         >
             <div className="test-case-main">

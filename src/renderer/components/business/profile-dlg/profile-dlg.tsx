@@ -22,7 +22,7 @@ interface IProps{
 
 export default function ProfileDlg(props: IProps) {
     const dispatch = useDispatch();
-    const { visible, onClose } = props;
+    const { visible, onClose, onOperation } = props;
 
     const currentUser = useSelector((state:RootState) => state.account.currentUser);
     const [isEditingName, setIsEditingName] = useState(false);
@@ -60,10 +60,10 @@ export default function ProfileDlg(props: IProps) {
             setIsEditingName(false);
         },
         goEditEmail: () => {
-            props.onOperation('email');
+            onOperation('email');
         },
         goEditPwd: () => {
-            props.onOperation('password');
+            onOperation('password');
         },
     };
 

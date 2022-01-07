@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import EffButton from '@components/eff-button/eff-button';
 import { getOrganizationDetail, orgThunks } from '@slice/orgSlice';
 import { Input, Modal } from 'antd';
@@ -12,13 +12,15 @@ import EffConfirmDlg from '@components/eff-confirm-dlg/eff-confirm-dlg';
 import { RootState } from '../../store/store';
 
 function InviteInput(props:{errMsg?:string, showDel:boolean, onDel:()=>void, onChange:(value:string)=>void}) {
-    const { showDel, errMsg } = props;
+    const {
+        showDel, errMsg, onChange, onDel,
+    } = props;
     const response = {
         handleDel() {
-            props.onDel();
+            onDel();
         },
         handleValueChange(e:any) {
-            props.onChange(e.target.value);
+            onChange(e.target.value);
         },
     };
 

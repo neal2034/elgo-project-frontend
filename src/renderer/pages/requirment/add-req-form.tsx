@@ -43,7 +43,7 @@ export default function AddReqForm(props:IAddReqFormProps) {
     };
 
     const {
-        reqClasses, reqSources, reqVersions, tags, onConfirm,
+        reqClasses, reqSources, reqVersions, tags, onConfirm, onCancel,
     } = props;
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
@@ -51,7 +51,7 @@ export default function AddReqForm(props:IAddReqFormProps) {
     const [reqForm] = Form.useForm();
     const response = {
         handleCancelBtn: () => {
-            props.onCancel();
+            onCancel();
         },
         handleDescriptionChange: (html?:string) => {
             data.requirement.description = html;

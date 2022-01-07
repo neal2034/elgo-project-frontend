@@ -13,26 +13,28 @@ export default function ProjectEditDlg(props:{
     onCancel:()=>void,
     onEdit: (data:{name:string, color:string, icon:string, serial:number})=>void
 }) {
-    const { project, visible, onCancel } = props;
+    const {
+        project, visible, onCancel, onEdit,
+    } = props;
     const [projectColor, setProjectColor] = useState<string>();
     const [projectIcon, setProjectIcon] = useState<string>();
     const [editForm] = Form.useForm();
 
     useEffect(() => {
-        if (props.project && props.project.color) {
-            setProjectColor(props.project.color);
+        if (project && project.color) {
+            setProjectColor(project.color);
         }
 
-        if (props.project && props.project.icon) {
-            setProjectIcon(props.project.icon);
+        if (project && project.icon) {
+            setProjectIcon(project.icon);
         }
     }, [project]);
 
     const response = {
         handleEdit: async () => {
             const values = await editForm.validateFields();
-            props.onEdit({
-                serial: props.project.serial,
+            onEdit({
+                serial: project.serial,
                 name: values.name,
                 color: projectColor!,
                 icon: `w${projectIcon!}`,

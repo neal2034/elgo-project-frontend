@@ -23,7 +23,7 @@ function MenuItem(props:IMenuItemProps) {
 }
 
 export default function SettingMenus(props:IProps) {
-    const { menus } = props;
+    const { menus, activeKey, menuSelected } = props;
     return (
         <div className="setting-menus">
             <div className="ml20 mt20 mb20 d-flex justify-between">
@@ -32,8 +32,8 @@ export default function SettingMenus(props:IProps) {
             <div>
                 {menus.map((item:any) => (
                     <MenuItem
-                        isActive={props.activeKey === item.key}
-                        onChosen={() => props.menuSelected(item.key)}
+                        isActive={activeKey === item.key}
+                        onChosen={() => menuSelected(item.key)}
                         key={item.key}
                         name={item.name}
                     />

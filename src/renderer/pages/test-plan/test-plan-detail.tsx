@@ -22,6 +22,7 @@ interface IProps{
 
 export default function TestPlanDetail(props:IProps) {
     const dispatch = useDispatch();
+    const { onDel } = props
 
     const currentTestPlan = useSelector((state:RootState) => state.testPlan.currentTestPlan);
     const menuItems = [{ key: 'delete', name: '删除计划', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> }];
@@ -72,7 +73,7 @@ export default function TestPlanDetail(props:IProps) {
 
     const response = {
         handleMenuSelected: async () => {
-            props.onDel(currentTestPlan.id);
+            onDel(currentTestPlan.id);
         },
         handleEditStatus: (status?:string|number) => {
             dispatch(testPlanThunks.editStatus({ id: currentTestPlan.id, status: status as string }));

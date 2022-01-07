@@ -24,20 +24,22 @@ interface IProps{
 }
 
 export default function EffMemberItem(props:IProps) {
-    const { member, select, className } = props;
+    const {
+        member, select, className, onDel, onSelect,
+    } = props;
     let title = member.boolProjectOwner ? '项目拥有者' : '';
     title = member.boolOwner ? '超级管理员' : title;
     const width = select ? '260px' : '380px';
 
     const response = {
         handleDel() {
-            if (props.onDel) {
-                props.onDel();
+            if (onDel) {
+                onDel();
             }
         },
         handleSelect(e:any) {
-            if (props.onSelect) {
-                props.onSelect(e.target.checked);
+            if (onSelect) {
+                onSelect(e.target.checked);
             }
         },
     };

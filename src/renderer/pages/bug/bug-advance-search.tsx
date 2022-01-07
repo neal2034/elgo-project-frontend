@@ -37,7 +37,7 @@ function tagRender(props:any) {
 }
 
 export default function BugAdvanceSearch(props:IProps) {
-    const { tags } = props;
+    const { tags, onSearch, onCancel } = props;
     const [searchForm] = Form.useForm();
     const members = useSelector((state:RootState) => (state.project.projectDetail.members ? state.project.projectDetail.members : []));
     const memberOptions = members.map((item:any) => <Select.Option key={item.orgMemberId} value={item.orgMemberId}>{item.name}</Select.Option>);
@@ -59,7 +59,7 @@ export default function BugAdvanceSearch(props:IProps) {
             const params = { ...values };
             delete params.tags;
             params.tagIds = tagIds;
-            props.onSearch(params);
+            onSearch(params);
         },
     };
 
@@ -135,7 +135,7 @@ export default function BugAdvanceSearch(props:IProps) {
                 )}
 
                 <div className="d-flex justify-end">
-                    <EffButton onClick={() => props.onCancel()} text="取消" key="cancel" round width={80} type="line" />
+                    <EffButton onClick={() => onCancel()} text="取消" key="cancel" round width={80} type="line" />
                     <EffButton htmlType="submit" className="ml10" text="搜索" key="search" round width={80} type="filled" />
                 </div>
             </Form>
