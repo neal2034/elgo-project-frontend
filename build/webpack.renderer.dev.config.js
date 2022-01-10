@@ -216,7 +216,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         },
         before() {
             // 启动渲染进程后执行主进程打包
-            console.log('start main process...');
             spawn('npm', ['run', 'dev-main'], {
                 shell: true,
                 env: process.env,

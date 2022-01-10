@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies:0 */
 import React, { useEffect } from 'react';
+import { effToast } from '@components/common/eff-toast/eff-toast';
 import ElgoEditor from 'elgoeditor';
 import { ConfigType } from 'elgoeditor/dist/config';
 import langConfig from 'elgoeditor/dist/config/lang';
@@ -41,7 +42,7 @@ export default function ReactElgoEditor(props:IProps) {
         const file = resultFiles[0];
         const { size } = file;
         if (size / 1000 > 1000) {
-            alert('最大只能上传1M的文件');
+            effToast.error('最大只能上传1M的文件')
             return;
         }
         const result = await uploadOneFile(file, file.name);
@@ -99,7 +100,7 @@ export default function ReactElgoEditor(props:IProps) {
     function init() {
         const elem = document.getElementById(id);
         if (!elem) {
-            console.error('ElgoEditor dom is not found');
+            effToast.error('ElgoEditor dom is not found')
             return;
         }
         editor = new ElgoEditor(`#${id}`);

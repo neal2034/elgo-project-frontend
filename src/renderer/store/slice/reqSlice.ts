@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import apiUrl from '@config/apiUrl';
 import request from '../../utils/request';
@@ -40,7 +40,7 @@ interface IReqOption{
     name: string,
 }
 
-interface RequirementState{
+export interface RequirementState{
     reqClasses: any[],
     reqSources: any[],
     reqVersions: any[],

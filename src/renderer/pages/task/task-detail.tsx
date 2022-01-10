@@ -73,7 +73,7 @@ export default function TaskDetail(props:IProps) {
 
     const response = {
         occupy: () => {
-            console.log('will done');
+            // TODO
         },
         detailTaskChanged: () => {
             if (onChange) {

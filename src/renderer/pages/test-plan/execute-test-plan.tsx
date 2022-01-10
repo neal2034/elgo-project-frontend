@@ -31,7 +31,9 @@ export default function ExecuteTestPlan() {
     }, [currentTestPlan]);
 
     const response = {
-        occupy: () => { console.log('will uses this latter'); },
+        occupy: () => {
+            // TODO occupy
+        },
         // eslint-disable-next-line no-restricted-globals
         goBackTestPlan: () => { history.back(); },
         handlePageChange: (page:number) => {
@@ -40,7 +42,6 @@ export default function ExecuteTestPlan() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-create':
-                console.log('搜索我创建的');
                 break;
             default:
                 setIsAdvanceSearch(true);

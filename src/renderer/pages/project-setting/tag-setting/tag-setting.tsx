@@ -48,7 +48,6 @@ export default function TagSetting() {
                 dispatch(tagThunks.listTags());
                 effToast.success_withdraw(`成功将标签${willDelTag.name}放入回收站`, response.withdrawDelTag);
             }
-            console.log();
         },
         withdrawDelTag: async () => {
             const result: any = await dispatch(tagThunks.withdrawTag({ id: willDelTag.id }));

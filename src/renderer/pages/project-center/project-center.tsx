@@ -31,7 +31,7 @@ export default function ProjectCenter() {
         dispatch(projectThunks.listProject());
     }, []);
 
-    const openAddProjectDlg = function () {
+    const openAddProjectDlg = () => {
         setShowAddDlg(true);
     };
     const handleFocusInName = () => setShowNameError(false);

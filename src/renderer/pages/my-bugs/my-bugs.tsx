@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { bugThunks } from '@slice/bugSlice';
+import { useAppSelector } from '@store/store';
 import { Drawer } from 'antd';
 import { projectActions } from '@slice/projectSlice';
 import EffInfoSep from '@components/business/eff-info-sep/eff-info-sep';
@@ -8,7 +9,6 @@ import { effToast } from '@components/common/eff-toast/eff-toast';
 import ImgSmile from '@imgs/smile.png';
 import BugItem from '../bug/bug-item';
 import BugDetail from '../bug/bug-detail';
-import { RootState } from '../../store/store';
 import './my-bugs.less';
 
 interface IProjectBugs{
@@ -52,7 +52,9 @@ function MyProjectBug(props:IPropProjectBugs) {
 
 export default function MyBugs() {
     const dispatch = useDispatch();
-    const myBugs = useSelector((state:RootState) => state.bug.myBugs);
+    // const myBugs1 = useAppSelector((state) => state.bug.myBugs)
+    const myBugs = useAppSelector((state) => state.bug.myBugs);
+    // useAppSelector()
     const [showDetail, setShowDetail] = useState(false); // 是否显示任务详情
 
     useEffect(() => {

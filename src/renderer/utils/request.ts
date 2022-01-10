@@ -138,7 +138,6 @@ axios.interceptors.response.use((response) => {
             const refreshToken = umbrella.getLocalStorage('refreshToken');
             const token = umbrella.getLocalStorage('token');
             doPost('/user-token/public/refresh', { refreshToken, token }).then((result) => {
-                console.log('her e is the result');
                 umbrella.setLocalStorage('token', result.data.token);
                 umbrella.setLocalStorage('refreshToken', result.data.refreshToken);
                 response.headers.Authorization = `Bearer ${result.data.token}`;
@@ -146,7 +145,6 @@ axios.interceptors.response.use((response) => {
                 requests = [];
                 return axios(response.config);
             }).catch((err) => {
-                console.log('got error ', err);
                 // 跳转到登录页
                 umbrella.setLocalStorage('token', null);
                 umbrella.setLocalStorage('refreshToken', null);
@@ -164,13 +162,10 @@ axios.interceptors.response.use((response) => {
                 });
             });
         }
-
-        // console.log('token expiration', refreshToken)
     }
 
     if (response.data.status !== 0) {
         // TODO add message
-        console.log('error is ', response.data.message);
     }
     const result = response.data;
     result.isSuccess = result.status === 0;

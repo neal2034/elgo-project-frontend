@@ -146,7 +146,6 @@ export default function FunztionDetail(props:IProps) {
             setShowAddTaskForm(false);
         },
         addCaseOfFunztion: async (testcase:any) => {
-            console.log('will add tstca se to ', testcase);
             await dispatch(testCaseThunks.addTestCase(testcase));
             dispatch(testCaseThunks.listFunztionCases({ page: 0, funztionId: data.currentFunztion.id }));
             setShowAddCaseForm(false);

@@ -9,8 +9,10 @@
       "@pages/*" : ["./src/renderer/pages/*"],
       "@imgs/*" : ["./src/renderer/assets/imgs/*"],
       "@components/*" : ["./src/renderer/components/*"],
+      "@store/*": ["./src/renderer/store/*"],
       "@slice/*" : ["./src/renderer/store/slice/*"],
       "@home/*" : ["./src/home/*"]
+
     },
     "lib": [
       "dom",

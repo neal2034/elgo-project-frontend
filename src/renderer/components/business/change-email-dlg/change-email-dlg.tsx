@@ -55,7 +55,6 @@ export default function ChangeEmailDlg(props: {
         getToken: async () => {
             const values = await emailForm.validateFields(['email', 'password']);
             const status:any = await dispatch(userThunks.sendChangeEmailToken({ password: md5(values.password), email: values.email }));
-            console.log(status, ' is tstatus ');
             if (status === 0) {
                 // 成功发送邮件
                 effToast.success('验证码已发送，请查看邮箱');
@@ -71,7 +70,6 @@ export default function ChangeEmailDlg(props: {
             }
         },
         clearError: () => {
-            // console.log('will clear')
             setTokenValidate('success');
             setTokenErrMsg('');
             setEmailValidate('success');

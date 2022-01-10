@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Select, Input, Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     API, ApiEnv, editApi, ApiParams, ApiPathVar, apiActions,
 } from '@slice/apiSlice';
+import { effToast } from '@components/common/eff-toast/eff-toast';
+import { useAppSelector } from '../../../store/store';
 import ApiDialog from '../dialogs/api-dialog';
-import { RootState } from '../../../store/store';
 
 const { Option } = Select;
 
@@ -18,8 +19,8 @@ export default function ApiUrlArea(props:IApiProps) {
     const { api } = props;
     const [apiDlgVisible, setApiDlgVisible] = useState(false);
     const [apiCollections, setApiCollections] = useState(); // 当前可以用于保存API的collection
-    const apiItems = useSelector((state:RootState) => state.api.apiTreeItems);
-    const currentEnv:ApiEnv = useSelector((state:RootState) => state.api.envs.filter((item:ApiEnv) => item.id === state.api.currentEnvId)[0]);
+    const apiItems = useAppSelector((state) => state.api.apiTreeItems)
+    const currentEnv:ApiEnv = useAppSelector((state) => state.api.envs.filter((item:ApiEnv) => item.id === state.api.currentEnvId)[0]);
 
     const response = {
         handleMethodChange: (value:any) => {
@@ -231,7 +232,7 @@ export default function ApiUrlArea(props:IApiProps) {
         handleCallApi: () => {
             let { url } = api;
             if (!url) {
-                alert('url 不能为空');
+                effToast.error('url 不能为空')
                 return;
             }
 
@@ -249,7 +250,7 @@ export default function ApiUrlArea(props:IApiProps) {
                     }
                 });
                 if (!pathVarValueSettled) {
-                    alert('有未设置的Path Variable');
+                    effToast.error('有未设置的Path Variable')
                     return;
                 }
             }
@@ -257,12 +258,12 @@ export default function ApiUrlArea(props:IApiProps) {
             // 不能与当前应用同源
             const { host } = getLocation(url!);
             if (!host) {
-                alert('请填写请求地址');
+                effToast.error('请填写请求地址')
                 return;
             }
             // eslint-disable-next-line no-restricted-globals
             if (host === location.host) {
-                alert('请求地址与当前应用同源');
+                effToast.error('请求地址与当前应用同源')
                 return;
             }
 
@@ -300,7 +301,7 @@ export default function ApiUrlArea(props:IApiProps) {
                         eval(testsCode);
                     } catch (e) {
                         // TODO 将结果放入测试
-                        alert(`测试代码错误 ${e}`);
+                        effToast.error(`测试代码错误 ${e}`)
                     }
                 }
 

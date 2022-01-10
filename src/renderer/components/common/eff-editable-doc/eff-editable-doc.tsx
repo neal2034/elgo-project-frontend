@@ -71,6 +71,7 @@ export default function EffEditableDoc(props:IProps) {
                         <ReactElgoEditor defaultValue={content} onChange={response.contentChanged} />
                     </div>
                 )
+                // eslint-disable-next-line react/no-danger
                 : <div onClick={response.contentClick} className="doc-content cursor-pointer" dangerouslySetInnerHTML={{ __html: content }} />}
 
             <div style={{ display: 'none' }}>

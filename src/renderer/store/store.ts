@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from '@slice/accountSlice';
 import orgReducer from '@slice/orgSlice';
 import breadcrumbReducer from '@slice/breadcrumbSlice';
-import { useDispatch } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import apiReducer from './slice/apiSlice';
 import menuReducer from './slice/menuSlice';
 import projectSlice from './slice/projectSlice';
@@ -42,4 +42,5 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 export default store;

@@ -66,10 +66,8 @@ export default function Funztion() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-create':
-                console.log('搜索我创建的');
                 break;
             case 'unstart':
-                console.log('搜索未开始的');
                 break;
             default:
                 setIsAdvanceSearch(true);

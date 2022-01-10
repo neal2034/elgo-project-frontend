@@ -122,7 +122,6 @@ export default function AddTestPlanForm(props:IProps) {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'done':
-                console.log('搜索我创建的');
                 break;
             default:
                 setIsAdvanceSearch(true);

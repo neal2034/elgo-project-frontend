@@ -85,8 +85,10 @@ module.exports = {
             '@imgs': path.resolve(__dirname, '/src/renderer/assets/imgs/'),
             '@pages': path.resolve(__dirname, '/src/renderer/pages/'),
             '@config': path.resolve(__dirname, '/src/renderer/config/'),
+            '@store': path.resolve(__dirname, '/src/renderer/store/'),
             '@slice': path.resolve(__dirname, '/src/renderer/store/slice'),
             '@components': path.resolve(__dirname, '/src/renderer/components/'),
+
         },
     },
     devtool: 'source-map',

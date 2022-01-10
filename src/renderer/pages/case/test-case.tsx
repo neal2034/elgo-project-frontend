@@ -96,7 +96,7 @@ export default function TestCase() {
         handleSearchMenu: (key:string) => {
             switch (key) {
             case 'my-create':
-                console.log('搜索我创建的');
+                // TODO : 搜索我创建的
                 break;
             default:
                 setIsAdvanceSearch(true);
