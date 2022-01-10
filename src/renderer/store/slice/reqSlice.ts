@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import apiUrl from '@config/apiUrl';
 import request from '../../utils/request';
@@ -35,18 +35,34 @@ interface IReqEdit extends IRequirementOption{
     field: 'NAME' | 'DESCRIPTION' | 'CLAZZ' | 'VERSION' | 'SOURCE' | 'STATUS' | 'TAG'
 }
 
+interface IReqOption{
+    id: number,
+    name: string,
+}
+
+interface RequirementState{
+    reqClasses: any[],
+    reqSources: any[],
+    reqVersions: any[],
+    page: number,
+    requirements: any[],
+    reqTotal: number,
+    currentReq: IRequirement,
+    reqOptions: IReqOption [], // 需求选项
+}
+const initialState: RequirementState = {
+    reqClasses: [], // 需求分类
+    reqSources: [], // 需求来源
+    reqVersions: [], // 需求版本
+    page: 0, // 当前分页索引
+    requirements: [], // 当前显示的需求数组
+    reqTotal: 0, // 需求总数
+    currentReq: {} as IRequirement, // 当前选择的需求
+    reqOptions: [],
+}
 const reqSlice = createSlice({
     name: 'requirement',
-    initialState: {
-        reqClasses: [], // 需求分类
-        reqSources: [], // 需求来源
-        reqVersions: [], // 需求版本
-        page: 0, // 当前分页索引
-        requirements: [], // 当前显示的需求数组
-        reqTotal: 0, // 需求总数
-        currentReq: {} as IRequirement, // 当前选择的需求
-
-    },
+    initialState,
     reducers: {
         setReqClasses: (state, action) => { state.reqClasses = action.payload; },
         setReqSources: (state, action) => { state.reqSources = action.payload; },
@@ -55,7 +71,7 @@ const reqSlice = createSlice({
         setRequirements: (state, action) => { state.requirements = action.payload; },
         setReqTotal: (state, action) => { state.reqTotal = action.payload; },
         setCurrentReq: (state, action) => { state.currentReq = action.payload; },
-
+        setReqOptions: (state, action) => { state.reqOptions = action.payload },
     },
 });
 
@@ -179,6 +195,14 @@ const reqThunks = {
     editReqSource: (data:{id:number, name:string}) => async () => {
         const result = await request.put({ url: apiUrl.requirementsSources.index, data });
         return result.isSuccess;
+    },
+    // 列出需求选项
+    listReqOptions: () => async (dispatch: Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.requirements.options });
+        if (result.isSuccess) {
+            dispatch(reqActions.setReqOptions(result.data))
+        }
+        return result
     },
 };
 

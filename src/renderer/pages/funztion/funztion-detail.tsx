@@ -71,7 +71,7 @@ export default function FunztionDetail(props:IProps) {
         funztionCases: useSelector((state:RootState) => state.testCase.funztionCases),
         allTags: useSelector((state:RootState) => state.tag.tags),
         funztionStatus: useSelector((state:RootState) => state.funztion.funztionStatus),
-        filteredReqs: useSelector((state:RootState) => state.requirement.requirements),
+        reqOptions: useSelector((state:RootState) => state.requirement.reqOptions),
         page: useSelector((state:RootState) => state.funztion.page),
         menuItems: [
             { key: 'delete', name: '删除功能', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> },
@@ -79,11 +79,6 @@ export default function FunztionDetail(props:IProps) {
     };
 
     useEffect(() => {
-        // 如果有所属需求，列出对应需求
-        if (data.currentFunztion.reqId) {
-            dispatch(reqThunks.listPageRequirement({ page: 0, id: data.currentFunztion.reqId }));
-        }
-
         dispatch(tagThunks.listTags());
     }, []);
 
@@ -96,8 +91,6 @@ export default function FunztionDetail(props:IProps) {
     useEffect(() => {
         dispatch(testCaseThunks.listFunztionCases({ page: 0, funztionId: data.currentFunztion.id }));
     }, [data.currentFunztion.id]);
-
-    console.log('case are ', data.funztionCases);
 
     const response = {
         occupy: () => {
@@ -187,7 +180,7 @@ export default function FunztionDetail(props:IProps) {
                         id={data.currentFunztion.reqId}
                         onSearch={response.handleSearchRequirement}
                         searchAble
-                        options={data.filteredReqs}
+                        options={data.reqOptions}
                         onChange={response.handleRequirementChange}
                     />
 
@@ -219,7 +212,10 @@ export default function FunztionDetail(props:IProps) {
                 <PlusSquareOutlined
                     onClick={() => setShowAddTaskForm(true)}
                     className="cursor-pointer ml10"
-                    style={{ color: globalColor.mainYellowDark, fontSize: '20px' }}
+                    style={{
+                        color: globalColor.mainYellowDark,
+                        fontSize: '20px',
+                    }}
                 />
             </div>
             <div className="ml20 mt20 pr40" style={{ marginLeft: '60px' }}>
@@ -238,7 +234,10 @@ export default function FunztionDetail(props:IProps) {
                 <PlusSquareOutlined
                     onClick={() => setShowAddCaseForm(true)}
                     className="cursor-pointer ml10"
-                    style={{ color: globalColor.mainYellowDark, fontSize: '20px' }}
+                    style={{
+                        color: globalColor.mainYellowDark,
+                        fontSize: '20px',
+                    }}
                 />
             </div>
             <div className="ml20 mt20 pr40" style={{ marginLeft: '60px' }}>

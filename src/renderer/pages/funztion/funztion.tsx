@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UserAddOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { tagThunks } from '@slice/tagSlice';
+import { reqThunks } from '@slice/reqSlice';
 import { Drawer } from 'antd';
 import { funztionThunks } from '@slice/funztionSlice';
 import FunztionContent from './funztion-content';
@@ -32,6 +33,7 @@ export default function Funztion() {
 
     useEffect(() => {
         dispatch(funztionThunks.listFunztion({ page: 0 }));
+        dispatch(reqThunks.listReqOptions());
         dispatch(tagThunks.listTags());
     }, []);
 

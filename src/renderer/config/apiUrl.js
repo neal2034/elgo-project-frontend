@@ -67,6 +67,7 @@ const apiUrl = {
         trash: '/requirements/:id/trash',
         revert: '/requirements/:id/revert',
         detail: '/requirements/detail',
+        options: '/requirements/options',
     },
     requirementsClass: {
         index: '/requirements-class',
