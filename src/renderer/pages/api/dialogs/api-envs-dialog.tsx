@@ -101,7 +101,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps) {
         confirmAddEnv: () => {
             form.validateFields().then((values) => {
                 const items:any = [];
-                envsData.foeEach((env:any) => {
+                envsData.forEach((env:any) => {
                     if (env.selected !== undefined) {
                         items.push({ name: env.varName, value: env.varValue, used: env.selected });
                     }
@@ -129,7 +129,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps) {
             setContentType('edit');
             form.setFieldsValue({ name: env.name });
             const tmpEnvDatas:any = [];
-            env.envItems.foeEach((item:any, index:number) => {
+            env.envItems.forEach((item:any, index:number) => {
                 tmpEnvDatas.push({
                     key: index,
                     varName: item.name,

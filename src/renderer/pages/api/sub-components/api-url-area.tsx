@@ -195,6 +195,22 @@ export default function ApiUrlArea(props:IApiProps) {
         return [authType, token];
     };
 
+    // 获取指定字符串
+    const getRealValue = (oriStr?:string) => {
+        // TODO 目前是基于环境变量遍历替换 target, 应该提取target 里的变量并检索环境变量
+        let targetStr = oriStr;
+        const envItems = currentEnv && currentEnv.envItems ? currentEnv.envItems : [];
+        // 替换URL 当中的变量
+        envItems!.forEach((envItem) => {
+            if (envItem.name && oriStr && oriStr.indexOf(envItem.name) > -1) {
+                const target = `{{${envItem.name}}}`;
+                const value = envItem.value ? envItem.value : '';
+                targetStr = oriStr?.replace(new RegExp(target, 'g'), value);
+            }
+        });
+        return targetStr;
+    }
+
     const handler = {
         handleSaveClick: () => {
             if (api.id) {
@@ -219,17 +235,7 @@ export default function ApiUrlArea(props:IApiProps) {
                 return;
             }
 
-            const envItems = currentEnv && currentEnv.envItems ? currentEnv.envItems : [];
-
-            // 替换URL 当中的变量
-            envItems!.forEach((envItem) => {
-                if (envItem.name) {
-                    const target = `{{${envItem.name}}}`;
-                    const value = envItem.value ? envItem.value : '';
-                    url = url?.replace(new RegExp(target, 'g'), value);
-                }
-            });
-
+            url = getRealValue(url)
             // 替换URL的path vars
             if (api.pathVars) {
                 let pathVarValueSettled = true;
@@ -249,11 +255,14 @@ export default function ApiUrlArea(props:IApiProps) {
             }
 
             // 不能与当前应用同源
-            const { host } = getLocation(url);
+            const { host } = getLocation(url!);
+            if (!host) {
+                alert('请填写请求地址');
+                return;
+            }
             // eslint-disable-next-line no-restricted-globals
-            const oriHost = location.host;
-            if (host === oriHost || !host) {
-                alert('请填写正确的请求地址');
+            if (host === location.host) {
+                alert('请求地址与当前应用同源');
                 return;
             }
 
@@ -263,7 +272,7 @@ export default function ApiUrlArea(props:IApiProps) {
                 headers = {};
                 api.headers.forEach((item) => {
                     if (item.selected && item.headerKey) {
-                        headers[item.headerKey] = item.headerValue;
+                        headers[item.headerKey] = getRealValue(item.headerValue);
                     }
                 });
             }
@@ -272,13 +281,8 @@ export default function ApiUrlArea(props:IApiProps) {
             let token = authInfo[1];
             if (authInfo[0] === 'BEARER' && !!token) {
                 if (headers === null) headers = {};
-                envItems.forEach((envItem) => {
-                    if (envItem.name) {
-                        const target = `{{${envItem.name}}}`;
-                        const value = envItem.value ? envItem.value : '';
-                        token = token!.replace(new RegExp(target, 'g'), value);
-                    }
-                });
+                token = getRealValue(token)
+
                 headers.Authorization = `Bearer ${token}`;
             }
 
@@ -297,7 +301,6 @@ export default function ApiUrlArea(props:IApiProps) {
                     } catch (e) {
                         // TODO 将结果放入测试
                         alert(`测试代码错误 ${e}`);
-                        console.log(e);
                     }
                 }
 
