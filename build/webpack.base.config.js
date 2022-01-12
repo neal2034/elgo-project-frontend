@@ -76,6 +76,14 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
+                ],
+            },
         ],
     },
     stats: 'minimal', // 关闭 mini-css-extract log

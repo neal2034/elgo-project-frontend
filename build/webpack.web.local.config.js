@@ -92,7 +92,7 @@ module.exports = merge.smart(webpackBaseConfig, {
             },
             // 处理scss样式，使用css模块
             {
-                test: /^((?!\.global).)*\.(scss|sass)$/,
+                test: /^((?!\.global).)*\.{scss|sass}$/,
                 use: [
                     { loader: 'style-loader' },
                     {
