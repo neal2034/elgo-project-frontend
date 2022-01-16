@@ -74,6 +74,7 @@ module.exports = {
         'no-nested-ternary': 'off',
         'react/jsx-props-no-spreading': 'off',
         semi: 'off',
+        'arrow-parens': 'off',
 
     },
 };

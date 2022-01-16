@@ -25,6 +25,7 @@
     "pretty": true,
     "sourceMap": true,
     "noUnusedLocals": false,
+    "noImplicitAny": false,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "moduleResolution": "Node",

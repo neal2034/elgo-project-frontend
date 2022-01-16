@@ -8,7 +8,7 @@ import { tagThunks } from '@slice/tagSlice';
 import ReqContent from '@pages/requirment/req-content';
 import ReqClass from '@pages/requirment/req-class';
 import EffButton from '../../components/eff-button/eff-button';
-import { RootState } from '../../store/store';
+import { RootState, useAppSelector } from '../../store/store';
 import AddReqForm from './add-req-form';
 import EffSearchArea from '../../components/business/eff-search-area/eff-search-area';
 import ReqAdvanceSearch from './req-advance-search';
@@ -19,7 +19,8 @@ export default function Requirement() {
 
     const [showAddForm, setShowAddForm] = useState(false);
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false);
-    const [isShowSearchResult, setIsShowSearchResult] = useState(false);
+    const [isShowSearchResult, setIsShowSearchResult] = useState(false)
+    const activeReqClassId = useAppSelector(state => state.requirement.activeReqClassId)
 
     const data = {
         reqClasses: useSelector((state:RootState) => state.requirement.reqClasses),
@@ -122,6 +123,7 @@ export default function Requirement() {
                 <AddReqForm
                     reqClasses={data.reqClasses}
                     onConfirm={response.handleRequirementAdd}
+                    reqClassId={activeReqClassId}
                     tags={data.tags}
                     reqSources={data.rqeSources}
                     reqVersions={data.reqVersions}

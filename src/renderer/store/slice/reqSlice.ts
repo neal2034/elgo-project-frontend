@@ -49,6 +49,7 @@ export interface RequirementState{
     reqTotal: number,
     currentReq: IRequirement,
     reqOptions: IReqOption [], // 需求选项
+    activeReqClassId: number, // 当前选中的需求分类id
 }
 const initialState: RequirementState = {
     reqClasses: [], // 需求分类
@@ -59,6 +60,7 @@ const initialState: RequirementState = {
     reqTotal: 0, // 需求总数
     currentReq: {} as IRequirement, // 当前选择的需求
     reqOptions: [],
+    activeReqClassId: 1,
 }
 const reqSlice = createSlice({
     name: 'requirement',
@@ -72,6 +74,7 @@ const reqSlice = createSlice({
         setReqTotal: (state, action) => { state.reqTotal = action.payload; },
         setCurrentReq: (state, action) => { state.currentReq = action.payload; },
         setReqOptions: (state, action) => { state.reqOptions = action.payload },
+        setActiveReqClassId: (state, action) => { state.activeReqClassId = action.payload },
     },
 });
 

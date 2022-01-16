@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './requirment.less';
 import {
     Col, Form, Input, Row, Select,
 } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import ReactElgoEditor from '@components/common/react-elgo-editor/react-elgo-editor';
+import { useAppSelector } from '@store/store';
 import EffTagArea from '../../components/common/eff-tag-area/eff-tag-area';
 import EffTagSelector from '../../components/common/eff-tag-selector/eff-tag-selector';
 import EffButton from '../../components/eff-button/eff-button';
@@ -23,6 +24,7 @@ interface IAddReqFormProps{
     reqClasses: any[],
     reqSources: any[],
     reqVersions: any[],
+    reqClassId?: number,
     tags:any[],
     onCancel:()=>void,
     onConfirm:(requirement:Requirement)=>void
@@ -43,12 +45,15 @@ export default function AddReqForm(props:IAddReqFormProps) {
     };
 
     const {
-        reqClasses, reqSources, reqVersions, tags, onConfirm, onCancel,
+        reqClasses, reqSources, reqVersions, tags, onConfirm, onCancel, reqClassId,
     } = props;
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
 
     const [reqForm] = Form.useForm();
+    useEffect(() => {
+        reqForm.setFieldsValue({ classId: reqClassId === -2 ? undefined : reqClassId })
+    }, [reqForm, reqClassId])
     const response = {
         handleCancelBtn: () => {
             onCancel();
