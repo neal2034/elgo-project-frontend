@@ -8,19 +8,20 @@ import { tagThunks } from '@slice/tagSlice';
 import ReqContent from '@pages/requirment/req-content';
 import ReqClass from '@pages/requirment/req-class';
 import EffButton from '../../components/eff-button/eff-button';
-import { RootState, useAppSelector } from '../../store/store';
+import { RootState, useAppDispatch, useAppSelector } from '../../store/store';
 import AddReqForm from './add-req-form';
 import EffSearchArea from '../../components/business/eff-search-area/eff-search-area';
 import ReqAdvanceSearch from './req-advance-search';
 import EffSearchResult from '../../components/business/eff-search-result/eff-search-result';
 
 export default function Requirement() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [showAddForm, setShowAddForm] = useState(false);
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false);
     const [isShowSearchResult, setIsShowSearchResult] = useState(false)
     const activeReqClassId = useAppSelector(state => state.requirement.activeReqClassId)
+    console.log('activeReqClassId is ', activeReqClassId)
 
     const data = {
         reqClasses: useSelector((state:RootState) => state.requirement.reqClasses),
@@ -55,7 +56,11 @@ export default function Requirement() {
 
         handleRequirementAdd: async (requirement:any) => {
             setShowAddForm(false);
-            await dispatch(reqThunks.addRequirement(requirement));
+            requirement.classId = requirement.classId === -1 ? undefined : requirement.classId
+            const result = await dispatch(reqThunks.addRequirement(requirement));
+            if (result) {
+                dispatch(reqThunks.listPageRequirement({ page: 0, clazzId: activeReqClassId === -2 ? undefined : activeReqClassId }));
+            }
         },
 
         handleSearchMenu: (key:string) => {

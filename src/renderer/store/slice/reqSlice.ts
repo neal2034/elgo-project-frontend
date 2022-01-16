@@ -49,7 +49,7 @@ export interface RequirementState{
     reqTotal: number,
     currentReq: IRequirement,
     reqOptions: IReqOption [], // 需求选项
-    activeReqClassId: number, // 当前选中的需求分类id
+    activeReqClassId?: number, // 当前选中的需求分类id
 }
 const initialState: RequirementState = {
     reqClasses: [], // 需求分类
@@ -60,7 +60,6 @@ const initialState: RequirementState = {
     reqTotal: 0, // 需求总数
     currentReq: {} as IRequirement, // 当前选择的需求
     reqOptions: [],
-    activeReqClassId: 1,
 }
 const reqSlice = createSlice({
     name: 'requirement',
@@ -107,9 +106,10 @@ const reqThunks = {
     // 添加需求
     addRequirement: (requirement: IRequirement) => async (dispatch: Dispatch<any>) => {
         const result = await request.post({ url: apiUrl.requirements.index, data: requirement });
-        if (result.isSuccess) {
-            dispatch(reqThunks.listPageRequirement({ page: 0 }));
-        }
+        return result.isSuccess
+        // if (result.isSuccess) {
+        //     dispatch(reqThunks.listPageRequirement({ page: 0 }));
+        // }
     },
 
     // 删除需求

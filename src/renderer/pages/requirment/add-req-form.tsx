@@ -49,11 +49,12 @@ export default function AddReqForm(props:IAddReqFormProps) {
     } = props;
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
-
     const [reqForm] = Form.useForm();
+
     useEffect(() => {
-        reqForm.setFieldsValue({ classId: reqClassId === -2 ? undefined : reqClassId })
+        reqForm.setFieldsValue({ classId: reqClassId })
     }, [reqForm, reqClassId])
+
     const response = {
         handleCancelBtn: () => {
             onCancel();

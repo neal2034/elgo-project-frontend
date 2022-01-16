@@ -35,7 +35,7 @@ export default function ReqClass(props:IReqClassProps) {
         },
         // 响应需求分类被选中
         reqClazzSelected: async (reqClassId?: number) => {
-            const classId = reqClassId || -2
+            const classId = reqClassId
             dispatch(reqActions.setActiveReqClassId(classId))
             dispatch(reqThunks.listPageRequirement({ page: 0, clazzId: reqClassId }));
         },
@@ -78,7 +78,7 @@ export default function ReqClass(props:IReqClassProps) {
             <div className="clazz-content">
                 <ReqClassItem
                     hasMenu={false}
-                    isActive={activeReqClassId === -2}
+                    isActive={!activeReqClassId}
                     onClick={() => response.reqClazzSelected()}
                     className="mt20"
                     name="所有的"
