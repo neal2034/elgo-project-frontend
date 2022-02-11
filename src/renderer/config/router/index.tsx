@@ -8,7 +8,7 @@ const Loadable = (Component: ElementType) => (props: any) =>
             <Component {...props} />
         </Suspense>
     );
-const AppLayout = Loadable(lazy(() => import('@components/layout/app/AppLayout')));
+const AppLayout = Loadable(lazy(() => import('@components/layout/app-layout/AppLayout')));
 const Account = Loadable(lazy(() => import('@pages/account/account')));
 const HomeContent = Loadable(lazy(() => import('@pages/home-page/home-conetnt/home-content')));
 const HomePage = Loadable(lazy(() => import('@pages/home-page/home-page')));
