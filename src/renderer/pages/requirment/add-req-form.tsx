@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import './requirment.less';
-import {
-    Col, Form, Input, Row, Select,
-} from 'antd';
+import { Col, Form, Input, Row, Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import ReactElgoEditor from '@components/common/react-elgo-editor/react-elgo-editor';
-import { useAppSelector } from '@store/store';
+
 import EffTagArea from '../../components/common/eff-tag-area/eff-tag-area';
 import EffTagSelector from '../../components/common/eff-tag-selector/eff-tag-selector';
 import EffButton from '../../components/eff-button/eff-button';
 
 type Requirement = {
-    name:string|null,
-    description?:string,
-    classId:number|null,
-    versionId:number|null,
-    sourceId: number|null,
-    tagIds: number[],
+    name: string | null;
+    description?: string;
+    classId: number | null;
+    versionId: number | null;
+    sourceId: number | null;
+    tagIds: number[];
+};
 
-}
-
-interface IAddReqFormProps{
-    reqClasses: any[],
-    reqSources: any[],
-    reqVersions: any[],
-    reqClassId?: number,
-    tags:any[],
-    onCancel:()=>void,
-    onConfirm:(requirement:Requirement)=>void
+interface IAddReqFormProps {
+    reqClasses: any[];
+    reqSources: any[];
+    reqVersions: any[];
+    reqClassId?: number;
+    tags: any[];
+    onCancel: () => void;
+    onConfirm: (requirement: Requirement) => void;
 }
 
 // 新增需求表单
-export default function AddReqForm(props:IAddReqFormProps) {
-    const data:{requirement:Requirement, [x:string]:any} = {
+export default function AddReqForm(props: IAddReqFormProps) {
+    const data: { requirement: Requirement; [x: string]: any } = {
         requirement: {
             name: null,
             description: undefined,
@@ -40,46 +37,43 @@ export default function AddReqForm(props:IAddReqFormProps) {
             versionId: null,
             sourceId: null,
             tagIds: [],
-
         },
     };
 
-    const {
-        reqClasses, reqSources, reqVersions, tags, onConfirm, onCancel, reqClassId,
-    } = props;
+    const { reqClasses, reqSources, reqVersions, tags, onConfirm, onCancel, reqClassId } = props;
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const [reqForm] = Form.useForm();
 
     useEffect(() => {
-        reqForm.setFieldsValue({ classId: reqClassId })
-    }, [reqForm, reqClassId])
+        reqForm.setFieldsValue({ classId: reqClassId });
+    }, [reqForm, reqClassId]);
 
     const response = {
         handleCancelBtn: () => {
             onCancel();
         },
-        handleDescriptionChange: (html?:string) => {
+        handleDescriptionChange: (html?: string) => {
             data.requirement.description = html;
         },
 
         // 新增需求响应
         handleConfirmAdd: () => {
-            reqForm.validateFields().then((values) => {
+            reqForm.validateFields().then(values => {
                 Object.assign(data.requirement, values);
                 data.requirement.tagIds = selectedTagIds;
                 onConfirm(data.requirement);
                 reqForm.resetFields();
             });
         },
-        handleTagsChanged: (tagIds:number[]) => {
+        handleTagsChanged: (tagIds: number[]) => {
             setSelectedTagIds(tagIds);
             data.requirement.tagIds = tagIds;
-            const selectTags = tags.filter((item) => tagIds.indexOf(item.id) > -1);
+            const selectTags = tags.filter(item => tagIds.indexOf(item.id) > -1);
             setSelectedTags(selectTags);
         },
         // 响应标签删除
-        onDelTag: (id:number) => {
+        onDelTag: (id: number) => {
             const currentIds = Object.assign([], selectedTagIds);
             const index = currentIds.indexOf(id);
             currentIds.splice(index, 1);
@@ -88,9 +82,21 @@ export default function AddReqForm(props:IAddReqFormProps) {
     };
 
     const ui = {
-        uiReqClassOptions: reqClasses.map((item) => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
-        uiReqResourceOptions: reqSources.map((item) => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
-        uiReqResourceVersions: reqVersions.map((item) => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>),
+        uiReqClassOptions: reqClasses.map(item => (
+            <Select.Option key={item.id} value={item.id}>
+                {item.name}
+            </Select.Option>
+        )),
+        uiReqResourceOptions: reqSources.map(item => (
+            <Select.Option key={item.id} value={item.id}>
+                {item.name}
+            </Select.Option>
+        )),
+        uiReqResourceVersions: reqVersions.map(item => (
+            <Select.Option key={item.id} value={item.id}>
+                {item.name}
+            </Select.Option>
+        )),
     };
 
     return (
@@ -138,7 +144,6 @@ export default function AddReqForm(props:IAddReqFormProps) {
                             </div>
                         </Form.Item>
                     </Col>
-
                 </Row>
                 <Form.Item name="description" className="mt20 d-flex align-start" label="需求描述">
                     <ReactElgoEditor height={360} onChange={response.handleDescriptionChange} />
@@ -149,7 +154,6 @@ export default function AddReqForm(props:IAddReqFormProps) {
                 <EffButton type="line" round className="mr20" onClick={response.handleCancelBtn} text="取消" key="cancel" />
                 <EffButton type="filled" round onClick={response.handleConfirmAdd} text="保存" key="confirm" />
             </div>
-
         </div>
     );
 }

@@ -5,6 +5,7 @@
     "target": "ES2018",
     "module": "CommonJS",
     "paths" : {
+      "@/*" : ["./src/renderer/*"],
       "@config/*" : ["./src/renderer/config/*"],
       "@pages/*" : ["./src/renderer/pages/*"],
       "@imgs/*" : ["./src/renderer/assets/imgs/*"],

@@ -3,17 +3,17 @@ import Process from '@imgs/home-page/process.png';
 import Statistics from '@imgs/home-page/statistics.png';
 import TeamWork from '@imgs/home-page/team-work.png';
 import SingleCommunication from '@imgs/home-page/single-comunication.png';
-import { useHistory } from 'react-router';
 import './home-content.less';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomeContent() {
-    const history = useHistory();
+    const navigator = useNavigate();
     const response = {
         goLogin: () => {
-            history.push('/login');
+            navigator('/login');
         },
         goSignup: () => {
-            history.push('/signup');
+            navigator('/signup');
         },
     };
 
@@ -27,7 +27,9 @@ export default function HomeContent() {
                         <br />
                         研发流程协调一致
                     </span>
-                    <div onClick={response.goSignup} className="btn signup mt40">免费试用</div>
+                    <div onClick={response.goSignup} className="btn signup mt40">
+                        免费试用
+                    </div>
                 </div>
                 <img alt="description" className="des-img" src={Process} />
             </div>

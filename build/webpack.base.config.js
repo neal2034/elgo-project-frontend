@@ -46,10 +46,12 @@ module.exports = {
                     {
                         loader: 'style-resources-loader',
                         options: {
-                            patterns: [path.resolve(__dirname, '../resources/style/reset.global.less'),
+                            patterns: [
+                                path.resolve(__dirname, '../resources/style/reset.global.less'),
                                 path.resolve(__dirname, '../resources/style/flex.global.less'),
                                 path.resolve(__dirname, '../resources/style/ant.design.global.less'),
-                                path.resolve(__dirname, '../resources/style/normal.global.less')],
+                                path.resolve(__dirname, '../resources/style/normal.global.less'),
+                            ],
                         },
                     },
                 ],
@@ -78,11 +80,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader',
-                ],
+                use: ['style-loader', 'css-loader', 'sass-loader'],
             },
         ],
     },
@@ -90,13 +88,13 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.node', '.png'],
         alias: {
+            '@': path.resolve(__dirname, '/src/renderer/'),
             '@imgs': path.resolve(__dirname, '/src/renderer/assets/imgs/'),
             '@pages': path.resolve(__dirname, '/src/renderer/pages/'),
             '@config': path.resolve(__dirname, '/src/renderer/config/'),
             '@store': path.resolve(__dirname, '/src/renderer/store/'),
             '@slice': path.resolve(__dirname, '/src/renderer/store/slice'),
             '@components': path.resolve(__dirname, '/src/renderer/components/'),
-
         },
     },
     devtool: 'source-map',

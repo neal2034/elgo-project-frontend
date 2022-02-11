@@ -8,26 +8,25 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const webpackBaseConfig = require('./webpack.base.config');
 
 const port = process.env.PORT || 8080;
-const publicPath = `http://localhost:${port}/dist/`;
+const publicPath = `http://localhost:${port}/`;
 
-const hot = [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-];
+const hot = ['react-hot-loader/patch', `webpack-dev-server/client?http://localhost:${port}/`, 'webpack/hot/only-dev-server'];
 
 const entry = {
     index: hot.concat(require.resolve('../src/renderer/index.tsx')),
 };
 
-const htmlWebpackPlugin = Object.keys(entry).map((name) => new HtmlWebpackPlugin({
-    inject: 'body',
-    scriptLoading: 'defer',
-    template: path.join(__dirname, '../resources/template/template.html'),
-    minify: false,
-    filename: `${name}.html`,
-    chunks: [name],
-}));
+const htmlWebpackPlugin = Object.keys(entry).map(
+    name =>
+        new HtmlWebpackPlugin({
+            inject: 'body',
+            scriptLoading: 'defer',
+            template: path.join(__dirname, '../resources/template/template.html'),
+            minify: false,
+            filename: `${name}.html`,
+            chunks: [name],
+        })
+);
 
 module.exports = merge.smart(webpackBaseConfig, {
     devtool: 'inline-source-map',
@@ -142,7 +141,6 @@ module.exports = merge.smart(webpackBaseConfig, {
         lazy: false,
         hot: true,
         open: true,
-        openPage: 'dist/#',
         headers: { 'Access-Control-Allow-Origin': '*' },
         contentBase: path.join(__dirname, 'dist'),
         watchOptions: {
@@ -167,7 +165,6 @@ module.exports = merge.smart(webpackBaseConfig, {
                 ws: false, // 是否代理 websocket
                 changeOrigin: true,
             },
-
         },
     },
 });

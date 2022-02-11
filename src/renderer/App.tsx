@@ -1,110 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Dropdown, Layout, Menu } from 'antd';
-import PrivateRoute from '@components/common/private-route/private-route';
-import { Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import EffUser from '@components/eff-user/eff-user';
-import { useHistory } from 'react-router';
-import { accountThunks } from '@slice/accountSlice';
-import { imgSwitch, imgQuit, imgProfile } from '@config/svgImg';
-import ElgoProfile from '@pages/profile/profile';
-import ProjectHome from './pages/project-home/project-home';
-import EffSideMenu from './components/business/eff-side-menu/eff-side-menu';
-import Api from './pages/api/api';
-import OrgSwitch from './pages/orgnazation-switch/org-switch';
-import { RootState } from './store/store';
-import EffBreadCrumb from './components/eff-breadcrumb/eff-breadcrumb';
-import ProjectCenter from './pages/project-center/project-center';
-import './assets/css/app.less';
-import MyTask from './pages/my-task/my-task';
-import MyBugs from './pages/my-bugs/my-bugs';
-import OrgMembers from './pages/org-members/org-members';
+import React from 'react';
+import { HashRouter } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { effToast } from '@components/common/eff-toast/eff-toast';
+import ElgoRouters from '@config/router';
 
-const { Content } = Layout;
-
-const App = () => {
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const [showProfile, setShowProfile] = useState(false);
-    const breads = useSelector((state:RootState) => state.breadcrumb.breadcrumbs);
-    const currentUser = useSelector((state:RootState) => state.account.currentUser);
-
-    useEffect(() => {
-        dispatch(accountThunks.getCurrentUser());
-    }, []);
-
-    const response = {
-
-        dropdownMenuSelected: ({ key, domEvent }:{key:any, domEvent:any}) => {
-            domEvent.stopPropagation();
-
-            switch (key) {
-            case 'switch-org':
-                history.push('/app/org-switch');
-                break;
-            case 'change-pwd':
-                setShowProfile(true);
-                break;
-            case 'log-out':
-                dispatch(accountThunks.clearLocalStorage());
-                history.push('/account');
-                break;
-            default:
-                break;
-            }
-        },
-
-    };
-
-    const menu = (
-        <Menu onClick={response.dropdownMenuSelected} className="user-menu">
-            <Menu.Item className="menu-item" key="switch-org">
-                <span>
-                    {imgSwitch}
-                    {' '}
-                    切换组织
-                </span>
-            </Menu.Item>
-            <Menu.Item className="menu-item" key="change-pwd">
-                <span>
-                    {imgProfile}
-                    {' '}
-                    个人设置
-                </span>
-            </Menu.Item>
-            <Menu.Item className="menu-item" key="log-out">
-                <span>
-                    {imgQuit}
-                    {' '}
-                    退出登录
-                </span>
-            </Menu.Item>
-
-        </Menu>
-    );
+export default function App() {
+    // 全局设置 snack bar
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    effToast.setSnackBar(enqueueSnackbar, closeSnackbar);
 
     return (
-        <Layout className="app_layout">
-            <EffSideMenu />
-            <Content className="app_content">
-                <EffBreadCrumb breads={breads} />
-                <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
-                    <EffUser img={currentUser.avatar} id={currentUser.id} name={currentUser.name} size={24} className="current-user cursor-pointer" />
-                </Dropdown>
-                <ElgoProfile onClose={() => setShowProfile(false)} visible={showProfile} />
-                <Switch>
-                    <PrivateRoute component={OrgSwitch} path="/app/org-switch" />
-                    <PrivateRoute component={Api} path="/app/api" />
-                    <PrivateRoute component={ProjectCenter} path="/app/project-center" />
-                    <PrivateRoute component={MyTask} path="/app/my-task" />
-                    <PrivateRoute component={MyBugs} path="/app/my-bug" />
-                    <PrivateRoute component={OrgMembers} path="/app/org-member" />
-                    <PrivateRoute component={ProjectHome} path="/app/project/:serial" />
-
-                </Switch>
-            </Content>
-        </Layout>
+        <HashRouter>
+            <ElgoRouters />
+        </HashRouter>
     );
-};
-
-export default App;
+}

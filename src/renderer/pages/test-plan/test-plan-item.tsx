@@ -1,31 +1,32 @@
 import React from 'react';
 import './test-plan.less';
 import { RightOutlined } from '@ant-design/icons';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 import TestPlanStatus from './TestPlanStatus';
 
-interface ITestPlan{
-    id:number,
-    serial:number,
-    name:string,
-    status:string,
-    [x:string]:any
+interface ITestPlan {
+    id: number;
+    serial: number;
+    name: string;
+    status: string;
+    [x: string]: any;
 }
 
-interface IProps{
-    showBg:boolean, // 是否显示background color
-    testPlan:ITestPlan
-    [x:string]:any
+interface IProps {
+    showBg: boolean; // 是否显示background color
+    testPlan: ITestPlan;
+    [x: string]: any;
 }
 
-export default function TestPlanItem(props:IProps) {
+export default function TestPlanItem(props: IProps) {
     const { testPlan, showBg, ...rest } = props;
-    const history = useHistory();
-    const { url } = useRouteMatch();
+    const navigator = useNavigate();
+    const location = useLocation();
+    const url = location.pathname;
     const response = {
-        handleExecute: (e:any) => {
+        handleExecute: (e: any) => {
             e.stopPropagation();
-            history.push(`${url.replace('test-plan', 'test-plan-execute')}/${testPlan.id}`);
+            navigator(`${url.replace('test-plan', 'test-plan-execute')}/${testPlan.id}`);
         },
     };
 

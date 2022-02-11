@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FieldTimeOutlined, UserAddOutlined } from '@ant-design/icons';
 import './requirment.less';
 import { Drawer } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { reqThunks } from '@slice/reqSlice';
 import { tagThunks } from '@slice/tagSlice';
 import ReqContent from '@pages/requirment/req-content';
@@ -19,21 +19,19 @@ export default function Requirement() {
 
     const [showAddForm, setShowAddForm] = useState(false);
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false);
-    const [isShowSearchResult, setIsShowSearchResult] = useState(false)
-    const activeReqClassId = useAppSelector(state => state.requirement.activeReqClassId)
-    console.log('activeReqClassId is ', activeReqClassId)
+    const [isShowSearchResult, setIsShowSearchResult] = useState(false);
+    const activeReqClassId = useAppSelector(state => state.requirement.activeReqClassId);
 
     const data = {
-        reqClasses: useSelector((state:RootState) => state.requirement.reqClasses),
-        rqeSources: useSelector((state:RootState) => state.requirement.reqSources),
-        reqVersions: useSelector((state:RootState) => state.requirement.reqVersions),
-        tags: useSelector((state:RootState) => state.tag.tags),
-        requirements: useSelector((state:RootState) => state.requirement.requirements),
-        totalReqNum: useSelector((state:RootState) => state.requirement.reqTotal),
+        reqClasses: useSelector((state: RootState) => state.requirement.reqClasses),
+        rqeSources: useSelector((state: RootState) => state.requirement.reqSources),
+        reqVersions: useSelector((state: RootState) => state.requirement.reqVersions),
+        tags: useSelector((state: RootState) => state.tag.tags),
+        requirements: useSelector((state: RootState) => state.requirement.requirements),
+        totalReqNum: useSelector((state: RootState) => state.requirement.reqTotal),
         searchMenus: [
             { key: 'my-create', name: '我创建的需求', icon: <UserAddOutlined /> },
             { key: 'on-plan', name: '规划中的需求', icon: <FieldTimeOutlined /> },
-
         ],
     };
 
@@ -54,35 +52,35 @@ export default function Requirement() {
             setShowAddForm(false);
         },
 
-        handleRequirementAdd: async (requirement:any) => {
+        handleRequirementAdd: async (requirement: any) => {
             setShowAddForm(false);
-            requirement.classId = requirement.classId === -1 ? undefined : requirement.classId
+            requirement.classId = requirement.classId === -1 ? undefined : requirement.classId;
             const result = await dispatch(reqThunks.addRequirement(requirement));
             if (result) {
                 dispatch(reqThunks.listPageRequirement({ page: 0, clazzId: activeReqClassId === -2 ? undefined : activeReqClassId }));
             }
         },
 
-        handleSearchMenu: (key:string) => {
+        handleSearchMenu: (key: string) => {
             switch (key) {
-            case 'my-create':
-                // TODO fulfill this
-                break;
-            case 'on-plan':
-                // TODO fulfill this
-                break;
-            default:
-                setIsAdvanceSearch(true);
+                case 'my-create':
+                    // TODO fulfill this
+                    break;
+                case 'on-plan':
+                    // TODO fulfill this
+                    break;
+                default:
+                    setIsAdvanceSearch(true);
             }
         },
 
-        handleAdvanceSearch: async (searchKeys:any) => {
+        handleAdvanceSearch: async (searchKeys: any) => {
             const params = { page: 0, ...searchKeys };
             await dispatch(reqThunks.listPageRequirement(params));
             setIsAdvanceSearch(false);
             setIsShowSearchResult(true);
         },
-        handleSearch: async (value:string) => {
+        handleSearch: async (value: string) => {
             await dispatch(reqThunks.listPageRequirement({ page: 0, name: value }));
             setIsShowSearchResult(true);
         },
@@ -109,22 +107,16 @@ export default function Requirement() {
                         reqVersions={data.reqVersions}
                         tags={data.tags}
                     />
-                )
-                    : <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus} />}
+                ) : (
+                    <EffSearchArea onSearch={response.handleSearch} menuSelected={response.handleSearchMenu} menus={data.searchMenus} />
+                )}
                 <EffButton width={100} onClick={response.handleAddReqBtn} type="line" round className="ml10 mr20" text="+ 新增需求" key="add" />
             </div>
             <div className="d-flex mt10">
                 <ReqClass reqClasses={data.reqClasses} />
                 <ReqContent requirements={data.requirements} />
             </div>
-            <Drawer
-                title={null}
-                width="60%"
-                placement="right"
-                closable={false}
-                maskClosable={false}
-                visible={showAddForm}
-            >
+            <Drawer title={null} width="60%" placement="right" closable={false} maskClosable={false} visible={showAddForm}>
                 <AddReqForm
                     reqClasses={data.reqClasses}
                     onConfirm={response.handleRequirementAdd}
@@ -135,7 +127,6 @@ export default function Requirement() {
                     onCancel={response.cancelAddReq}
                 />
             </Drawer>
-
         </div>
     );
 }

@@ -4,12 +4,7 @@ module.exports = {
         es2021: true,
         browser: true,
     },
-    extends: [
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'airbnb',
-    ],
+    extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'airbnb', 'prettier'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaFeatures: {
@@ -18,10 +13,7 @@ module.exports = {
         ecmaVersion: 12,
         sourceType: 'module',
     },
-    plugins: [
-        'react',
-        '@typescript-eslint',
-    ],
+    plugins: ['react', '@typescript-eslint', 'prettier'],
     settings: {
         react: {
             version: 'detect',
@@ -47,7 +39,7 @@ module.exports = {
         '@typescript-eslint/no-shadow': ['error'],
         'no-tabs': 'off',
         'no-plusplus': 'off',
-        indent: ['error', 4],
+        // indent: ['error', 4],
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
         'no-bitwise': 'off',
@@ -75,6 +67,17 @@ module.exports = {
         'react/jsx-props-no-spreading': 'off',
         semi: 'off',
         'arrow-parens': 'off',
-
+    },
+    globals: {
+        React: true,
+        google: true,
+        mount: true,
+        mountWithRouter: true,
+        shallow: true,
+        shallowWithRouter: true,
+        context: true,
+        expect: true,
+        jsdom: true,
+        JSX: true,
     },
 };

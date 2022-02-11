@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { taskThunks } from '@slice/taskSlice';
 import getProjectImgByKey from '@pages/project-center/project-img';
@@ -9,10 +9,10 @@ import { EllipsisOutlined, FormOutlined, DeleteOutlined } from '@ant-design/icon
 import './project-item.less';
 import { Dropdown, Menu } from 'antd';
 
-interface IProps{
-    project:IProject,
-    onDel: (project:IProject)=>void,
-    onEdit: (project:IProject)=>void,
+interface IProps {
+    project: IProject;
+    onDel: (project: IProject) => void;
+    onEdit: (project: IProject) => void;
 }
 
 export default function ProjectItem(props: IProps) {
@@ -20,7 +20,7 @@ export default function ProjectItem(props: IProps) {
     const { project, onEdit, onDel } = props;
     const bgColor = project.color ? project.color : PROJECT_COLOR[0];
     const [showProjectMenu, setShowProjectMenu] = useState(false);
-    const history = useHistory();
+    const navigator = useNavigate();
     // 设置图标样式
     const width = '120px';
     const height = '120px';
@@ -30,20 +30,20 @@ export default function ProjectItem(props: IProps) {
     const response = {
         goToProject: () => {
             dispatch(taskThunks.resetStore());
-            history.push({ pathname: `/app/project/${project.serial}` });
+            navigator({ pathname: `/app/project/${project.serial}` });
         },
-        menuChosen: ({ key, domEvent }:{key:any, domEvent:any}) => {
+        menuChosen: ({ key, domEvent }: { key: any; domEvent: any }) => {
             domEvent.stopPropagation();
             setShowProjectMenu(false);
             switch (key) {
-            case 'delete':
-                response.delProject();
-                break;
-            case 'edit':
-                response.editProject();
-                break;
-            default:
-                break;
+                case 'delete':
+                    response.delProject();
+                    break;
+                case 'edit':
+                    response.editProject();
+                    break;
+                default:
+                    break;
             }
         },
         delProject: () => {
@@ -52,7 +52,6 @@ export default function ProjectItem(props: IProps) {
         editProject: () => {
             onEdit(project);
         },
-
     };
 
     const menu = (
@@ -65,9 +64,7 @@ export default function ProjectItem(props: IProps) {
             </Menu.Item>
             <Menu.Item className="menu-item" key="delete">
                 <span>
-                    <DeleteOutlined className="mr5" />
-                    {' '}
-                    删除项目
+                    <DeleteOutlined className="mr5" /> 删除项目
                 </span>
             </Menu.Item>
         </Menu>
@@ -83,18 +80,29 @@ export default function ProjectItem(props: IProps) {
         >
             <div
                 style={{
-                    backgroundColor: bgColor, width, height, borderRadius,
+                    backgroundColor: bgColor,
+                    width,
+                    height,
+                    borderRadius,
                 }}
                 className="icon d-flex justify-center align-center"
             >
                 {showProjectMenu && (
                     <Dropdown overlay={menu} trigger={['click']} placement="bottomLeft">
-                        <EllipsisOutlined onClick={(e) => e.stopPropagation()} className="action" />
+                        <EllipsisOutlined onClick={e => e.stopPropagation()} className="action" />
                     </Dropdown>
                 )}
                 <img alt="project" src={getProjectImgByKey(project.icon)} width={imgWidth} />
             </div>
-            <span style={{ fontSize: '14px', fontWeight: 'bold' }} className="mt10">{project.name}</span>
+            <span
+                style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                }}
+                className="mt10"
+            >
+                {project.name}
+            </span>
         </div>
     );
 }

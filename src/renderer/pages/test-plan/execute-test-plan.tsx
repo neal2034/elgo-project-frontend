@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import EffInfoSep from '@components/business/eff-info-sep/eff-info-sep';
 import { LeftCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Pagination } from 'antd';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './test-plan.less';
 import EffSearchResult from '@components/business/eff-search-result/eff-search-result';
@@ -14,16 +14,19 @@ import PlanCaseAdvanceSearch from './plan-case-advance-search';
 
 export default function ExecuteTestPlan() {
     const dispatch = useDispatch();
-    const currentTestPlan = useSelector((state:RootState) => state.testPlan.currentTestPlan);
+    const navigator = useNavigate();
+    const currentTestPlan = useSelector((state: RootState) => state.testPlan.currentTestPlan);
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false);
     const [isShowSearchResult, setIsShowSearchResult] = useState(false);
     const searchMenus = [{ key: 'my-create', name: '我创建的', icon: <UserAddOutlined /> }];
-    const planCases = useSelector((state:RootState) => state.testPlan.planCases);
-    const casePage = useSelector((state:RootState) => state.testPlan.casePage);
-    const totalCaseNum = useSelector((state:RootState) => state.testPlan.totalCaseNum);
+    const planCases = useSelector((state: RootState) => state.testPlan.planCases);
+    const casePage = useSelector((state: RootState) => state.testPlan.casePage);
+    const totalCaseNum = useSelector((state: RootState) => state.testPlan.totalCaseNum);
 
     const { id } = useParams();
-    useEffect(() => { dispatch(testPlanThunks.getTestPlanDetail({ id })); }, []);
+    useEffect(() => {
+        dispatch(testPlanThunks.getTestPlanDetail({ id }));
+    }, []);
     useEffect(() => {
         if (currentTestPlan.id) {
             dispatch(testPlanThunks.listPlanCase({ planId: currentTestPlan.id }));
@@ -35,25 +38,33 @@ export default function ExecuteTestPlan() {
             // TODO occupy
         },
         // eslint-disable-next-line no-restricted-globals
-        goBackTestPlan: () => { history.back(); },
-        handlePageChange: (page:number) => {
+        goBackTestPlan: () => {
+            navigator(-1);
+        },
+        handlePageChange: (page: number) => {
             dispatch(testPlanThunks.listPlanCase({ page: page - 1, planId: currentTestPlan.id }));
         },
-        handleSearchMenu: (key:string) => {
+        handleSearchMenu: (key: string) => {
             switch (key) {
-            case 'my-create':
-                break;
-            default:
-                setIsAdvanceSearch(true);
+                case 'my-create':
+                    break;
+                default:
+                    setIsAdvanceSearch(true);
             }
         },
         cancelAdvanceSearch: () => {
             setIsAdvanceSearch(false);
         },
-        handleAdvanceSearch: (params:{name?:string, status?:string, funztionId?:number}) => {
-            dispatch(testPlanThunks.listPlanCase({
-                page: 0, planId: currentTestPlan.id, caseName: params.name, status: params.status, funztionId: params.funztionId,
-            }));
+        handleAdvanceSearch: (params: { name?: string; status?: string; funztionId?: number }) => {
+            dispatch(
+                testPlanThunks.listPlanCase({
+                    page: 0,
+                    planId: currentTestPlan.id,
+                    caseName: params.name,
+                    status: params.status,
+                    funztionId: params.funztionId,
+                })
+            );
             setIsAdvanceSearch(false);
             setIsShowSearchResult(true);
         },
@@ -61,14 +72,14 @@ export default function ExecuteTestPlan() {
             dispatch(testPlanThunks.listPlanCase({ planId: currentTestPlan.id }));
             setIsShowSearchResult(false);
         },
-        searchWithCaseName: (caseName:string) => {
+        searchWithCaseName: (caseName: string) => {
             dispatch(testPlanThunks.listPlanCase({ page: 0, planId: currentTestPlan.id, caseName }));
             setIsShowSearchResult(true);
         },
     };
 
-    const testCases = planCases.map((item:any, index) => (
-        <PlanCaseItem showBg={index % 2 === 0} planCase={item} onChosen={response.occupy} key={item.id} />));
+    // eslint-disable-next-line max-len
+    const testCases = planCases.map((item: any, index) => <PlanCaseItem showBg={index % 2 === 0} planCase={item} onChosen={response.occupy} key={item.id} />);
 
     return (
         <div className="flex-grow-1 d-flex-column pt20 pl20 pr20 execute-test-plan">
@@ -82,19 +93,17 @@ export default function ExecuteTestPlan() {
                 </div>
                 <div style={{ height: '40px' }} className="d-flex justify-end   align-center">
                     {isShowSearchResult && !isAdvanceSearch && <EffSearchResult value={totalCaseNum} onClose={response.closeSearchResult} />}
-                    {isAdvanceSearch ? <PlanCaseAdvanceSearch onSearch={response.handleAdvanceSearch} onCancel={response.cancelAdvanceSearch} />
-                        : <EffSearchArea onSearch={response.searchWithCaseName} menuSelected={response.handleSearchMenu} menus={searchMenus} />}
+                    {isAdvanceSearch ? (
+                        <PlanCaseAdvanceSearch onSearch={response.handleAdvanceSearch} onCancel={response.cancelAdvanceSearch} />
+                    ) : (
+                        <EffSearchArea onSearch={response.searchWithCaseName} menuSelected={response.handleSearchMenu} menus={searchMenus} />
+                    )}
                 </div>
             </div>
             <div className="mt40 d-flex-column ">
                 {testCases}
-                <Pagination
-                    className="mt20 mr20 align-self-end"
-                    onChange={response.handlePageChange}
-                    current={casePage + 1}
-                    defaultCurrent={1}
-                    total={totalCaseNum}
-                />
+                {/* eslint-disable-next-line max-len */}
+                <Pagination className="mt20 mr20 align-self-end" onChange={response.handlePageChange} current={casePage + 1} defaultCurrent={1} total={totalCaseNum} />
             </div>
         </div>
     );

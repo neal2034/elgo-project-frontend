@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './project-setting.less';
-import { useParams, useRouteMatch, Switch } from 'react-router-dom';
-import PrivateRoute from '@components/common/private-route/private-route';
-import { useHistory } from 'react-router';
+import { Outlet, useNavigate } from 'react-router-dom';
+
 import SettingMenus from './setting-menus';
-import MemberSetting from './member-setting/member-setting';
-import TagSetting from './tag-setting/tag-setting';
-import ReqSourceSetting from './req-source-setting/pro-req-source-setting';
-import VersionSetting from './version-setting/version-setting';
 
 export default function ProjectSetting() {
-    const { path } = useRouteMatch();
-    const { serial } = useParams();
-    const history = useHistory();
+    const navigator = useNavigate();
     const [activeKey, setActiveKey] = useState('members');
-    const basePath = path.replace(':serial', serial);
 
     const menus = [
         { key: 'members', name: '项目成员' },
@@ -23,15 +15,10 @@ export default function ProjectSetting() {
         { key: 'versions', name: '版本' },
     ];
 
-    useEffect(() => {
-        const defaultPath = `${basePath}/members`;
-        history.push(defaultPath);
-    }, []);
-
     const response = {
-        menuSelected: (key:string) => {
+        menuSelected: (key: string) => {
             setActiveKey(key);
-            history.push(`${basePath}/${key}`);
+            navigator(`${key}`);
         },
     };
 
@@ -39,13 +26,7 @@ export default function ProjectSetting() {
         <div className="pl40 pt40 d-flex">
             <SettingMenus activeKey={activeKey} menuSelected={response.menuSelected} menus={menus} />
             <div className="ml40 mr40 flex-grow-1">
-                <Switch>
-                    <PrivateRoute component={MemberSetting} path={`${path}/members`} />
-                    <PrivateRoute component={TagSetting} path={`${path}/tags`} />
-                    <PrivateRoute component={ReqSourceSetting} path={`${path}/sources`} />
-                    <PrivateRoute component={VersionSetting} path={`${path}/versions`} />
-                </Switch>
-
+                <Outlet />
             </div>
         </div>
     );
