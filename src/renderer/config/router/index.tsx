@@ -1,6 +1,7 @@
 import React, { ElementType, Suspense, lazy } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { AccountPageStatus } from '@pages/account/account';
+import NewOrganization from '@pages/signup/NewOrganization';
 
 const Loadable = (Component: ElementType) => (props: any) =>
     (
@@ -46,6 +47,7 @@ export default function ElgoRouters() {
         { path: '/', children: [{ index: true, element: <Navigate to={homePath} /> }] },
         { path: '/signup', element: <Signup /> },
         { path: '/account', element: <Account status={AccountPageStatus.LOGIN} /> },
+        { path: '/new-org/:token', element: <NewOrganization /> },
         {
             path: '/app',
             element: (

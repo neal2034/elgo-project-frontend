@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import md5 from 'md5';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import useNavigation from '@/hooks/useNavigator';
+import './signup.less';
 
 export default function NewOrganization() {
     const dispatch = useDispatch();

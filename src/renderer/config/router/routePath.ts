@@ -1,4 +1,4 @@
 export const ROUTE_PATH = {
-    newOrg: '/new-org/new',
-    login: '/login',
+    newOrg: '/new-org/:token',
+    login: '/account',
 };
