@@ -6,48 +6,24 @@ interface Map {
 /**
  * 需求状态
  */
-export const REQUIREMENT_STATUS:Map = {
-    PLANNING: {
-        key: 'PLANNING',
-        name: '规划中',
-        color: '#F4545C',
-    },
-    DEFINED: {
-        key: 'DEFINED',
-        name: '已定义',
-        color: '#00b7c2',
-    },
-    DOING: {
-        key: 'DOING',
-        name: '实现中',
-        color: '#4E89AE',
-    },
-    DONE: {
-        key: 'DONE',
-        name: '已实现',
-        color: '#408C55',
-    },
-    PENDING: {
-        key: 'PENDING',
-        name: '已搁置',
-        color: '#FFA372',
-    },
-    REJECT: {
-        key: 'REJECT',
-        name: '已拒绝',
-        color: '#B52B65',
-    },
+export const REQUIREMENT_STATUS: Map = {
+    PLANNING: { key: 'PLANNING', name: '规划中', color: '#FF6C40' },
+    DEFINED: { key: 'DEFINED', name: '已定义', color: '#00b7c2' },
+    DOING: { key: 'DOING', name: '实现中', color: '#4E89AE' },
+    DONE: { key: 'DONE', name: '已实现', color: '#4caf50' },
+    PENDING: { key: 'PENDING', name: '已搁置', color: '#FFA372' },
+    REJECT: { key: 'REJECT', name: '已拒绝', color: '#B52B65' },
 };
 
 // 优先级
-export const PRIORITY:Map = {
+export const PRIORITY: Map = {
     LOW: { name: '低', key: 'LOW', color: '#96bb7c' },
     MIDDLE: { name: '中', key: 'MIDDLE', color: '#00b7c2' },
     HIGH: { name: '高', key: 'HIGH', color: '#f4545c' },
 };
 
 // 任务状态
-export const TASK_STATUS:Map = {
+export const TASK_STATUS: Map = {
     UNSTART: { name: '未开始', key: 'UNSTART', color: '#F4545C' },
     START: { name: '已开始', key: 'START', color: '#4E89AE' },
     DONE: { name: '已完成', key: 'DONE', color: '#408C55' },
@@ -55,31 +31,28 @@ export const TASK_STATUS:Map = {
 };
 
 // 测试计划状态
-export const TEST_PLAN_STATUS:Map = {
+export const TEST_PLAN_STATUS: Map = {
     UN_EXECUTED: { name: '未开始', key: 'UN_EXECUTED', color: '#F4545C' },
     START: { name: '已开始', key: 'START', color: '#4E89AE' },
     DONE: { name: '已完成', key: 'DONE', color: '#408C55' },
-
 };
 
 // 测试计划用例状态
-export const PLAN_CASE_STATUS:Map = {
+export const PLAN_CASE_STATUS: Map = {
     UNTEST: { name: '未测试', key: 'UNTEST', color: '#F4545C' },
     PASS: { name: '通过', key: 'PASS', color: '#4E89AE' },
     FAIL: { name: '失败', key: 'FAIL', color: '#408C55' },
-
 };
 
-export const BUG_SEVERITY:Map = {
+export const BUG_SEVERITY: Map = {
     CRASH: { name: '崩溃', key: 'CRASH', color: '#F4545C' },
     SERIOUS: { name: '严重', key: 'SERIOUS', color: '#4E89AE' },
     NORMAL: { name: '一般', key: 'NORMAL', color: '#408C55' },
     HINT: { name: '提示', key: 'HINT', color: '#FFA372' },
     ADVICE: { name: '建议', key: 'ADVICE', color: '#4f8a8b' },
-
 };
 
-export const BUG_STATUS:Map = {
+export const BUG_STATUS: Map = {
     OPEN: { name: '待解决', key: 'OPEN', color: '#F4545C' },
     REJECT: { name: '已拒绝', key: 'REJECT', color: '#4E89AE' },
     FIXED: { name: '已解决', key: 'FIXED', color: '#FFA372' },
@@ -88,8 +61,7 @@ export const BUG_STATUS:Map = {
     CAN_NOT_REPRODUCE: { name: '无法重现', key: 'CAN_NOT_REPRODUCE', color: '#f8bd7f' },
 };
 
-export const colors = ['#4e89a3', '#43658b', '#00b7c2', '#ed6663', '#b52b65', '#f4545c', '#f8bd7f',
-    '#ffa372', '#e48532', '#4f8a8b', '#96bb7c', '#78bf73'];
+export const colors = ['#4e89a3', '#43658b', '#00b7c2', '#ed6663', '#b52b65', '#f4545c', '#f8bd7f', '#ffa372', '#e48532', '#4f8a8b', '#96bb7c', '#78bf73'];
 
 // 未完成的任务
 export const UNDONE_TASK = ['UNSTART', 'START', 'DEPEND'];
