@@ -60,7 +60,6 @@ module.exports = {
         'jsx-a11y/click-events-have-key-events': 'off',
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': ['error'],
-        'max-len': ['error', { code: 150 }],
         'react/require-default-props': 'off',
         'no-param-reassign': 'off',
         'no-nested-ternary': 'off',

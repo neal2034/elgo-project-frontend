@@ -30,24 +30,26 @@ const orgSlice = createSlice({
         setOrganizationList: (state, action) => {
             state.orgList = action.payload;
         },
-        setActiveUserStatus: (state, action) => { state.activeUserStatus = action.payload; },
+        setActiveUserStatus: (state, action) => {
+            state.activeUserStatus = action.payload;
+        },
     },
 });
 const orgActions = orgSlice.actions;
 
 // 获取组织详情
-export const getOrganizationDetail = () => async (dispatch:Dispatch<any>) => {
+export const getOrganizationDetail = () => async (dispatch: Dispatch<any>) => {
     const result = await request.get({ url: apiUrl.organization.detail });
     if (result.isSuccess) {
         dispatch(orgSlice.actions.setOrganization(result.data));
     }
 };
 
-export const listProjects = () => async (dispatch:Dispatch<any>) => {
+export const listProjects = () => async (dispatch: Dispatch<any>) => {
     const result = await request.get({ url: apiUrl.project.projectRes });
     if (result.isSuccess) {
-        const projects = result.data.filter((item:any) => item.type === 'PROJECT');
-        const departments = result.data.filter((item:any) => item.type === 'DEPARTMENT');
+        const projects = result.data.filter((item: any) => item.type === 'PROJECT');
+        const departments = result.data.filter((item: any) => item.type === 'DEPARTMENT');
         dispatch(orgSlice.actions.setProjects(projects));
         dispatch(orgSlice.actions.setDepartments(departments));
     }
@@ -70,24 +72,24 @@ export const orgThunks = {
     setLastLoginOrg: () => () => {
         request.put({ url: apiUrl.organization.lastLogin });
     },
-    inviteMember: (data:{orgMembers:{email:string}[]}) => async () => {
+    inviteMember: (data: { orgMembers: { email: string }[] }) => async () => {
         const result = await request.post({ url: apiUrl.organization.addMember, data });
         return result.isSuccess;
     },
-    addOrganization: (data:{name:string, password:string, token:string}) => async (dispatch:Dispatch<any>) => {
+    addOrganization: (data: { name: string; password: string; token: string }) => async () => {
         const result = await request.post({ url: apiUrl.organization.addOrg, data });
         return result.isSuccess;
     },
-    addAnotherOrganization: (data:{name:string}) => async (dispatch:Dispatch<any>) => {
+    addAnotherOrganization: (data: { name: string }) => async (dispatch: Dispatch<any>) => {
         const result = await request.post({ url: apiUrl.organization.orgRes, data });
         return result.isSuccess;
     },
-    removeOrgMember: (params:{id:number}) => async (dispatch:Dispatch<any>) => {
+    removeOrgMember: (params: { id: number }) => async (dispatch: Dispatch<any>) => {
         const result = await request.delete({ url: apiUrl.organization.addMember, params });
         return result.isSuccess;
     },
     // 检测成员邀请token 的有效性
-    checkInviteToken: (params:{token:string}) => async (dispatch:Dispatch<any>) => {
+    checkInviteToken: (params: { token: string }) => async (dispatch: Dispatch<any>) => {
         const result = await request.get({ url: apiUrl.organization.checkOrgUserToken, params });
         let status = -2;
         if (result.status === 100005) {
@@ -101,7 +103,7 @@ export const orgThunks = {
         dispatch(orgActions.setActiveUserStatus(status));
     },
     // 激活用户
-    activeUser: (data: {token:string, password:string, boolNew:boolean}) => async (dispatch:Dispatch<any>) => {
+    activeUser: (data: { token: string; password: string; boolNew: boolean }) => async (dispatch: Dispatch<any>) => {
         const result = await request.post({ url: apiUrl.organization.activeMember, data });
         return result.isSuccess;
     },

@@ -25,7 +25,7 @@ const PrivateRoute = Loadable(lazy(() => import('@components/common/private-rout
 const ProjectHome = Loadable(lazy(() => import('@pages/project-home/project-home')));
 const PageNotFound = Loadable(lazy(() => import('@components/pages/PageNotFound')));
 const Task = Loadable(lazy(() => import('@pages/task/task')));
-const Requirement = Loadable(lazy(() => import('@pages/funztion/funztion')));
+const Requirement = Loadable(lazy(() => import('@pages/requirment/requirement')));
 const Funztion = Loadable(lazy(() => import('@pages/funztion/funztion')));
 const Api = Loadable(lazy(() => import('@pages/api/api')));
 const Bug = Loadable(lazy(() => import('@pages/bug/bug')));

@@ -8,17 +8,17 @@ import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
  * @constructor
  */
 
-interface IMenuItem{
-    key:string,
-    name:string,
-    icon?:ReactNode,
-    advance?:boolean
+interface IMenuItem {
+    key: string;
+    name: string;
+    icon?: ReactNode;
+    advance?: boolean;
 }
 
-interface IProps{
-    menus:IMenuItem[],
-    menuSelected:(key:string)=>void, // 按指定的菜单搜索
-    onSearch:(value:string)=>void, // 按关键字搜索
+interface IProps {
+    menus: IMenuItem[];
+    menuSelected: (key: string) => void; // 按指定的菜单搜索
+    onSearch: (value: string) => void; // 按关键字搜索
 }
 
 /**
@@ -26,10 +26,8 @@ interface IProps{
  * @param props
  * @constructor
  */
-function MenuItem(props:any) {
-    const {
-        menuKey, name, icon, isAdvance = false, onSelect,
-    } = props;
+function MenuItem(props: any) {
+    const { menuKey, name, icon, isAdvance = false, onSelect } = props;
     const response = {
         menuSelected: () => {
             onSelect(menuKey);
@@ -37,20 +35,18 @@ function MenuItem(props:any) {
     };
     return (
         <div onClick={response.menuSelected} className={`menu-item ${isAdvance ? 'advance-menu' : ''}`}>
-            {icon}
-            {' '}
-            <span className="ml10">{name}</span>
+            {icon} <span className="ml10">{name}</span>
         </div>
     );
 }
 
-export default function EffSearchArea(props:IProps) {
+export default function EffSearchArea(props: IProps) {
     const { menus, menuSelected, onSearch } = props;
     const [searchWidth, setSearchWidth] = useState('150px');
     const [showMenu, setShowMenu] = useState(false);
     const [searchValues, setSearchValues] = useState<string>();
 
-    const clickOutSideSearchArea = (e:any) => {
+    const clickOutSideSearchArea = (e: any) => {
         if (!e.target.matches('.menu-item') && !e.target.matches('.ant-input')) {
             setSearchWidth('150px');
             setShowMenu(false);
@@ -64,15 +60,20 @@ export default function EffSearchArea(props:IProps) {
         };
     }, []);
 
-    const finalMenus = menus.concat([{
-        key: 'eff-advance-menu', advance: true, name: '高级搜索', icon: <FilterOutlined />,
-    }]);
+    const finalMenus = menus.concat([
+        {
+            key: 'eff-advance-menu',
+            advance: true,
+            name: '高级搜索',
+            icon: <FilterOutlined />,
+        },
+    ]);
     const response = {
         inputFocus: () => {
             setSearchWidth('300px');
             setShowMenu(true);
         },
-        onMenuItemSelect: (key:string) => {
+        onMenuItemSelect: (key: string) => {
             if (key === 'eff-search-text') {
                 onSearch(searchValues!);
             } else {
@@ -81,25 +82,18 @@ export default function EffSearchArea(props:IProps) {
             setSearchWidth('150px');
             setShowMenu(false);
         },
-        handleInputChange: (e:any) => {
+        handleInputChange: (e: any) => {
             setSearchValues(e.target.value);
         },
-
     };
     const ui = {
-        menuItems: finalMenus.map((item) => (
-            <MenuItem key={item.key} menuKey={item.key} isAdvance={item.advance} name={item.name} icon={item.icon} />)),
+        menuItems: finalMenus.map(item => <MenuItem key={item.key} menuKey={item.key} isAdvance={item.advance} name={item.name} icon={item.icon} />),
         popMenu: (
             <div className="eff-search-area-menu" style={{ width: '300px' }}>
                 {searchValues && (
-                    <MenuItem
-                        onSelect={response.onMenuItemSelect}
-                        menuKey="eff-search-text"
-                        name={`搜索关键字 ${searchValues}`}
-                        icon={<SearchOutlined />}
-                    />
+                    <MenuItem onSelect={response.onMenuItemSelect} menuKey="eff-search-text" name={`搜索关键字 ${searchValues}`} icon={<SearchOutlined />} />
                 )}
-                {finalMenus.map((item) => (
+                {finalMenus.map(item => (
                     <MenuItem
                         key={item.key}
                         onSelect={response.onMenuItemSelect}
@@ -109,8 +103,8 @@ export default function EffSearchArea(props:IProps) {
                         icon={item.icon}
                     />
                 ))}
-            </div>),
-
+            </div>
+        ),
     };
 
     return (
@@ -120,9 +114,9 @@ export default function EffSearchArea(props:IProps) {
                     onChange={response.handleInputChange}
                     prefix={<SearchOutlined style={{ fontSize: '14px' }} />}
                     onFocus={response.inputFocus}
+                    onPressEnter={() => response.onMenuItemSelect('eff-search-text')}
                 />
             </Popover>
-
         </div>
     );
 }
