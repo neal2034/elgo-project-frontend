@@ -153,14 +153,14 @@ module.exports = merge.smart(webpackBaseConfig, {
             disableDotRule: false,
         },
         proxy: {
-            '/elgo/api': {
-                target: 'http://localhost:8070',
-                // target: 'https://www.elgo.cc',
-                ws: false, // 是否代理 websocket
-                changeOrigin: true,
-            },
-            '/elgo/login': {
-                target: 'http://localhost:8070',
+            // '/elgo/api': {
+            //     target: 'http://localhost:8070',
+            //     // target: 'https://www.elgo.cc',
+            //     ws: false, // 是否代理 websocket
+            //     changeOrigin: true,
+            // },
+            '/api': {
+                target: 'http://localhost:3000/',
                 // target: 'https://www.elgo.cc',
                 ws: false, // 是否代理 websocket
                 changeOrigin: true,

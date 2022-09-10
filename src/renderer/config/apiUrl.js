@@ -2,7 +2,7 @@
 
 const apiUrl = {
     user: {
-        login: '/login', // 登录
+        login: '/auth/login', // 登录
         signup: '/user/public/signup', // 用户注册
         resent: '/user/public/resent', // 重新发送注册邮件
         checkCode: '/user/public/check-code', // 检测邀请码是否可用

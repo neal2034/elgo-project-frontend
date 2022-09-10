@@ -51,8 +51,7 @@ const accountSlice = createSlice({
 const accountActions = accountSlice.actions;
 
 export const login = (data:PayloadLogin): ThunkAction<void, unknown, unknown, AnyAction> => async (dispatch) => {
-    const baseURL = globalConfig.baseUrl.replace(globalConfig.apiPrefix, '');
-    const result = await request.post({ url: apiUrl.user.login, data, config: { baseURL } });
+    const result = await request.post({ url: apiUrl.user.login, data });
     if (result.isSuccess) {
         umbrella.setLocalStorage('token', result.data.token);
         umbrella.setLocalStorage('refreshToken', result.data.refreshToken);
