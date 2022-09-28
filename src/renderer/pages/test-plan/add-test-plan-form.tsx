@@ -79,7 +79,6 @@ export default function AddTestPlanForm(props:IProps) {
     const [isSelectAll, setIsSelectAll] = useState(false);
 
     useEffect(() => {
-        dispatch(funztionThunks.listFunztionStatus());
         dispatch(funztionThunks.listFunztion({ page: 0 }));
     }, []);
     useEffect(() => {

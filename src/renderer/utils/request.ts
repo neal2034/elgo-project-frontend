@@ -110,8 +110,11 @@ const put = ({
 
 const responseErrorHandler = (error:any) => {
     if (error.response.status === 401) {
-        const loginPath = window.location.href.replace(window.location.hash, '#/login');
+        umbrella.setLocalStorage('token', null);
+        umbrella.setLocalStorage('refreshToken', null);
+        const loginPath = window.location.href.replace(window.location.hash, '#/account');
         window.location.href = loginPath;
+
     }
 };
 

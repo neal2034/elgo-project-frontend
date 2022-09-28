@@ -160,7 +160,6 @@ export default function RequirementDetail(props:IProps) {
         dispatch(reqThunks.listAllReqSource());
         dispatch(reqThunks.listAllReqVersions());
         dispatch(tagThunks.listTags());
-        dispatch(funztionThunks.listFunztionStatus());
     }, []);
 
     useEffect(() => {

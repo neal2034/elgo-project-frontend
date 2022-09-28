@@ -89,9 +89,6 @@ const apiUrl = {
         tags: '/funztion/tags', // 修改功能标签
         withIds: '/funztion/with-ids', // 列出指定ID的功能
     },
-    funztionStatus: {
-        index: '/funztion-status',
-    },
     versions: {
         index: '/versions',
         withdraw: '/versions/withdraw',

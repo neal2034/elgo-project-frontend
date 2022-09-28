@@ -41,7 +41,7 @@ export default function TestPlanDetail(props:IProps) {
             dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length));
         }
         dispatch(funztionActions.setPage(0));
-        dispatch(funztionThunks.listFunztionStatus());
+
     }, []);
 
     useEffect(() => {

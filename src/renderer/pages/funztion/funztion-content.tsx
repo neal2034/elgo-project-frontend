@@ -20,9 +20,6 @@ export default function FunztionContent(props:IProps) {
     const currentPage = useSelector((state:RootState) => state.funztion.page);
     const totalFunztion = useSelector((state:RootState) => state.funztion.funzTotal);
     const [showDetail, setShowDetail] = useState(false); // 显示功能详情
-    useEffect(() => {
-        dispatch(funztionThunks.listFunztionStatus());
-    }, []);
 
     const response = {
         handleItemChosen: async (id:number) => {

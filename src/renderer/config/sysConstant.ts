@@ -30,6 +30,14 @@ export const TASK_STATUS: Map = {
     DEPEND: { name: '被阻碍', key: 'DEPEND', color: '#FFA372' },
 };
 
+// 功能状态
+export const FUNZTION_STATUS: Map = {
+    UNSTART: { name: '未开始', key: 'UNSTART', color: '#F4545C' },
+    START: { name: '已开始', key: 'START', color: '#4E89AE' },
+    DONE: { name: '已完成', key: 'DONE', color: '#408C55' },
+    PART: { name: '部分完成', key: 'PART', color: '#FFA372' },
+};
+
 // 测试计划状态
 export const TEST_PLAN_STATUS: Map = {
     UN_EXECUTED: { name: '未开始', key: 'UN_EXECUTED', color: '#F4545C' },

@@ -69,12 +69,6 @@ const funztionThunks = {
             dispatch(funztionActions.setReqFunztions(result.data.data));
         }
     },
-    listFunztionStatus: () => async (dispatch:Dispatch<any>) => {
-        const result = await request.get({ url: apiUrl.funztionStatus.index });
-        if (result.isSuccess) {
-            dispatch(funztionActions.setFunztionStatus(result.data));
-        }
-    },
     // 修改功能标签
     editFunztionTags: (id:number, tagIds:number[]) => async () => {
         const data = { id, tagIds };

@@ -11,6 +11,7 @@ import { PROJECT_COLOR, PROJECT_ICON } from '@config/sysConstant';
 import EffConfirmDlg from '@components/eff-confirm-dlg/eff-confirm-dlg';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import ProjectEditDlg from '@pages/project-center/project-edit-dlg';
+import {accountThunks} from "@slice/accountSlice";
 import { RootState } from '../../store/store';
 import EffButton from '../../components/eff-button/eff-button';
 import ProjectItem from './project-item';
@@ -26,7 +27,9 @@ export default function ProjectCenter() {
     const [willEditProject, setWillEditProject] = useState<IProject>();
     const [confirmDelDlgVisible, setConfirmDelDlgVisible] = useState(false);
     const nameInputRef = useRef<Input>(null);
+    console.log("here is current member", currentMember)
     useEffect(() => {
+        dispatch(accountThunks.getCurrentMember())
         dispatch(orgThunks.setLastLoginOrg());
         dispatch(projectThunks.listProject());
     }, []);
