@@ -107,15 +107,13 @@ const reqThunks = {
     addRequirement: (requirement: IRequirement) => async (dispatch: Dispatch<any>) => {
         const result = await request.post({ url: apiUrl.requirements.index, data: requirement });
         return result.isSuccess
-        // if (result.isSuccess) {
-        //     dispatch(reqThunks.listPageRequirement({ page: 0 }));
-        // }
+
     },
 
     // 删除需求
     delRequirement: (id:number) => async (dispatch:Dispatch<any>, getState:any) => {
         const { page } = getState().requirement;
-        const result = await request.delete({ url: `${apiUrl.requirements.index}/${id}/trash` });
+        const result = await request.doDel(apiUrl.requirements.index, {id})
         if (result.isSuccess) {
             dispatch(reqThunks.listPageRequirement({ page }));
         }
@@ -125,7 +123,7 @@ const reqThunks = {
     // 撤销删除需求
     withdrawDelRequirement: (id: number) => async (dispatch:Dispatch<any>, getState:any) => {
         const { page } = getState().requirement;
-        const result = await request.post({ url: `${apiUrl.requirements.index}/${id}/revert` });
+        const result = await request.doPut(apiUrl.requirements.revert, undefined,{id})
         if (result.isSuccess) {
             dispatch(reqThunks.listPageRequirement({ page }));
         }

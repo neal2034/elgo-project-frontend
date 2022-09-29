@@ -67,7 +67,6 @@ export default function ReqContent(props: IRequirementContentProps) {
                 version={item.version && item.version.name}
                 showBg={index % 2 === 0}
                 id={item.id}
-                serial={item.serial}
                 name={item.name}
                 status={item.status}
             />
