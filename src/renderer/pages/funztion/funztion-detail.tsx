@@ -8,10 +8,11 @@ import globalColor from '@config/globalColor';
 import { Drawer } from 'antd';
 import { taskThunks } from '@slice/taskSlice';
 import { testCaseThunks } from '@slice/testCaseSlice';
+import { RootState } from '@store/store';
+import {FUNZTION_STATUS} from "@config/sysConstant";
 import EffTaskStatus from '@components/business/eff-task-status/eff-task-status';
 import EffEditableInput from '../../components/common/eff-editable-input/eff-editable-input';
 import EffActions from '../../components/business/eff-actions/eff-actions';
-import { RootState } from '../../store/store';
 import EffItemInfo from '../../components/business/eff-item-info/eff-item-info';
 import EffInfoSep from '../../components/business/eff-info-sep/eff-info-sep';
 import EffLabel from '../../components/business/eff-label/EffLabel';
@@ -22,6 +23,7 @@ import EffEditableDoc from '../../components/common/eff-editable-doc/eff-editabl
 import AddTaskForm from '../task/add-task-form';
 import './funztion.less';
 import AddTestCaseForm from '../case/add-test-case-form';
+
 
 interface IProps{
     onDel:(id:number)=>void
@@ -65,12 +67,14 @@ export default function FunztionDetail(props:IProps) {
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const [showAddTaskForm, setShowAddTaskForm] = useState(false);
     const [showAddCaseForm, setShowAddCaseForm] = useState(false);
+    // 需求状态options
+    const funztionStatusOptions = Object.keys(FUNZTION_STATUS).map((opt:any) => (
+        { id: FUNZTION_STATUS[opt].key, name: FUNZTION_STATUS[opt].name }));
 
     const data = {
         currentFunztion: useSelector((state:RootState) => state.funztion.currentFunztion),
         funztionCases: useSelector((state:RootState) => state.testCase.funztionCases),
         allTags: useSelector((state:RootState) => state.tag.tags),
-        funztionStatus: useSelector((state:RootState) => state.funztion.funztionStatus),
         reqOptions: useSelector((state:RootState) => state.requirement.reqOptions),
         page: useSelector((state:RootState) => state.funztion.page),
         menuItems: [
@@ -93,12 +97,17 @@ export default function FunztionDetail(props:IProps) {
     }, [data.currentFunztion.id]);
 
     const response = {
-        occupy: () => {
-            // TODO 替换该函数
+
+        onFunztionNameChanged:async(name?:string)=>{
+                const funztion = {id:data.currentFunztion.id, name}
+                await dispatch(funztionThunks.editFunztion(funztion))
+                dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id));
+                dispatch(funztionThunks.listFunztion({ page: 0 }));
         },
         onTagsChanged: async (ids:any) => {
             await dispatch(funztionThunks.editFunztionTags(data.currentFunztion.id, ids));
             dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id));
+
         },
         // tags area 标签删除响应
         delTag: (id:number) => {
@@ -116,17 +125,17 @@ export default function FunztionDetail(props:IProps) {
         },
 
         handleRequirementChange: async (reqId?:string|number) => {
-            await dispatch(funztionThunks.editFunztionRequirement(data.currentFunztion.id, reqId as (number|undefined)));
+            await dispatch(funztionThunks.editFunztion({id:data.currentFunztion.id, reqId: reqId as number}))
             dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id));
         },
 
-        handleStatusChange: async (statusId?:string|number) => {
-            await dispatch(funztionThunks.editFunztionStatus(data.currentFunztion.id, statusId as number));
+        handleStatusChange: async (status?:string|number) => {
+            await dispatch(funztionThunks.editFunztion({id: data.currentFunztion.id, status: status as string}));
             dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id));
             dispatch(funztionThunks.listFunztion({ page: 0 }));
         },
         handleDesChange: async (description?:string) => {
-            await dispatch(funztionThunks.editFunztionDes(data.currentFunztion.id, description));
+            await dispatch(funztionThunks.editFunztion({id:data.currentFunztion.id, description}))
             dispatch(funztionThunks.getFunztionDetail(data.currentFunztion.id));
         },
         // 菜单选择响应
@@ -159,7 +168,7 @@ export default function FunztionDetail(props:IProps) {
                     errMsg="请输入功能名称"
                     className="flex-grow-1"
                     isRequired
-                    onChange={response.occupy}
+                    onChange={response.onFunztionNameChanged}
                     value={data.currentFunztion.name}
                     placeholder="请输入功能名称"
                 />
@@ -187,7 +196,7 @@ export default function FunztionDetail(props:IProps) {
 
                 <div className="d-flex align-center mt20">
                     <EffLabel name="状态" />
-                    <EffEditableSelector id={data.currentFunztion.statusId} options={data.funztionStatus} onChange={response.handleStatusChange} />
+                    <EffEditableSelector id={data.currentFunztion.status} options={funztionStatusOptions} onChange={response.handleStatusChange} />
 
                 </div>
 

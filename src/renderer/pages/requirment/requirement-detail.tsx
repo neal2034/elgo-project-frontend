@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { reqThunks } from '@slice/reqSlice';
 import { tagThunks } from '@slice/tagSlice';
-import { REQUIREMENT_STATUS } from '@config/sysConstant';
+import {FUNZTION_STATUS, REQUIREMENT_STATUS} from '@config/sysConstant';
 import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
 import globalColor from '@config/globalColor';
 import { Drawer, Tag } from 'antd';
@@ -51,7 +51,7 @@ export default function RequirementDetail(props:IProps) {
     const dispatch = useDispatch();
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const [showAddFunztionForm, setShowAddFunztionForm] = useState(false);
-    const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
+    // const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
 
     // 需求状态options
     const reqStatusOptions = Object.keys(REQUIREMENT_STATUS).map((opt:any) => (
@@ -148,10 +148,10 @@ export default function RequirementDetail(props:IProps) {
                 onDel(data.currentRequirement.id as number);
             }
         },
-        getFunztionStatus: (statusId:number) => {
-            const status:{name:string, color:string} = funztionStatus.filter((item:any) => item.id === statusId)[0];
-            return status;
-        },
+        // getFunztionStatus: (statusId:number) => {
+        //     const status:{name:string, color:string} = funztionStatus.filter((item:any) => item.id === statusId)[0];
+        //     return status;
+        // },
     };
 
     // 系统初始化
@@ -263,7 +263,7 @@ export default function RequirementDetail(props:IProps) {
                     <ReqFunztion
                         key={item.id}
                         name={item.name}
-                        status={response.getFunztionStatus(item.statusId)}
+                        status={FUNZTION_STATUS[item.status].name}
                     />
                 ))}
             </div>

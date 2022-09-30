@@ -16,7 +16,6 @@ interface IProps{
 export default function FunztionContent(props:IProps) {
     const dispatch = useDispatch();
     const { funztions } = props;
-    const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
     const currentPage = useSelector((state:RootState) => state.funztion.page);
     const totalFunztion = useSelector((state:RootState) => state.funztion.funzTotal);
     const [showDetail, setShowDetail] = useState(false); // 显示功能详情
@@ -49,10 +48,8 @@ export default function FunztionContent(props:IProps) {
                 key={item.id}
                 showBg={index % 2 === 0}
                 id={item.id}
-                serial={item.serial}
                 name={item.name}
-                statusId={item.statusId}
-                status={funztionStatus}
+                status={item.status}
                 onChosen={response.handleItemChosen}
             />
         )),

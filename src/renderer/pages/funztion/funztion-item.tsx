@@ -1,22 +1,20 @@
 import React from 'react';
 import { Tag } from 'antd';
 import './funztion.less';
+import {FUNZTION_STATUS, REQUIREMENT_STATUS} from "@config/sysConstant";
 
 interface IProps{
     showBg:boolean, // 是否显示background color
     id:number,
-    serial:number,
     name:string,
-    statusId:number,
-    status:any[],
+    status:string,
     onChosen:(id:number)=>void
 }
 
 export default function FunztionItem(props:IProps) {
     const {
-        showBg, id, serial, name, statusId, onChosen, status,
+        showBg, id, name, status, onChosen,
     } = props;
-    const theStatus:{name:string, color:string} = status.filter((item:any) => item.id === statusId)[0];
     return (
         <div
             onClick={() => onChosen(id)}
@@ -24,11 +22,12 @@ export default function FunztionItem(props:IProps) {
             key={id}
         >
             <div className="funz-main">
-                <span>{serial}</span>
+                <span>{id}</span>
                 <span className="ml20">{name}</span>
             </div>
             <div>
-                <Tag className="ml10" color={theStatus && theStatus.color}>{theStatus && theStatus.name}</Tag>
+                <Tag className="ml10" color={FUNZTION_STATUS[status].color}>{FUNZTION_STATUS[status].name}</Tag>
+
             </div>
         </div>
     );

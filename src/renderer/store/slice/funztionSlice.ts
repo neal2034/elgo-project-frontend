@@ -14,6 +14,8 @@ interface IListFunztionParams{
 interface IFunztion{
     id:number,
     name:string,
+    status: string;
+    tagIds:number[],
     [x:string]:any
 }
 
@@ -23,7 +25,6 @@ const funztionSlice = createSlice({
         funztions: [] as IFunztion[], // 当前所有功能
         page: 0, // 当前分页
         funzTotal: 0, // 功能总数
-        funztionStatus: [], // 功能状态
         currentFunztion: {} as IFunztion,
         reqFunztions: [], // 需求所对应的功能
 
@@ -32,7 +33,6 @@ const funztionSlice = createSlice({
         setFunztions: (state, action) => { state.funztions = action.payload; },
         setPage: (state, action) => { state.page = action.payload; },
         setFunzTotal: (state, action) => { state.funzTotal = action.payload; },
-        setFunztionStatus: (state, action) => { state.funztionStatus = action.payload; },
         setCurrentFunztion: (state, action) => { state.currentFunztion = action.payload; },
         setReqFunztions: (state, action) => { state.reqFunztions = action.payload; },
     },
@@ -45,6 +45,10 @@ const funztionThunks = {
         if (result.isSuccess) {
             dispatch(funztionThunks.listFunztion({ page: 0 }));
         }
+    },
+    editFunztion:(funztion:{id:number,name?:string, status?:string,description?:string, reqId?:number})=>async ()=>{
+        const result = await request.put({url:apiUrl.funztion.index,data:funztion});
+        return result.isSuccess
     },
     getFunztionDetail: (id:number) => async (dispatch:Dispatch<any>) => {
         const result = await request.get({ url: apiUrl.funztion.detail, params: { id } });
@@ -73,21 +77,6 @@ const funztionThunks = {
     editFunztionTags: (id:number, tagIds:number[]) => async () => {
         const data = { id, tagIds };
         await request.put({ url: apiUrl.funztion.tags, data });
-    },
-    // 修改功能所属需求
-    editFunztionRequirement: (id:number, reqId?:number) => async () => {
-        const data = { id, reqId };
-        await request.put({ url: apiUrl.funztion.editRequirement, data });
-    },
-    // 修改功能状态
-    editFunztionStatus: (id:number, statusId:number) => async () => {
-        const data = { id, statusId };
-        await request.put({ url: apiUrl.funztion.status, data });
-    },
-    // 修改功能描述
-    editFunztionDes: (id:number, description?:string) => async () => {
-        const data = { id, description };
-        await request.put({ url: apiUrl.funztion.description, data });
     },
     // 删除功能
     delFunztion: (id:number) => async (dispatch:Dispatch<any>, getState:any) => {

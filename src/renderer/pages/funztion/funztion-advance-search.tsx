@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
     Form, Input, Select, Tag,
 } from 'antd';
+import { RootState } from '@store/store';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { reqActions, reqThunks } from '@slice/reqSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import EffButton from '../../components/eff-button/eff-button';
-import { RootState } from '../../store/store';
+
 
 interface IProps{
     tags:any[],
