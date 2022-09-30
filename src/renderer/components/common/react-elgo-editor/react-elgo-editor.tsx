@@ -45,7 +45,7 @@ export default function ReactElgoEditor(props:IProps) {
             effToast.error('最大只能上传1M的文件')
             return;
         }
-        const result = await uploadOneFile(file, file.name);
+        const result = await uploadOneFile(file);
         insertImgFn(result.data.url);
     };
 
