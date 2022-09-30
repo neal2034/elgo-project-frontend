@@ -62,18 +62,6 @@ const testCaseThunks = {
             dispatch(testCaseActions.setCurrentTestCase(result.data));
         }
     },
-    editTestCaseName: (data:{id:number, name:string}) => async () => {
-        await request.put({ url: apiUrl.testCase.editName, data });
-    },
-    editTestCaseDes: (data:{id:number, description?:string}) => async () => {
-        await request.put({ url: apiUrl.testCase.editDescription, data });
-    },
-    editFunztion: (data:{id:number, funztionId?:number}) => async () => {
-        await request.put({ url: apiUrl.testCase.editFunztion, data });
-    },
-    editPriority: (data:{id:number, priority?:string}) => async () => {
-        await request.put({ url: apiUrl.testCase.editPriority, data });
-    },
     editTags: (data:{id:number, tagIds?:number[]}) => async () => {
         await request.put({ url: apiUrl.testCase.editTag, data });
     },
@@ -85,6 +73,10 @@ const testCaseThunks = {
         const result = await request.put({ url: apiUrl.testCase.withdrawDel, params: { id } });
         return result.isSuccess;
     },
+    editTestCase: (testCases:{id:number, name?:string,funztionId?:number, priority?:string, description?:string})=>async ()=>{
+        const result = await request.put({url:apiUrl.testCase.index, data:testCases})
+        return result.isSuccess
+    }
 
 };
 

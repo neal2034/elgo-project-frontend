@@ -4,7 +4,6 @@ import './test-case.less';
 
 interface ITestCase{
     id:number,
-    serial:number,
     name:string,
     priority:string,
     [x:string]:any
@@ -26,7 +25,7 @@ export default function TestCaseItem(props:IProps) {
             key={testCase.id}
         >
             <div className="test-case-main">
-                <span>{testCase.serial}</span>
+                <span>{testCase.id}</span>
                 <span className="ml20">{testCase.name}</span>
             </div>
             <div>

@@ -49,12 +49,12 @@ export default function TestCaseDetail(props:IProps) {
 
     const response = {
         handleEditName: async (name?:string) => {
-            await dispatch(testCaseThunks.editTestCaseName({ id: currentTestCase.id, name: name as string }));
+            await dispatch(testCaseThunks.editTestCase({id:currentTestCase.id, name}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id));
             dispatch(testCaseThunks.listTestCase({ page }));
         },
         handleEditDes: async (description?:string) => {
-            await dispatch(testCaseThunks.editTestCaseDes({ id: currentTestCase.id, description }));
+            await  dispatch(testCaseThunks.editTestCase({id:currentTestCase.id, description}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id));
         },
         handleSearchFunztion: async (value?:string) => {
@@ -65,12 +65,12 @@ export default function TestCaseDetail(props:IProps) {
             }
         },
         handleFunztionChange: async (funztionId?:number|string) => {
-            await dispatch(testCaseThunks.editFunztion({ id: currentTestCase.id, funztionId: funztionId as (number|undefined) }));
+            await dispatch(testCaseThunks.editTestCase({id:currentTestCase.id, funztionId:funztionId as number}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id));
         },
 
         handleEditPriority: async (priority?:string|number) => {
-            await dispatch(testCaseThunks.editPriority({ id: currentTestCase.id, priority: priority as string }));
+            await dispatch(testCaseThunks.editTestCase({id:currentTestCase.id, priority: priority as string}))
             dispatch(testCaseThunks.getTestCaseDetail(currentTestCase.id));
             dispatch(testCaseThunks.listTestCase({ page }));
         },
