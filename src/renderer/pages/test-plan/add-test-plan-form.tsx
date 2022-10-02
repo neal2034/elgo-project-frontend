@@ -3,6 +3,7 @@ import {
     Checkbox, Form, Input, Pagination, Tag,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import {FUNZTION_STATUS} from "@config/sysConstant";
 import { UserAddOutlined } from '@ant-design/icons';
 import { funztionThunks } from '@slice/funztionSlice';
 import EffButton from '../../components/eff-button/eff-button';
@@ -13,6 +14,7 @@ import EffSearchResult from '../../components/business/eff-search-result/eff-sea
 import FunztionAdvanceSearch from '../funztion/funztion-advance-search';
 import EffLabel from '../../components/business/eff-label/EffLabel';
 
+
 interface IProps{
     tags:any[],
     onCancel:()=>void,
@@ -21,10 +23,8 @@ interface IProps{
 interface IFunztionSelectItemProps{
     id:number,
     showBg?:boolean,
-    serial:number,
     name:string,
-    status:any,
-    statusId:number,
+    status:string,
     selected?:boolean,
     showCheck?:boolean, // 是否显示checkbox
     onSelected?:(id:number, selected:boolean)=>void,
@@ -37,9 +37,9 @@ interface ITestPlanData{
 }
 export function FunztionSelectItem(props:IFunztionSelectItemProps) {
     const {
-        id, showBg, serial, name, status, statusId, onSelected, selected = false, showCheck = true,
+        id, showBg, name, status, onSelected, selected = false, showCheck = true,
     } = props;
-    const theStatus:{name:string, color:string} = status.filter((item:any) => item.id === statusId)[0];
+
 
     const response = {
         handleChange: (event:any) => {
@@ -54,11 +54,11 @@ export function FunztionSelectItem(props:IFunztionSelectItemProps) {
         <div className={`funztion-select-item d-flex align-center pr20 justify-between pl20 ${showBg ? 'shadowed' : ''}`}>
             <div className="funz-main">
                 {showCheck && <Checkbox checked={selected} onChange={response.handleChange} />}
-                <span className="ml10">{serial}</span>
+                <span className="ml10">{id}</span>
                 <span className="ml20">{name}</span>
             </div>
             <div>
-                <Tag className="ml10" color={theStatus && theStatus.color}>{theStatus && theStatus.name}</Tag>
+                <Tag className="ml10" color={FUNZTION_STATUS[status].color}>{FUNZTION_STATUS[status].name}</Tag>
             </div>
         </div>
     );
@@ -71,7 +71,6 @@ export default function AddTestPlanForm(props:IProps) {
     const searchMenus = [{ key: 'done', name: '已完成的', icon: <UserAddOutlined /> }];
     const [isAdvanceSearch, setIsAdvanceSearch] = useState(false);
     const [isShowSearchResult, setIsShowSearchResult] = useState(false);
-    const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
     const funztions = useSelector((state:RootState) => state.funztion.funztions);
     const page = useSelector((state:RootState) => state.funztion.page);
     const totalFunztionNum = useSelector((state:RootState) => state.funztion.funzTotal);
@@ -104,7 +103,7 @@ export default function AddTestPlanForm(props:IProps) {
         },
         handleSave: async () => {
             const values = await testPlanForm.validateFields();
-            const data = { name: values.name, functionIds: selectedFunztionIds };
+            const data = { name: values.name, funztionIds: selectedFunztionIds };
             onConfirm(data);
         },
         handlePageChange: async (pageId:number) => {
@@ -165,12 +164,10 @@ export default function AddTestPlanForm(props:IProps) {
                 key={item.id}
                 id={item.id}
                 selected={selectedFunztionIds.indexOf(item.id) > -1}
-                status={funztionStatus}
+                status={item.status}
                 showBg={index % 2 === 0}
-                statusId={item.statusId}
                 onSelected={response.handleFunztionSelected}
                 name={item.name}
-                serial={item.serial}
             />
         )),
     };

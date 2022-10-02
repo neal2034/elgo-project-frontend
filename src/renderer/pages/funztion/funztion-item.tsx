@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tag } from 'antd';
 import './funztion.less';
-import {FUNZTION_STATUS, REQUIREMENT_STATUS} from "@config/sysConstant";
+import {FUNZTION_STATUS} from "@config/sysConstant";
 
 interface IProps{
     showBg:boolean, // 是否显示background color

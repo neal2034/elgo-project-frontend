@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './funztion.less';
 import { useDispatch, useSelector } from 'react-redux';
 import { funztionThunks } from '@slice/funztionSlice';
+import { RootState } from '@store/store';
 import { Drawer, Pagination } from 'antd';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import EffEmpty from '../../components/common/eff-empty/eff-empty';
 import FunztionItem from './funztion-item';
-import { RootState } from '../../store/store';
 import FunztionDetail from './funztion-detail';
 
 interface IProps{

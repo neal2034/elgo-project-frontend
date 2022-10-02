@@ -69,7 +69,7 @@ const get = ({ url, params, config }:IFRequestParam) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const x in params) {
         if (Object.prototype.hasOwnProperty.call(params, x) && Array.isArray(params[x])) {
-            params[x] = params[x].join(',');
+            params[x] =  params[x].length>0? params[x].join(','):'[]'
         }
     }
     return request({

@@ -4,7 +4,6 @@ import apiUrl from '@config/apiUrl';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import umbrella from 'umbrella-storage';
-import globalConfig from '@config/global.config';
 import { Dispatch } from 'react';
 import { setName } from './orgSlice';
 import request from '../../utils/request';

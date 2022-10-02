@@ -16,78 +16,74 @@ import EffItemInfo from '../../components/business/eff-item-info/eff-item-info';
 import EffActions from '../../components/business/eff-actions/eff-actions';
 import EffEditableInput from '../../components/common/eff-editable-input/eff-editable-input';
 
-interface IProps{
-    onDel:(id:number)=>void
+interface IProps {
+    onDel: (id: number) => void;
 }
 
-export default function TestPlanDetail(props:IProps) {
+export default function TestPlanDetail(props: IProps) {
     const dispatch = useDispatch();
-    const { onDel } = props
+    const { onDel } = props;
 
-    const currentTestPlan = useSelector((state:RootState) => state.testPlan.currentTestPlan);
+    const currentTestPlan = useSelector((state: RootState) => state.testPlan.currentTestPlan);
     const menuItems = [{ key: 'delete', name: '删除计划', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> }];
-    const funztions = useSelector((state:RootState) => state.funztion.funztions);
-    const funztionStatus = useSelector((state:RootState) => state.funztion.funztionStatus);
-    const currentPage = useSelector((state:RootState) => state.funztion.page);
-    const totalFunztionNum = useSelector((state:RootState) => state.funztion.funzTotal);
+    const funztions = useSelector((state: RootState) => state.funztion.funztions);
+    const currentPage = useSelector((state: RootState) => state.funztion.page);
+    const totalFunztionNum = useSelector((state: RootState) => state.funztion.funzTotal);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedFunztionIds, setSelectedFunztionIds] = useState<number[]>([]);
     const [isSelectAll, setIsSelectAll] = useState(false);
 
     useEffect(() => {
-        if (currentTestPlan.functionIds) {
-            const ids = currentTestPlan.functionIds.slice(0, 10);
+        if (currentTestPlan.funztionIds) {
+            const ids = currentTestPlan.funztionIds.slice(0, 10);
             dispatch(funztionThunks.listWithIds({ ids }));
-            dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length));
+            dispatch(funztionActions.setFunzTotal(currentTestPlan.funztionIds.length));
         }
         dispatch(funztionActions.setPage(0));
-
     }, []);
 
     useEffect(() => {
         let selectAll = funztions.length > 0;
-        funztions.forEach((funztion) => {
+        funztions.forEach(funztion => {
             if (selectedFunztionIds.indexOf(funztion.id) === -1) {
                 selectAll = false;
             }
         });
         setIsSelectAll(selectAll);
-    },
-    [funztions, selectedFunztionIds]);
+    }, [funztions, selectedFunztionIds]);
 
     useEffect(() => {
         if (isEditing) {
-            setSelectedFunztionIds(currentTestPlan.functionIds ? currentTestPlan.functionIds : []);
+            console.log('current test plan is ', currentTestPlan);
+            setSelectedFunztionIds(currentTestPlan.funztionIds ? currentTestPlan.funztionIds : []);
             dispatch(funztionThunks.listFunztion({ page: 0 }));
-        } else if (currentTestPlan.functionIds) {
-            const ids = currentTestPlan.functionIds.slice(0, 10);
+        } else if (currentTestPlan.funztionIds) {
+            const ids = currentTestPlan.funztionIds.slice(0, 10);
             dispatch(funztionThunks.listWithIds({ ids }));
-            dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length));
+            dispatch(funztionActions.setFunzTotal(currentTestPlan.funztionIds.length));
         }
     }, [isEditing]);
 
-    const planStatusOptions:any = [];
-    TEST_PLAN_STATUS.forEach((item:any) => {
-        planStatusOptions.push({ id: TEST_PLAN_STATUS[item].key, name: TEST_PLAN_STATUS[item].name });
-    });
+    const planStatusOptions = Object.keys(TEST_PLAN_STATUS).map(item => ({ id: TEST_PLAN_STATUS[item].key, name: TEST_PLAN_STATUS[item].name }));
 
     const response = {
         handleMenuSelected: async () => {
             onDel(currentTestPlan.id);
         },
-        handleEditStatus: (status?:string|number) => {
-            dispatch(testPlanThunks.editStatus({ id: currentTestPlan.id, status: status as string }));
+        handleEditStatus: async (status?: string | number) => {
+            await dispatch(testPlanThunks.editTestPlan({ id: currentTestPlan.id, status: status as string }));
+            dispatch(testPlanThunks.listTestPlan({ page: currentPage }));
         },
-        handlePageChange: (page:number) => {
+        handlePageChange: (page: number) => {
             if (isEditing) {
                 dispatch(funztionThunks.listFunztion({ page: page - 1 }));
             } else {
-                const ids = currentTestPlan.functionIds!.slice(page * 10 - 10, page * 10);
+                const ids = currentTestPlan.funztionIds!.slice(page * 10 - 10, page * 10);
                 dispatch(funztionThunks.listWithIds({ ids }));
                 dispatch(funztionActions.setPage(page - 1));
             }
         },
-        handleFunztionSelected: (id:number, selected:boolean) => {
+        handleFunztionSelected: (id: number, selected: boolean) => {
             const tempIds = Object.assign([], selectedFunztionIds);
             if (selected) {
                 tempIds.push(id);
@@ -97,12 +93,12 @@ export default function TestPlanDetail(props:IProps) {
             }
             setSelectedFunztionIds(tempIds);
         },
-        handleSelectAll: (e:any) => {
+        handleSelectAll: (e: any) => {
             const selected = e.target.checked;
             setIsSelectAll(selected);
             if (selected) {
-                const notSelectIds:any = [];
-                funztions.forEach((funztion) => {
+                const notSelectIds: any = [];
+                funztions.forEach(funztion => {
                     if (selectedFunztionIds.indexOf(funztion.id) === -1) {
                         notSelectIds.push(funztion.id);
                     }
@@ -111,7 +107,7 @@ export default function TestPlanDetail(props:IProps) {
                 setSelectedFunztionIds(tempIds);
             } else {
                 const tempIds = Object.assign([], selectedFunztionIds);
-                funztions.forEach((funztion) => {
+                funztions.forEach(funztion => {
                     const index = tempIds.indexOf(funztion.id);
                     if (index > -1) {
                         tempIds.splice(index, 1);
@@ -122,38 +118,36 @@ export default function TestPlanDetail(props:IProps) {
         },
         handleCancelEdit: () => {
             setIsEditing(false);
-            if (currentTestPlan.functionIds) {
-                const ids = currentTestPlan.functionIds.slice(0, 10);
+            if (currentTestPlan.funztionIds) {
+                const ids = currentTestPlan.funztionIds.slice(0, 10);
                 dispatch(funztionThunks.listWithIds({ ids }));
-                dispatch(funztionActions.setFunzTotal(currentTestPlan.functionIds.length));
+                dispatch(funztionActions.setFunzTotal(currentTestPlan.funztionIds.length));
             }
             dispatch(funztionActions.setPage(0));
         },
         handleSaveEdit: async () => {
-            await dispatch(testPlanThunks.editFunztions({ id: currentTestPlan.id, funztionIds: selectedFunztionIds }));
+            await dispatch(testPlanThunks.editTestPlan({ id: currentTestPlan.id, funztionIds: selectedFunztionIds }));
             await dispatch(testPlanThunks.getTestPlanDetail({ id: currentTestPlan.id }));
             setIsEditing(false);
         },
-        handleEditName: async (value?:string) => {
-            await dispatch(testPlanThunks.editName({ id: currentTestPlan.id, name: value! }));
+        handleEditName: async (value?: string) => {
+            await dispatch(testPlanThunks.editTestPlan({ id: currentTestPlan.id, name: value }));
             dispatch(testPlanThunks.getTestPlanDetail({ id: currentTestPlan.id }));
             dispatch(testPlanThunks.listTestPlan({ page: currentPage }));
         },
     };
 
     const ui = {
-        funztionList: funztions.map((item:any, index) => (
+        funztionList: funztions.map((item: any, index) => (
             <FunztionSelectItem
                 key={item.id}
                 id={item.id}
                 selected={selectedFunztionIds.indexOf(item.id) > -1}
                 onSelected={response.handleFunztionSelected}
                 showCheck={isEditing}
-                status={funztionStatus}
+                status={item.status}
                 showBg={index % 2 === 0}
-                statusId={item.statusId}
                 name={item.name}
-                serial={item.serial}
             />
         )),
     };
@@ -184,7 +178,11 @@ export default function TestPlanDetail(props:IProps) {
                 {ui.funztionList}
             </div>
             <div style={{ marginLeft: '60px' }} className={`d-flex align-center ${isEditing ? 'justify-between' : 'justify-end'}`}>
-                {isEditing && <Checkbox checked={isSelectAll} onChange={response.handleSelectAll} className="ml20">当页全选</Checkbox>}
+                {isEditing && (
+                    <Checkbox checked={isSelectAll} onChange={response.handleSelectAll} className="ml20">
+                        当页全选
+                    </Checkbox>
+                )}
                 <Pagination
                     className="mt20 mr20 align-self-end"
                     onChange={response.handlePageChange}
@@ -193,13 +191,12 @@ export default function TestPlanDetail(props:IProps) {
                     total={totalFunztionNum}
                 />
             </div>
-            { isEditing && (
+            {isEditing && (
                 <div style={{ marginLeft: '60px' }} className="btn-group d-flex">
                     <EffButton type="line" round className="mr20" onClick={response.handleCancelEdit} text="取消" key="cancel" />
                     <EffButton type="filled" round onClick={response.handleSaveEdit} text="保存" key="confirm" />
                 </div>
             )}
-
         </div>
     );
 }

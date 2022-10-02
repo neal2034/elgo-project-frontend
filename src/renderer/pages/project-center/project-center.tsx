@@ -26,8 +26,10 @@ export default function ProjectCenter() {
     const [willDelProject, setWillDelProject] = useState<IProject>();
     const [willEditProject, setWillEditProject] = useState<IProject>();
     const [confirmDelDlgVisible, setConfirmDelDlgVisible] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const nameInputRef = useRef<Input>(null);
-    console.log("here is current member", currentMember)
+
     useEffect(() => {
         dispatch(accountThunks.getCurrentMember())
         dispatch(orgThunks.setLastLoginOrg());

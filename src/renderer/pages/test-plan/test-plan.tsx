@@ -27,6 +27,7 @@ export default function TestPlan() {
     const page = useSelector((state:RootState) => state.testPlan.page);
     const totalPlanNum = useSelector((state:RootState) => state.testPlan.total);
 
+
     useEffect(() => {
         dispatch(testPlanThunks.listTestPlan({ page: 0 }));
     }, []);
@@ -38,7 +39,7 @@ export default function TestPlan() {
         handleCancelAdd: () => {
             setShowAddForm(false);
         },
-        handleAddTestPlan: async (data:{name:string, functionIds?:number[]}) => {
+        handleAddTestPlan: async (data:{name:string, funztionIds?:number[]}) => {
             await dispatch(testPlanThunks.addTestPlan(data));
             dispatch(testPlanThunks.listTestPlan({ page: 0 }));
             setShowAddForm(false);
