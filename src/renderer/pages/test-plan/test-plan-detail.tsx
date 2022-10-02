@@ -54,7 +54,6 @@ export default function TestPlanDetail(props: IProps) {
 
     useEffect(() => {
         if (isEditing) {
-            console.log('current test plan is ', currentTestPlan);
             setSelectedFunztionIds(currentTestPlan.funztionIds ? currentTestPlan.funztionIds : []);
             dispatch(funztionThunks.listFunztion({ page: 0 }));
         } else if (currentTestPlan.funztionIds) {

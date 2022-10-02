@@ -4,25 +4,24 @@ import { BUG_SEVERITY, BUG_STATUS } from '@config/sysConstant';
 import EffStatus from '@components/business/eff-status/eff-status';
 import EffUser from '@components/eff-user/eff-user';
 
-interface IBugItem{
-    id:number,
-    serial:number,
-    name:string,
-    status:'NEW'|'OPEN'|'REJECT'|'ASSIGNED'|'FIXED'|'VERIFIED'|'WORK_AS_DESIGN'|'CAN_NOT_REPRODUCE',
-    handler?:string,
-    handlerId?:number,
-    handlerAvatar?:string,
-    severity:'CRASH'|'SERIOUS'|'NORMAL'|'HINT'|'ADVICE',
-    [x:string]:any
+interface IBugItem {
+    id: number;
+    name: string;
+    status: 'NEW' | 'OPEN' | 'REJECT' | 'ASSIGNED' | 'FIXED' | 'VERIFIED' | 'WORK_AS_DESIGN' | 'CAN_NOT_REPRODUCE';
+    handler?: string;
+    handlerId?: number;
+    handlerAvatar?: string;
+    severity: 'CRASH' | 'SERIOUS' | 'NORMAL' | 'HINT' | 'ADVICE';
+    [x: string]: any;
 }
 
-interface IProps{
-    showBg:boolean, // 是否显示background color
-    bug:IBugItem,
-    onChosen:(id:number)=>void
+interface IProps {
+    showBg: boolean; // 是否显示background color
+    bug: IBugItem;
+    onChosen: (id: number) => void;
 }
 
-export default function BugItem(props:IProps) {
+export default function BugItem(props: IProps) {
     const { bug, onChosen, showBg } = props;
     const bugStatusName = BUG_STATUS[bug.status].name;
     const bugStatusColor = BUG_STATUS[bug.status].color;
@@ -30,13 +29,9 @@ export default function BugItem(props:IProps) {
     const severityColor = BUG_SEVERITY[bug.severity].color;
 
     return (
-        <div
-            onClick={() => onChosen(bug.id)}
-            className={`one-bug d-flex align-center pr20 justify-between pl20 ${showBg ? 'shadowed' : ''}`}
-            key={bug.id}
-        >
+        <div onClick={() => onChosen(bug.id)} className={`one-bug d-flex align-center pr20 justify-between pl20 ${showBg ? 'shadowed' : ''}`} key={bug.id}>
             <div className="bug-main">
-                <span>{bug.serial}</span>
+                <span>{bug.id}</span>
                 <span className="ml20">{bug.name}</span>
             </div>
             <div className="d-flex">

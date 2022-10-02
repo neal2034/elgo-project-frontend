@@ -12,70 +12,71 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DeleteOutlined } from '@ant-design/icons';
 import { BUG_SEVERITY, BUG_STATUS } from '@config/sysConstant';
 import { bugThunks } from '@slice/bugSlice';
-import { RootState } from '../../store/store';
+import { RootState } from '@store/store';
+import { IProjectMember } from '@slice/projectSlice';
 
-interface IProps{
-    onDel:(id:number)=>void
+interface IProps {
+    onDel: (id: number) => void;
 }
 
-export default function BugDetail(props:IProps) {
+export default function BugDetail(props: IProps) {
     const dispatch = useDispatch();
-    const { onDel } = props
-    const currentBug = useSelector((state:RootState) => state.bug.currentBug);
+    const { onDel } = props;
+    const currentBug = useSelector((state: RootState) => state.bug.currentBug);
     const menuItems = [{ key: 'delete', name: '删除Bug', icon: <DeleteOutlined style={{ fontSize: '14px' }} /> }];
     const [memberOptions, setMemberOptions] = useState<any[]>([]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
-    const members = useSelector((state:RootState) => state.project.projectDetail.members);
-    const projectMembers = useSelector((state:RootState) => state.project.projectMembers);
+    const members = useSelector((state: RootState) => state.project.projectDetail.members);
+    const projectMembers = useSelector((state: RootState) => state.project.projectMembers);
 
-    const allTags = useSelector((state:RootState) => state.tag.tags);
-    const page = useSelector((state:RootState) => state.bug.page);
-    const severityOptions = Object.keys(BUG_SEVERITY).map((item:any) => ({ id: BUG_SEVERITY[item].key, name: BUG_SEVERITY[item].name }));
-    const bugStatusOptions = Object.keys(BUG_STATUS).map((item:any) => ({ id: BUG_STATUS[item].key, name: BUG_STATUS[item].name }));
+    const allTags = useSelector((state: RootState) => state.tag.tags);
+    const page = useSelector((state: RootState) => state.bug.page);
+    const severityOptions = Object.keys(BUG_SEVERITY).map((item: any) => ({ id: BUG_SEVERITY[item].key, name: BUG_SEVERITY[item].name }));
+    const bugStatusOptions = Object.keys(BUG_STATUS).map((item: any) => ({ id: BUG_STATUS[item].key, name: BUG_STATUS[item].name }));
 
     useEffect(() => {
         const tagIds = currentBug.tagIds ? currentBug.tagIds : [];
-        const selectTags = allTags.filter((item:any) => tagIds.indexOf(item.id) > -1);
+        const selectTags = allTags.filter((item: any) => tagIds.indexOf(item.id) > -1);
         setSelectedTags(selectTags);
     }, [currentBug.tagIds]);
 
     const response = {
-        editName: async (name?:string) => {
-            await dispatch(bugThunks.editName({ id: currentBug.id, name: name as string }));
+        editName: async (name?: string) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, name }));
             dispatch(bugThunks.listBugs({ page }));
         },
-        editQa: async (testerId:any) => {
-            dispatch(bugThunks.editQa({ id: currentBug.id, testerId }));
+        editQa: async (testerId: any) => {
+            dispatch(bugThunks.editBug({ id: currentBug.id, testerId }));
         },
-        editHandler: async (handlerId:any) => {
-            await dispatch(bugThunks.editHandler({ id: currentBug.id, handlerId }));
+        editHandler: async (handlerId: any) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, handlerId }));
             dispatch(bugThunks.listBugs({ page }));
         },
-        editStatus: async (status:any) => {
-            await dispatch(bugThunks.editStatus({ id: currentBug.id, status }));
+        editStatus: async (status: any) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, status }));
             dispatch(bugThunks.listBugs({ page }));
         },
-        editSeverity: async (severity:any) => {
-            await dispatch(bugThunks.editSeverity({ id: currentBug.id, severity }));
+        editSeverity: async (severity: any) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, severity }));
             dispatch(bugThunks.listBugs());
         },
         // tags area 标签删除响应
-        delTag: (id:number) => {
+        delTag: (id: number) => {
             const currentIds = Object.assign([], currentBug.tagIds);
             const index = currentIds.indexOf(id);
             currentIds.splice(index, 1);
             response.onTagsChanged(currentIds);
         },
-        onTagsChanged: async (ids:any) => {
-            await dispatch(bugThunks.editTags({ id: currentBug.id, tagIds: ids }));
+        onTagsChanged: async (ids: any) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, tagIds: ids }));
             dispatch(bugThunks.getBugDetail(currentBug.id));
         },
-        editDescription: async (description?:string) => {
-            await dispatch(bugThunks.editDescription({ id: currentBug.id, description }));
+        editDescription: async (description?: string) => {
+            await dispatch(bugThunks.editBug({ id: currentBug.id, description }));
             dispatch(bugThunks.getBugDetail(currentBug.id));
         },
         // 菜单选择响应
-        menuSelected: (key:string) => {
+        menuSelected: (key: string) => {
             if (key === 'delete') {
                 onDel(currentBug.id as number);
             }
@@ -83,15 +84,15 @@ export default function BugDetail(props:IProps) {
     };
 
     useEffect(() => {
-        let availableMembers = [];
+        let availableMembers: IProjectMember[] = [];
         if (projectMembers && projectMembers.length > 0) {
             availableMembers = projectMembers;
         } else {
             availableMembers = members || [];
         }
 
-        const options:any[] = [];
-        availableMembers.forEach((item) => {
+        const options: any[] = [];
+        availableMembers.forEach(item => {
             options.push({
                 id: item.orgMemberId,
                 name: item.name,
@@ -116,7 +117,6 @@ export default function BugDetail(props:IProps) {
             <EffItemInfo className="ml10" serial={currentBug.serial} creator={currentBug.creator} />
             <EffInfoSep className="mt20 ml10" name="基础信息" />
             <div style={{ marginLeft: '60px' }}>
-
                 <div className="d-flex align-center mt20">
                     <EffLabel name="QA" />
                     <EffEditableSelector id={currentBug.testerId} options={memberOptions} onChange={response.editQa} />
@@ -142,15 +142,10 @@ export default function BugDetail(props:IProps) {
                         <EffLabel name="标签" />
                         <div className="d-flex ml10">
                             <EffTagArea onDel={response.delTag} tags={selectedTags} />
-                            <EffTagSelector
-                                onChange={response.onTagsChanged}
-                                chosen={currentBug.tagIds ? currentBug.tagIds : []}
-                                tags={allTags}
-                            />
+                            <EffTagSelector onChange={response.onTagsChanged} chosen={currentBug.tagIds ? currentBug.tagIds : []} tags={allTags} />
                         </div>
                     </div>
                 )}
-
             </div>
 
             <EffInfoSep className="mt40 ml10" name="任务描述" />
