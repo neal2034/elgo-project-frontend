@@ -16,6 +16,7 @@ export interface IProjectMember {
 
 // 项目信息
 interface IProject {
+    id: number;
     serial: number;
     name: string;
     color?: string;
@@ -56,7 +57,7 @@ const projectThunks = {
     addProject: (data: { name: string; color: string; icon: string }) => async () => {
         await request.post({ url: apiUrl.project.projectRes, data });
     },
-    delProject: (params: { serial: number }) => async () => {
+    delProject: (params: { id: number }) => async () => {
         const result = await request.doDel(apiUrl.project.projectRes, params);
         return result.isSuccess;
     },
@@ -64,7 +65,7 @@ const projectThunks = {
         const result = await request.doPut(apiUrl.project.projectRes, data);
         return result.isSuccess;
     },
-    withdrawDelProject: (params: { serial: number }) => async (dispatch: Dispatch<any>) => {
+    withdrawDelProject: (params: { id: number }) => async () => {
         const result = await request.doPut(apiUrl.project.withdraw, undefined, params);
         return result.isSuccess;
     },
