@@ -15,7 +15,6 @@ const apiUrl = {
         password: '/user/change-pwd', // 修改用户密码
         sendChangeEmailToken: '/user/sent-change-email', // 发送邮箱修改邮件
         changeEmail: '/user/change-email', // 修改用户密码,
-
     },
     organization: {
         orgRes: '/organization', // 组织资源,
@@ -29,7 +28,6 @@ const apiUrl = {
         orgMemberRes: '/organization/member', // 组织成员资源
         lastLogin: '/organization/last-login', // 设置最近登录组织
         getLogin: '/organization/login', // 获取需要登录的组织
-
     },
     orgMember: {
         available: '/org-member/available', // 可以分配给指定项目的组织成员
@@ -52,7 +50,6 @@ const apiUrl = {
         apiRes: '/api', // api 资源
         apiViaTreeItem: '/api/tree-item', // 根据tree item 获取API
         apiDescription: '/api/description', // 改变api 描述
-
     },
     apiEnv: {
         apiEnvRes: '/env', // api 环境资源
@@ -119,7 +116,7 @@ const apiUrl = {
         setDone: '/task/done', // 设置为已完成
         setUndone: '/task/un-done', // 取消完成
         detail: '/task/detail', // 任务详情
-        withdraw: '/task/revert', // 撤销删除
+        withdraw: '/task/withdraw', // 撤销删除
         mine: '/my/task', // 我的任务
     },
     testCase: {
@@ -155,7 +152,6 @@ const apiUrl = {
         editStatus: '/defect/status', // 修改状态,
         withdrawDel: '/defect/withdraw', // 撤销删除
         mine: '/my/defect', // 我的任务
-
     },
     elgoVersion: {
         index: '/elgo-version/public/list', // 列出elgo 的版本信息

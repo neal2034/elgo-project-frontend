@@ -6,51 +6,50 @@ import request from '../../utils/request';
 /**
  * 添加任务参数DTO
  */
-interface IAddTaskDto{
-    taskListId:number,
-    name:string,
-    deadline?:Date,
-    handlerId?:number,
-    tagIds?:number[],
-    priority?:string,
-    description?:string,
-    funztionId?:number,
+interface IAddTaskDto {
+    taskListId: number;
+    name: string;
+    deadline?: Date;
+    handlerId?: number;
+    tagIds?: number[];
+    priority?: string;
+    description?: string;
+    funztionId?: number;
 }
 
-interface ITaskDetailInfo{
-    name:string,
-    id:number,
-    serial:number,
-    taskListId:number,
-    creatorDto:{
-        name:string
-    },
-    priority:string,
-    status:string,
-    deadline?:string,
-    tagIds?:number[],
-    description?:string,
-    funztion?:{
-        id:number,
-        name:string
-    }
-    handlerDto?:{
-        id:number
-    }
+interface ITaskDetailInfo {
+    name: string;
+    id: number;
+    serial: number;
+    taskListId: number;
+    creatorDto: {
+        name: string;
+    };
+    priority: string;
+    status: string;
+    deadline?: string;
+    tagIds?: number[];
+    description?: string;
+    funztion?: {
+        id: number;
+        name: string;
+    };
+    handlerDto?: {
+        id: number;
+    };
 }
 
-interface ITaskGroup{
-    id:number,
-    name:string,
-    [x:string]:any,
+interface ITaskGroup {
+    id: number;
+    name: string;
+    [x: string]: any;
 }
 
-interface ITasks{
-   [groupId:number]:{
-       id:number,
-       name:string
-   }[]
-
+interface ITasks {
+    [groupId: number]: {
+        id: number;
+        name: string;
+    }[];
 }
 
 const taskSlice = createSlice({
@@ -63,19 +62,25 @@ const taskSlice = createSlice({
         currentTask: {} as ITaskDetailInfo,
     },
     reducers: {
-        setGroups: (state, action) => { state.groups = action.payload; },
+        setGroups: (state, action) => {
+            state.groups = action.payload;
+        },
         setTasks: (state, action) => {
             const groupId = action.payload.taskGroupId;
             state.tasks[groupId] = action.payload.tasks;
             let total = 0;
-            Object.keys(state.tasks).forEach((key:any) => {
+            Object.keys(state.tasks).forEach((key: any) => {
                 const num = state.tasks[key] ? state.tasks[key].length : 0;
                 total += num;
             });
             state.totalTasks = total;
         },
-        setCurrentTask: (state, action) => { state.currentTask = action.payload; },
-        setMyTasks: (state, action) => { state.myTasks = action.payload; },
+        setCurrentTask: (state, action) => {
+            state.currentTask = action.payload;
+        },
+        setMyTasks: (state, action) => {
+            state.myTasks = action.payload;
+        },
     },
 });
 
@@ -83,34 +88,34 @@ const taskActions = taskSlice.actions;
 
 const taskThunks = {
     // 重置store 数据
-    resetStore: () => async (dispatch:Dispatch<any>) => {
+    resetStore: () => async (dispatch: Dispatch<any>) => {
         dispatch(taskActions.setGroups([]));
         dispatch(taskActions.setTasks({}));
     },
-    listMyTasks: () => async (dispatch:Dispatch<any>) => {
+    listMyTasks: () => async (dispatch: Dispatch<any>) => {
         const result = await request.get({ url: apiUrl.task.mine });
         if (result.isSuccess) {
             dispatch(taskActions.setMyTasks(result.data));
         }
     },
 
-    listTaskGroup: () => async (dispatch:Dispatch<any>) => {
+    listTaskGroup: () => async (dispatch: Dispatch<any>) => {
         const result = await request.get({ url: apiUrl.taskList.index });
         if (result.isSuccess) {
             dispatch(taskSlice.actions.setGroups(result.data));
         }
     },
-    addTaskGroup: (name?:string) => async () => {
+    addTaskGroup: (name?: string) => async () => {
         await request.post({ url: apiUrl.taskList.index, data: { name } });
     },
-    editTaskGroup: (id:number, name?:string) => async () => {
+    editTaskGroup: (id: number, name?: string) => async () => {
         await request.put({ url: apiUrl.taskList.index, data: { id, name } });
     },
-    addTask: (task:IAddTaskDto) => async () => {
+    addTask: (task: IAddTaskDto) => async () => {
         await request.post({ url: apiUrl.task.index, data: task });
     },
     // deprecated
-    listTask: (taskGroupId:number, name?:string, handlerId?:number, priority?:string, tagIds?:string) => async (dispatch:Dispatch<any>) => {
+    listTask: (taskGroupId: number, name?: string, handlerId?: number, priority?: string, tagIds?: string) => async (dispatch: Dispatch<any>) => {
         const result = await request.get({
             url: apiUrl.task.index,
             params: {
@@ -130,69 +135,56 @@ const taskThunks = {
             dispatch(taskActions.setTasks(payload));
         }
     },
-    listTasks: (params:{taskListId:number, name?:string, handlerId?:number,
-        priority?:string, tadIds?:number[], status?:string[]}) => async (dispatch:Dispatch<any>) => {
-        const result = await request.get({ url: apiUrl.task.index, params });
-        if (result.isSuccess) {
-            const payload = {
-                taskGroupId: params.taskListId,
-                tasks: result.data.data,
-            };
-            dispatch(taskActions.setTasks(payload));
-        }
-    },
-    markTaskDone: (id:number) => async () => {
+    listTasks:
+        (params: { taskListId: number; name?: string; handlerId?: number; priority?: string; tadIds?: number[]; status?: string[] }) =>
+        async (dispatch: Dispatch<any>) => {
+            const result = await request.get({ url: apiUrl.task.index, params });
+            if (result.isSuccess) {
+                const payload = {
+                    taskGroupId: params.taskListId,
+                    tasks: result.data.data,
+                };
+                dispatch(taskActions.setTasks(payload));
+            }
+        },
+    markTaskDone: (id: number) => async () => {
         await request.put({ url: apiUrl.task.setDone, params: { id } });
     },
-    markTaskUnDone: (params:{id:number}) => async () => {
+    markTaskUnDone: (params: { id: number }) => async () => {
         await request.put({ url: apiUrl.task.setUndone, params });
     },
-    getTaskDetail: (id:number) => async (dispatch:Dispatch<any>) => {
+    getTaskDetail: (id: number) => async (dispatch: Dispatch<any>) => {
         const result = await request.get({ url: apiUrl.task.detail, params: { id } });
         if (result.isSuccess) {
             dispatch(taskActions.setCurrentTask(result.data));
         }
     },
-    editTaskName: (id:number, name:string) => async (dispatch:Dispatch<any>) => {
-        const result = await request.put({ url: apiUrl.task.editName, data: { id, name } });
-        if (result.isSuccess) {
-            dispatch(taskThunks.getTaskDetail(id));
-        }
-    },
-    editTaskHandler: (id:number, handlerId?:number) => async () => {
-        await request.put({ url: apiUrl.task.editHandler, data: { id, handlerId } });
-    },
-    editTaskPriority: (id:number, priority:string) => async () => {
-        await request.put({ url: apiUrl.task.editPriority, data: { id, priority } });
-    },
-    editTaskDeadline: (id:number, deadline?:string) => async () => {
-        await request.put({ url: apiUrl.task.editDeadline, data: { id, deadline } });
-    },
-    // 修改任务标签
-    editTaskTags: (id:number, tagIds:number[]) => async () => {
-        const data = { id, tagIds };
-        await request.put({ url: apiUrl.task.editTags, data });
-    },
-    editTaskDes: (id:number, description?:string) => async () => {
-        await request.put({ url: apiUrl.task.editDescription, data: { id, description } });
-    },
-    editTaskStatus: (id:number, status:string) => async () => {
-        await request.put({ url: apiUrl.task.editStatus, data: { id, status } });
-    },
-    deleteTask: (id:number) => async () => {
+    editTask:
+        (data: {
+            id: number;
+            name?: string;
+            handlerId?: number;
+            priority?: string;
+            deadline?: string;
+            status?: string;
+            tagIds?: number[];
+            description?: string;
+        }) =>
+        async () => {
+            await request.put({ url: apiUrl.task.index, data });
+        },
+
+    deleteTask: (id: number) => async () => {
         const result = await request.delete({ url: apiUrl.task.index, params: { id } });
 
         return result.isSuccess;
     },
-    withdrawDelTask: (id:number) => async () => {
-        const result = await request.post({ url: apiUrl.task.withdraw, params: { id } });
+    withdrawDelTask: (id: number) => async () => {
+        const result = await request.put({ url: apiUrl.task.withdraw, params: { id } });
         return result.isSuccess;
     },
-
 };
 
-export {
-    taskActions, taskThunks, ITaskDetailInfo, ITaskGroup, ITasks,
-};
+export { taskActions, taskThunks, ITaskDetailInfo, ITaskGroup, ITasks };
 
 export default taskSlice.reducer;
