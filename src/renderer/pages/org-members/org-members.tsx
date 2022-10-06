@@ -156,7 +156,6 @@ export default function OrgMembers() {
             }
         },
         openInviteDlg: () => {
-            console.log('currrt member is ', currentMember);
             if (!currentMember.boolOwner) {
                 effToast.error('没有权限，仅超级管理员可操作');
                 return;

@@ -66,7 +66,7 @@ export default function ElgoRouters() {
                     path: 'project/:serial',
                     element: <ProjectHome />,
                     children: [
-                        { path: 'task', element: <Task /> },
+                        { path: 'task', index: true, element: <Task /> },
                         { path: 'requirement', element: <Requirement /> },
                         { path: 'funztion', element: <Funztion /> },
                         { path: 'api', element: <Api /> },

@@ -30,7 +30,7 @@ export default function ProjectItem(props: IProps) {
     const response = {
         goToProject: () => {
             dispatch(taskThunks.resetStore());
-            navigator({ pathname: `/app/project/${project.serial}` });
+            navigator({ pathname: `/app/project/${project.serial}/task` });
         },
         menuChosen: ({ key, domEvent }: { key: any; domEvent: any }) => {
             domEvent.stopPropagation();

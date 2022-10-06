@@ -90,7 +90,7 @@ export const orgThunks = {
     },
     cancelInvitation: (params: { id: number }) => async () => {
         const result = await request.put({ url: apiUrl.orgMember.cancelInvitation, params });
-        console.log('result is ', result);
+
         return result.isSuccess;
     },
     // 检测成员邀请token 的有效性
