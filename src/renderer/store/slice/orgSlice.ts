@@ -85,7 +85,12 @@ export const orgThunks = {
         return result.isSuccess;
     },
     removeOrgMember: (params: { id: number }) => async (dispatch: Dispatch<any>) => {
-        const result = await request.delete({ url: apiUrl.organization.addMember, params });
+        const result = await request.delete({ url: apiUrl.orgMember.index, params });
+        return result.isSuccess;
+    },
+    cancelInvitation: (params: { id: number }) => async () => {
+        const result = await request.put({ url: apiUrl.orgMember.cancelInvitation, params });
+        console.log('result is ', result);
         return result.isSuccess;
     },
     // 检测成员邀请token 的有效性

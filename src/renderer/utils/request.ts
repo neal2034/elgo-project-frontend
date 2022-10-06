@@ -204,6 +204,7 @@ axios.interceptors.response.use(response => {
     }
 
     if (response.data.status !== 0) {
+        console.log('Got error ', response.data);
         // TODO add message
     }
     const result = response.data;

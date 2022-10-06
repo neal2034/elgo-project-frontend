@@ -43,7 +43,8 @@ export default function OrgMembers() {
     const [showInviteDlg, setShowInviteDlg] = useState(false);
     const [showConfirmDlg, setShowConfirmDlg] = useState(false);
     const [willDelMember, setWillDelMember] = useState<any>();
-    console.log('here is org', organization);
+    const [willCancelInvitation, setWillCancelInvitation] = useState<any>();
+
     useEffect(() => {
         dispatch(accountThunks.getCurrentMember());
         dispatch(getOrganizationDetail());
@@ -134,11 +135,20 @@ export default function OrgMembers() {
                 return;
             }
             setWillDelMember(member);
+            setWillCancelInvitation(null);
+            setShowConfirmDlg(true);
+        },
+
+        cancelInvitation: (invitation: any) => {
+            setWillDelMember(null);
+            setWillCancelInvitation(invitation);
             setShowConfirmDlg(true);
         },
 
         handleConfirmDelMember: async () => {
-            const result: any = await dispatch(orgThunks.removeOrgMember({ id: willDelMember.id }));
+            const result: any = willDelMember
+                ? await dispatch(orgThunks.removeOrgMember({ id: willDelMember.id }))
+                : await dispatch(orgThunks.cancelInvitation({ id: willCancelInvitation.id }));
             setShowConfirmDlg(false);
             if (result) {
                 effToast.success('移除组织成员成功');
@@ -166,7 +176,7 @@ export default function OrgMembers() {
                     ))}
                 {organization &&
                     organization.invitations &&
-                    organization.invitations.map((item: any) => <EffMemberItem onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />)}
+                    organization.invitations.map((item: any) => <EffMemberItem onDel={() => response.cancelInvitation(item)} member={item} key={item.id} />)}
             </div>
 
             <Modal visible={showInviteDlg} title={null} footer={null} closable={false}>

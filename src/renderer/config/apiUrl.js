@@ -35,6 +35,7 @@ const apiUrl = {
         checkInvitationToken: '/org-member/check-token',
         index: '/org-member',
         active: '/org-member/active',
+        cancelInvitation: '/org-member/cancel-invitation',
     },
     project: {
         projectRes: '/project', // 项目资源,
