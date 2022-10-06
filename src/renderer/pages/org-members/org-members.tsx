@@ -43,7 +43,7 @@ export default function OrgMembers() {
     const [showInviteDlg, setShowInviteDlg] = useState(false);
     const [showConfirmDlg, setShowConfirmDlg] = useState(false);
     const [willDelMember, setWillDelMember] = useState<any>();
-
+    console.log('here is org', organization);
     useEffect(() => {
         dispatch(accountThunks.getCurrentMember());
         dispatch(getOrganizationDetail());
@@ -111,13 +111,12 @@ export default function OrgMembers() {
             }
 
             // 添加组织成员
-            const orgMembers: any = [];
-            tempMembers.forEach((item: any) => {
-                if (item.show && item.value && item.value.trim()) {
-                    orgMembers.push({ email: item.value.trim() });
-                }
-            });
-            const result: any = await dispatch(orgThunks.inviteMember({ orgMembers }));
+            const members = tempMembers
+                .filter(item => item.show && item.value)
+                .map(item => ({
+                    email: item.value.trim(),
+                }));
+            const result: any = await dispatch(orgThunks.inviteMember({ members }));
             setShowInviteDlg(false);
             if (result as boolean) {
                 effToast.success('已为邀请成员发送邀请邮件');
@@ -162,7 +161,12 @@ export default function OrgMembers() {
             <div className="d-flex justify-start flex-wrap mt20">
                 {organization &&
                     organization.members &&
-                    organization.members.map((item: any) => <EffMemberItem onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />)}
+                    organization.members.map((item: any) => (
+                        <EffMemberItem booleEnable onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />
+                    ))}
+                {organization &&
+                    organization.invitations &&
+                    organization.invitations.map((item: any) => <EffMemberItem onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />)}
             </div>
 
             <Modal visible={showInviteDlg} title={null} footer={null} closable={false}>

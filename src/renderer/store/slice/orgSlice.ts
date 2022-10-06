@@ -72,8 +72,8 @@ export const orgThunks = {
     setLastLoginOrg: () => () => {
         request.put({ url: apiUrl.organization.lastLogin });
     },
-    inviteMember: (data: { orgMembers: { email: string }[] }) => async () => {
-        const result = await request.post({ url: apiUrl.organization.addMember, data });
+    inviteMember: (data: { members: { email: string }[] }) => async () => {
+        const result = await request.post({ url: apiUrl.orgMember.index, data });
         return result.isSuccess;
     },
     addOrganization: (data: { name: string; password: string; token: string }) => async () => {
@@ -90,7 +90,7 @@ export const orgThunks = {
     },
     // 检测成员邀请token 的有效性
     checkInviteToken: (params: { token: string }) => async (dispatch: Dispatch<any>) => {
-        const result = await request.get({ url: apiUrl.organization.checkOrgUserToken, params });
+        const result = await request.get({ url: apiUrl.orgMember.checkInvitationToken, params });
         let status = -2;
         if (result.status === 100005) {
             // token 不存在或已被使用
@@ -104,7 +104,8 @@ export const orgThunks = {
     },
     // 激活用户
     activeUser: (data: { token: string; password: string; boolNew: boolean }) => async (dispatch: Dispatch<any>) => {
-        const result = await request.post({ url: apiUrl.organization.activeMember, data });
+        const result = await request.post({ url: apiUrl.orgMember.active, data });
+        // const result = await request.post({ url: apiUrl.organization.activeMember, data });
         return result.isSuccess;
     },
 };

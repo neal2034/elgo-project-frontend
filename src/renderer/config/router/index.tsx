@@ -37,6 +37,7 @@ const MemberSetting = Loadable(lazy(() => import('@pages/project-setting/member-
 const TagSetting = Loadable(lazy(() => import('@pages/project-setting/tag-setting/tag-setting')));
 const ReqSourceSetting = Loadable(lazy(() => import('@pages/project-setting/req-source-setting/pro-req-source-setting')));
 const VersionSetting = Loadable(lazy(() => import('@pages/project-setting/version-setting/version-setting')));
+const ActiveUser = Loadable(lazy(() => import('@pages/signup/active-user')));
 
 export default function ElgoRouters() {
     // 若为桌面端则直接进入登录
@@ -48,6 +49,7 @@ export default function ElgoRouters() {
         { path: '/signup', element: <Signup /> },
         { path: '/account', element: <Account status={AccountPageStatus.LOGIN} /> },
         { path: '/new-org/:token', element: <NewOrganization /> },
+        { path: '/active/:token', element: <ActiveUser /> },
         {
             path: '/app',
             element: (

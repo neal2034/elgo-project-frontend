@@ -3,23 +3,23 @@ import HomeLogo from '@imgs/elgo-logo.png';
 import { Form, Input } from 'antd';
 import EffButton from '@components/eff-button/eff-button';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
 import { orgThunks } from '@slice/orgSlice';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import md5 from 'md5';
-import { RootState } from '../../store/store';
+import { useNavigate, useParams } from 'react-router-dom';
+import { RootState } from '@store/store';
 
 export default function ActiveUser() {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigator = useNavigate();
     const [activeForm] = Form.useForm();
-    const activeUserStatus = useSelector((state:RootState) => state.organization.activeUserStatus);
+    const activeUserStatus = useSelector((state: RootState) => state.organization.activeUserStatus);
     const [title, setTitle] = useState<string>();
     const [isAvailable, setIsAvailable] = useState(true);
     const { token } = useParams();
 
     useEffect(() => {
-        dispatch(orgThunks.checkInviteToken({ token }));
+        dispatch(orgThunks.checkInviteToken({ token: token as string }));
     }, []);
 
     useEffect(() => {
@@ -39,14 +39,14 @@ export default function ActiveUser() {
             const values = await activeForm.validateFields();
             const password = md5(values.password);
             const data = {
-                token,
+                token: token as string,
                 password,
                 boolNew: activeUserStatus === 0,
             };
-            const result:any = await dispatch(orgThunks.activeUser(data));
+            const result: any = await dispatch(orgThunks.activeUser(data));
             if (result) {
                 effToast.success('用户激活成功');
-                history.push('/login');
+                navigator('/account');
             }
         },
     };
@@ -61,18 +61,9 @@ export default function ActiveUser() {
                     <Form.Item name="password" className="mt20" rules={[{ required: true, message: '请输入密码' }]}>
                         <Input disabled={!isAvailable} type="password" placeholder="请输入密码" />
                     </Form.Item>
-                    <EffButton
-                        disabled={!isAvailable}
-                        onClick={response.activeUser}
-                        className="mb20 mt20"
-                        text="确定"
-                        type="filled"
-                        round
-                        width={330}
-                    />
+                    <EffButton disabled={!isAvailable} onClick={response.activeUser} className="mb20 mt20" text="确定" type="filled" round width={330} />
                 </Form>
             </div>
-
         </div>
     );
 }

@@ -3,30 +3,28 @@ import EffUser from '@components/eff-user/eff-user';
 import './eff-member-item.less';
 import { Checkbox } from 'antd';
 
-interface IMember{
-    id:number,
-    email:string,
-    name:string,
-    userId:number,
-    avatar?:string,
-    boolEnable:boolean,
-    boolOwner?:boolean,
-    boolProjectOwner?:boolean,
-
+interface IMember {
+    id: number;
+    email: string;
+    name: string;
+    userId: number;
+    avatar?: string;
+    boolEnable: boolean;
+    boolOwner?: boolean;
+    boolProjectOwner?: boolean;
 }
 
-interface IProps{
-    member:IMember,
-    onDel?:()=>void,
-    onSelect?:(value:boolean)=>void,
-    select?:boolean,
-    className?:string
+interface IProps {
+    member: IMember;
+    onDel?: () => void;
+    onSelect?: (value: boolean) => void;
+    select?: boolean;
+    className?: string;
+    booleEnable?: boolean;
 }
 
-export default function EffMemberItem(props:IProps) {
-    const {
-        member, select, className, onDel, onSelect,
-    } = props;
+export default function EffMemberItem(props: IProps) {
+    const { member, select, className, onDel, onSelect, booleEnable = false } = props;
     let title = member.boolProjectOwner ? '项目拥有者' : '';
     title = member.boolOwner ? '超级管理员' : title;
     const width = select ? '260px' : '380px';
@@ -37,7 +35,7 @@ export default function EffMemberItem(props:IProps) {
                 onDel();
             }
         },
-        handleSelect(e:any) {
+        handleSelect(e: any) {
             if (onSelect) {
                 onSelect(e.target.checked);
             }
@@ -54,17 +52,17 @@ export default function EffMemberItem(props:IProps) {
                     <div className="d-flex-column ml10 detail">
                         <span className="name mb5">{member.name}</span>
                         <div className="d-flex align-end justify-between">
-                            <span className="email">
-                                {member.email}
-                                {' '}
-                            </span>
-                            {select || member.boolEnable || <span className="sleep">未激活</span>}
+                            <span className="email">{member.email} </span>
+                            {!booleEnable && <span className="sleep">未激活</span>}
                         </div>
                     </div>
                 </div>
-                {select || <span onClick={response.handleDel} className="ml20 remove">移除</span>}
+                {select || (
+                    <span onClick={response.handleDel} className="ml20 remove">
+                        移除
+                    </span>
+                )}
             </div>
-
         </div>
     );
 }
