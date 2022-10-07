@@ -3,7 +3,7 @@
 const apiUrl = {
     user: {
         login: '/auth/login', // 登录
-        signup: '/user/public/signup', // 用户注册
+        signup: '/user/signup', // 用户注册
         resent: '/user/public/resent', // 重新发送注册邮件
         checkCode: '/user/public/check-code', // 检测邀请码是否可用
         retrievePwdEmail: '/user/public/retrieve-password-email', // 发送找回密码邮件
@@ -18,7 +18,7 @@ const apiUrl = {
     },
     organization: {
         orgRes: '/organization', // 组织资源,
-        addOrg: '/organization/public/add', // 添加组织
+        addOrg: '/organization/add', // 添加组织
         detail: '/organization/detail', // 获取组织详情
         addMember: '/organization/member', // 添加组织成员
         checkOrgUserToken: '/organization/public/check-token', // 检查组织成员token有效性

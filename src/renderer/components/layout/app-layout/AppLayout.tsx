@@ -45,19 +45,12 @@ const AppLayout = () => {
         },
     };
 
-    const menu = (
-        <Menu onClick={response.dropdownMenuSelected} className="user-menu">
-            <Menu.Item className="menu-item" key="switch-org">
-                <span>{imgSwitch} 切换组织</span>
-            </Menu.Item>
-            <Menu.Item className="menu-item" key="change-pwd">
-                <span>{imgProfile} 个人设置</span>
-            </Menu.Item>
-            <Menu.Item className="menu-item" key="log-out">
-                <span>{imgQuit} 退出登录</span>
-            </Menu.Item>
-        </Menu>
-    );
+    const menuItems = [
+        { key: 'switch-org', label: '切换组织', icon: imgSwitch, className: 'menu-item' },
+        { key: 'change-pwd', label: '个人设置', icon: imgProfile, className: 'menu-item' },
+        { key: 'log-out', label: '退出登录', icon: imgQuit, className: 'menu-item' },
+    ];
+    const menu = <Menu items={menuItems} onClick={response.dropdownMenuSelected} className="user-menu" />;
 
     return (
         <Layout className="app_layout">

@@ -54,21 +54,11 @@ export default function ProjectItem(props: IProps) {
         },
     };
 
-    const menu = (
-        <Menu onClick={response.menuChosen}>
-            <Menu.Item className="menu-item" key="edit">
-                <span>
-                    <FormOutlined className="mr5" />
-                    编辑项目
-                </span>
-            </Menu.Item>
-            <Menu.Item className="menu-item" key="delete">
-                <span>
-                    <DeleteOutlined className="mr5" /> 删除项目
-                </span>
-            </Menu.Item>
-        </Menu>
-    );
+    const menuItems = [
+        { key: 'edit', label: '编辑项目', icon: <FormOutlined className="mr5" />, className: 'menu-item' },
+        { key: 'delete', label: '删除项目', icon: <DeleteOutlined className="mr5" />, className: 'menu-item' },
+    ];
+    const menu = <Menu onClick={response.menuChosen} items={menuItems} />;
 
     return (
         <div
