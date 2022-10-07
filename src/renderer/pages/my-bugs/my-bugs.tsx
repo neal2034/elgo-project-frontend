@@ -11,41 +11,41 @@ import BugItem from '../bug/bug-item';
 import BugDetail from '../bug/bug-detail';
 import './my-bugs.less';
 
-interface IProjectBugs{
-    projectId:number,
-    projectName:string,
-    members:[],
-    defectList: {
-        id:number,
-        name:string,
-        serial:number
-    }[]
+interface IProjectBugs {
+    projectId: number;
+    projectName: string;
+    members: [];
+    bugList: {
+        id: number;
+        name: string;
+        serial: number;
+    }[];
 }
 
-interface IPropProjectBugs{
-    item:IProjectBugs,
-    onBugSelected:(id:number)=>void,
+interface IPropProjectBugs {
+    item: IProjectBugs;
+    onBugSelected: (id: number) => void;
 }
 
-function MyProjectBug(props:IPropProjectBugs) {
+function MyProjectBug(props: IPropProjectBugs) {
     const dispatch = useDispatch();
     const { item, onBugSelected } = props;
 
     const response = {
-        handleSelected: (id:number) => {
+        handleSelected: (id: number) => {
             dispatch(projectActions.setProjectMembers(item.members));
             onBugSelected(id);
         },
     };
 
-    const bugItems = item.defectList.map((bugItem:any, index) => (
-        <BugItem key={bugItem.id} showBg={index % 2 !== 0} bug={bugItem} onChosen={response.handleSelected} />));
+    const bugItems = item.bugList.map((bugItem: any, index) => (
+        <BugItem key={bugItem.id} showBg={index % 2 !== 0} bug={bugItem} onChosen={response.handleSelected} />
+    ));
 
     return (
         <>
             <EffInfoSep className="ml40 mt40" name={item.projectName} />
             {bugItems}
-
         </>
     );
 }
@@ -53,7 +53,7 @@ function MyProjectBug(props:IPropProjectBugs) {
 export default function MyBugs() {
     const dispatch = useDispatch();
     // const myBugs1 = useAppSelector((state) => state.bug.myBugs)
-    const myBugs = useAppSelector((state) => state.bug.myBugs);
+    const myBugs = useAppSelector(state => state.bug.myBugs);
     // useAppSelector()
     const [showDetail, setShowDetail] = useState(false); // 是否显示任务详情
 
@@ -62,27 +62,27 @@ export default function MyBugs() {
     }, [dispatch]);
 
     const response = {
-        handleDel: async (id:number) => {
-            const result:any = await dispatch(bugThunks.deleteBug({ id }));
+        handleDel: async (id: number) => {
+            const result: any = await dispatch(bugThunks.deleteBug({ id }));
             if (result as boolean) {
                 effToast.success_withdraw('Bug放入回收站成功', () => response.handleWithdrawDel(id));
                 dispatch(bugThunks.listMyBugs());
                 setShowDetail(false);
             }
         },
-        handleWithdrawDel: async (id:number) => {
-            const result:any = await dispatch(bugThunks.withdrawDelBug({ id }));
+        handleWithdrawDel: async (id: number) => {
+            const result: any = await dispatch(bugThunks.withdrawDelBug({ id }));
             if (result as boolean) {
                 effToast.success('撤销成功');
                 dispatch(bugThunks.listMyBugs());
             }
         },
-        handleTaskSelected: async (id:number) => {
+        handleTaskSelected: async (id: number) => {
             await dispatch(bugThunks.getBugDetail(id));
             setShowDetail(true);
         },
     };
-    const bugList = myBugs.map((item:any) => <MyProjectBug key={item.projectId} onBugSelected={response.handleTaskSelected} item={item} />);
+    const bugList = myBugs.map((item: any) => <MyProjectBug key={item.projectId} onBugSelected={response.handleTaskSelected} item={item} />);
     return (
         <div className="my-bugs">
             {myBugs.length === 0 ? (
@@ -90,15 +90,10 @@ export default function MyBugs() {
                     <img alt="empty" src={ImgSmile} width={80} />
                     <span className="mt20 desc">太棒了,没有需要解决的Bug耶</span>
                 </div>
-            ) : bugList}
-            <Drawer
-                title={null}
-                width="60%"
-                placement="right"
-                closable={false}
-                onClose={() => setShowDetail(false)}
-                visible={showDetail}
-            >
+            ) : (
+                bugList
+            )}
+            <Drawer title={null} width="60%" placement="right" closable={false} onClose={() => setShowDetail(false)} visible={showDetail}>
                 <BugDetail onDel={response.handleDel} />
             </Drawer>
         </div>

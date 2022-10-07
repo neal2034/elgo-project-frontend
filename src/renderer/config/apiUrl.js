@@ -155,7 +155,7 @@ const apiUrl = {
         editSeverity: '/defect/severity', // 修改优先级
         editStatus: '/defect/status', // 修改状态,
         withdrawDel: '/defect/withdraw', // 撤销删除
-        mine: '/my/defect', // 我的任务
+        mine: '/my/bug', // 我的任务
     },
     elgoVersion: {
         index: '/elgo-version/public/list', // 列出elgo 的版本信息
