@@ -32,6 +32,7 @@ const projectSlice = createSlice({
         projectMembers: [], // 用于在组织环境下选择某个项目的成员
         availableOrgMembers: [], // 可用于添加到组织的成员
         activeMenuKey: undefined, // 当前激活的项目菜单key
+        availableInvitations: [],
     },
     reducers: {
         setProjects: (state, action) => {
@@ -48,6 +49,9 @@ const projectSlice = createSlice({
         },
         setActiveMenuKey: (state, action) => {
             state.activeMenuKey = action.payload;
+        },
+        setAvailableInvitations: (state, action) => {
+            state.availableInvitations = action.payload;
         },
     },
 });
@@ -85,14 +89,15 @@ const projectThunks = {
         const result = await request.delete({ url: apiUrl.project.members, params });
         return result.isSuccess;
     },
-    addMember: (data: { memberIds: number[] }) => async () => {
+    addMember: (data: { orgMemberIds: number[]; invitationIds: number[] }) => async () => {
         const result = await request.post({ url: apiUrl.project.members, data });
         return result.isSuccess;
     },
-    listAvailableMember: () => async (dispatch: Dispatch<any>) => {
-        const result = await request.get({ url: apiUrl.orgMember.available });
+    listAvailableCandidates: () => async (dispatch: Dispatch<any>) => {
+        const result = await request.get({ url: apiUrl.project.candidates });
         if (result.isSuccess) {
-            dispatch(projectActions.setAvailableOrgMembers(result.data.members));
+            dispatch(projectActions.setAvailableOrgMembers(result.data.orgMembers));
+            dispatch(projectActions.setAvailableInvitations(result.data.invitations));
         }
     },
 };

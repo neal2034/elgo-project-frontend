@@ -18,12 +18,14 @@ export default function MemberSetting() {
     const [showAddDlg, setShowAddDlg] = useState(false);
     const [noAvailableMembers, setNoAvailableMembers] = useState(false);
     const availableOrgMembers = useSelector((state: RootState) => state.project.availableOrgMembers);
+    const availableInvitations = useSelector((state: RootState) => state.project.availableInvitations);
     const selectedMembers: number[] = [];
+    const selectInvitationIds: number[] = [];
 
     useEffect(() => {
-        const noAvailable = availableOrgMembers.length === 0;
+        const noAvailable = availableOrgMembers.length === 0 && availableInvitations.length === 0;
         setNoAvailableMembers(noAvailable);
-    }, [availableOrgMembers]);
+    }, [availableOrgMembers, availableInvitations]);
 
     const response = {
         handleRemoveMember: (member: any) => {
@@ -43,15 +45,15 @@ export default function MemberSetting() {
             }
         },
         goAddProjectMember: () => {
-            dispatch(projectThunks.listAvailableMember());
+            dispatch(projectThunks.listAvailableCandidates());
             setShowAddDlg(true);
         },
         confirmAddProjectMember: async () => {
-            if (selectedMembers.length === 0) {
+            if (selectedMembers.length === 0 && selectInvitationIds.length === 0) {
                 effToast.warning('请至少选择一个项目成员');
                 return;
             }
-            const result: any = await dispatch(projectThunks.addMember({ memberIds: selectedMembers }));
+            const result: any = await dispatch(projectThunks.addMember({ orgMemberIds: selectedMembers, invitationIds: selectInvitationIds }));
             setShowAddDlg(false);
             if (result as boolean) {
                 dispatch(projectThunks.getProjectDetail());
@@ -65,6 +67,13 @@ export default function MemberSetting() {
                 selectedMembers.splice(index, 1);
             }
         },
+        onInvitationSelected: (checked: boolean, id: number) => {
+            if (checked) {
+                selectInvitationIds.push(id);
+            } else {
+                selectInvitationIds.splice(selectInvitationIds.indexOf(id), 1);
+            }
+        },
     };
 
     return (
@@ -74,8 +83,7 @@ export default function MemberSetting() {
             </div>
             <EffButton onClick={response.goAddProjectMember} round className="align-self-end" text="+ 添加成员" key="add" type="line" />
             <div className="mt20 d-flex flex-wrap align-center">
-                {project.members &&
-                    project.members.map(item => <EffMemberItem onDel={() => response.handleRemoveMember(item)} member={item} key={item.userId} />)}
+                {project.members && project.members.map(item => <EffMemberItem onDel={() => response.handleRemoveMember(item)} member={item} key={item.id} />)}
             </div>
             <EffConfirmDlg title="确认移除" visible={showConfirmDlg}>
                 <div>
@@ -99,7 +107,17 @@ export default function MemberSetting() {
                         {noAvailableMembers && <Empty description="无可添加成员" image={Empty.PRESENTED_IMAGE_SIMPLE} />}
                         {availableOrgMembers.map((item: any) => (
                             <EffMemberItem
+                                booleEnable
                                 onSelect={(checked: boolean) => response.onMemberSelected(checked, item.id)}
+                                className="ml20"
+                                select
+                                key={item.id}
+                                member={item}
+                            />
+                        ))}
+                        {availableInvitations.map((item: any) => (
+                            <EffMemberItem
+                                onSelect={(checked: boolean) => response.onInvitationSelected(checked, item.id)}
                                 className="ml20"
                                 select
                                 key={item.id}

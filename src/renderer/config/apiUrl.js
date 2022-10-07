@@ -30,7 +30,6 @@ const apiUrl = {
         getLogin: '/organization/login', // 获取需要登录的组织
     },
     orgMember: {
-        available: '/org-member/available', // 可以分配给指定项目的组织成员
         currentMember: 'org-member/current', // 获取当前成员信息
         checkInvitationToken: '/org-member/check-token',
         index: '/org-member',
@@ -44,6 +43,7 @@ const apiUrl = {
         rename: '/project/rename', // 修改名称
         members: '/project/member', // 项目成员资源
         detail: '/project/detail', // 获取项目详情
+        candidates: '/project/candidates',
     },
     api: {
         setRes: '/api-tree-item/set', // api 集合资源,
