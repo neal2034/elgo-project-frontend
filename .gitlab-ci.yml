@@ -14,8 +14,7 @@ before_script:
 clean:
   stage: clean
   only:
-    - develop
-    - master
+    - main
   script:
     - echo "===========Clean=============="
     - rm -rf $FRONTEND_SRC
@@ -27,8 +26,7 @@ clean:
 build:
   stage: build
   only:
-    - develop
-    - master
+    - main
   script:
     - echo "===========Build==========="
     - git clone http://oauth2:s5v43F2x3-jRVHH2VXtc@www.repo.elgo.cc/base-projects/elgo-editor.git -b develop $ELGO_EDITOR_SRC
@@ -40,8 +38,7 @@ build:
 deploy:
   stage: deploy
   only:
-    - develop
-    - master
+    - main
   script:
     - echo "===========Deploy==========="
     - mkdir -p $APP_HOME
