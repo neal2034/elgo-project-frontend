@@ -124,7 +124,7 @@ export default function AddTestCaseForm(props:IProps) {
                 </div>
 
                 <Form.Item name="description" className="mt20 d-flex align-start" label="用例描述">
-                    <ReactElgoEditor height={360} />
+                    <ReactElgoEditor  />
                 </Form.Item>
             </Form>
 

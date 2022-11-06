@@ -145,8 +145,8 @@ export default function AddReqForm(props: IAddReqFormProps) {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Form.Item name="description" className="mt20 d-flex align-start" label="需求描述">
-                    <ReactElgoEditor height={360} onChange={response.handleDescriptionChange} />
+                <Form.Item  name="description"  className="mt20 d-flex align-start" label="需求描述">
+                    <ReactElgoEditor/>
                 </Form.Item>
             </Form>
 
