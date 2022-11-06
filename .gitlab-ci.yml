@@ -7,7 +7,6 @@ stages:
 before_script:
   - BUILD_HOME="/mnt/build_home"
   - FRONTEND_SRC="$BUILD_HOME/elgo-nest-frontend/$CI_COMMIT_REF_NAME"
-  - ELGO_EDITOR_SRC="$BUILD_HOME/elgo-editor"
   - APP_HOME="/mnt/websites/elgo-nest/$CI_COMMIT_REF_NAME"
   - BUILD_COMMAND="build-web-$CI_COMMIT_REF_NAME";
 
@@ -19,8 +18,7 @@ clean:
     - echo "===========Clean=============="
     - rm -rf $FRONTEND_SRC
     - mkdir -p $FRONTEND_SRC
-    - rm -rf $ELGO_EDITOR_SRC
-    - mkdir -p $ELGO_EDITOR_SRC
+
 
 
 build:
@@ -29,10 +27,9 @@ build:
     - master
   script:
     - echo "===========Build==========="
-    - git clone http://oauth2:s5v43F2x3-jRVHH2VXtc@www.repo.elgo.cc/base-projects/elgo-editor.git -b develop $ELGO_EDITOR_SRC
-    - cd $ELGO_EDITOR_SRC; cnpm i; cnpm run build;
+
     - git clone http://oauth2:2vEyDbk7vypebA1FByUZ@www.repo.elgo.cc/elgo/elgo-frontend.git -b $CI_COMMIT_REF_NAME $FRONTEND_SRC
-    - cd $FRONTEND_SRC; cnpm i; cnpm i $ELGO_EDITOR_SRC;  cnpm run $BUILD_COMMAND ;
+    - cd $FRONTEND_SRC; cnpm i;cnpm run $BUILD_COMMAND ;
 
 
 deploy:
