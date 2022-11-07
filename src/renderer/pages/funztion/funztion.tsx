@@ -97,7 +97,7 @@ export default function Funztion() {
                 placement="right"
                 closable={false}
                 maskClosable={false}
-                visible={isOpenAddForm}
+                open={isOpenAddForm}
             >
                 <FunztionForm tags={data.tags} onCancel={response.handleCancelAdd} onConfirm={response.handleAddFunztion} />
             </Drawer>

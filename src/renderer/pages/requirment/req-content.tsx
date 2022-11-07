@@ -89,7 +89,7 @@ export default function ReqContent(props: IRequirementContentProps) {
                 width="60%"
                 placement="right"
                 closable={false}
-                visible={showDetail}
+                open={showDetail}
                 onClose={() => setShowDetail(false)}
             >
                 <RequirementDetail onDel={response.onDeleteReq} />

@@ -153,7 +153,7 @@ export default function TestCase() {
                     closable={false}
                     onClose={response.handleClose}
                     maskClosable
-                    visible={showAddTestCaseForm || showTestCaseDetail}
+                    open={showAddTestCaseForm || showTestCaseDetail}
                 >
                     {showAddTestCaseForm && (
                         <AddTestCaseForm

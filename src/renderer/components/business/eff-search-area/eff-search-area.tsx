@@ -109,7 +109,7 @@ export default function EffSearchArea(props: IProps) {
 
     return (
         <div className="eff-search-area" style={{ width: searchWidth }}>
-            <Popover visible={showMenu} placement="bottomRight" content={ui.popMenu} trigger="click">
+            <Popover open={showMenu} placement="bottomRight" content={ui.popMenu} trigger="click">
                 <Input
                     onChange={response.handleInputChange}
                     prefix={<SearchOutlined style={{ fontSize: '14px' }} />}

@@ -72,7 +72,7 @@ export default function FunztionContent(props:IProps) {
                 width="60%"
                 placement="right"
                 closable={false}
-                visible={showDetail}
+                open={showDetail}
                 onClose={() => setShowDetail(false)}
             >
                 <FunztionDetail onDel={response.handleDelFunztion} />

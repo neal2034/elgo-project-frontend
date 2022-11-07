@@ -128,7 +128,7 @@ export default function TestPlan() {
                     closable={false}
                     onClose={response.handleClose}
                     maskClosable
-                    visible={showAddForm || showDetail}
+                    open={showAddForm || showDetail}
                 >
                     {showAddForm && <AddTestPlanForm onConfirm={response.handleAddTestPlan} onCancel={response.handleCancelAdd} tags={tags} />}
                     {showDetail && <TestPlanDetail onDel={response.handleDelTestPlan} />}

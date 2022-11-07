@@ -132,7 +132,7 @@ export default function Bug() {
                     closable={false}
                     onClose={response.handleClose}
                     maskClosable
-                    visible={showAddForm || showDetail}
+                    open={showAddForm || showDetail}
                 >
                     {showAddForm && <AddBugForm onConfirm={response.handleAddBug} onCancel={response.handleCancelAdd} tags={tags} />}
                     {showDetail && <BugDetail onDel={response.handleDelBug} />}

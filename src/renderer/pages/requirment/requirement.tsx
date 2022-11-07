@@ -116,7 +116,7 @@ export default function Requirement() {
                 <ReqClass reqClasses={data.reqClasses} />
                 <ReqContent requirements={data.requirements} />
             </div>
-            <Drawer title={null} width="60%" placement="right" closable={false} maskClosable={false} visible={showAddForm}>
+            <Drawer title={null} width="60%" placement="right" closable={false} maskClosable={false} open={showAddForm}>
                 <AddReqForm
                     reqClasses={data.reqClasses}
                     onConfirm={response.handleRequirementAdd}

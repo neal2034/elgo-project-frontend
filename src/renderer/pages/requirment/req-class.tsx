@@ -60,7 +60,7 @@ export default function ReqClass(props:IReqClassProps) {
             <div className="ml20 mt20 d-flex justify-between">
                 <span className="title">需求分类</span>
                 <Popover
-                    visible={showReqClazzDlg}
+                    open={showReqClazzDlg}
                     content={(
                         <AddReqClazzDlg
                             onConfirm={response.handleAddReqClazz}

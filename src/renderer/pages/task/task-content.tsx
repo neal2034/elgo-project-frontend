@@ -88,7 +88,8 @@ export default function TaskContent() {
                 placement="right"
                 closable={false}
                 maskClosable={false}
-                visible={showAddTaskFrom}
+
+                open={showAddTaskFrom}
             >
                 <AddTaskForm onConfirm={response.handleAddTask} onCancel={response.handleCancelAdd} tags={data.tags} />
             </Drawer>
@@ -99,7 +100,7 @@ export default function TaskContent() {
                 placement="right"
                 closable={false}
                 onClose={() => setShowTaskDetail(false)}
-                visible={showTaskDetail}
+                open={showTaskDetail}
             >
                 <TaskDetail onDel={response.handleDelTask} onChange={response.taskUpdated} />
             </Drawer>

@@ -117,7 +117,7 @@ export default function MyTask() {
                 placement="right"
                 closable={false}
                 onClose={() => setShowTaskDetail(false)}
-                visible={showTaskDetail}
+                open={showTaskDetail}
             >
                 <TaskDetail onDel={response.handleDelTask} onChange={response.taskUpdated} />
             </Drawer>
