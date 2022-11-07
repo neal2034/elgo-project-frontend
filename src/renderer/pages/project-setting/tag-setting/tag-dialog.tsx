@@ -64,7 +64,7 @@ export default function TagDialog(props:IProps) {
     };
 
     return (
-        <Modal width={500} className="tag-dialog" title={titleArea} footer={null} destroyOnClose closable={false} visible={visible}>
+        <Modal width={500} className="tag-dialog" title={titleArea} footer={null} destroyOnClose closable={false} open={visible}>
             <Form form={tagForm} hideRequiredMark>
                 <Form.Item name="name" label="标签名称" rules={[{ required: true, message: '请输入标签名称' }]}>
                     <Input size="large" />

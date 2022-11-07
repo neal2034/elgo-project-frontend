@@ -112,7 +112,7 @@ export default function ProjectCenter() {
 
     return (
         <div className="project-center mt40 d-flex flex-wrap">
-            <Modal closable={false} footer={false} width={500} title="新建项目" visible={showAddDlg}>
+            <Modal closable={false} footer={false} width={500} title="新建项目" open={showAddDlg}>
                 <Row>
                     <Col span={4}>项目名称</Col>
                     <Col span={20}>

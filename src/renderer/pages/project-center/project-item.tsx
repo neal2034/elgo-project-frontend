@@ -33,6 +33,7 @@ export default function ProjectItem(props: IProps) {
             navigator({ pathname: `/app/project/${project.serial}/task` });
         },
         menuChosen: ({ key, domEvent }: { key: any; domEvent: any }) => {
+            console.log("it is menu choosen")
             domEvent.stopPropagation();
             setShowProjectMenu(false);
             switch (key) {
@@ -58,7 +59,7 @@ export default function ProjectItem(props: IProps) {
         { key: 'edit', label: '编辑项目', icon: <FormOutlined className="mr5" />, className: 'menu-item' },
         { key: 'delete', label: '删除项目', icon: <DeleteOutlined className="mr5" />, className: 'menu-item' },
     ];
-    const menu = <Menu onClick={response.menuChosen} items={menuItems} />;
+
 
     return (
         <div
@@ -78,7 +79,7 @@ export default function ProjectItem(props: IProps) {
                 className="icon d-flex justify-center align-center"
             >
                 {showProjectMenu && (
-                    <Dropdown overlay={menu} trigger={['click']} placement="bottomLeft">
+                    <Dropdown menu={{items:menuItems, onClick:response.menuChosen}}    trigger={['click']} placement="bottomLeft">
                         <EllipsisOutlined onClick={e => e.stopPropagation()} className="action" />
                     </Dropdown>
                 )}

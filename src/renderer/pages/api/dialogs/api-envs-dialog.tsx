@@ -192,7 +192,7 @@ export default function ApiEnvsDlg(props:IApiEnvsProps) {
     };
 
     return (
-        <Modal width={700} className="api-envs-dialog" title={titleArea} footer={null} destroyOnClose closable={false} visible={visible}>
+        <Modal width={700} className="api-envs-dialog" title={titleArea} footer={null} destroyOnClose closable={false} open={visible}>
             {contentType === 'list' ? (isEmpty ? ui.noEnvContent : ui.envListContent) : ui.envContentForm}
             <EffConfirmDlg className="mt40" visible={confirmDelDlgVisible}>
                 <div className="d-flex-column">

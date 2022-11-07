@@ -50,14 +50,14 @@ const AppLayout = () => {
         { key: 'change-pwd', label: '个人设置', icon: imgProfile, className: 'menu-item' },
         { key: 'log-out', label: '退出登录', icon: imgQuit, className: 'menu-item' },
     ];
-    const menu = <Menu items={menuItems} onClick={response.dropdownMenuSelected} className="user-menu" />;
+
 
     return (
         <Layout className="app_layout">
             <EffSideMenu />
             <Content className="app_content">
                 <EffBreadCrumb breads={breads} />
-                <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+                <Dropdown menu={{items:menuItems, onClick:response.dropdownMenuSelected}} trigger={['click']} placement="bottomRight">
                     <EffUser img={currentUser.avatar} id={currentUser.id} name={currentUser.name} size={24} className="current-user cursor-pointer" />
                 </Dropdown>
                 <ElgoProfile onClose={() => setShowProfile(false)} visible={showProfile} />

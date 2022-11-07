@@ -26,6 +26,13 @@ export interface ApiResult {
     data?: any;
 }
 
+const handleTokenExpired = ()=>{
+    umbrella.setLocalStorage('token', null);
+    umbrella.setLocalStorage('refreshToken', null);
+    const loginPath = window.location.href.replace(window.location.hash, '#/account');
+    window.location.href = loginPath;
+}
+
 const request = ({ url, data, params, method, config }: IFRequestConfig) =>
     new Promise<ApiResult>((resolve, reject) => {
         // eslint-disable-next-line no-underscore-dangle
@@ -140,6 +147,7 @@ const put = ({ url, data, params, config }: IFRequestParam) =>
     });
 
 const responseErrorHandler = (error: any) => {
+    console.log("here is the response ", error)
     if (error.response.status === 401) {
         umbrella.setLocalStorage('token', null);
         umbrella.setLocalStorage('refreshToken', null);
@@ -203,6 +211,10 @@ axios.interceptors.response.use(response => {
         }
     }
 
+    if(response.data.status === 401){
+        return handleTokenExpired()
+    }
+
     if (response.data.status !== 0) {
         // eslint-disable-next-line no-console
         console.error('Got error ', response.data);
@@ -212,6 +224,8 @@ axios.interceptors.response.use(response => {
     result.isSuccess = result.status === 0;
     return result;
 }, responseErrorHandler);
+
+
 
 export default {
     post,

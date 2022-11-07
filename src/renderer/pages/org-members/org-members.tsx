@@ -178,7 +178,7 @@ export default function OrgMembers() {
                     organization.invitations.map((item: any) => <EffMemberItem onDel={() => response.cancelInvitation(item)} member={item} key={item.id} />)}
             </div>
 
-            <Modal visible={showInviteDlg} title={null} footer={null} closable={false}>
+            <Modal open={showInviteDlg} title={null} footer={null} closable={false}>
                 <div className="invite-members-dlg">
                     <div className="title">邀请成员</div>
                     <div className="content d-flex-column pb20">

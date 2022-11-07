@@ -59,7 +59,7 @@ export default function ChangePwdDlg(props:IProps) {
     };
 
     return (
-        <Modal footer={null} title={null} closable={false} visible={visible}>
+        <Modal footer={null} title={null} closable={false} open={visible}>
             <div className="change-pwd-dlg">
                 <div className="d-flex header justify-between align-center mb20">
                     <span>修改密码</span>

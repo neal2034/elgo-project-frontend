@@ -27,6 +27,7 @@ export default function ProfileDlg(props: IProps) {
     const currentUser = useSelector((state:RootState) => state.account.currentUser);
     const [isEditingName, setIsEditingName] = useState(false);
     const [userName, setUserName] = useState<string>();
+
     const userNameInputRef = useRef<Input>(null);
 
     const token = umbrella.getLocalStorage('token');
@@ -68,7 +69,7 @@ export default function ProfileDlg(props: IProps) {
     };
 
     return (
-        <Modal style={{ top: '20%' }} visible={visible} width={400} footer={null} destroyOnClose title={null} closable={false}>
+        <Modal style={{ top: '20%' }} open={visible} width={400} footer={null} destroyOnClose title={null} closable={false}>
             <div className="profile-dlg mb40">
                 <div className="d-flex align-end">
                     <EffUser img={currentUser.avatar} id={currentUser.id} name={currentUser.name} size={50} />

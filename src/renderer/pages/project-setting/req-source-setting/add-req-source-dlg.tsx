@@ -46,7 +46,7 @@ export default function AddReqSourceDlg(props:IProps) {
     };
 
     return (
-        <Modal width={500} className="api-envs-dialog" title={titleArea} footer={null} destroyOnClose closable={false} visible={visible}>
+        <Modal width={500} className="api-envs-dialog" title={titleArea} footer={null} destroyOnClose closable={false} open={visible}>
             <Form form={addForm} hideRequiredMark>
                 <Form.Item name="name" label="需求来源" rules={[{ required: true, message: '请输入需求来源' }]}>
                     <Input size="large" />

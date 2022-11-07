@@ -80,7 +80,7 @@ export default function ChangeEmailDlg(props: {
     };
 
     return (
-        <Modal footer={null} title={null} closable={false} visible={visible}>
+        <Modal footer={null} title={null} closable={false} open={visible}>
             <div className="change-email-dlg">
                 <div className="d-flex header justify-between align-center mb20">
                     <span>修改登录邮箱</span>

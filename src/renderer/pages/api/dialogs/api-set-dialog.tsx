@@ -141,7 +141,7 @@ export default function ApiSetDialog(props:ApiSetDlgProps) {
     ];
 
     return (
-        <Modal destroyOnClose title={titleArea} closable={false} footer={footArea} afterClose={response.dlgClean} visible={visible}>
+        <Modal destroyOnClose title={titleArea} closable={false} footer={footArea} afterClose={response.dlgClean} open={visible}>
             <Input onFocus={() => setErrorNameEmpty(false)} value={name} placeholder={namePlaceHolder} onChange={updateApiSetName} />
             {errorNameEmpty ? <span style={{ color: globalColor.mainRed3, fontSize: '12px' }}>请输入集合名称</span> : null}
             <Tabs>

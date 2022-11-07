@@ -43,7 +43,7 @@ export default function ProjectEditDlg(props:{
     };
 
     return (
-        <Modal width={600} className="project-edit-dlg" closable={false} footer={false} title={null} visible={visible}>
+        <Modal width={600} className="project-edit-dlg" closable={false} footer={false} title={null} open={visible}>
             <div className="title">编辑项目</div>
             <Form initialValues={{ name: project && project.name }} form={editForm} colon={false} className="mt20">
                 <Form.Item name="name" label="项目名称" rules={[{ required: true, message: '请项目名称' }]}>

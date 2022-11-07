@@ -13,7 +13,7 @@ export default function EffConfirmDlg(props:IConfirmDlgProps) {
         children, visible, className, title = '确认删除',
     } = props;
     return (
-        <Modal className={className} closable={false} footer={false} width={400} title={title} visible={visible}>
+        <Modal className={className} closable={false} footer={false} width={400} title={title} open={visible}>
             {children}
         </Modal>
     );

@@ -100,7 +100,7 @@ export default function MemberSetting() {
                     </div>
                 </div>
             </EffConfirmDlg>
-            <Modal width={900} visible={showAddDlg} title={null} footer={null} closable={false}>
+            <Modal width={900} open={showAddDlg} title={null} footer={null} closable={false}>
                 <div className="add-members-dlg">
                     <div className="title">添加项目成员</div>
                     <div className={`content flex-wrap   d-flex pb20 ${noAvailableMembers ? 'justify-center' : 'align-start'}`}>
