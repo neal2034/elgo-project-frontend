@@ -14,6 +14,7 @@ clean:
   stage: clean
   only:
     - master
+    - develop
   script:
     - echo "===========Clean=============="
     - rm -rf $FRONTEND_SRC
@@ -25,6 +26,7 @@ build:
   stage: build
   only:
     - master
+    - develop
   script:
     - echo "===========Build==========="
 
@@ -36,6 +38,7 @@ deploy:
   stage: deploy
   only:
     - master
+    - develop
   script:
     - echo "===========Deploy==========="
     - mkdir -p $APP_HOME

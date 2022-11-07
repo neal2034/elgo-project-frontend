@@ -126,14 +126,10 @@ export default function AddBugForm(props:IProps) {
                         )}
                     </Col>
                 </Row>
-                <Row className="mt20" gutter={48}>
-                    <Col span={24}>
-                        <Form.Item labelCol={{ span: 2 }} name="description" className="d-flex align-start" label="Bug描述">
-                            <ReactElgoEditor   />
-                        </Form.Item>
-                    </Col>
+                <Form.Item labelCol={{ span: 2 }} name="description" className="d-flex align-start" label="Bug描述">
+                    <ReactElgoEditor   />
+                </Form.Item>
 
-                </Row>
 
             </Form>
 
