@@ -57,7 +57,7 @@ export default function EffActions(props:IProps) {
     };
 
     return (
-        <Dropdown overlayStyle={{ width: '200px' }} overlay={ui.actionItems} visible={showMenus} placement="bottomRight">
+        <Dropdown overlayStyle={{ width: '200px' }} menu={{items:menus, onClick:response.dropdownMenuSelected}} open={showMenus} placement="bottomRight">
             <div onClick={response.openMenu} style={style.action} className={`d-flex justify-center align-center cursor-pointer ${className}`}>
                 <EllipsisOutlined style={style.icon} />
             </div>

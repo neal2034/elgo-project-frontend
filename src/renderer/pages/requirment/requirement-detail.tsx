@@ -283,7 +283,7 @@ export default function RequirementDetail(props:IProps) {
                 width="60%"
                 placement="right"
                 closable={false}
-                visible={showAddFunztionForm}
+                open={showAddFunztionForm}
                 onClose={() => setShowAddFunztionForm(false)}
             >
                 <FunztionForm

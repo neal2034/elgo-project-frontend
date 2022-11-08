@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, Layout, Menu } from 'antd';
+import { Dropdown, Layout } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import EffUser from '@components/eff-user/eff-user';
 import { accountThunks } from '@slice/accountSlice';

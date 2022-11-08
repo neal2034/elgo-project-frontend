@@ -35,7 +35,7 @@ export default function ReqClassMenu(props:any) {
         <div className="req-clazz-menu">
             <div className="menu" onClick={() => setShowEditDlg(true)}>
                 <Popover
-                    visible={showEditDlg}
+                    open={showEditDlg}
                     placement="bottom"
                     trigger="click"
                     content={(
@@ -55,7 +55,7 @@ export default function ReqClassMenu(props:any) {
             </div>
             <div className="menu" onClick={() => setShowDelDlg(true)}>
                 <Popover
-                    visible={showDelDlg}
+                    open={showDelDlg}
                     placement="bottom"
                     trigger="click"
                     content={(

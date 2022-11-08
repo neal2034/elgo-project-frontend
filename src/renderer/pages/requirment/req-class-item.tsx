@@ -41,7 +41,7 @@ export default function ReqClassItem(props:IReqClassItemProps) {
             </div>
             {hasMenu && id !== -1 && (
                 <Popover
-                    visible={menuVisible}
+                    open={menuVisible}
                     className={`${showMenuTrigger ? 'show-menu' : 'hide-menu'}`}
                     content={<ReqClassMenu id={id} name={name} onMouseLeave={response.handleMenuLave} />}
                     placement="bottom"
