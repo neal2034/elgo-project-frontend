@@ -10,7 +10,7 @@ import EffConfirmDlg from '@components/eff-confirm-dlg/eff-confirm-dlg';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import ProjectEditDlg from '@pages/project-center/project-edit-dlg';
 import { accountThunks } from '@slice/accountSlice';
-import { RootState } from '../../store/store';
+import { RootState } from '@store/store';
 import EffButton from '../../components/eff-button/eff-button';
 import ProjectItem from './project-item';
 

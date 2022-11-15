@@ -127,7 +127,7 @@ export default function AddBugForm(props:IProps) {
                     </Col>
                 </Row>
                 <Form.Item labelCol={{ span: 2 }} name="description" className="d-flex align-start" label="Bug描述">
-                    <ReactElgoEditor   />
+                    <ReactElgoEditor placeholder="请输入Bug描述"  />
                 </Form.Item>
 
 

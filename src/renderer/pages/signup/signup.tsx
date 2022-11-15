@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { effToast } from '@components/common/eff-toast/eff-toast';
 import md5 from 'md5';
 import umbrella from 'umbrella-storage';
-import { RootState } from '../../store/store';
+import { RootState } from '@store/store';
 
 export default function Signup() {
     const dispatch = useDispatch();

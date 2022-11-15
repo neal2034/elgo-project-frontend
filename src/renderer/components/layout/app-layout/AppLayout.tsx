@@ -19,7 +19,6 @@ const AppLayout = () => {
     const [showProfile, setShowProfile] = useState(false);
     const breads = useSelector((state: RootState) => state.breadcrumb.breadcrumbs);
     const currentUser = useSelector((state: RootState) => state.account.currentUser);
-
     useEffect(() => {
         dispatch(accountThunks.getCurrentUser());
     }, []);

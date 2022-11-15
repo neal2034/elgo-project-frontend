@@ -146,7 +146,7 @@ export default function AddReqForm(props: IAddReqFormProps) {
                     </Col>
                 </Row>
                 <Form.Item  name="description"  className="mt20 d-flex align-start" label="需求描述">
-                    <ReactElgoEditor/>
+                    <ReactElgoEditor placeholder="请输入需求描述" />
                 </Form.Item>
             </Form>
 

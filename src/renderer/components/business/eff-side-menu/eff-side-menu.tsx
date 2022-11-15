@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { menuActions } from '@slice/menuSlice';
 import { useNavigate } from 'react-router-dom';
 import { setBreadcrumbs } from '@slice/breadcrumbSlice';
-import { RootState } from '../../../store/store';
+import { RootState } from '@store/store';
 import MenuItem from '../menu/menu-item/menu-item';
 import SideHeader from './side-header';
 

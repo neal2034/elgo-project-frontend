@@ -115,7 +115,7 @@ export default function FunztionForm(props:IProps) {
                 )}
 
                 <Form.Item name="description" className="mt20 d-flex align-start" label="功能描述">
-                    <ReactElgoEditor onChange={response.occupy} />
+                    <ReactElgoEditor onChange={response.occupy} placeholder="请输入功能描述" />
                 </Form.Item>
             </Form>
 
