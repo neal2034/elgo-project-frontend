@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export default function EffMemberItem(props: IProps) {
-    const { member, select, className, onDel, onSelect, booleEnable = false } = props;
+    const { member, select, className, onDel, onSelect } = props;
     let title = member.boolProjectOwner ? '项目拥有者' : '';
     title = member.boolOwner ? '超级管理员' : title;
     const width = select ? '260px' : '380px';
@@ -53,7 +53,7 @@ export default function EffMemberItem(props: IProps) {
                         <span className="name mb5">{member.name}</span>
                         <div className="d-flex align-end justify-between">
                             <span className="email">{member.email} </span>
-                            {!booleEnable && <span className="sleep">未激活</span>}
+                            {!member.boolEnable && <span className="sleep">未激活</span>}
                         </div>
                     </div>
                 </div>

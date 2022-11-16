@@ -171,7 +171,7 @@ export default function OrgMembers() {
                 {organization &&
                     organization.members &&
                     organization.members.map((item: any) => (
-                        <EffMemberItem booleEnable onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />
+                        <EffMemberItem onDel={() => response.removeOrgMember(item)} member={item} key={item.id} />
                     ))}
                 {organization &&
                     organization.invitations &&

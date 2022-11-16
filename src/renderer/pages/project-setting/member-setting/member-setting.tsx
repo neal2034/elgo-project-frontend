@@ -107,7 +107,6 @@ export default function MemberSetting() {
                         {noAvailableMembers && <Empty description="无可添加成员" image={Empty.PRESENTED_IMAGE_SIMPLE} />}
                         {availableOrgMembers.map((item: any) => (
                             <EffMemberItem
-                                booleEnable
                                 onSelect={(checked: boolean) => response.onMemberSelected(checked, item.id)}
                                 className="ml20"
                                 select
