@@ -33,7 +33,6 @@ export default function ProjectItem(props: IProps) {
             navigator({ pathname: `/app/project/${project.serial}/task` });
         },
         menuChosen: ({ key, domEvent }: { key: any; domEvent: any }) => {
-            console.log("it is menu choosen")
             domEvent.stopPropagation();
             setShowProjectMenu(false);
             switch (key) {
@@ -60,7 +59,6 @@ export default function ProjectItem(props: IProps) {
         { key: 'delete', label: '删除项目', icon: <DeleteOutlined className="mr5" />, className: 'menu-item' },
     ];
 
-
     return (
         <div
             onMouseLeave={() => setShowProjectMenu(false)}
@@ -79,11 +77,11 @@ export default function ProjectItem(props: IProps) {
                 className="icon d-flex justify-center align-center"
             >
                 {showProjectMenu && (
-                    <Dropdown menu={{items:menuItems, onClick:response.menuChosen}}    trigger={['click']} placement="bottomLeft">
+                    <Dropdown menu={{ items: menuItems, onClick: response.menuChosen }} trigger={['click']} placement="bottomLeft">
                         <EllipsisOutlined onClick={e => e.stopPropagation()} className="action" />
                     </Dropdown>
                 )}
-                <img alt="project" src={getProjectImgByKey(project.icon)} width={imgWidth} />
+                <img alt="project" src={getProjectImgByKey(project.icon, true)} width={imgWidth} />
             </div>
             <span
                 style={{

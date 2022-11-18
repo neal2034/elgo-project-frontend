@@ -21,7 +21,7 @@ interface Map {
     [index: number]: any;
 }
 
-const images:Map = {
+const images: Map = {
     music,
     statistics,
     prize,
@@ -40,8 +40,9 @@ const images:Map = {
     wmedal,
 };
 
-function getProjectImgByKey(key?:string) {
-    return key ? images[key] : images.wmusic;
+function getProjectImgByKey(key?: string, isActive = false) {
+    const imgKey = key ? (isActive ? `w${key}` : key) : 'wmusic';
+    return images[imgKey];
 }
 
 export default getProjectImgByKey;

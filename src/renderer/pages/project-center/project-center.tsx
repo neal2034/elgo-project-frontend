@@ -46,7 +46,7 @@ export default function ProjectCenter() {
             return;
         }
         const color = PROJECT_COLOR[Math.floor(Math.random() * PROJECT_COLOR.length)];
-        const icon = `w${PROJECT_ICON[Math.floor(Math.random() * PROJECT_ICON.length)]}`;
+        const icon = PROJECT_ICON[Math.floor(Math.random() * PROJECT_ICON.length)];
         await dispatch(
             projectThunks.addProject({
                 name,

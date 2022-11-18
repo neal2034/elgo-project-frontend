@@ -6,16 +6,15 @@ import { CheckOutlined } from '@ant-design/icons';
 import getProjectImgByKey from '@pages/project-center/project-img';
 import EffButton from '@components/eff-button/eff-button';
 import { IProject } from '@slice/projectSlice';
+import ProjectIcon from '@pages/project-center/project-icon';
 
-export default function ProjectEditDlg(props:{
-    project:IProject,
-    visible:boolean,
-    onCancel:()=>void,
-    onEdit: (data:{name:string, color:string, icon:string, serial:number})=>void
+export default function ProjectEditDlg(props: {
+    project: IProject;
+    visible: boolean;
+    onCancel: () => void;
+    onEdit: (data: { name: string; color: string; icon: string; serial: number }) => void;
 }) {
-    const {
-        project, visible, onCancel, onEdit,
-    } = props;
+    const { project, visible, onCancel, onEdit } = props;
     const [projectColor, setProjectColor] = useState<string>();
     const [projectIcon, setProjectIcon] = useState<string>();
     const [editForm] = Form.useForm();
@@ -37,8 +36,11 @@ export default function ProjectEditDlg(props:{
                 serial: project.serial,
                 name: values.name,
                 color: projectColor!,
-                icon: `w${projectIcon!}`,
+                icon: projectIcon!,
             });
+        },
+        projectIconSelected: icon => {
+            setProjectIcon(icon);
         },
     };
 
@@ -51,49 +53,42 @@ export default function ProjectEditDlg(props:{
                 </Form.Item>
                 <Form.Item label="设置颜色">
                     <div className="ml10 d-flex">
-                        {PROJECT_COLOR.map((color) => (
+                        {PROJECT_COLOR.map(color => (
                             <div
                                 onClick={() => setProjectColor(color)}
                                 className="color-item mr20 d-flex align-center justify-center cursor-pointer"
                                 key={color}
                                 style={{ backgroundColor: color }}
                             >
-                                { color === projectColor && <CheckOutlined style={{ color: 'white', fontWeight: 'bold' }} /> }
+                                {color === projectColor && <CheckOutlined style={{ color: 'white', fontWeight: 'bold' }} />}
                             </div>
                         ))}
                     </div>
-
                 </Form.Item>
 
                 <Form.Item label="选择图标">
-                    <div className="d-flex">
-                        {PROJECT_ICON.map((icon) => (
-                            <div
-                                key={icon}
-                                onClick={() => setProjectIcon(icon)}
-                                className="project-item mr20 d-flex align-center justify-center cursor-pointer"
-                                style={{ backgroundColor: projectIcon === icon ? projectColor : '' }}
-                            >
-                                {projectIcon === icon ? (
-                                    <img
-                                        alt="project"
-                                        width={20}
-                                        src={getProjectImgByKey(`w${icon}`)}
-                                    />
-                                ) : <img alt="project" src={getProjectImgByKey(icon)} />}
-                            </div>
-                        ))}
+                    <div className="d-flex align-center justify-center">
+                        {PROJECT_ICON.map(icon => {
+                            const isSelected = icon === projectIcon;
+
+                            return (
+                                <ProjectIcon
+                                    className="mr20"
+                                    key={icon}
+                                    bgColor={isSelected ? projectColor : ''}
+                                    iconImg={getProjectImgByKey(icon, isSelected)}
+                                    onClick={() => response.projectIconSelected(icon)}
+                                />
+                            );
+                        })}
                     </div>
-
                 </Form.Item>
-
             </Form>
 
             <div className="btn-group mt10 d-flex justify-end">
                 <EffButton onClick={onCancel} round key="cancel" text="取消" />
                 <EffButton onClick={response.handleEdit} className="mr20 ml10" type="filled" key="confirm" text="确定" round />
             </div>
-
         </Modal>
     );
 }

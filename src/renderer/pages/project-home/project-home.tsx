@@ -20,7 +20,7 @@ function ProjectHeader(props: { project: IProject }) {
     return (
         <div className="project-head d-flex ml20">
             <div style={{ backgroundColor: bgColor }} className="project-icon d-flex align-center justify-center">
-                <img alt="head" src={getProjectImgByKey(project.icon)} width={20} />
+                <img alt="head" src={getProjectImgByKey(project.icon, true)} width={20} />
             </div>
             <div className="ml20 name mt10">{project.name}</div>
         </div>
