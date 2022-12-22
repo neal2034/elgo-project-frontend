@@ -9,34 +9,66 @@ jobs:
     name: Install And Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+#      - name: Checkout
+#        uses: actions/checkout@master
+#
+#      - name: Get Branch Name
+#        env:
+#          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+#        uses: nelonoel/branch-name@v1
+#
+#      - name: Set Deploy Target
+#        run: |
+#          echo "TARGET=${{ secrets.ALIYUN_DIR_TARGET }}/${BRANCH_NAME}" >> $GITHUB_ENV
+#
+#      - name: use NodeJs 14
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 14
+#
+#      - name: Install dependency & Build
+#        run: |
+#          npm install --legacy-peer-deps
+#          npm run build-web-${BRANCH_NAME}
+#
+#      - name: Deploy to Aliyun
+#        uses: easingthemes/ssh-deploy@main
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_SERVER_TOKEN }}
+#          SOURCE: "dist/"
+#          REMOTE_HOST: ${{ secrets.ALIYUN_SERVER }}
+#          REMOTE_USER: ${{ secrets.ALIYUN_SERVER_USER }}
 
-      - name: Get Branch Name
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-        uses: nelonoel/branch-name@v1
-
-      - name: Set Deploy Target
-        run: |
-          echo "TARGET=${{ secrets.ALIYUN_DIR_TARGET }}/${BRANCH_NAME}" >> $GITHUB_ENV
-
-      - name: use NodeJs 14
-        uses: actions/setup-node@v3
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
         with:
-          node-version: 14
+          # Specify connection via URL (replaces server_address, server_port, secure,
+          # username and password)
+          #
+          # Format:
+          #
+          #  * smtp://user:password@server:port
+          #  * smtp+starttls://user:password@server:port
+          connection_url: ${{secrets.MAIL_CONNECTION}}
+          # Required mail server address if not connection_url:
+          server_address: smtp.exmail.qq.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended): mail server username:
+          username: ${{secrets.MAIL_USERNAME}}
+          # Optional (recommended) mail server password:
+          password: ${{secrets.MAIL_PASSWORD}}
+          # Required mail subject:
+          subject: Elgo Frontend build done
+          # Required recipients' addresses:
+          to: neal@elgo.cc
+          # Required sender full name (address can be skipped):
+          from: neal # <service@elgo.cc>
+          # Optional plain body:
+          body: Build job of ${{github.repository}} completed successfully!
 
-      - name: Install dependency & Build
-        run: |
-          npm install --legacy-peer-deps
-          npm run build-web-${BRANCH_NAME}
 
-      - name: Deploy to Aliyun
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.ALIYUN_SERVER_TOKEN }}
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.ALIYUN_SERVER }}
-          REMOTE_USER: ${{ secrets.ALIYUN_SERVER_USER }}
 
 
