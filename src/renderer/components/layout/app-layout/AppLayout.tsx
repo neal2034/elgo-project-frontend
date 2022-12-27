@@ -3,13 +3,13 @@ import { Dropdown, Layout } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import EffUser from '@components/eff-user/eff-user';
 import { accountThunks } from '@slice/accountSlice';
-import { imgSwitch, imgQuit, imgProfile } from '@config/svgImg';
 import ElgoProfile from '@pages/profile/profile';
 import { useNavigate, Outlet } from 'react-router-dom';
 import EffSideMenu from '@components/business/eff-side-menu/eff-side-menu';
 import { RootState } from '@store/store';
 import EffBreadCrumb from '@components/eff-breadcrumb/eff-breadcrumb';
 import '../../../assets/css/app.less';
+import {SwapOutlined,UserOutlined,LogoutOutlined} from "@ant-design/icons";
 
 const { Content } = Layout;
 
@@ -45,9 +45,9 @@ const AppLayout = () => {
     };
 
     const menuItems = [
-        { key: 'switch-org', label: '切换组织', icon: imgSwitch, className: 'menu-item' },
-        { key: 'change-pwd', label: '个人设置', icon: imgProfile, className: 'menu-item' },
-        { key: 'log-out', label: '退出登录', icon: imgQuit, className: 'menu-item' },
+        { key: 'switch-org', label: '切换组织', icon: <SwapOutlined className="mr5" />, className: 'menu-item' },
+        { key: 'change-pwd', label: '个人设置', icon: <UserOutlined className="mr5" />, className: 'menu-item' },
+        { key: 'log-out', label: '退出登录', icon: <LogoutOutlined className="mr5" />, className: 'menu-item' },
     ];
 
 
