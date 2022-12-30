@@ -16,9 +16,7 @@ export default function DelReqClazzDlg(props:IDelReqClazzDlgProps) {
                 删除需求分类
             </div>
             <span className="mt20 message">
-                确定删除需求分类&quot
-                {name}
-                &ldquo?
+                {`确定删除需求分类"${name}"?`}
                 <br />
                 删除后对应需求将被标记为未分类.
             </span>
