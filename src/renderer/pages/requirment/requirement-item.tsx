@@ -5,6 +5,7 @@ import './requirment.less';
 
 interface IReqItemProps{
     showBg:boolean, // 是否显示background color
+    serial?:number,
     id:number,
     name:string,
     version?:string,
@@ -14,7 +15,7 @@ interface IReqItemProps{
 
 export default function RequirementItem(props:IReqItemProps) {
     const {
-        showBg, id, name, version = '', status, onChosen,
+        showBg, id, name, version = '', status, onChosen, serial
     } = props;
     return (
         <div
@@ -23,7 +24,7 @@ export default function RequirementItem(props:IReqItemProps) {
             key={id}
         >
             <div className="req-main">
-                <span>{id}</span>
+                <span>{serial}</span>
                 <span className="ml20">{name}</span>
             </div>
             <div>
